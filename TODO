@@ -1,0 +1,47 @@
+Things Tuomas is asking for:
+
+ Rh1 Opacity in compositing.  This is soundly broken.
+ Rh2 Is it using Over where it shouldn't?       -- no
+ Rh3 Menus-- they shouldn't have back buttons   -- this is Rh1
+ Rh4 Theming dialogues.  See ImageViewer and Control Panel.
+ Rh5 Rounded corners.                           -- this is Rh1
+ Rh6 Window titles should always be left-justified
+      -- done
+ Rh7 Dialogs should have titlebars
+      -- they do; they're just currently 3px high
+
+
+---------------------------------------------------------------
+
+In no particular order
+===
+
+ - Support missing client window props including specific mb ones (later)
+   + add tracking of these props changing with some kind of signals
+     (so clients types can use them)
+
+ - Simple signal mechanism for MBObject ?
+
+ - Add an extras/ dir adding optional support for;
+   + XSettings
+   + Startup Notification
+   + Composite ?
+  (both can hook into X event callbacks via an init function. Needs
+   thought on how further integration can work) (MA)
+
+ - Basic theme engine with working buttons. (MA)
+   + Add matchbox-window-manager simple implementation.
+
+ - Render picture support loading from PNG's, inline data (MA)
+ 
+ - better event loop with arbituary add_timeout(msecs, callback) style
+   support.
+   + this will then allow support for _NET_WM_PING proto.
+   + event calls should be modular enough to hook into glib main loop.
+
+ - Improve client types, add an input window type. 
+
+ - Image based theme engine - takes a single 'template' image and conf file
+   build Maemo like theme from this.
+
+ - Dialog dragging (+resizing?)

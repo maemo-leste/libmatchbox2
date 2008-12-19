@@ -1,0 +1,4711 @@
+2008-12-16  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.12
+
+2008-12-16  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-client.c (mb_wm_client_get_transients): Patch
+	from Laszlo to return the list in non-reversed order. Fixes: NB#93736
+
+2008-12-15  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.11
+
+2008-12-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_client_configure_real): Adjust the xmas hack:
+	fetch texture for others but the systemui menu, to avoid the white
+	window. This is not working perfectly yet if the size of the texture
+	changes (size changes but the Clutter actor is not moved immediately).
+
+	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):
+	Do not force fixed-size for the menu window but only ensure minimum x
+	and y coordinates to keep it away from the application title bar.
+	Fixes: NB#95148
+
+2008-12-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Update
+	enum _HdWmClientType to match the definition in hildon-desktop code.
+
+2008-12-12  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Fixed null dereference when get_nth_desktop is given
+	a desktop number that doesn't exist. Tried to give
+	windows a more obvious clutter name.
+
+2008-12-12  Jan Arne Petersen  <jpetersen@openismus.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	  (mb_wm_comp_mgr_clutter_client_configure_real): Also fetch the
+	  texture if it is the status area. (xmas workaround)
+
+2008-12-11  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.10
+
+2008-12-09  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/core/mb-wm-atoms.c: added MB_SECONDARY
+	* matchbox/core/mb-wm-types.h: ditto
+	* matchbox/core/mb-wm-props.[ch]: added mb_window_is_secondary()
+	* matchbox/theme-engines/mb-wm-theme-png.c: if window is secondary,
+	centre title
+	* matchbox/theme-engines/mb-wm-theme.c: ditto
+
+2008-12-09  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.9
+
+2008-12-09  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Added extra fallback cases for when the EGLX Texture from Pixmap 
+	fails. Also now a define SGX_CORRUPTION_WORKAROUND so that we can
+	turn off fallbacks when proper drivers arrive.
+
+2008-12-08  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.8
+
+2008-12-04  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-window-manager.c:
+	  mb_wm_focus_client(): Try to set _MB_CURRENT_APP_WINDOW
+	  automatically when a client is focused.  This is necessary
+	  when a client becomes visible without activation.
+	  mb_wm_unfocus_cluent(): If it can't focus the next client
+	  activate the desktop.
+
+2008-12-04  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	*  matchbox/core/mb-window-manager.c: Patch from Laszlo to ignore
+	synthetic unmap events sent by Gdk. Fixes: NB#91306
+
+2008-12-03  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.7
+
+	* matchbox/core/mb-window-manager.c: Patch from Laszlo to ignore
+	unmap event caused by XCompositeRedirectWindow. Related to the fix for
+	NB#93845
+
+2008-12-02  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-stack.[ch]
+	(mb_wm_stack_get_highest_full_screen): New function. Patch from
+	Laszlo, related to NB#89269
+
+2008-12-02  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* TODO: added notes
+	* matchbox/core/mb-wm-root-window.c: removed code to set
+	_NET_CURRENT_DESKTOP and _NET_NUMBER_OF_DESKTOPS as these are now
+	handled by h-d.  Closes #93720.
+
+2008-12-02  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_fetch_texture): Patch from Laszlo: use
+	set_window instead of set_pixmap to bind the pixmap to the updated
+	window id. Fixes: NB#93845
+
+2008-12-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_map_notify_real): Remove dialog/menu/etc.
+	shadowing code.
+
+	* (bunch of files): Removed lot of compilation warnings.
+
+2008-11-28  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/theme-engines/mb-wm-theme-png.c: Don't pad according to
+	button positions; there are no buttons on the left-hand side
+	currently.
+
+2008-11-28  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* TODO: added some tasks
+	* matchbox/client-types/mb-wm-client-menu.c: menus should have a
+	gutter around the edge
+	* matchbox/core/mb-window-manager.c: don't print window type if it
+	doesn't have a type!
+
+2008-11-28  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-wm-props.h
+	* matchbox/core/mb-wm-props.c:
+	  mb_wm_rename_window(): Take the new name of the window as
+	  ordinary char rather than unsigned chars.  String literals
+	  consist of ordinary chars.  Fixes h-d build breakage.
+
+2008-11-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.6
+
+2008-11-27  Jan Arne Petersen  <jpetersen@openismus.com>
+
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_map_notify): Do not
+	use client->xwin_frame for undecorated non fullscreen windows. Fixes
+	problem with broken undecorated windows.
+
+2008-11-27  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	  mb_wm_comp_mgr_clutter_client_get_actor():
+	  Don't oops if we don't have an actor, eliminates some CRITICALs.
+
+2008-11-27  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/core/mb-wm-props.[ch]: add function mb_wm_rename_window()
+        to add names to X windows for ease of debugging.
+	* matchbox/core/mb-wm-client-base.c:
+	* matchbox/core/mb-wm-decor.c:
+	* matchbox/core/mb-wm-root-window.c: call mb_wm_rename_window() as
+	appropriate.
+
+2008-11-27  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.5
+
+2008-11-26  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-window-manager.c: Patch from Laszlo to fix
+	transferring focus in case of overlayed dialogs. Fixes: NB#92785
+	Patch from Laszlo to fix showing of a window that sets itself
+	fullscreen before mapping itself. Fixes: NB#92885
+
+	* matchbox/core/mb-wm-client-base.c: Patch from Adam to move the
+	focused window on top in a stack of transients. 
+
+2008-11-26  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: 
+	Added more clutter actor naming to ease debugging
+	Added HdWmClientTypeHomeApplet to the non-EGLX textures
+	so that it doesn't appear garbled (until the new SGX driver
+	comes out)
+
+2008-11-26  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/theme-engines/mb-wm-theme-png.c: don't honour left
+	justification if title text is centred
+
+2008-11-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        Add ABI to allow apps to control the position of the titlebar text
+	wrt the left margin.
+
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-window-manager.h:
+	* matchbox/theme-engines/mb-wm-theme-png.c:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+
+2008-11-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.4
+	
+	Remove the -Werror flag to enable building.
+
+2008-11-25  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/client-types/mb-wm-client-app.c:
+	  Don't stack MBWMClientWindowEWMHStateFullscreen applications
+	  above the others.
+
+2008-11-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/theme-engines/mb-wm-theme.c: fix default borders to be zero
+
+2008-11-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/theme-engines/mb-wm-theme-png.c: set button dimensions
+	correctly so that clicks on them are properly identified.
+
+2008-11-25  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	  clutter_actor_set_name() actors to make it easier to identify them
+	  in the debug output.
+
+2008-11-24  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/theme-engines/mb-wm-theme-png.c: place buttons top right,
+	  not according to their position in the template.  (This is the
+	  right answer for the close and back buttons; other buttons may
+	  need to have their type examined and be dealt with ad hoc.)
+
+2008-11-24  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-types.h, matchbox/core/mb-wm-decor.[ch]: Add
+	support for MB_WM_DECOR_BUTTON_NOHANDLERS decor button property.
+
+2008-11-24  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	Makefile.in doesn't belong in source control because it's derived.
+
+	* matchbox/client-types/Makefile.in (deleted):
+	* matchbox/core/Makefile.in (deleted):
+	* matchbox/theme-engines/Makefile.in (deleted):
+	* matchbox/managers/Makefile.in (deleted):
+	* matchbox/managers/simple/Makefile.in (deleted):
+	* data/Makefile.in (deleted):
+	* data/themes/Makefile.in (deleted):
+	* data/themes/Default/Makefile.in (deleted):
+	* data/themes/PngSample/Makefile.in (deleted):
+	* util/Makefile.in (deleted):
+
+2008-11-24  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	Warnings are errors per #90343.
+
+	* configure.ac: added -Werror to flags
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: HAVE_CLUTTER_EGLX
+	defined only if not already defined
+	* matchbox/comp-mgr/mb-wm-comp-mgr.[ch]: mb_wm_comp_mgr_client_repair()
+	takes a damage parameter
+
+2008-11-21  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_map_notify): Create
+	new client only for windows that do not have the override-redirect
+	attribute set. This avoids handling of MapNotify events that were
+	caused by us (in response to MapRequest), and in the case UnmapNotify
+	came just after MapRequest followed by a MapNotify, a nasty race
+	between the client and WM.
+
+2008-11-18  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.3
+
+	* matchbox/theme-engines/mb-wm-theme.c: Add temporary code to check
+	for ../themes/default/matchbox/theme.xml as well. (This can be removed
+	when theme package has the right directory.)
+
+	* matchbox/core/mb-wm-decor.c: Segfault fix from Laszlo.
+
+2008-11-14  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	Find the default theme in <prefix>/themes/default/matchbox2/theme.xml
+	as opposed to "Default".
+
+2008-11-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.2
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_client_configure_real): Do not free the pixmap
+	because it's used by Clutter. Patch from Gordon Williams.
+
+2008-11-12  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-wm-client.c:
+	Replicate the _NET_WM_STATE_SKIP_TASKBAR flag in
+	MBWindowManagerClient::ewmh_state.
+
+2008-11-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.1
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Gordon's workaround for
+	Status Area/Menu.
+
+2008-11-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.0
+
+2008-11-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: More fullscreen fixes
+	from Laszlo. Updates the window id for EGLX backend.
+	
+	* matchbox/core/mb-wm-client-base.c: Destroy xwin_modal_blocker also
+	when the window does not have a frame. Patch from Laszlo Pere.
+
+2008-11-07  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* Fixed package building issues, removed a bunch of generated files
+	from debian directory, bumped up the package version number.
+
+	* matchbox/core/mb-window-manager.c (mb_wm_unfocus_client): replace
+	mb_wm_activate_client with mb_wm_focus_client to resolve the infinite
+	loop problems once and for all. Patch from Laszlo Pere. Reverted the
+	evil workaround patch 07-workaround-popup-race.patch.
+	Fixes: NB#90653 (and many others).
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c,
+	matchbox/core/mb-wm-root-window.c, matchbox/core/mb-wm-client-base.c,
+	matchbox/core/mb-wm-client.c, matchbox/theme-engines/mb-wm-theme.c:
+	Patch from Laszlo Pere to fix fullscreen windows.
+	Fixes: NB#88740
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Use
+	clutter_eglx_texture_pixmap_new_with_window for the window texture
+	when EGLX backend is available. This will enable use of the EGLX
+	texture-from-pixmap extension.
+
+2008-11-04  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * matchbox/core/mb-wm-client-base.c: windows with frames shouldn't
+	  necessarily be reparented to the root; undecorated windows are
+	  allowed to be system-modal.
+
+2008-11-04  Jan Arne Petersen  <jpetersen@openismus.com>
+
+        * matchbox/core/mb-wm-client-base.c: reparent undecorated windows
+	  to the root window.  Closes #89607.
+
+2008-11-03  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* configure.ac: add debugging.
+	* matchbox/theme-engines/mb-wm-theme-xml.[ch]: prefix x/y/width/height
+	  with client_ to ensure greppability
+	* matchbox/theme-engines/mb-wm-theme.c: ditto, plus fix comment
+	* libmatchbox.doap (added): doap file to allow us to use moap
+
+2008-10-31  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * matchbox/core/mb-window-manager.c:
+	params in argv start at 1, not 0.
+
+2008-10-20  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * matchbox/core/mb-wm-root-window.c:
+	if mb_wm_root_window_init_attributes() can't set us up as
+	a window manager, it should report the X error.
+
+2008-10-13  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * config.sub:
+	remove yet more generated files
+
+2008-10-13  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * config.guess:
+	remove yet more generated files
+
+2008-10-10  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * configure.ac:
+	* Makefile.am:
+	make defaults more useful (to us)
+
+2008-10-10  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * configure:
+	* aclocal.m4:
+	remove generated files again
+
+2008-10-06  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * matchbox/core/mb-window-manager.c:
+	add prototype for sync_timeout_f() and adjust first line to meet
+	coding standards.
+
+2008-10-06  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * matchbox/mb-wm-config:
+	removed generated file from version control
+
+2008-10-06  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * ChangeLog: merged Kimmo's entries in the debian/changelog.
+
+2008-10-06  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+        * matchbox/mb-wm-config.h.in:
+	Added the downstream "01-allow-toggling-debug.patch" patch.
+	(date uncertain; from patch)
+
+2008-10-06  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * matchbox/theme-engines/mb-wm-theme.c:
+	Fix inversion of sense in precondition of mb_wm_theme_supports().
+
+2008-09-29  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+        * matchbox/core/mb-wm.h:
+        * matchbox/core/mb-window-manager.c:
+        Workaround for the pop-up menu race condition.
+
+2008-09-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+        * matchbox/core/mb-wm-client-window.c:
+        Added the downstream patch to make mb_wm_client_window_init() and
+	mb_wm_client_window_sync_properties() return FALSE on X BadWindow
+	errors and TRUE otherwise.
+
+2008-09-15  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+        * matchbox/core/mb-wm-client-window.c:
+	Workaround patch for 800x480 geometry hint (makes the browser visible).
+
+2008-09-09  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+        * matchbox/core/mb-wm-decor.c:
+        Added the downstream patch to send _MB_GRAB_TRANSFER ClientMessage
+        when the titlebar is pressed, causing the application menu to
+        be opened.
+
+2008-07-29  Robert Bragg  <bob@o-hand.com>
+	
+	* matchbox/theme-engines/mb-wm-theme-png.c:
+	mb_wm_theme_png_get_button_position now propery determines the button
+	positions in the case that the decor has been expanded larger than the
+	themes template image.
+
+2008-07-29  Robert Bragg  <bob@o-hand.com>
+
+	* configure.ac:
+	Look for clutter-0.8 now instead of 0.7
+
+2008-07-04  Robert Bragg  <bob@o-hand.com>
+
+	* configure.ac:
+	Adds a -I$(top_builddir) to MBWM_INCS for finding mb-wm-config.h
+	when doing out of tree builds.
+
+	* matchbox/client-types/Makefile.am:
+	* matchbox/comp-mgr/Makefile.am:
+	* matchbox/theme-engines/Makefile.am:
+	Removes us of wildcards for setting pkginclude_HEADERS variables.
+	Automake doesn't support wildcards.
+
+2008-07-02  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Use ClutterGLXTexturePixmap when building agains clutter GLX
+	backend.
+
+2008-06-11  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-decor.c:
+	(mb_wm_decor_button_press_handler):
+	Ensure that if a custom press handler is installed, it gets called
+	even if the button is not press-activated; do not block rest of
+	main loop, so that timers and such work.
+
+2008-06-11  Tomas Frydrych  <tf@o-hand.com>
+
+	* /matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(tidy_texture_frame_paint):
+	Updated to match upstream API change.
+
+2008-06-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+	(mb_wm_theme_set_custom_theme_alloc_func):
+	Added a hook to simplify subclassing of theme-engines.
+
+2008-06-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	(xml_element_start_cb):
+	Hooked custom button type function in.
+
+2008-06-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-decor.c:
+	(mb_wm_decor_button_new):
+	Added missing type parameter.
+
+2008-06-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+	(mb_wm_theme_set_custom_button_type_func):
+	Added a hook to simplify subclassing of theme-engines.
+
+2008-06-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme-png.h:
+	Added mb_wm_theme_png_class_type() prototype.
+
+2008-06-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+	(mb_wm_theme_set_custom_theme_type_func):
+	Added a hook to simplify subclassing of theme-engines.
+
+2008-06-09  Tomas Frydrych  <tf@o-hand.com>
+
+	* /matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_client_show):
+	(mb_wm_comp_mgr_client_configure):
+	(mb_wm_comp_mgr_client_repair):
+	(mb_wm_comp_mgr_register_client):
+	(mb_wm_comp_mgr_unregister_client):
+	NULL checks.
+
+2008-06-05  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-main-context.c:
+	* matchbox/core/mb-wm-main-context.h:
+	* matchbox/core/mb-wm-types.h:
+	Added hook for ClientMessage events.
+
+2008-06-05  Tomas Frydrych  <tf@o-hand.com>
+
+	* /matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_restack_real):
+	Do a parent check when restacking to avoid triggering clutter
+	warning.
+
+	(mb_wm_comp_mgr_clutter_add_actor):
+	Handle clients with desktop unset gracefully.
+
+2008-06-04  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-main-context.c:
+	(mb_wm_main_context_handle_x_event):
+	Sanitized so we do not crash if a callback removes itself.
+
+2008-06-04  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+	(mb_wm_theme_set_custom_type_func):
+	Added a hook to allow theming of custom client types.
+
+2008-06-02  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_init):
+	Force a stack sync on startup to allow compositing managers to
+	handle initial state depending on whether the stack is empty or
+	not.
+
+2008-05-27  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h:
+	Added MBWMCompMgrClutter::client_new() virtual to simplify
+	subclassing.
+
+2008-05-23  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h:
+	Added getter for client flags.
+
+2008-05-22  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h:
+	Added public API for setting client flags to allow subclasses of
+	MBWMCompMgrClutter to efficiently implement effects.
+
+2008-05-22  Tomas Frydrych  <tf@o-hand.com>
+
+	* /matchbox/core/mb-wm-client.c:
+	(mb_wm_client_shutdown):
+	Fixed for clients that do not have _NET_WM_PID set.
+
+2008-05-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_client_destroy):
+	(mb_wm_comp_mgr_clutter_private_free):
+	Use clutter_actor_destroy() rather than g_object_unref() to
+	destroy actors we own.
+
+2008-05-16  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h:
+	(mb_wm_comp_mgr_clutter_get_arena):
+	Added an intermediate ClutterGroup to sit between stage and the CM
+	actors to provide a greater flexibility for any derived
+	compositing managers.
+
+2008-05-16  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/managers/simple/matchbox-window-manager-2-simple.c:
+	Further changes to sync up with clutter.
+
+2008-05-16  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	* matchbox/core/mb-window-manager.c:
+	Sync up with changes to clutter API.
+
+2008-04-18  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	Add support for the root window resizing itself, which means RANDR has
+	been used.
+
+2008-04-18  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	Only register a configure notify handler for all windows if
+	compositing is enabled.
+
+2008-04-16  Robert Bragg  <bob@o-hand.com>
+
+	* matchbox-window-manager-2/matchbox/client-types/mb-wm-client-panel.c
+	* matchbox-window-manager-2/matchbox/core/mb-wm-client-window.c
+	* matchbox-window-manager-2/matchbox/core/mb-wm-client.h
+	* matchbox-window-manager-2/matchbox/core/mb-wm-client-window.h
+	* matchbox-window-manager-2/matchbox/core/mb-wm-types.h
+	* matchbox-window-manager-2/matchbox/core/mb-wm-client-base.c
+	* matchbox-window-manager-2/matchbox/core/mb-window-manager.c
+	* matchbox-window-manager-2/matchbox/core/mb-wm-client.c
+	* matchbox-window-manager-2/matchbox/managers/maemo/maemo-toolbar.c:
+
+	Changes how we respond to configure notifications. We now defer the
+	response until after all layout decisions so we know for sure when we
+	need to send a synthetic event. Note this adds a new
+	client->window->x_geometry member that is meant to always be a pristine
+	copy of the X dimensions for the client xwindow.
+	client->window->geometry continues to be used for layout purposes.
+
+2008-04-14  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/client-types/mb-wm-client-desktop.c:
+	* matchbox/client-types/mb-wm-client-input.c:
+	* matchbox/client-types/mb-wm-client-dialog.c:
+	Remove unused defines.
+
+2008-04-14  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/core/mb-wm-layout.[ch]:
+	Expose mb_wm_layout_maximise_geometry and
+	mb_wm_layout_clip_geometry for subclasses to use.
+
+2008-04-11  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	Instead of a fixed 2px padding before the text, use a fifth of the
+	decoration height.
+
+2008-04-11  Ross Burton  <ross@openedhand.com>
+
+	* data/themes/Default/theme.xml:
+	Make the default theme slightly more pretty.
+
+2008-04-11  Ross Burton  <ross@openedhand.com>
+
+	* data/themes/README:
+	Update documentation to match reality.
+
+2008-04-11  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	Fix typo in "template-pad-offset" parsing.
+
+2008-04-11  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme-xml.h:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* data/themes/Default/theme.xml:
+	* data/themes/PngSample/theme.xml:
+	* doc/MBWM2-Overview.xml:
+	* matchbox/managers/maemo/theme/theme.xml:
+	Removed unused color-bg2 and color-frame attributes from themes.
+
+2008-04-11  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	Fix a typo which meant the blue channel was used for the blue
+	channel when painting the decorations.
+
+2008-04-10  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/core/mb-wm-layout.[ch]:
+	Add virutal functions for the various layout stages, so subclasses
+	can override part of the layout procedure.
+
+2008-04-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Fixed gaussian shadows with TidyTextureFrame.
+
+2008-04-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_turn_on):
+	Fixed warning.
+
+2008-04-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-main-context.c:
+	(mb_wm_main_context_x_event_handler_remove):
+	(mb_wm_main_context_x_event_handler_add):
+	Fixed build with compositing enabled.
+
+2008-04-09  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/core/mb-wm-macros.h:
+	And enable asserts.  They can be trivially disabled if required,
+	but sanity checks are useful things to have.
+
+2008-04-09  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/core/mb-wm-atoms.c:
+	Instead of printing a sanity check to the console, assert it.
+
+2008-04-09  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/client-types/mb-wm-client-desktop.c:
+	* matchbox/client-types/mb-wm-client-panel.c:
+	* matchbox/core/mb-wm-client-base.c:
+	Add missing include.
+
+2008-04-09  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/client-types/mb-wm-client-desktop.c:
+	* matchbox/client-types/mb-wm-client-input.c:
+	* matchbox/core/mb-wm-client-window.c:
+	* matchbox/core/mb-wm-stack.c:
+	* matchbox/core/mb-wm-main-context.c:
+	* matchbox/core/mb-wm-decor.c:
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-wm-client.c:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	More cleanups to fix warnings from -Wall.
+
+2008-04-09  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/client-types/mb-wm-client-desktop.c:
+	* matchbox/client-types/mb-wm-client-app.c:
+	* matchbox/client-types/mb-wm-client-dialog.c:
+	* matchbox/client-types/mb-wm-client-input.c:
+	* matchbox/client-types/mb-wm-client-menu.c:
+	* matchbox/core/mb-wm-client-window.c:
+	* matchbox/core/mb-wm-root-window.c:
+	* matchbox/core/mb-wm-main-context.c:
+	* matchbox/core/mb-wm-layout.c:
+	* matchbox/core/mb-wm-debug.c:
+	* matchbox/core/mb-wm-decor.c:
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-wm-client.c:
+	Remove unused variables and functions.
+
+2008-04-09  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/core/mb-window-manager.h:
+	Add missing includes.
+
+2008-04-09  Ross Burton  <ross@openedhand.com>
+
+	* matchbox/managers/maemo/matchbox-window-manager-2-maemo.c:
+	Fix debug check so it actually works.
+
+2008-04-09  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	When using xfixes and xext, make sure they make it into the .pc
+	file.
+
+2008-04-09  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/Makefile.am:
+	Fix to enable building libmatchbox without CM (patch from Ross
+	Burton).
+
+2008-03-25  Robert Bragg  <bob@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+
+	Replace incorrect use of mb_wm_object_ref with
+	g_object_ref (in mb_wm_comp_mgr_clutter_client_get_actor)
+
+2008-03-20  Robert Bragg  <bob@o-hand.com>
+
+	* matchbox/client-types/mb-wm-client-app.c
+	* matchbox/core/mb-wm-client-base.c
+	* matchbox/core/mb-window-manager.c
+
+	Ensure we send a synthetic ConfigureNotify event in responce to a
+	ConfigureRequest when we decide not to accept the request or
+	when we only move a window. (Fixes gnome-terminal)
+
+2008-03-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Refactored effect creation (allocate effects on demand and destroy
+	when finished).
+
+2008-03-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_client_event_real):
+	Reorganized to avoid leaking the CM client; removed unnecessary
+	call to  clutter_behaviour_get_actors().
+
+2008-03-18  Robert Bragg  <bob@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h
+
+	Some minor additions to give more control to comp-mgr-clutter
+	sub-classes. Adds:
+	- mb_wm_comp_mgr_clutter_client_get_actor
+	- mb_wm_comp_mgr_clutter_get_desktops and
+	and exports mb_wm_comp_mgr_clutter_get_nth_desktop
+
+2008-03-18  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	* matchbox/core/mb-window-manager.c:
+	Added old_desktop parameter to MBWMCompMgr::select_desktop() to
+	simplify implementation of desktop switching effects.
+
+2008-03-17  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-xrender.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	Added MBWindowManager reference to MBWMCompMgr needed during
+	MBWMCompMgr destruction; broke reference cycle between
+	MBWindowManager and MBWMCompMgr client.
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_handle_destroy_notify):
+	Fixed memory leak.
+
+2008-03-17  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_client_repair_real):
+	(mb_wm_comp_mgr_clutter_client_init):
+	Shrink to 80 columns.
+
+	(mb_wm_comp_mgr_clutter_client_event_new):
+	Test that we have an actor to run an effect on.
+
+	(mb_wm_comp_mgr_clutter_client_event_real):
+	Test we have an effect to start.
+
+	(mb_wm_comp_mgr_clutter_restack_real):
+	Handle multiple desktops correctly.
+
+2008-03-14  Robert Bragg  <bob@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h
+	* matchbox/core/mb-wm-client.c
+	* matchbox/core/mb-wm-types.h
+
+	The ->effect and ->transition comp-mgr virtuals have been renamed to
+	client_event and client_transition. (Other supporting types/functions
+	have also been renamed in a corresponding way.)
+
+	MBWMCompMgrClutterClient gets a ->priv member and is made
+	sub-classable.
+
+	The variable name "cclient" is now used more consistently for
+	MBWMCompMgrClutterClients.
+
+
+2008-03-14  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_handle_button_press):
+	Only activate application if it is not already topmost.
+
+2008-03-14  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	(test_key_press):
+	(test_button_press):
+	(test_destroy_notify):
+	Renamed to match the usual mb_wm_ namespace.
+
+2008-03-13  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-decor.c:
+	(mb_wm_decor_sync_window):
+	Fixed order of press handlers so that decor buttons get called
+	before the drag handler.
+
+2008-03-13  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-window-manager.h:
+	* matchbox/managers/maemo/matchbox-window-manager-2-maemo.c:
+	* matchbox/managers/simple/matchbox-window-manager-2-simple.c:
+	Moved calls to MBWindowManager virtuals (with the exception of
+	process_cmd_line) from the object constructor to a public
+	mb_wm_init() method that must be called before the newly
+	constructed object can be used.
+
+2008-03-13  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-window-manager.h:
+	Initialize XComposite, XDamage and XFixes in the WM init method
+	when building a compositor (avoids duplication of code in the CMs).
+
+	* matchbox/core/mb-wm-main-context.c:
+	* matchbox/core/mb-wm-main-context.h:
+	Handle DamageNotify the same way as other standard events to avoid
+	unnecessary calls to the CM event callbacks.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-xrender.c:
+	Replaced MBWMCompMgr::handle_event with more specific
+	::handle_damage().
+
+2008-03-13  Robert Bragg  <bob@o-hand.com>
+
+	* matchbox/core/mb-wm-main-context.c
+	incorrect dereferencing of xev->xconfigure union member in the
+	wrong context.
+
+2008-03-12  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-client-app.c:
+	(mb_wm_client_app_request_geometry):
+	Added MBWMClientReqGeomIsViaUserAction to allowed flags.
+
+2008-03-12  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-client.h:
+	Added layout hints for user resizable and movable windows.
+
+	* matchbox/client-types/mb-wm-client-dialog.c:
+	Hint dialogs as user-movable.
+
+	* matchbox/core/mb-window-manager.c:
+	(test_button_press):
+	Ensure that application-type clients are not only focused, but
+	also activated.
+
+	* matchbox/core/mb-wm-decor.c:
+	* matchbox/core/mb-wm-decor.h:
+	Implemented window dragging via north decor.
+
+	* matchbox/core/mb-wm-main-context.c:
+	* matchbox/core/mb-wm-main-context.h:
+	(mb_wm_main_context_spin_loop):
+	API to allow manual spining of the main loop.
+
+	* matchbox/theme-engines/mb-wm-theme.c:
+	Make dialogs decorated by default when using fallback theme.
+
+2008-03-11  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/client-types/mb-wm-client-dialog.h:
+	Fixed broken include.
+
+2008-03-11  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	* matchbox/mb-wm-config.h.in:
+	Added missing MBWM_WANT_DEBUG to mb-wm-config.h.
+
+	* matchbox/core/mb-wm.h:
+	Ensure mb-wm-config.h is included before all other mbwm includes.
+
+	* matchbox/client-types/mb-wm-client-app.c:
+	* matchbox/client-types/mb-wm-client-desktop.c:
+	* matchbox/client-types/mb-wm-client-dialog.c:
+	* matchbox/client-types/mb-wm-client-input.c:
+	* matchbox/client-types/mb-wm-client-menu.c:
+	* matchbox/client-types/mb-wm-client-note.c:
+	* matchbox/client-types/mb-wm-client-override.c:
+	* matchbox/client-types/mb-wm-client-panel.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-xrender.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-wm-client-base.c:
+	* matchbox/core/mb-wm-debug.c:
+	* matchbox/core/mb-wm-debug.h:
+	* matchbox/core/mb-wm-decor.c:
+	* matchbox/core/mb-wm-layout.c:
+	* matchbox/core/mb-wm-macros.h:
+	* matchbox/core/mb-wm-main-context.c:
+	* matchbox/core/mb-wm-object.c:
+	* matchbox/core/mb-wm-object.h:
+	* matchbox/core/mb-wm-root-window.c:
+	* matchbox/core/xas.c:
+	* matchbox/managers/maemo/Makefile.am:
+	* matchbox/managers/maemo/maemo-input.c:
+	* matchbox/managers/maemo/maemo-window-manager.c:
+	* matchbox/managers/maemo/maemo-toolbar.c:
+	* matchbox/managers/maemo/maemo-window-manager.h:
+	* matchbox/managers/maemo/matchbox-window-manager-2-maemo.c:
+	* matchbox/managers/simple/matchbox-window-manager-2-simple.c:
+	* matchbox/theme-engines/mb-wm-theme-png.c:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	Replaced #ifdef MBWM_WANT_DEBUG with #if MBWM_WANT_DEBUG.
+
+	* matchbox/managers/maemo/maemo-window-manager.c:
+	(maemo_window_manager_class_type):
+	Fixed incorrect object initialization.
+
+2008-03-11  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	Added libpng to the required packages for libmatchbox2 when
+	building png theme.
+
+2008-03-10  Robert Bragg  <bob@o-hand.com>
+
+	* doc/MBWM2-Overview.xml
+	* matchbox/theme-engines/mb-wm-theme.c
+	* matchbox/theme-engines/mb-wm-theme-png.c
+	* matchbox/theme-engines/mb-wm-theme-xml.h
+	Fixes png theme engine's rendering of decors that are wider than the
+	underlying template PNG image. This adds two new decor tag attributes
+	template-pad-offset and template-pad-length, which have been described
+	in MBWM2-Overview.xml
+
+2008-03-09  Robert Bragg  <bob@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c
+	Some theme.xml schema changes. clr-* now color-*
+	All x/y width/height attributes related to specifying regions within
+	a template image are now prefixed template-*
+
+	* doc/MBWM2-Overview.xml
+	Documentation updated in lines with schema changes
+
+	* matchbox/managers/maemo/theme/theme.xml
+	* matchbox/managers/maemo/theme/background.png
+	* matchbox/managers/maemo/theme/Makefile.am
+	* data/themes/Default/theme.xml
+	* data/themes/PngSample/theme.xml
+	* data/themes/PngSample/background.png
+	* data/themes/PngSample/Makefile.am
+	Existing themes updated to use the new attribute names and
+	background.png images have been renamed to template.png
+
+	* configure.ac
+	* data/themes/Makefile.am
+	Install the PngSample theme by default if PNG theme engine enabled
+
+2008-03-09  Robert Bragg  <bob@o-hand.com>
+
+	* configure.ac
+	fix for clutter composite manager: glib main loop had accidentally
+	been disabled
+
+2008-03-09  Robert Bragg  <bob@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme.c
+	base class theme: xft_load_font: don't dereference MBWMXmlDecor
+	if NULL.
+
+2008-03-08  Robert Bragg  <bob@o-hand.com>
+
+	* configure.ac
+	* matchbox/comp-mgr/Makefile.am
+	* matchbox/comp-mgr/mb-wm-comp-mgr-xrender.c
+	* matchbox/comp-mgr/mb-wm-comp-mgr-xrender.h
+	* matchbox/core/mb-window-manager.c
+	* matchbox/managers/simple/Makefile.am
+	* matchbox/managers/simple/matchbox-window-manager-2-simple.c
+	* matchbox/mb-wm-config.h.in
+	Adds an --enable-composite-managers=A,B,C.. config option
+	and renames the "default" composite manager to "xrender"
+
+2008-03-07  Tomas Frydrych  <tf@o-hand.com>
+
+	Further work on multiple desktop support:
+
+	* matchbox/core/mb-wm-client.c:
+	* matchbox/core/mb-wm-client.h:
+	(mb_wm_client_desktop_change):
+	Do not reset the hiding_from_desktop flag when showing a client
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_client_reset_hiding_from_desktop):
+	Public API so that the WM can reset the flag when window maps.
+
+	(mb_wm_handle_map_notify):
+	Do not pass notification for our frame decors, etc, to the CM.
+
+	(mb_wm_select_desktop):
+	Set MBWindowManager::active_desktop when destkop changes; hook
+	into CM API.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	(mb_wm_comp_mgr_client_init):
+	(mb_wm_comp_mgr_client_destroy):
+	Take/release reference to MBWindowClient object to avoid it
+	disappearing on us during effect animations.
+
+	(mb_wm_comp_mgr_render):
+	Make class implementation of the render method optional to avoid
+	unnecessary function calls.
+
+	(mb_wm_comp_mgr_map_notify):
+	(mb_wm_comp_mgr_unmap_notify):
+	Do not trigger map application map animation when switching
+	desktops.
+
+	(mb_wm_comp_mgr_select_desktop):
+	CM API for WM to hook into for desktop switching.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h:
+	(mb_wm_comp_mgr_clutter_select_desktop):
+	(mb_wm_comp_mgr_clutter_map_notify_real):
+	CM desktop switching implementation.
+
+2008-03-07  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-util.c:
+	* matchbox/core/mb-wm-util.h:
+	(mb_wm_util_pixels_to_points):
+	Utility function for conversion from pixel font sizes to points.
+
+	* matchbox/theme-engines/mb-wm-theme-xml.h:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	(xft_load_font):
+	(xml_element_start_cb):
+	Allow units to be specified with font sizes; default to pixels.
+
+	* matchbox/theme-engines/mb-wm-theme-png.c:
+	(xft_load_font):
+	(mb_wm_theme_png_paint_decor):
+	Handle font units in xft/Pango backends.
+
+2008-03-07  Robert Bragg  <bob@o-hand.com>
+
+	* matchbox/core/mb-wm-types.h
+	* matchbox/theme-engines/mb-wm-theme.c
+	* matchbox/theme-engines/mb-wm-theme.h
+	* matchbox/theme-engines/Makefile.am
+	* matchbox/mb-wm-config.h.in
+	Moves the simple xlib based theme engine into the theme engine base
+	class
+
+2008-03-07  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	Changed --enable-gtk and --enable-pango to --with-*.
+
+2008-03-06  Robert Bragg  <bob@o-hand.com>
+
+	* configure.ac
+	* doc/MBWM2-Overview.xml
+	* matchbox/core/mb-wm-types.h
+	* matchbox/mb-wm-config.h.in
+	* matchbox/theme-engines/Makefile.am
+	* matchbox/theme-engines/mb-wm-theme-cairo.c
+	* matchbox/theme-engines/mb-wm-theme-cairo.h
+	* matchbox/theme-engines/mb-wm-theme.c
+	* matchbox/theme-engines/mb-wm-theme.h
+	Removes all references to the cairo theme engine
+
+2008-03-06  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme-png.c:
+	* matchbox/theme-engines/mb-wm-theme-png.h:
+        Optionally, use Pango to render text.
+
+2008-03-06  Robert Bragg  <bob@o-hand.com>
+
+	* Changelog
+	Adds missing changelog entries
+
+2008-03-06  Robert Bragg  <bob@o-hand.com>
+
+	* configure.ac
+	makes a start on tidying up configure.ac:
+	- some bits disabled by default
+	- adds a new --enable-pango option that will be optionally used by the
+	png theme engine
+	- adds a new --enable-matchbox-remote option
+
+2008-03-05  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	* matchbox/core/mb-wm-client.c:
+	* matchbox/core/mb-wm-types.h:
+	* matchbox/theme-engines/mb-wm-theme-xml.c:
+	* matchbox/theme-engines/mb-wm-theme-xml.h:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+	Simplified effect framework (effect are no longer themeable).
+
+2008-03-04  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-window-manager.h:
+	* matchbox/core/mb-wm-client-base.c:
+	* matchbox/core/mb-wm-client.c:
+	* matchbox/core/mb-wm-client.h:
+	* matchbox/core/mb-wm-root-window.c:
+	Start of multi-desktop infrastructure.
+
+2008-03-04  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	* Makefile.am:
+	* util/Makefile.am:
+	* util/matchbox-remote.c:
+
+	Added matchbox-remote (from mbwm1 + -select-desktop option).
+
+2008-03-02  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_map_notify_real):
+	Only create shadows for select group of client types.
+
+	* matchbox/theme-engines/mb-wm-theme-simple.h:
+	Fixed broken include.
+
+2008-02-29  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Initial stab at gaussian shadows.
+
+2008-02-29  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-root-window.c:
+	(mb_wm_root_window_handle_message):
+	Handle WM_CHANGE_STATE client message per ICCC.
+
+2008-02-29  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_fetch_texture):
+	Handle shaped windows correctly.
+	(mb_wm_comp_mgr_clutter_turn_on_real):
+	Removed debug colour for stage.
+
+2008-02-28  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme-xml.c:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	Fixed parsing of colour alpha.
+
+	* data/themes/Default/theme.xml
+	Added shaddow colour definition.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Implemented simple shaddows.
+
+2008-02-28  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_sync):
+	Added MBWMCompMgr::restack() virtual for CMs that need to
+	track WM stacking order.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Implemented MBWMCompMgrClutter::restack().
+	Fixed fade transition to handle transients correctly.
+
+2008-02-28  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-types.h:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+	* matchbox/theme-engines/mb-wm-theme-xml.c:
+	* matchbox/theme-engines/mb-wm-theme-xml.h:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	* data/themes/Default/theme.xml:
+	Added transition support to theme.
+
+2008-02-28  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	* matchbox/core/mb-window-manager.c
+	(mb_wm_cycle_apps):
+	Simple API for client transition effects.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_client_destroy):
+	Remove actor from stage when destroying cm client.
+	(mb_wm_comp_mgr_clutter_transition_real):
+	Sample transition implementation.
+
+2008-02-28  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	(MBWMCompMgrEffect::run):
+	(mb_wm_comp_mgr_client_run_effect):
+	Simplified effect API by removing completion callback from run()
+	function (no longer required; custom CM implementations must
+	implement effects in a way that does not block the WM processing).
+
+	* matchbox/core/mb-wm-client.c:
+	(mb_wm_client_iconize):
+	Adjusted following the above API change.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_effect_run_real):
+	Set an EffectRunning flag on client to indicate that effect is in
+	progress.
+	(mb_wm_comp_mgr_clutter_client_hide_real):
+	Do not hide client actor if effect is in progress.
+	(mb_wm_comp_mgr_clutter_effect_completed_cb):
+	Call clutter_actor_hide() when unmap or minimize effects are
+	completed.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_client_run_effect):
+	Release assumed reference on client object if no effects were
+	started to avoid memory leak.
+
+2008-02-27  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	Fixed incorrect string quoting.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-default.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_unregister_client):
+	Moved shared code into the public function, and removed
+	unnecessary implementations from the default and clutter managers.
+	Removed call to mb_wm_comp_mgr_client_hide() as this interfers
+	with managers implementing an unmap effect.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	Added MBWMCompMgr::unmap_notify virtual.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_map_notify):
+	(mb_wm_comp_mgr_unmap_notify):
+	Moved the effects handling for map and umap events out of
+	MBWindowManager into the CM.
+
+	(mb_wm_comp_mgr_client_run_effect):
+	Take a temporary reference of the CM client object to enusure that
+	it is not destroyed while an effect is running.
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_handle_unmap_notify):
+	Removed handling of CM unmap effect.
+
+	(mb_wm_unmanage_client):
+	Extra comments.
+
+2008-02-27  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-debug.c:
+	* matchbox/core/mb-wm-debug.h:
+	Added DAMAGE debug domain.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_client_show_real):
+	Clear DontUpdate flag if set.
+
+	(mb_wm_comp_mgr_clutter_client_repair_real):
+	Added debug output.
+
+2008-02-27  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-theme.c:
+	(mb_wm_theme_paint_decor):
+	(mb_wm_theme_paint_button):
+	Remove superfluous calls to mb_wm_comp_mgr_client_repair().
+
+2008-02-26  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-client.c:
+	(mb_wm_client_deliver_delete):
+	Removed unmap effect hook.
+
+2008-02-25  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	* data/libmatchbox2-0.1.pc.in:
+	Fixed Requires field of pc file.
+
+2008-02-25  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	* data/libmatchbox2-0.1.pc.in:
+	Fixed pkgconfig include path.
+
+2008-02-25  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Insert texture actors into a 'desktop' ClutterGroup rather than
+	directly into stage to provide greater flexibility in subclassing.
+
+2008-02-22  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(MBWMCompMgrClutterClient):
+	Collapsed a bunch of boolean members into flag set; 'done' flag
+	for effects that should only run once.
+
+	* matchbox/core/mb-wm-client.c:
+	(mb_wm_client_deliver_delete):
+	Hooked unmap effect in.
+
+2008-02-22  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_manage_preexistsing_wins):
+	Fixed handling of pre-exising windows when compositing.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_turn_on_real):
+	Remove no longer needed pre-existing windows code.
+
+	(mb_wm_comp_mgr_clutter_fetch_texture):
+	Update actor position when re-fetching texture; use client
+	geometry rather than pixmap geometery for actor size.
+
+	(mb_wm_comp_mgr_clutter_map_notify_real):
+	Removed unneeded effect callback.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_client_hide):
+	(mb_wm_comp_mgr_map_notify):
+	Added checks for NULL.
+
+	(mb_wm_comp_mgr_unregister_client):
+	Call mb_wm_comp_mgr_client_hide() to provide more coherent
+	show/hide behaviour; clear the client data pointer.
+
+2008-02-22  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-client.c:
+	(mb_wm_comp_mgr_map_notify):
+	Removed superfluous mb_wm_comp_mgr_client_show/hide().
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_map_notify):
+	Call mb_wm_comp_mgr_client_show() to provide more coherent
+	show/hide behaviour.
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_comp_mgr_map_notify):
+	Only call mb_wm_comp_mgr_client_hide() if we are not
+	unregistering the client.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Code cleanup.
+
+2008-02-21  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_main_real):
+	* matchbox/managers/simple/matchbox-window-manager-2-simple.c:
+	(main):
+	Use clutter_x11_handle_event and clutter_x11_disable_event_retrieval
+	to hook clutter into gdk event processing (needs clutter r2243+).
+
+2008-02-21  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_unmanage_client):
+	Make sure that mb_wm_comp_mgr_client_hide() is called when
+	unmanaging a client.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_client_destroy):
+	Removed a superfluous call to mb_wm_comp_mgr_client_hide().
+
+2008-02-21  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/theme-engines/mb-wm-theme-cairo.c:
+	* matchbox/managers/simple/matchbox-window-manager-2-simple.c:
+	Disabled gtk integration until I can find a way for the gtk main
+	loop not to mess us about.
+
+2008-02-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	Bumped clutter requirement to 0.7.
+
+	* matchbox/theme-engines/mb-wm-theme-cairo.c:
+	(mb_wm_theme_cairo_init):
+	Removed call to gtk_init (must be called by the application main()
+	function so display connection can be set up correctly.
+
+	* matchbox/managers/simple/matchbox-window-manager-2-simple.c:
+	(main):
+	Call gtk_init() if GTK integration is enabled.
+
+2008-02-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm-main-context.h:
+	Added missing prototype for mb_wm_main_context_handle_x_event().
+
+2008-02-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_init):
+	Added missing break statement.
+
+2008-02-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_main_loop):
+	Fixed build.
+
+	* matchbox/core/mb-wm-main-context.h:
+	Added missing prototype for mb_wm_main_context_gloop_xevent().
+
+2008-02-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	* matchbox/comp-mgr/Makefile.am:
+	* matchbox/mb-wm-config.h.in:
+	* matchbox/core/mb-window-manager.c:
+	Added --enable-compositing-manager=framework-only to make it
+	possible to build libmatchox with compositing capabilites, but
+	without any of the provided backends.
+
+	* matchbox/core/mb-window-manager.c:
+	(mb_wm_main_loop):
+	Added missing xeven callback to the plain main glib loop.
+
+	* matchbox/core/mb-wm-main-context.c:
+	(mb_wm_main_context_init):
+	Removed unused code.
+
+2008-02-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* matchbox/core/mb-wm.h:
+	Fixed local includes.
+
+2008-02-20  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	Fixed the header dirctory for libmatchbox.
+
+	* matchbox/core/mb-window-manager.c:
+	Fixed stray #ifdef.
+
+2008-02-19  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-window-manager.h:
+	* matchbox/core/mb-wm-client-base.c:
+	* matchbox/core/mb-wm-client-window.c:
+	* matchbox/core/mb-wm-client.c:
+	* matchbox/core/mb-wm-client.h:
+	* matchbox/core/mb-wm-main-context.c:
+	* matchbox/core/mb-wm-main-context.h:
+	* matchbox/core/mb-wm-root-window.c:
+	* matchbox/core/mb-wm-types.h:
+	* matchbox/core/mb-wm-util.h:
+	* matchbox/managers/maemo/maemo-window-manager.c:
+	* matchbox/managers/simple/matchbox-window-manager-2-simple.c:
+	* matchbox/mb-wm-config.h.in:
+	* matchbox/theme-engines/mb-wm-theme-cairo.c:
+	* matchbox/theme-engines/mb-wm-theme-xml.c:
+	* matchbox/theme-engines/mb-wm-theme-xml.h:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+
+	Manually generate mb-wm-config.h so as to avoid any clashes with
+	with any auto-generated application config.h.
+
+	Changed number of #ifdef's to #if's following the changes to
+	mb-wm-config.h.
+
+2008-02-19  Tomas Frydrych  <tf@o-hand.com>
+
+	* removed src directory that for some reason did not get deleted
+	in earlier commit.
+
+2008-02-19  Tomas Frydrych  <tf@o-hand.com>
+
+	* data/Makefile.am:
+	Generate API-version specific .pc file.
+
+2008-02-19  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac, *.am, *.h:
+	Changes for building mbwm2 as a library (based on patch by Johan
+	Bilien):
+
+	Moved 'src' to 'matchbox'; fixed up headers to use #include <>.
+	Moved config.h to matchbox/mb-wm-config.h.
+	Added --enable-libmatchbox configure option, libmatchbox2.pc.in
+
+2008-02-18  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/comp-mgr/README:
+	A simple outline of the compositing manager framework.
+
+2008-02-18  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	(mb_wm_comp_mgr_clutter_map_notify_real):
+	(mb_wm_comp_mgr_clutter_effect_run_real):
+	Delayed clutter_actor_show () call until 'map' effects had a
+	chance to setup starting position of the actor.
+
+	*src/core/mb-window-manager.c:
+	Removed leftover printfs.
+
+2008-02-18  Tomas Frydrych  <tf@o-hand.com>
+
+	* data/themes/Default/theme.xml:
+	* src/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* src/comp-mgr/mb-wm-comp-mgr.c:
+	* src/comp-mgr/mb-wm-comp-mgr.h:
+	* src/core/mb-window-manager.c:
+	* src/core/mb-wm-types.h:
+	* src/theme-engines/mb-wm-theme.c:
+	More effects works: split slide effect into slide-in and
+	slide-out; added effect events for map and unmap.
+
+2008-02-15  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/theme-engines/mb-wm-theme.c:
+	Check effect type is specified; use sensible default for effect
+	duration.
+
+2008-02-15  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/theme-engines/mb-wm-theme.c:
+	* data/themes/Default/theme.xml:
+	Moved effect description from <client> attribute to an <effect>
+	element.
+
+2008-02-15  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	Improved help for --enable-compositing-manager.
+
+	* src/theme-engines/mb-wm-theme.c:
+	(mb_wm_theme_new):
+	Try to load default theme when no theme is specified.
+	Turn compositing on by default.
+
+	* src/core/mb-window-manager.c:
+	(mb_wm_process_cmdline):
+	Added -help option for those uncomfortable with self-documenting
+	source code.
+
+2008-02-14  Tomas Frydrych  <tf@o-hand.com>
+
+	* data/themes/Default/theme.xml:
+	* src/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* src/comp-mgr/mb-wm-comp-mgr.c:
+	* src/comp-mgr/mb-wm-comp-mgr.h:
+	* src/core/mb-wm-object-props.h:
+	* src/core/mb-wm-types.h:
+	* src/theme-engines/mb-wm-theme.c:
+	* src/theme-engines/mb-wm-theme.h:
+	Added gravity to MBWCompMgrEffect to add flexibility and reduce
+	effect types; implemeted slide effect.
+
+2008-02-13  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac
+        * src/comp-mgr/Makefile.am:
+        * src/comp-mgr/mb-wm-comp-mgr-default.c:
+        * src/comp-mgr/mb-wm-comp-mgr-default.h:
+        * src/comp-mgr/mb-wm-comp-mgr.c:
+        * src/comp-mgr/mb-wm-comp-mgr.h:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-object-props.h:
+        * src/core/mb-wm-types.h:
+        * src/managers/maemo/maemo-window-manager.c:
+        * src/managers/simple/matchbox-window-manager-2-simple.c:
+	Changes to improve the flexibility of the compositor framework.
+	Framework for compositor effects.
+	Initial implementation of a clutter-based compositor.
+
+        * src/theme-engines/mb-wm-theme-xml.c:
+        * src/theme-engines/mb-wm-theme-xml.h:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	Added support for effects.
+
+        * data/themes/Default/theme.xml:
+	Added sample effect for application clients.
+
+2008-01-31  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-dialog.c:
+	(mb_wm_client_dialog_show):
+	Fixed wrong cast generating wornings.
+
+        * src/comp-mgr/Makefile.am:
+        * src/comp-mgr/mb-wm-comp-mgr-default.c:
+        * src/comp-mgr/mb-wm-comp-mgr-default.h:
+        * src/comp-mgr/mb-wm-comp-mgr.c:
+        * src/comp-mgr/mb-wm-comp-mgr.h:
+        * src/core/mb-wm-types.h:
+	Split MBWMCompMgr into an abstract object and separate
+	MBWMCompMgrDefault implementation.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_real_comp_mgr_new):
+	Use the new MBWMCompMgrDefault object.
+
+	(mb_wm_unmanage_client):
+	Avoid accessing stale pointer (patch by Johan Bilien).
+
+	(mb_wm_activate_client_real): Call mb_wm_client_show () when asked
+	to activate an override-type client (compositing mode only) so
+	that the compositing manager gets chance to do it's stuff with it.
+
+	(mb_wm_compositing_on):
+	Use the MBWindowManager comp_mgr_new() virtual to create a new
+	manager if needed.
+
+2008-01-22  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-atoms.c:
+	Changed MOTIF_WM_HINTS to the correct _MOTIF_WM_HINTS.
+
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+	Handling of _MOTIF_WM_HINTS.decorations == 0 (used by gtk to
+	indicate client window should not be decorated).
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-desktop.c:
+        * src/client-types/mb-wm-client-dialog.c:
+	Do not decorate windows with undecorated hint.
+
+2008-01-18  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-desktop.c:
+	(mb_wm_client_desktop_init):
+	Initialize frame geometry to desktop size.
+
+2008-01-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-desktop.c:
+	(mb_wm_client_desktop_request_geometry):
+	Avoid querying theme for decor dimensions if client is not
+	decorated.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_manage_client):
+	Do not activate desktop-type clients when starting to manage them.
+
+	(mb_wm_manage_preexistsing_wins):
+	Handle pre-existing override windows when compositing is enabled.
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_stack):
+	Do not schedule restack when handling override-type client.
+
+2008-01-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c
+	(mb_wm_manage_client):
+	(mb_wm_unmanage_client):
+	Make sure that we do not try to restack windows when
+	managing/unmanaging an override-type client.
+
+2008-01-11  Tomas Frydrych  <tf@o-hand.com>
+        * src/core/mb-wm-keys.c:
+	(key_binding_set_grab):
+	Replaced stray printf with MBWM_DBG.
+
+2008-01-10  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-keys.c:
+	(mb_wm_keys_press):
+	Only call a specific binding once.
+
+        * src/core/mb-window-manager.c
+	(mb_wm_cycle_apps):
+	Do not crash if there is no application to cycle to.
+
+2008-01-10  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-keys.c:
+	(mb_wm_keys_press):
+	Fixed handling of modifier mask.
+
+2008-01-09  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client-base.c:
+	(mb_wm_client_base_realize):
+	Do not create a frame window if the client is not decorated.
+
+        * src/client-types/mb-wm-client-app.c:
+	(mb_wm_client_app_request_geometry):
+	Do not query theme for decor size if the client is undecorated.
+
+        * src/client-types/mb-wm-client-dialog.c:
+	(mb_wm_client_dialog_request_geometry):
+	Do not query theme for decor size if the client is undecorated.
+
+2008-01-09  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-desktop.c:
+	(mb_wm_client_desktop_request_geometry):
+	Handle request of type MBWMClientReqGeomForced.
+
+        * src/client-types/mb-wm-client-override.c:
+	(mb_wm_client_override_stack):
+	Handle correctly transients for override-type clients.
+
+        * src/core/mb-window-manager.c
+	(mb_wm_activate_client_real):
+	Do not attempt to activate override-type clients.
+
+2008-01-09  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+	Fine-graned decor dirtiness to differentiate between simple paint
+	and window title change.
+
+        * src/theme-engines/mb-wm-theme-png.c:
+	(mb_wm_theme_png_paint_decor):
+	Handle change of window title properly.
+
+        * src/client-types/mb-wm-client-desktop.c:
+	(mb_wm_client_desktop_class_init):
+	(mb_wm_client_desktop_theme_change):
+	Added theme-change function for desktop client so that decorated
+	desktops can handle theme change.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_update_root_win_lists):
+	For decorated desktop, add the client window, not the frame to the
+	application window lists.
+
+2008-01-08  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-desktop.c:
+	Allow desktop clients to be decorated.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_activate_client_real):
+	Ensure that desktop flag is not clear if we are activating a
+	client that is either transient for desktop, or a dialog/menu
+	transient for root.
+
+2008-01-08  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/theme-engines/mb-wm-theme-xml.h:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	Added layout-hints to attributes of XML client element to give
+	themes greater control over client layout.
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_init):
+	Obtain layout hints from theme, if available.
+
+        * src/client-types/mb-wm-client-panel.c:
+	Handle floating (over the title-bar) type of panel.
+
+2008-01-07  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_layout_new_real):
+	Added missing return statement.
+
+2008-01-04  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-dialog.c:
+	(mb_wm_client_dialog_request_geometry):
+	Fixed bunch of NOP statements.
+
+2008-01-03  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client.h:
+	Added xwin_modal_blocker, an input-only window for blocking input
+	events around system-modal dialogues.
+
+        * src/core/mb-window-manager.c:
+	(stack_get_window_list):
+	(stack_sync_to_display):
+
+        * src/core/mb-wm-client-base.c:
+	Handle modal-blocker windows.
+
+2008-01-03  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_focus_client):
+	Do not move focus for system-modal dialogs.
+
+2008-01-03  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	Added mb_wm_theme_resize_decor() to allow theme engines to take
+	specific action in response to decor resizing.
+
+        * src/theme-engines/mb-wm-theme-png.c:
+	Implemented mb_wm_theme_png_resize_decor().
+
+        * src/core/mb-wm-decor.c:
+	(mb_wm_decor_resize):
+	Added call the mb_wm_theme_resize_decor().
+
+        * src/client-types/mb-wm-client-dialog.c:
+	(mb_wm_client_dialog_request_geometry):
+	Split off the special case where only position changes, avoid
+	unnecessary query to the theme engine about decor size.
+
+2008-01-02  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-dialog.c:
+	(mb_wm_client_dialog_request_geometry):
+	Fixed geometry calculations for requests via ConfigureRequest.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_handle_config_request):
+	Check for window size change before the geometry is modified by
+	mb_wm_client_request_geometry().
+
+2007-12-31  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	* Makefile.am:
+	* doc/Makefile.am:
+	Added doc directory to the autofoo build tree.
+
+2007-12-21  Tomas Frydrych  <tf@o-hand.com>
+
+        * doc/MBWM2-Overview.xml:
+        * src/theme-engines/mb-wm-theme-png.c:
+        * src/theme-engines/mb-wm-theme-xml.c:
+        * src/theme-engines/mb-wm-theme-xml.h:
+        * src/theme-engines/mb-wm-theme.c:
+	Added inactive-x, inactive-y parameters to theme buttons to make
+	it possible to design monochromatic tonable PNG themes.
+
+2007-12-19  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	Check for Xext.
+
+	* doc/MBWM2-Overview.xml:
+	Updated documentation.
+
+	* src/core/mb-wm-client-base.c:
+	(mb_wm_client_base_display_sync):
+
+	* src/core/mb-wm-client.c:
+	* src/core/mb-wm-client.h:
+	(mb_wm_client_init):
+	(mb_wm_client_is_argb32):
+	Added new mb_wm_client_is_argb32() function to simplify checking
+	for visual type.
+
+	* src/core/mb-wm-object-props.h:
+	* src/theme-engines/mb-wm-theme-xml.h:
+	* src/theme-engines/mb-wm-theme.c:
+	* src/theme-engines/mb-wm-theme.h:
+	* src/theme-engines/mb-wm-theme-cairo.c:
+	* src/theme-engines/mb-wm-theme-simple.c:
+	Implemented shaped windows in PNG themes.
+
+	* src/managers/maemo/theme/background.png:
+	* src/managers/maemo/theme/theme.xml:
+	Tweaked sample maemo theme to use shaped windows for dialogs and
+	notifications.
+
+2007-12-18  Tomas Frydrych  <tf@o-hand.com>
+
+	* data/themes/Default/theme.xml:
+	* data/themes/PngSample/theme.xml:
+	* src/managers/maemo/theme/theme.xml:
+	* src/theme-engines/mb-wm-theme.c:
+	Changed attributes engine_version and engine_type to
+	engine-version and engine-type respectively, so as to make
+	attribute makeup consistent.
+
+	* doc/MBWM2-Overview.xml:
+	Updated documetation.
+
+2007-12-14  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-decor.c:
+	(mb_wm_decor_button_press_handler):
+	Do not let non-modal transients to block button events on
+	decor buttons.
+
+2007-12-14  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-client.c:
+	(mb_wm_client_base_stack):
+	* src/core/mb-wm-decor.c:
+	(mb_wm_decor_button_press_handler):
+	* src/core/mb-wm-stack.c:
+	(mb_wm_stack_ensure_trans_foreach):
+	* src/managers/maemo/maemo-input.c:
+	(maemo_input_init):
+	Use mb_wm_client_get_transients() instead of accessing the
+	transient list directly.
+
+	* src/core/mb-wm-util.h:
+	* src/core/mb-wm-util.c:
+	(mb_wm_util_list_free):
+	Added a convenience function.
+
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-client.c:
+	(mb_wm_client_get_transients):
+	Handle window group hint.
+
+2007-12-12  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(test_button_press):
+	* src/core/mb-wm-client.c:
+	(mb_wm_client_init):
+	Do a button grab on the client window.
+
+2007-12-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_activate_client_real):
+        (mb_wm_focus_client):
+	* src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	(mb_wm_client_focus):
+	(mb_wm_client_remove_transient):
+
+	Keep track of the last focused transient for each client, so that
+	focus goes to the correct place when switching between clients
+	with non-modal transients.
+
+2007-12-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(test_button_press):
+	Handle button press on children.
+
+2007-12-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-menu.c:
+        * src/core/mb-wm-layout.c:
+	Respect original menu geometry.
+
+2007-12-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client-base.c:
+	(mb_wm_client_base_display_sync):
+	Force client window geometry recalculation when exiting fullscreen
+	mode.
+
+        * src/client-types/mb-wm-client-app.c:
+	(mb_wm_client_app_request_geometry):
+	Handle MBWMClientReqGeomForced geometry requests.
+
+2007-12-11  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/managers/maemo/maemo-toolbar.h:
+	* src/managers/maemo/maemo-toolbar.c:
+	Make sure that the TN is getting stacket with BottomMid like a
+	normal panel (so it does not steal focus from applications).
+
+2007-12-10  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+	(mb_wm_client_app_request_geometry):
+	Handle geometry request correctly in fullscreen mode.
+
+        * src/core/mb-wm-client-base.c:
+	(mb_wm_client_base_display_sync):
+	Respect geometry when in fullscreen mode, always set input focus
+	to RevertToPointerRoot when switching from/to fullscreen mode as
+	it gets reset due to the implicit unmap in XReparentWindow().
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_get_layout_hints):
+	Handle fullscreen mode.
+
+        * src/core/mb-wm-layout.c:
+	Use mb_wm_client_get_layout_hints() instead of accessing
+	MBWindowClient layout_hints member directly.
+
+	(mb_wm_layout_input):
+	Make sure that when input method is transient to a client in
+	fullscreen mode the width/height is calculated correctly.
+
+	(mb_wm_layout_fullscreen):
+	Handle the presence of an input method transient to a fullscreened
+	application.
+
+2007-12-10  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client-base.c:
+	(mb_wm_client_base_display_sync):
+	Increase skip_unmaps on (un)fullscreen not to loose the client on
+	XReparentWindow generated unmap.
+
+        * src/core/mb-window-manager.c:
+	(stack_get_window_list):
+	Use the client window for fullscreen apps, not the (unmapped)
+	frame, when building window list for XRestackWindow().
+
+        * src/client-types/mb-wm-client-app.c:
+	(mb_wm_client_app_stacking_layer):
+	Stack fullscreen applications in MBWMStackLayerTopMid.
+
+2007-12-10  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-input.c:
+        * src/client-types/mb-wm-client-menu.c:
+        * src/client-types/mb-wm-client-panel.c:
+	(mb_wm_client_*_realize):
+	Make sure that client windows that are frameless are reparented to
+	our root window, otherwise we cannot restack them.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_sync):
+	(stack_sync_to_display):
+	call mb_wm_stack_ensure() from mb_wm_sync() rather than
+	stack_sync_to_display() so that all ops are done on correct stack
+	order.
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_realize):
+	Check client is not realized already.
+
+2007-12-07  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/managers/maemo/matchbox-window-manager-2-maemo.c:
+        * src/managers/simple/matchbox-window-manager-2-simple.c:
+	Added virtual layout_new() method to MWWindowManager so we can
+	create a layout while initializing the object (otherwise
+	pre-existing windows do not get correctly laid out).
+
+2007-12-07  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_manage_preexistsing_wins):
+	Schedule stack sync when we manage pre-existing windows to ensure
+	that stack order is correct.
+
+2007-12-07  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-panel.c:
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/managers/maemo/maemo-toolbar.c:
+	Respect InputHint.
+
+2007-12-07  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_handle_property_notify):
+        * src/core/mb-wm-client-window.c:
+	(mb_wm_client_window_sync_properties):
+	Handle _NET_WM_NAME alongside WM_NAME.
+
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-atoms.c:
+
+	* src/core/mb-wm-client-base.c:
+	(mb_wm_client_base_display_sync):
+	Fixed geomtry of fullscreen windows.
+
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	(mb_wm_client_set_state):
+	Fixed parameter types to match those assumed by the body of the
+	function.
+
+        * src/core/mb-wm-main-context.c:
+	(mb_wm_main_context_handle_x_event):
+	Handle _NET_WM_STATE ClientMessage correctly.
+        * src/core/mb-wm-root-window.c:
+	(mb_wm_root_window_handle_message):
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_process_cmdline):
+	(mb_wm_set_theme_from_path):
+	Added -theme-always-reload option.
+
+2007-12-07  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/xas.c:
+	Fixed debug macros when --disable-debug is given.
+
+        * src/theme-engines/mb-wm-theme-cairo.c:
+	(mb_wm_theme_cairo_paint_button):
+	Fixed uninitialized variables.
+
+2007-11-26  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	(mb_wm_client_ping_start):
+	Made function public.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_activate_client):
+	Split out mb_wm_activate_client_real() so derrived classes can
+	chain up.
+
+        * src/managers/maemo/maemo-window-manager.c:
+	(maemo_window_manager_client_activate):
+	Do 'aggressive' ping when activating an application.
+
+2007-11-26  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/managers/maemo/maemo-toolbar.c:
+	(maemo_toolbar_stack):
+	Always stack maemo status bar immediately above top level
+	application.
+
+2007-11-23  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/client-types/mb-wm-client-desktop.c:
+        * src/client-types/mb-wm-client-panel.c:
+        * src/client-types/mb-wm-client-menu.c:
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/client-types/mb-wm-client-input.c:
+        * src/core/mb-window-manager.c:
+
+	Added virtual stacking_layer() method to MBWindowManagerClient to
+	allow clients to dynamically change their stacking requirement
+	(e.g., desktop client in normal and 'showing desktop' mode).
+
+	Removed class-specific implementations of stack() methods for
+	clients that duplicated the basic behaviour provided by
+	MBWMClientBase.
+
+        * src/managers/maemo/maemo-toolbar.c:
+	(maemo_toolbar_stack):
+	Fixed up to handle correctly case where dialogs might need to be
+	stacked above the floating status bar (e.g., when input method is
+	present).
+
+        * src/core/mb-wm-layout.c:
+	(mb_wm_layout_clip_geometry):
+	Fixed so as to prioritize window size over window position for
+	free-positioned clients (e.g., when resizing dialogs due to the
+	presence of the input method).
+
+        * src/core/mb-wm-stack.c:
+	(mb_wm_stack_ensure):
+	Use mb_wm_client_get_stacking_layer() instead of accessing the
+	MBWindowManagerClient struct (to allow for dynamic layer
+	definition).
+
+	Use  mb_wm_client_stack() to move clients, rather than
+	mb_wm_stack_move_top (); this allows for clients whose stacking
+	requirements change depending on the content of the stack to be
+	handled correctly.
+
+	(mb_wm_stack_get_highest_by_type):
+	Fixed to handle or-ed client types correctly; speeded up by
+	reversing direction of search.
+
+        * src/core/mb-wm-util.c:
+        * src/core/mb-wm-util.h:
+	Added mb_geometry_intersects() convenience function.
+
+2007-11-23  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_manage_client):
+	(mb_wm_unmanage_client):
+	(mb_wm_get_desktop_geometry):
+	(mb_wm_activate_client):
+	Fixed client-type check to work for subclasses.
+
+	(mb_wm_get_desktop_geometry):
+	Fixed geomtry calculation.
+
+	(mb_wm_update_root_win_rectangles):
+	Fixed _NET_DESKTOP_GEOMETRY calculation to match the spec.
+
+        * src/client-types/mb-wm-client-desktop.c:
+	(mb_wm_client_desktop_init):
+	Changed layout hints to LayoutPrefFullscreen.
+
+        * src/core/mb-wm-layout.c:
+	Handle clients with layotu hing LayoutPrefFullscreen.
+
+2007-11-22  Tomas Frydrych  <tf@o-hand.com>
+
+        * doc/MBWM2-Overview.xml:
+	Brief overview of the MBWM2 framework.
+
+2007-11-21  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_activate_client):
+	Adjust stacking layer of destkop client depending on whether in
+	showing desktop mode or not.
+
+2007-11-21  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_compositing_on):
+	Don't segfault if creation of compositing manager fails.
+
+2007-11-21  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_render_region):
+	Make sure that primary client rendering is doen up to first
+	non-translucent application or destktop client.
+
+2007-11-21  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_handle_events_real):
+	Debug output with "compositing" flag.
+
+	(mb_wm_comp_mgr_handle_events_real):
+	Restructured some conditionals.
+
+	(mb_wm_comp_mgr_render_region):
+	Fixed error in offset calculation of shadows.
+
+        * src/core/mb-wm-debug.c:
+        * src/core/mb-wm-debug.h:
+	Added "compositing" option for MB_DEBUG.
+
+2007-11-21  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/managers/maemo/maemo-window-manager.c:
+	(_window_manager_client_new_func):
+	Treat windows of unknown type that do not have override redirect
+	set as applications.
+
+        * src/comp-mgr/mb-wm-comp-mgr.c:
+	(_render_a_client):
+	Paint decors for translucent windows solid, not translucent.
+
+2007-11-20  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/Makefile.am:
+	* src/client-types/mb-wm-client-override.h:
+	* src/client-types/mb-wm-client-override.c:
+        * src/comp-mgr/mb-wm-comp-mgr.c:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-types.h:
+        * src/managers/maemo/Makefile.am:
+        * src/managers/maemo/maemo-window-manager.c:
+        * src/managers/simple/Makefile.am:
+
+	Added MBWMClientOverride for handling Override Redirect windows
+	when in compositing mode.
+
+        * src/core/mb-wm-main-context.c:
+	(mb_wm_main_context_handle_x_event):
+	Fixed a possible out-of-bounds read when printing debug output.
+
+2007-11-20  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-menu.c:
+	(mb_wm_client_menu_init):
+	Changed stacking so that menus always stack on the top.
+
+2007-11-16  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-menu.c:
+	(mb_wm_client_menu_init):
+	Added MBWM_ATOM_NET_WM_ACTION_RESIZE to allowed actions.
+
+        * src/core/mb-wm-debug.c:
+        * src/core/mb-wm-debug.h:
+        * src/core/xas.c:
+	Added xas domain to debug flags to reduce debug msg spam.
+
+        * src/core/mb-wm-decor.c:
+	(mb_wm_decor_button_press_handler):
+	Added XSync() to processing of press-activated buttons (the lack
+	of which was causing danling pointer grab in certain situations).
+
+        * src/core/mb-wm-main-context.c:
+	(mb_wm_main_context_handle_x_event):
+	Tweaked dbg output some more to improve readability.
+
+2007-11-16  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_handle_config_request):
+	Respect configure requests for unmanaged windows (necessary for
+	things like gtk menus position to work).
+
+        * src/core/mb-wm-main-context.c:
+	(mb_wm_main_context_handle_x_event):
+	ConfigureRequest, ConfigureNotify: must use the window member of
+	the struct to identify the window to configure, not
+	XAny.window. Added extra debug output.
+
+2007-11-15  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-types.h:
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/client-types/mb-wm-client-menu.c:
+        * src/client-types/mb-wm-client-note.c:
+        * src/core/mb-window-manager.c
+	Handling of _NET_WM_ALLOWED_ACTIONS and _MB_CURRENT_APP_WINDOW.
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+	Reimplemented decor button press/release handling to use a pointer
+	grab.
+
+2007-11-15  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-types.h:
+	Added _MB_GRAB_TRANSFER.
+
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	(mb_wm_client_deliver_message):
+	Exposed previously static function.
+
+        * src/theme-engines/mb-wm-theme-xml.h:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/managers/maemo/theme/theme.xml:
+	Added themable "press_activated" flag to decor button; implemented
+	handling of press-activated buttons (needed for maemo manager).
+
+        * src/core/mb-wm-root-window.c:
+	(mb_wm_root_window_init_attributes):
+	Removed bogus ClientMessage value from event mask.
+
+	(mb_wm_root_window_update_supported_props):
+	Added _NET_WM_CONTEXT_CUSTOM to supported props.
+
+2007-11-14  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_add_transient):
+	Ensure no duplicate entries in transients list.
+
+	(mb_wm_client_remove_transient):
+	Return imediately if we have no transient list.
+
+2007-11-14  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-types.h:
+        * src/client-types/Makefile.am:
+	* src/client-types/mb-wm-client-note.h:
+	* src/client-types/mb-wm-client-note.c:
+        * src/managers/maemo/Makefile.am:
+        * src/managers/maemo/maemo-window-manager.c
+        * src/managers/simple/Makefile.am:
+	* src/theme-engines/mb-wm-theme.c:
+	Added MBWMClientNote type.
+
+        * src/core/mb-wm-client-window.h:
+        * src/core/mb-wm-client-window.c:
+	Processing of gravity hint.
+
+        * src/client-types/mb-wm-client-dialog.c:
+	(mb_wm_client_dialog_show):
+	Fixed up chaining to parent class method to avoid circularity for
+	derived classes.
+
+	(mb_wm_client_dialog_init):
+	Fixed flags in call to mb_wm_client_dialog_request_geometry().
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_destroy):
+	Plugged a leaking MBWMList.
+
+        * src/managers/maemo/theme/background.png:
+        * src/managers/maemo/theme/theme.xml:
+	Themed notification clients.
+
+2007-11-13  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-input.c:
+	(mb_wm_client_input_detransitise):
+	Tweaked to avoid unnecessary geometry requests.
+
+	(mb_wm_client_input_request_geometry):
+	Respect geometry request from ConfigureRequests.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_set_layout):
+	OR rather than set the sync_type.
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_destroy):
+	Make sure that no transient children hold a dangling pointer to
+	the destroyed client.
+
+        * src/core/mb-wm-layout.c:
+	(mb_wm_layout_input):
+	Fixed available geometry calculations for Input clients reserving
+	South edge.
+
+2007-11-13  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-decor.c:
+	(mb_wm_decor_calc_geometry):
+	Fixed caculation of decor geometry resulting in S and E decors
+	being placed far outside the frame window.
+
+        * src/theme-engines/mb-wm-theme-xml.h:
+        * src/theme-engines/mb-wm-theme-png.c:
+        * src/theme-engines/mb-wm-theme.c:
+	Added show-title attribute to decor element to control display of
+	window title.
+
+        * src/managers/maemo/theme/background.png:
+        * src/managers/maemo/theme/theme.xml:
+	Added show-title decor attribute; tweaked image.
+
+2007-11-13  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-types.h:
+        * src/core/mb-window-manager.c:
+        * src/managers/maemo/maemo-window-manager.c:
+	Added _NET_WM_WINDOW_TYPE_INPUT.
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_get_coverage):
+	Fixed so that frame geometry is not modified by this getter.
+
+        * src/theme-engines/mb-wm-theme-png.c:
+	(mb_wm_theme_png_paint_decor):
+	Fixed painting of decors smaller than the theme template.
+
+2007-11-13  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/theme-engines/mb-wm-theme-png.c:
+        * src/theme-engines/mb-wm-theme-xml.c:
+        * src/theme-engines/mb-wm-theme-xml.h:
+	Improved drawing of buttons in active state.
+
+        * src/managers/maemo/theme/background.png:
+        * src/managers/maemo/theme/theme.xml:
+	Added active state buttons to the theme.
+
+2007-11-12  Tomas Frydrych  <tf@o-hand.com>
+
+        * configure.ac:
+        * src/managers/maemo/Makefile.am:
+        * src/managers/maemo/theme/background.png:
+        * src/managers/maemo/theme/theme.xml:
+	Added a simple mockup of maemo png-based theme to facilitate testing.
+
+        * src/client-types/mb-wm-client-dialog.c:
+	(mb_wm_client_dialog_init):
+	Correctly set up initial dialog geomtry.
+
+        * src/managers/maemo/maemo-toolbar.c:
+	Tweaked fallback geometry values.
+
+        * src/theme-engines/mb-wm-theme-png.c:
+	Fixed drawing decors that require scaling.
+
+2007-11-08  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-atoms.c:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-window-manager.c:
+	* src/managers/maemo/maemo-window-manager.c:
+	Added _NET_WINDOW_TYPE_DROPDOWN_MENU.
+
+2007-11-08  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-atoms.c:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-window-manager.c:
+	* src/managers/maemo/maemo-window-manager.c:
+	Added _NET_WINDOW_TYPE_NOTIFICATION.
+
+2007-11-08  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-atoms.c:
+	* src/core/mb-wm-types.h:
+	Added _NET_WINDOW_TYPE_POPUP_MENU.
+
+	* src/core/mb-window-manager.c:
+	(mb_wm_client_new_func):
+	Fixed missing default return statement; substituted dbg macros for
+	printf.
+
+	(stack_get_window_list):
+	Removed special casing of desktop client, which broke window
+	restacking.
+
+	* src/core/mb-wm-stack.c:
+	(mb_wm_stack_dump):
+	Added stack_layer to the dbg output.
+
+	* src/managers/maemo/maemo-toolbar.c:
+	(maemo_toolbar_init):
+	Made fallback values for status bar geometry to match roughly the
+	N800 theme.
+
+	* src/managers/maemo/maemo-window-manager.c
+	(maemo_window_manager_client_new_func):
+	Fixed missing default return value; print window type for
+	unhandled types for debugging.
+
+2007-11-06  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/managers/maemo/maemo-toolbar.c:
+	Fixed handling of geometry for maemo panels.
+
+2007-11-05  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/Makefile.am:
+        * src/client-types/mb-wm-client-menu.h:
+        * src/client-types/mb-wm-client-menu.c:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-types.h:
+        * src/managers/maemo/Makefile.am:
+        * src/managers/maemo/maemo-window-manager.c:
+        * src/managers/simple/Makefile.am:
+	Added MBWMClientMenu.
+
+        * src/core/mb-wm-stack.c:
+	(mb_wm_stack_dump):
+	Added client type to debug info.
+
+2007-11-05  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/theme-engines/mb-wm-theme-simple.c:
+	Rename left over MBWMXmlClr to MBWMColor.
+
+2007-11-05  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-main-context.h:
+	(mb_wm_main_context_gloop_xevent):
+	Added missing wm_sync() call.
+
+	(mb_wm_main_context_init):
+	(mb_wm_main_context_loop):
+	Moved glib loop creation to the loop function to facilitate
+	working with an external loop.
+
+2007-11-05  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_activate_client):
+	Added missing mb_wm_client_stack() call.
+
+        * src/core/mb-wm-main-context.c:
+	(mb_wm_main_context_handle_x_event):
+	Fixed handling of client messages to root window so that messages
+	in which XAny.window does not match the root window work.
+
+        * src/core/mb-wm-root-window.c:
+	(mb_wm_root_window_init_attributes):
+	Added missing ClientMessage to event mask for root window.
+
+	(mb_wm_root_window_init_attributes):
+	_NET_ACTIVE_WINDOW ClientMessage: use XAny.window, not data.l[2]
+	to get the window to activate.
+
+2007-11-05  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-root-window.c:
+	Fixed build.
+
+2007-11-05  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-root-window.c:
+	(mb_wm_root_window_handle_message):
+	Fixed handling of _NET_ACTIVE_WINDOW client message.
+
+2007-11-05  Tomas Frydrych  <tf@o-hand.com>
+
+        * configure.ac:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-main-context.h:
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-client.c:
+	--enable-glib-main-loop: glib main loop support.
+
+        * src/core/mb-wm-util.h:
+	Fixed handling of inline keyword when using glib.
+
+        * src/theme-engines/mb-wm-theme-cairo.h:
+        * src/theme-engines/mb-wm-theme-simple.h:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-client-base.h:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-decor.c:
+	Added missing prototypes and includes.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_handle_config_request):
+	(mb_wm_handle_map_request):
+        * src/core/mb-wm-object.c:
+	(mb_wm_object_init_recurse:
+
+	Fixed missing return value.
+
+2007-11-02  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/comp-mgr/mb-wm-comp-mgr.c:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-types.h:
+        * src/managers/maemo/maemo-window-manager.c:
+	Provision for customized handling of modality.
+
+2007-11-01  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-object-props.h:
+        * src/core/mb-window-manager.c:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	Added 'compositing' attribute to theme description.
+
+        * src/core/mb-wm-root-window.c:
+	(mb_wm_root_window_handle_message):
+	Fixed toggling of compositing.
+
+        * src/comp-mgr/mb-wm-comp-mgr.c:
+	(mb_wm_comp_mgr_turn_off_real):
+	Fixed destruction of root_buffer.
+
+2007-11-01  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-stack.c:
+        * src/core/mb-wm-stack.h:
+        * src/managers/maemo/matchbox-window-manager-2-maemo.c:
+        * src/managers/simple/matchbox-window-manager-2-simple.c:
+	(mb_wm_cycle_apps):
+	Implemented application cycling in reverse direction.
+
+2007-11-01  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_update_root_win_lists):
+	Fixed MB_APP_WINDOW_LIST_STACKING
+
+2007-11-01  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-panel.c:
+	(mb_wm_client_panel_init):
+	Work out panel attachment from initial window position.
+
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-root-window.c:
+	Removed bogus _NET_SHOW_DESKTOP atom.
+
+2007-11-01  Tomas Frydrych  <tf@o-hand.com>
+
+        * configure.ac:
+        * src/Makefile.am:
+        * src/core/Makefile.am:
+        * src/managers/maemo/Makefile.am:
+        * src/managers/simple/Makefile.am:
+        * src/comp-mgr/mb-wm-comp-mgr.c:
+        * src/comp-mgr/mb-wm-comp-mgr.h:
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-object-props.h:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-client-base.c:
+
+	Added composite manager.
+
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-simple.c:
+        * src/theme-engines/mb-wm-theme-xml.c:
+        * src/theme-engines/mb-wm-theme-xml.h:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+        * data/themes/Default/theme.xml:
+
+	Added clr-shadow and clr-lowlight properties to theme.
+
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+
+	Handling of initial _NET_WM_STATE property.
+
+        * src/core/mb-wm-root-window.c:
+
+	Handling of _MB_COMMAND ClientMessage.
+
+2007-10-29  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client-base.c:
+	(mb_wm_client_base_realize):
+	Removed incrementing of skip_unmap counter as that must only be
+	done when managing a pre-exisitng window on the WM manager startup.
+
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	(mb_wm_client_iconize):
+	(mb_wm_client_is_iconizing):
+	(mb_wm_client_reset_iconizing):
+	Added 'iconizing' flag to differentiate between external unmap
+	events and unmaps genereated when the WM iconizes a window.
+
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+	Removed unneeded iconized_clients list (iconized clients are
+	readily available from the principal client list).
+
+	(mb_wm_manage_preexistsing_wins):
+	Increase skip_notify counter.
+
+	(test_unmap_notify):
+	Plugged in new client iconization api.
+
+        * src/core/mb-wm-decor.c:
+	(mb_wm_decor_button_stock_button_released):
+	Plugged in new client iconization api.
+
+2007-10-19  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-main-context.c:
+	Changed handling of UnmapNotify: we now do not cache all unmapped
+	windows, instead, if the UnmapNotify is for a window that is in
+	iconized state, move the client into iconized clients list,
+	otherwise destroy the client (and recreate it/when if it maps
+	again). This significantly simplifies the handling of window
+	transiency.
+
+        * src/core/mb-wm-client-base.c:
+	(mb_wm_client_base_destroy):
+	Reparent the client window to root before destryoing the window
+	frame.
+
+
+2007-10-18  Tomas Frydrych  <tf@o-hand.com>
+
+        * configure.ac:
+	Added checks for Xfixes and XCursor.
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+	(mb_wm_set_cursor):
+	New function.
+
+2007-10-18  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-client.c:
+	Fixed stacking issues triggered by unmapped transient windows.
+
+	(mb_wm_sync):
+	Update individual clients before calling XRestackWindows to ensure
+	correct stack order.
+
+2007-10-18  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/theme-engines/mb-wm-theme-simple.c:
+	Fixed painting of button in active state.
+
+2007-10-18  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-main-context.h:
+	Added MotionNotify to callbacks.
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+	Handle button on state on pointer entering/leaving the button
+	area.
+
+        * src/theme-engines/mb-wm-theme-png.c:
+	(mb_wm_theme_png_paint_decor):
+	Fixed dangling clipping region preventing end-packed buttons from
+	getting repainted.
+
+2007-10-17  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-decor.c:
+	(mb_wm_decor_button_release_handler):
+	Handle repaint correctly on ButtonRelase events outwith the button
+	area.
+
+2007-10-17  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+	(mb_wm_process_cmdline):
+	(mb_wm_init_xdpy):
+	(mb_wm_init):
+	Be smarter about opening display connection so that we can use it
+	early in the initialization stage.
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-png.c:
+        * src/theme-engines/mb-wm-theme-simple.c:
+	Handle button active state (needs more work to handle LeaveNotify
+	situation).
+
+2007-10-16  Tomas Frydrych  <tf@o-hand.com>
+
+	* data/themes/README:
+	Brief description of the theme.xml format.
+
+2007-10-10  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-dialog.c:
+	Removed dead code.
+
+        * src/client-types/mb-wm-client-input.c:
+        * src/client-types/mb-wm-client-input.h:
+	Added mb_wm_client_input_realize () to override base.
+	Implemented MBWindowManagerClient virtual detransitise().
+	Handling of transient_for in init function.
+
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	Added new virtual detransitise() to allow derrived classes to
+	carry out any special processing when transient windows are unmanaged.
+
+	(mb_wm_client_destroy):
+	Deal with transiency.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_sync):
+	(mb_wm_manage_client):
+	(mb_wm_unmanage_client):
+	Only redo layout when indicated by sync flags.
+
+        * src/core/mb-wm-decor.c:
+	(mb_wm_decor_button_press_handler):
+	(mb_wm_decor_button_release_handler):
+	Do not block events on decor buttons if transients are only input
+	windows.
+
+        * src/managers/maemo/Makefile.am:
+        * src/managers/maemo/maemo-input.c:
+        * src/managers/maemo/maemo-input.h:
+        * src/managers/maemo/maemo-window-manager.c:
+	Added maemo-input client.
+
+2007-10-09  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_unfocus_client):
+	Fixed danling pointer.
+
+2007-10-09  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-layout.c:
+	Added LayoutPrefFixedX, LayoutPrefFixedY to allow for themes to
+	specify client size (e.g., png theme may want to specify height of
+	a horizontal panel to tie with size of other elements on screen).
+
+	Added LayoutPrefOverlaps to indicate that client expects to
+	overlap with other clients rather than lay exclusive claim to its
+	allocated real-estate (e.g., maemo toolbar).
+
+        * src/core/mb-wm-types.h:
+	Changed MBGeom.width and MBGeom.height from unsigned to signed so
+	that negative values can be used to indicate that value is not set
+	when querying theme for client geometry.
+
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	(mb_wm_theme_get_client_geometry):
+	Function to query if theme requests specific geometry values for
+	particular client type.
+
+        * src/theme-engines/mb-wm-theme-xml.c
+	(mb_wm_xml_client_new):
+	Initialized x, y, width and height values to -1.
+
+        * configure.ac:
+        * src/managers/Makefile.am:
+        * src/managers/maemo/Makefile.am:
+        * src/managers/maemo/maemo-toolbar.c:
+        * src/managers/maemo/maemo-toolbar.h:
+        * src/managers/maemo/maemo-window-manager.c:
+        * src/managers/maemo/maemo-window-manager.h:
+        * src/managers/maemo/matchbox-window-manager-2-maemo.c:
+	Added maemo directory for maemo-specific WM.
+
+2007-10-09  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_process_cmdline):
+	Added -theme to the default commandline handler.
+
+2007-10-08  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c
+        * src/core/mb-wm-stack.c:
+        * src/core/mb-wm-stack.h:
+	(mb_wm_stack_cycle_by_type):
+	Return the highest client to simplify handling of stack changes.
+
+2007-10-08  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_cycle_apps):
+	Call mb_wm_activate_client () so that root window props, etc., are
+	correctly updated.
+
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-simple.c:
+	Removed minimize and menu buttons from the decor creation fallback
+	(these require external frameworks the presence of which cannot be
+	assumed; WM implementation requiring these should specify so
+	through the theme description).
+
+2007-10-08  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-decor.c:
+	Ignore button button events on main window buttons if transient
+	children are present.
+
+2007-10-08  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-decor.c:
+	Fire stock button actions on button release, not press.
+
+2007-10-04  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	Detransitise transitive clients when unmanaging to prevent stack
+	corruption.
+
+        * src/core/mb-wm-macros.h:
+	Fixed MBWM_TRACE() definition.
+
+        * src/core/mb-wm-stack.c:
+	(mb_wm_stack_remove):
+	Added sanity check.
+
+        * src/theme-engines/mb-wm-theme-simple.c:
+	(mb_wm_theme_simple_paint_decor):
+	Fixed some uninitialized variables.
+
+2007-10-04  Tomas Frydrych  <tf@o-hand.com>
+
+        * configure.ac
+        * src/theme-engines/mb-wm-theme-simple.c
+	Basic X/Xft only theme engine implementation.
+
+        * src/theme-engines/mb-wm-theme-png.c
+	Fixed north decor text cliping rect.
+
+2007-10-03  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+	Added virtual theme_change() to MBWindowMangerClient so decors are
+	correctly updated when theme changes.
+
+2007-10-03  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/theme-engines/mb-wm-theme-png.c:
+	(mb_wm_theme_png_paint_decor):
+	Use PictOpOver instead of PictOpSrc.
+
+2007-10-03  Tomas Frydrych  <tf@o-hand.com>
+
+	* data/themes/PngSamle
+	Added elementary Png-based theme.
+
+2007-10-03  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-dialog.c:
+	Hook into theme decoration api.
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+	Added MBWindowManagerSignalThemeChange.
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+	Added mb_wm_decor_set_theme_data();
+	Hooked into MBWindowManagerSignalThemeChange.
+
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-png.c:
+	Fixed to decor drawing.
+
+2007-10-03  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-png.c:
+	Draw buttons directly on parent decor drawable.
+
+2007-10-03  Tomas Frydrych  <tf@o-hand.com>
+
+        * configure.ac:
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/core/mb-wm-object-props.h:
+        * src/core/mb-wm-object.c:
+        * src/theme-engines/Makefile.am:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-png.c:
+        * src/theme-engines/mb-wm-theme-png.h:
+        * src/theme-engines/mb-wm-theme.c:
+	Rudimentary decor drawing in png theme.
+
+2007-10-02  Tomas Frydrych  <tf@o-hand.com>
+
+        * data/themes/Default/theme.xml:
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-desktop.c:
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/client-types/mb-wm-client-input.c:
+        * src/client-types/mb-wm-client-panel.c:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-client-base.h:
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-layout.c:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-object-props.h:
+        * src/core/mb-wm-object.c:
+        * src/core/mb-wm-object.h:
+        * src/core/mb-wm-root-window.c:
+        * src/theme-engines/Makefile.am
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-png.c:
+        * src/theme-engines/mb-wm-theme-simple.c:
+        * src/theme-engines/mb-wm-theme-xml.c:
+        * src/theme-engines/mb-wm-theme-xml.h:
+        * src/theme-engines/mb-wm-theme.c:
+
+	Added return value to object init functions to catch
+	initialization failures.
+
+	Improvements to xml parser; name space cleanup.
+
+2007-10-01  Tomas Frydrych  <tf@o-hand.com>
+
+        * data/themes/Default/theme.xml:
+        * src/core/mb-wm-object-props.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-cairo.h:
+        * src/theme-engines/mb-wm-theme-png.c:
+        * src/theme-engines/mb-wm-theme-png.h:
+        * src/theme-engines/mb-wm-theme-private.h:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	* src/theme-engines/Makefile.am:
+	Refactored xml parser into MBWMTheme to minimize code duplication
+	between engines.
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+	Implemented absolute positioning of buttons alongside automatic
+	packing (need for png-like themes).
+
+2007-10-01  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/core/mb-wm-object-props.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+	Removed MBWMDecor resize callback (handled by object itself).
+	Removed MBWMDecor repaint callback (handled by theme).
+
+2007-09-28  Tomas Frydrych  <tf@o-hand.com>
+
+        * data/themes/Default/theme.xml:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-util.c:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-cairo.h:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	Basic xml default theme.
+
+2007-09-28  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-app.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	Moved decor creation from ClientApp into theme.
+
+2007-09-28  Tomas Frydrych  <tf@o-hand.com>
+
+        * ChangeLog:
+        * src/client-types/mb-wm-client-app.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	Them API for decoration and button size; removed hard-wired
+	values from ClientApp.
+
+2007-09-27  Tomas Frydrych  <tf@o-hand.com>
+
+        * Makefile.am:
+        * configure.ac:
+        * data/themes/Default/Makefile.am:
+        * data/themes/Default/theme.xml:
+        * src/core/mb-window-manager.c:
+        * src/theme-engines/mb-wm-theme.c:
+	Added data/themes and populated with Default theme from MBWM1.
+	Added initial theme version and type parsing.
+	Made mb_wm_theme API safe with NULL theme; allow WM to run without
+	a theme.
+
+2007-09-27  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-object-props.h:
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-root-window.h:
+        * src/core/mb-wm-types.h:
+	* src/theme-engines/Makefile.am:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+	* src/theme-engines/mb-wm-theme-cairo.c:
+	* src/theme-engines/mb-wm-theme-simple.c:
+	* src/theme-engines/mb-wm-theme-png.c:
+	Handling of _MB_THEME root window property.
+
+2007-09-27  Tomas Frydrych  <tf@o-hand.com>
+
+	* configure.ac:
+	* src/core/managers/Makefile.am:
+	* src/core/managers/simple/Makefile.am:
+	* src/core/managers/simple/matchbox-window-manager-2-simple:
+	Moved the simple manager into a subdirectory 'simple'.
+
+	* src/core/mb-wm-layout.c:
+	(mb_wm_layout_real_update):
+	Split function into smaller, more manageable, chunks.
+
+2007-09-25  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-input.c:
+	Changed default layout pref from LayoutPrefReserveEdgeSouth to
+	LayoutPrefReserveSouth.
+
+        * src/core/mb-wm-layout.c:
+	Implemented LayoutPrefReserveNorth, LayoutPrefReserveSouth,
+	LayoutPrefReserveWest, LayoutPrefReserveEast.
+
+        * src/core/mb-window-manager.h
+        * src/core/mb-window-manager.c:
+	Fixed default client_new func for Input windows.
+	Removed unneeded stack_top_app member from MBWindowManager object.
+
+        * src/core/mb-wm-client-base.c:
+	(mb_wm_client_base_display_sync):
+	Fixed positioning of frameless windows.
+
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-types.h:
+	Removed non-existent atom _NET_WM_WINDOW_TYPE_INPUT.
+
+2007-09-25  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-main-context.h:
+        * src/core/mb-wm-types.h:
+	Per-window x-event handler registration for more efficient
+	filtering.
+
+2007-09-25  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/managers/matchbox-window-manager-2-simple.c:
+	Implemented desktop toggling and application cycling.
+
+2007-09-25  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_destroy):
+	Removed unncessary call to mb_wm_display_sync_queue().
+
+	(mb_wm_client_get_coverage):
+	If reporting geometry based on the client window, make sure that
+	the frame geometry is initialized to the same values to avoid
+	ending up with frame window 0x0.
+
+2007-09-25  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-types.h:
+        * src/managers/matchbox-window-manager-2-simple.c:
+	Introduce global MBWMSyncType type to granualize mb_wm_sync()
+	calls (primarily to avoid unnecessary recalculations of the
+	stack).
+
+2007-09-25  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-window-manager.c:
+	Numerous synchronization fixes.
+
+        * src/core/mb-window-manager.c:
+	(stack_get_window_list):
+	(mb_wm_update_root_win_lists):
+	Use alloca for temporary storage instead of malloc.
+
+        * src/core/mb-wm-stack.c:
+	Stripped trailing whitespace.
+
+2007-09-24  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+	(mb_wm_decor_destroy):
+	Plugged leak.
+
+	(mb_wm_decor_button_destroy):
+	Unregister button callbacks.
+
+        * src/core/mb-wm-util.c:
+        * src/core/mb-wm-util.h:
+	(mb_wm_util_list_prepend):
+	Added.
+
+	(mb_wm_util_list_length):
+	Handle NULL.
+
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+	(mb_wm_client_window_is_state_set):
+	Added.
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+	(mb_wm_handle_show_desktop):
+	Implemented + removed unneeded show_desktop() virtual from
+	MBWindowManager.
+
+	(mb_wm_update_root_win_lists):
+	Fixed out of bounds write.
+
+	(mb_wm_unmanage_client):
+	(mb_wm_managed_client_from_xwindow):
+	(mb_wm_unmapped_client_from_xwindow):
+	Move unmapped windows to an unmapped windows list; only destroy
+	associated clients on DestroyNotify; this allows us to handle
+	minimized windows more efficiently.
+
+2007-09-24  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+        * src/core/mb-wm-client.c:
+	Setting of WM_STATE and _NET_WM_STATE window props.
+
+2007-09-24  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-root-window.c:
+	_NET_WM_FULL_PLACEMENT.
+
+2007-09-24  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-client-base.c:
+	_NET_FRAME_EXTENTS.
+
+2007-09-24  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-types.h:
+	_NET_DESKTOP_VIEPORT.
+
+2007-09-24  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-desktop.c:
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/client-types/mb-wm-client-input.c:
+        * src/client-types/mb-wm-client-panel.c:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-layout.c:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-object.c:
+        * src/core/mb-wm-object.h:
+        * src/core/mb-wm-root-window.c:
+        * src/managers/matchbox-window-manager-2-simple.c:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-png.c:
+        * src/theme-engines/mb-wm-theme-simple.c:
+	(mb_wm_object_dump):
+	Dumps currently allocated objects + allocation stack trace for
+	each of them; debug build only.
+
+2007-09-21  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-types.h:
+	Handling of _NET_SHOWING_DESKTOP.
+
+2007-09-21  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-panel.c:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	* src/core/mb-wm-client-base.c:
+	Rudimentary handling of focus.
+
+2007-09-21  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-panel.h:
+	Added convenience macro MB_WM_IS_CLIENT_PANEL().
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_get_desktop_geometry):
+	(mb_wm_update_root_win_rectangles):
+	Handling of _NET_WORKAREA and _NET_DESKTOP_GEOMETRY root win props.
+
+2007-09-20  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-stack.h:
+        * src/core/mb-wm-types.h:
+	Setting of _NET_CLIENT_LIST, _NET_CLIENT_LIST_STACKING and
+	_MB_APP_WINDOW_LIST_STACKING root window props.
+
+2007-09-20  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-main-context.c:
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-root-window.h:
+	Implemented _NET_WM_PING protocol.
+
+2007-09-20  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c
+        * src/core/mb-wm-decor.c
+        * src/core/mb-wm-main-context.c
+        * src/core/mb-wm-main-context.h
+        * src/core/mb-wm-types.h
+        * src/managers/matchbox-window-manager-2-simple.c:
+	Removed unneeded MBWindowManager parameter from event callback
+	functions; implemented timeouts and fd watches.
+
+2007-09-19  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/Makefile.am:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm.h:
+	Extracted main loop functionality from MBWindowManager object into
+	MBWMMainContext object. Fixed xeven handlers installation and
+	removal functions.
+
+2007-09-19  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/managers/matchbox-window-manager-2-simple.c:
+	(mb_wm_set_layout):
+	Removed unnecessary sync parameter.
+
+2007-09-19  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/client-types/mb-wm-client-input.c:
+        * src/client-types/mb-wm-client-panel.c:
+	Made static some functions that should have been.
+
+	(mb_wm_client_input_request_geometry):
+	Made geometry frameless.
+
+        * src/client-types/Makefile.am:
+        * src/managers/Makefile.am:
+        * src/client-types/mb-wm-client-desktop.c:
+        * src/client-types/mb-wm-client-desktop.h:
+	Added MBWMClientDesktop skeleton.
+
+2007-09-19  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/client-types/mb-wm-client-panel.c:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-stack.c:
+        * src/core/mb-wm-stack.h:
+        * src/core/mb-wm-types.h:
+	Addded orable MBWMClientType id to MBWindowManagerClientClass to
+	simplify processing of client stack.
+
+        * src/managers/Makefile.am:
+        * src/client-types/Makefile.am:
+        * src/client-types/mb-wm-client-input.c:
+        * src/client-types/mb-wm-client-input.h:
+
+	Added object skeleton for MBWMClientInput.
+
+2007-09-19  Tomas Frydrych  <tf@o-hand.com>
+
+        * configure.ac:
+        * src/core/mb-wm-types.h:
+        * src/theme-engines/Makefile.am:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-simple.c:
+        * src/theme-engines/mb-wm-theme-png.c:
+        * src/theme-engines/mb-wm-theme-png.h:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme.h:
+
+	Renambed --disable-cairo to --disable-theme-cairo,
+	Added --enable-theme-png,
+	Added object skeleton for MBWMThemePng.
+
+2007-09-19  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-decor.c:
+	(mb_wm_decor_button_stock_button_pressed):
+	Handle Close button gracefully.
+
+2007-09-18  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-layout.c:
+	(mb_wm_layout_real_update):
+	Clip windows of type LayoutPrefPositionFree as needed.
+
+2007-09-18  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client.c
+	(mb_wm_client_on_property_change):
+	Handle name and geometry changes.
+
+	(mb_wm_client_init):
+	Added initial sync with window props.
+
+        * src/core/mb-window-manager.c:
+	(mb_wm_handle_property_notify):
+	Added a bunch of previously unhandled properties.
+
+        * src/core/mb-wm-client-window.c:
+	(mb_wm_client_window_sync_properties):
+	Signal change in transiency.
+
+        * src/core/mb-wm-object.c:
+        * src/core/mb-wm-object.h:
+	Do not ignore return value from signal functions.
+
+2007-09-18  Tomas Frydrych  <tf@o-hand.com>
+
+        * TODO:
+	Removed items already done.
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-layout.c:
+        * src/core/mb-wm-layout.h:
+        * src/core/mb-wm-types.h:
+        * src/managers/matchbox-window-manager-2-simple.c:
+	Objectified layout.
+
+2007-09-18  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+	Added Help and Accept buttons handling.
+
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-object-props.h:
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-app.h:
+	Added virtual construct_buttons() to MBWindowClientAppClass.
+
+	* src/core/mb-window-manager.c:
+	Squashed compiler warning.
+
+2007-09-18  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+	Simplified fullscreen code.
+
+2007-09-17  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	Implemented client fullscreening.
+
+2007-09-17  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c
+        * src/core/mb-wm-client-base.c
+        * src/core/mb-wm-client.c
+        * src/core/mb-wm-client.h
+        * src/core/mb-wm-decor.c
+        * src/core/mb-wm-decor.h
+        * src/theme-engines/mb-wm-theme-cairo.c
+	Implemented client hiding; code toward fullscreen state.
+
+2007-09-17  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/core/mb-wm-decor.c:
+
+	Fixed refcount of MBDecorButton objects; hooked up min button
+	handler to client api.
+
+2007-09-17  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c
+        * src/client-types/mb-wm-client-app.h
+        * src/core/mb-wm-decor.c
+        * src/core/mb-wm-decor.h
+        * src/core/mb-wm-object-props.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+
+	Added support for decor button packing from start/end.
+	Added minimize and menu buttons to theme.
+	Handling of button events for stock buttons by MBWMDecorButton (to
+	simplify design of derived client objects.
+	Decor buttons owned (and destroyed) by MBWMDecor rather than
+	client (to simplify design of derived client objects).
+	Added simplified construction for stock decor buttons.
+
+2007-09-14  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/core/mb-wm-object-props.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+	Basic button paint method in cairo theme.
+
+2007-09-14  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-macros.h:
+	Added missing non-debug definition for MBWM_TRACE_MSG().
+
+        * src/client-types/mb-wm-client-app.c
+        * src/core/mb-window-manager.c
+        * src/core/mb-window-manager.h
+        * src/core/mb-wm-client.c
+        * src/core/mb-wm-decor.c
+        * src/core/mb-wm-root-window.c
+        * src/core/mb-wm-types.h
+        * src/theme-engines/Makefile.am:
+        * src/theme-engines/mb-wm-theme.h:
+        * src/theme-engines/mb-wm-theme.c:
+        * src/theme-engines/mb-wm-theme-cairo.h:
+        * src/theme-engines/mb-wm-theme-cairo.c:
+        * src/theme-engines/mb-wm-theme-simple.h:
+        * src/theme-engines/mb-wm-theme-simple.c:
+	Objectified themes; renamed theme-cairo.c and theme-simple.c to
+	match naming conventions elsewhere in the tree.
+
+2007-09-13  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-object-props.h:
+	Fixed bug in MBWMO_PROP_EAT().
+
+2007-09-13  Tomas Frydrych  <tf@o-hand.com>
+
+        * configure.ac:
+	Pass -O0 to compiler when --enable-debug given.
+
+        * src/core/Makefile.am:
+        * src/core/mb-wm-object.h:
+        * src/core/mb-wm-object-props.h:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-types.h:
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/client-types/mb-wm-client-panel.c:
+	Switched construction property ids from strings to numerical ids
+	to allow safe handling of uknown properties by parent classes
+	(with the added benefit of avoiding large number of strcmp calls
+	in object _init() methods).
+
+	* src/managers/matchbox-window-manager-2-simple.c:
+	Squashed warning.
+
+2007-09-12  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-decor.h:
+        * src/client-types/mb-wm-client-app.c:
+	MBWMDecor, MBWMDecorButton:
+	Renamed constructors from _create to _new for consistency with
+	other objects; moved initialization from _new into _init functions.
+
+2007-09-12  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-debug.c:
+        * src/core/mb-wm-debug.h:
+        * src/core/mb-wm-macros.h:
+	Added obj-ref and obj-unref to debug info types;
+	Added MBWM_TRACE_MSG() macro.
+
+        * src/core/mb-wm-object.c:
+        * src/core/mb-wm-object.h:
+        * src/managers/matchbox-window-manager-2-simple.c:
+	Code to assist in debugging object memory management.
+
+        * src/client-types/mb-wm-client-app.c:
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/client-types/mb-wm-client-panel.c:
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	Moved object initialization from _new() into _init() functions;
+	fixed destruction code.
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+	Fixed object destructon, added -sn-client-id cmdline parameter.
+
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-decor.c:
+	Fixed object destruction.
+
+2007-09-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+	Statically allocated event_funcs struct in MBWindowManger object.
+
+	(client_activate):
+	(client_responding):
+	(client_hang):
+	(show_desktop):
+	New class virtuals for subclasses to hook into if needed.
+
+	(mb_wm_handle_ping_reply):
+	(mb_wm_handle_hang_client):
+	(mb_wm_handle_show_desktop):
+	New function (for x message handling).
+
+        * src/core/mb-wm-client-window.h:
+	MBWMClientWindowStateChange enum for _NET_WM_STATE_xxx message
+	values.
+
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+	(mb_wm_handle_show_desktop):
+	(mb_wm_client_set_state):
+
+        * src/core/mb-wm-root-window.c:
+	(mb_wm_root_window_handle_message):
+	Fixed up previously disable parts.
+
+2007-09-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-client.h:
+        * src/core/mb-wm-root-window.c:
+	Implementation of mb_wm_client_deliver_delete() method.
+
+2007-09-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/managers/matchbox-window-manager-2-simple.c:
+	Moved remaning initialization of MBWindowManager object from
+	simple manager to the object init function.
+
+2007-09-11  Tomas Frydrych  <tf@o-hand.com>
+
+        * configure.ac:
+        * src/core/Makefile.am:
+        * src/managers/Makefile.am
+	Added --enable-debug.
+
+	* src/managers/matchbox-window-manager-2-simple.c:
+	Pass cmd line args to MBWindowManager object.
+
+        * src/core/mb-wm-client.c:
+	(mb_wm_client_init):
+	Fixed signature.
+
+        * src/core/mb-wm-debug.c:
+        * src/core/mb-wm-debug.h:
+        * src/core/mb-wm-macros.h:
+        * src/core/mb-wm-object.c:
+	Added MBWM_TRACE() macro and trace option for MB_DEBUG.
+
+2007-09-10  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-props.c:
+	Fixed uninitialized variable.
+
+	* src/core/mb-wm-object.h:
+	* src/core/mb-wm-object.c:
+	* src/core/mb-wm-client.c:
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-client-base.c:
+	* src/core/mb-wm-client-base.h:
+	* src/core/mb-wm-decor.c:
+	* src/client-types/mb-wm-client-dialog.c:
+	* src/client-types/mb-wm-client-app.c:
+	* src/client-types/mb-wm-client-panel.c:
+	* src/core/mb-wm-root-window.c:
+	* src/core/mb-wm-client-window.c:
+	* src/core/mb-window-manager.c:
+	* src/core/mb-window-manager.h:
+	Added MB_WM_OBJECT_GET_CLASS() and MB_WM_OBJECT_PARENT_CLASS() macros.
+	Reorganized class initialization and destruction.
+	(mb_wm_object_new)
+	Made variadic to allow chaining of class init methods.
+
+	* src/core/mb-window-manager.c:
+	* src/managers/matchbox-window-manager-2-simple.c:
+	Put back mb_wm_new() but with parameters.
+	Added virtual function process_cmdline() so subclasses can do
+	their own cmdline processing.
+	Moved client_new function from object to class.
+
+	* src/core/mb-wm-types.h:
+	Removed unneed definitions.
+
+2007-09-07  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-object.c:
+	(mb_wm_object_class_init_recurse):
+	Fixed initialization so that parents are initalized before
+	childred.
+
+	(mb_wm_object_register_class):
+	Must call class_init() method if it exists otherwise the derived
+	classes cannot get at parent implementations of their virtual
+	methods.
+
+        * src/client-types/mb-wm-client-app.h:
+	Added MB_WM_IS_CLIENT_APP() macro.
+
+        * src/client-types/mb-wm-client-dialog.c:
+        * src/client-types/mb-wm-client-dialog.h:
+	MB_WM_IS_CLIENT_DIALOG(c) macro.
+	Implemented virtual show() method.
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+	Skeletons for mb_wm_activate_client() and
+	mb_wm_get_visible_main_client().
+
+        * src/theme-engines/mb-wm-theme.h:
+        * src/theme-engines/theme-cairo.c:
+        * src/theme-engines/theme-simple.c:
+	Added mb_wm_theme_supports() function.
+
+        * src/core/mb-wm-root-window.c:
+	(mb_wm_root_window_init_properties):
+	Added theme-dependent capabilities.
+
+	Skeleton for mb_wm_root_window_handle_message().
+
+        * src/core/mb-wm.h
+
+2007-09-07  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/client-types/mb-wm-client-dialog.c:
+	* src/managers/matchbox-window-manager-2-simple.c:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-manager.h:
+        * src/core/mb-wm-client-base.c:
+        * src/core/mb-wm-decor.c:
+        * src/core/mb-wm-keys.c:
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-root-window.h:
+
+	Plugged MBWMRootWindow into MBWindowManger.
+	Made MBWindowManager into a singleton.
+
+2007-09-06  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-window-manager.c:
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+	(mb_wm_client_window_sync_properties):
+
+	Removed unnecessary MBWindowManager parameter.
+
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-root-window.h:
+
+	Made into a singleton;
+	Removed unneeded mb_wm_root_window_sync_properties;
+	Initial implementation of mb_wm_root_window_init_properties().
+
+        * src/core/mb-wm-atoms.c:
+        * src/core/mb-wm-types.h:
+
+	Added CM_TRANSLUCENCY atom.
+
+2007-09-06  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm.h:
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-core.c:
+        * src/core/mb-wm-core.h:
+        * src/core/mb-window-manager.c:
+        * src/core/mb-window-namager.h:
+        * src/core/mb-wm-client.c:
+        * src/client-types/mb-wm-client-app.c
+        * src/client-types/mb-wm-client-dialog.c
+        * src/client-types/mb-wm-client-panel.c
+        * src/core/Makefile.am:
+	* configure.ac:
+
+	Objectified MBWindowManager and moved all relevant code to
+	mb-window-manager.h/c (removed empty mb-wm-core.h/c); unified
+	function naming to use mb_wm_ prefix.
+
+        * src/core/mb-wm-client-base.h:
+
+	Stripped trailing whitespace.
+
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+
+	Added licence; made non-public functions static; added
+	MBWindowManger to MBWMClientWindow struct.
+
+        * src/core/mb-wm-root-window.c:
+        * src/core/mb-wm-root-window.h:
+
+	Skeleton for MBWMRootWindow object.
+
+        * src/core/mb-wm-object.c:
+        * src/core/mb-wm-object.h:
+	(mb_wm_object_ref):
+
+	Modified to return void* instead of MBWMObject* to avoid endless
+	casting.
+
+2007-09-06  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-object.c:
+        * src/core/mb-wm-object.h:
+        * src/core/mb-wm-types.h:
+	(mb_wm_object_signal_connect):
+	(mb_wm_object_signal_disconnect):
+	(mb_wm_object_signal_emit):
+
+	Moved signal handling into MBWMObject.
+
+2007-09-05  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-types.h:
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+
+	(mb_wm_client_prop_handler_add):
+	Return numerical id for the handler to aid removal.
+
+	(mb_wm_client_prop_handler_remove):
+	Implemented.
+
+	(mb_wm_client_window_emit_prop_changes):
+	Cleaned up some casts.
+
+        * src/core/mb-wm-object.c:
+        * src/core/mb-wm-object.h:
+	(mb_wm_object_ref):
+	Return object pointer for convenience of use; handle NULL
+	gracefully.
+
+	(mb_wm_object_ref):
+	Handle NULL gracefully.
+
+2007-09-05  Tomas Frydrych  <tf@o-hand.com>
+
+        * src/core/mb-wm-client-window.c:
+        * src/core/mb-wm-client-window.h:
+        * src/core/mb-wm-client.c:
+        * src/core/mb-wm-core.c:
+        * src/core/mb-wm-types.h:
+
+	Objectified MBWMClientWindow.
+
+2007-09-05  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/client-types/mb-wm-client-app.c:
+	* src/client-types/mb-wm-client-app.h:
+	* src/client-types/mb-wm-client-dialog.c:
+	* src/client-types/mb-wm-client-dialog.h:
+	* src/client-types/mb-wm-client-panel.c:
+	* src/client-types/mb-wm-client-panel.h:
+	* src/core/Makefile.am:
+	* src/core/mb-wm-client-window.c:
+	* src/core/mb-wm-client-window.h:
+	* src/core/mb-wm-client.c:
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-core.c:
+	* src/core/mb-wm-object.h:
+	* src/core/mb-wm-props.c:
+	* src/core/mb-wm-props.h:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm.h:
+	* src/managers/matchbox-window-manager-2-simple.c:
+
+	Namespace cleanup: renamed MBWMWindow to MBWMClientWindow; moved
+	mb-wm-window.h/c accordingly; stripped trailing whitespace.
+
+2007-09-04  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	* src/core/mb-wm-client.c:
+	* src/core/mb-wm-core.c:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-window.c:
+	* src/core/mb-wm-window.h:
+	Remove ALLOWED_ACTIONS.
+	Add basic callback infrastructure for window prop changes.
+
+2007-09-04  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-atoms.c:
+	* src/core/mb-wm-window.c:
+	* src/core/mb-wm-window.h:
+	(mb_wm_window_sync_properties):
+
+	Handling of _NET_WM_USER_TIME property.
+
+2007-09-04  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	Added with current feature list to implement.
+
+2007-09-04  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-window.c:
+	* src/core/mb-wm-window.h:
+	(mb_wm_window_sync_properties):
+
+	Handling of _NET_WM_ALLOWED_ACTIONS property.
+
+2007-09-04  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-util.c:
+	* src/core/mb-wm-util.h:
+
+	Added MBWMRgbaIcon type; stripped trailing whitespace.
+
+	* src/core/mb-wm-window.c:
+	* src/core/mb-wm-window.h:
+	(mb_wm_window_sync_properties):
+
+	Handling of _NET_WM_ICON property; stripped trailing whitespace.
+
+2007-09-04  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-object.c:
+	(mb_wm_object_register_class):
+	Reallocate object storage space as needed.
+	Stripped trailing whitespace.
+
+2007-09-03  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-client.c:
+	(mb_wm_client_destroy):
+	Free client window.
+
+	* src/core/mb-wm-core.c:
+	(mb_wm_core_handle_map_request):
+	(mb_wm_manage_preexistsing_wins):
+	Free client window.
+
+	* src/core/mb-wm-window.c:
+	* src/core/mb-wm-window.h:
+	(mb_wm_window_sync_properties):
+	Handling of _NET_WM_PID and WM_CLIENT_MACHINE properties.
+	(mb_wm_client_window_free): Added.
+
+2007-09-03  Matthew Allum  <mallum@openedhand.com>
+
+	* src/core/mb-wm-core.c: (mb_wm_core_manage_client),
+	(mb_wm_core_unmanage_client):
+	Add missing refs
+	* src/core/mb-wm-object.h:
+	Add some object types.
+	* src/core/mb-wm-stack.c: (mb_wm_stack_dump):
+	More debug info.
+
+2007-09-03  Tomas Frydrych  <tf@o-hand.com>
+
+	* src/core/mb-wm-atoms.c:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-window.c:
+	* src/core/mb-wm-window.h:
+	(mb_wm_window_sync_properties):
+	Handling of WM_PROTOCOLS property.
+
+2007-08-23  Matthew Allum  <mallum@openedhand.com>
+
+	* README:
+	Update with plans/design
+
+2006-11-23  Matthew Allum  <mallum@openedhand.com>
+
+	* src/client-types/mb-wm-client-dialog.c:
+	* src/core/Makefile.am:
+	* src/core/mb-wm-core.c:
+	* src/core/mb-wm-debug.c:
+	* src/core/mb-wm-debug.h:
+	* src/core/mb-wm-macros.h:
+	* src/core/mb-wm-util.c:
+	* src/core/mb-wm.h:
+	New debug messaging code + macros.
+
+2006-11-20  Matthew Allum  <mallum@openedhand.com>
+
+	* src/client-types/mb-wm-client-app.c:
+	* src/client-types/mb-wm-client-dialog.c:
+	* src/client-types/mb-wm-client-dialog.h:
+	* src/client-types/mb-wm-client-panel.c:
+	* src/core/mb-wm-client-base.c: (mb_wm_client_base_class_type),
+	* src/core/mb-wm-client.c:
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-core.c:
+	* src/core/mb-wm-decor.c:
+	* src/core/mb-wm-object.h:
+	* src/core/mb-wm-stack.c:
+	* src/core/mb-wm-stack.h:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-util.c:
+	* src/core/mb-wm-util.h:
+	* src/core/mb-wm-window.h:
+	* src/managers/matchbox-window-manager-2-simple.c:
+	Redo stacking mechanism.
+	Various other tweaks all over.
+
+2006-07-20  Matthew Allum  <mallum@openedhand.com>
+
+	* src/client-types/mb-wm-client-app.c:
+	* src/client-types/mb-wm-client-dialog.c:
+	* src/client-types/mb-wm-client-panel.c:
+	* src/core/mb-wm-client-base.c:
+	* src/core/mb-wm-client-base.h:
+	* src/core/mb-wm-client.c:
+	* src/core/mb-wm-decor.c:
+	* src/core/mb-wm-object.c:
+	* src/core/mb-wm-object.h:
+	Improve simple object system as to initiate parent classes
+	on derived classes/objects.
+
+2006-03-24  Matthew Allum  <mallum@openedhand.com>
+
+	* src/client-types/mb-wm-client-dialog.c:
+	(mb_wm_client_dialog_class_init),
+	(mb_wm_client_dialog_request_geometry), (mb_wm_client_dialog_new):
+	* src/core/mb-wm-client-base.c: (mb_wm_client_base_realize),
+	(mb_wm_client_base_display_sync), (mb_wm_client_base_destroy):
+	* src/core/mb-wm-client.c: (mb_wm_client_get_transients):
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-layout.c: (mb_wm_layout_manager_update):
+	Dialog window support improved a tiny bit.
+
+2006-03-24  Matthew Allum  <mallum@openedhand.com>
+
+	* src/client-types/Makefile.am:
+	* src/client-types/mb-wm-client-dialog.c:
+	* src/client-types/mb-wm-client-dialog.h:
+	* src/core/mb-wm-client-base.c: (mb_wm_client_base_stack),
+	(mb_wm_client_base_display_sync):
+	* src/core/mb-wm-client.c: (mb_wm_client_add_transient),
+	(mb_wm_client_remove_transient):
+	* src/core/mb-wm-core.c: (stack_get_window_list),
+	(mb_wm_core_manage_client):
+	* src/core/mb-wm-layout.c: (mb_wm_layout_manager_update):
+	* src/managers/Makefile.am:
+	* src/managers/matchbox-window-manager-2-simple.c: (client_new):
+	Add ( broken ) dialog window support.
+
+2006-03-16  Matthew Allum  <mallum@openedhand.com>
+
+	* src/core/mb-wm-core.c: (test_key_press), (test_destroy_notify),
+	(mb_wm_core_handle_property_notify),
+	(mb_wm_core_handle_config_request),
+	(mb_wm_core_handle_map_request),
+	(mb_wm_core_managed_client_from_xwindow), (mb_wm_main_loop),
+	(mb_wm_x_event_handler_remove), (mb_wm_fd_watch_add),
+	(mb_wm_fd_watch_remove), (mb_wm_handle_x_event), (mb_wm_init):
+	* src/core/mb-wm-core.h:
+	* src/core/mb-wm-types.h:
+	Further rework on X event handlers
+
+	* src/core/mb-wm-decor.c: (mb_wm_decor_sync_window),
+	(mb_wm_decor_button_realize), (mb_wm_decor_button_sync_window),
+	(mb_wm_decor_button_show), (mb_wm_decor_button_hide),
+	(mb_wm_decor_button_move_to), (button_press_handler),
+	(button_release_handler), (mb_wm_decor_button_create):
+	* src/core/mb-wm-decor.h:
+	Improve button handling.
+
+	* src/managers/matchbox-window-manager-2-simple.c: (main):
+	* src/client-types/mb-wm-client-app.c:
+	(mb_wm_client_app_request_geometry), (decor_resize),
+	(decor_repaint):
+	* src/client-types/mb-wm-client-app.h:
+	Add a simple close button to main apps.
+
+	* src/core/mb-wm-util.c:
+	Comment out X erro trap debug statements
+
+2006-03-15  Matthew Allum  <mallum@openedhand.com>
+
+	* src/core/mb-wm-core.c: (mb_wm_run),
+	(mb_wm_remove_x_event_handler), (mb_wm_add_timeout_handler),
+	(mb_wm_handle_x_event), (mb_wm_init):
+	* src/core/mb-wm-types.h:
+	Rework X event handlers adding stacking capabilities.
+
+2006-03-14  Matthew Allum  <mallum@openedhand.com>
+
+	* src/core/mb-wm-core.c: (test_destroy_notify),
+	(mb_wm_core_handle_config_request), (stack_sync_to_display),
+	(mb_wm_core_sync), (mb_wm_core_unmanage_client),
+	(mb_wm_core_managed_client_from_xwindow), (mb_wm_run),
+	(mb_wm_manage_preexistsing_wins), (mb_wm_register_client_type),
+	(mb_wm_new), (mb_wm_add_x_event_handler),
+	(mb_wm_remove_x_event_handler), (mb_wm_add_timeout_handler),
+	(mb_wm_handle_x_event), (mb_wm_init):
+	Begin reworking Eventing.
+
+	* src/client-types/mb-wm-client-app.c:
+	(mb_wm_client_app_request_geometry):
+	* src/core/mb-wm-client-base.c: (mb_wm_client_base_realize),
+	(mb_wm_client_base_display_sync):
+	* src/core/mb-wm-client-base.h:
+	* src/core/mb-wm-client.c:
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-decor.c: (mb_wm_decor_sync_window),
+	(mb_wm_decor_reparent), (mb_wm_decor_calc_geometry),
+	(mb_wm_decor_handle_map), (mb_wm_decor_handle_repaint),
+	(mb_wm_decor_handle_resize), (mb_wm_decor_create),
+	(mb_wm_decor_get_x_window), (mb_wm_decor_get_type),
+	(mb_wm_decor_get_geometry), (mb_wm_decor_mark_dirty),
+	(mb_wm_decor_attach), (mb_wm_decor_detach):
+	* src/core/mb-wm-decor.h:
+	* src/core/mb-wm-stack.c: (mb_wm_stack_insert_above_client):
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-window.c: (mb_wm_client_window_new):
+	* src/theme-engines/theme-cairo.c: (mb_wm_theme_paint_decor):
+
+2006-03-01  Matthew Allum  <mallum@openedhand.com>
+
+	* src/client-types/Makefile.am:
+	* src/client-types/mb-wm-client-app.c:
+	(mb_wm_client_app_request_geometry), (decor_resize),
+	(decor_repaint):
+	* src/client-types/mb-wm-client-app.h:
+	* src/client-types/mb-wm-client-panel.c:
+	(mb_wm_client_panel_class_type), (mb_wm_client_panel_realize),
+	(mb_wm_client_panel_request_geometry):
+	* src/client-types/mb-wm-client-panel.h:
+	* src/core/Makefile.am:
+	* src/core/mb-wm-client-base.c: (mb_wm_client_base_class_type),
+	(mb_wm_client_base_init), (mb_wm_client_base_realize),
+	(mb_wm_client_base_stack), (mb_wm_client_base_show),
+	(mb_wm_client_base_hide), (mb_wm_client_base_display_sync),
+	(mb_wm_client_base_destroy), (mb_wm_client_base_request_geometry):
+	* src/core/mb-wm-client-base.h:
+	* src/core/mb-wm-client.c: (mb_wm_client_stacking_mark_dirty),
+	(mb_wm_client_geometry_mark_dirty),
+	(mb_wm_client_visibility_mark_dirty),
+	(mb_wm_client_decor_mark_dirty), (mb_wm_client_new),
+	(mb_wm_client_init), (mb_wm_client_realize),
+	(mb_wm_client_is_realized), (mb_wm_client_stack),
+	(mb_wm_client_needs_stack_sync), (mb_wm_client_show),
+	(mb_wm_client_hide), (mb_wm_client_needs_visibility_sync),
+	(mb_wm_client_needs_geometry_sync),
+	(mb_wm_client_needs_decor_sync), (mb_wm_client_needs_sync),
+	(mb_wm_client_is_mapped), (mb_wm_client_display_sync),
+	(mb_wm_client_request_geometry):
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-core.c: (test_destroy_notify),
+	(mb_wm_core_managed_client_from_xwindow), (mb_wm_run),
+	(mb_wm_init):
+	* src/core/mb-wm-decor.c: (mb_wm_decor_ref):
+	* src/core/mb-wm-decor.h:
+	* src/core/mb-wm-object.c:
+	* src/core/mb-wm-object.h:
+	* src/core/mb-wm-props.c: (mb_wm_props_send_x_message):
+	* src/core/mb-wm-stack.c: (mb_wm_stack_get_highest_by_type),
+	(mb_wm_stack_get_lowest_by_type):
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-util.h:
+	* src/core/mb-wm.h:
+	* src/managers/matchbox-window-manager-2-simple.c:
+	(key_binding_func), (main):
+	Implement beginnings of new object system.
+
+2006-02-11  Matthew Allum  <mallum@openedhand.com>
+
+	* configure.ac:
+	* src/Makefile.am:
+	* src/client-types/Makefile.am:
+	* src/client-types/mb-wm-client-app.c:
+	(mb_wm_client_app_request_geometry), (decor_repaint):
+	* src/core/mb-wm-atoms.c: (mb_wm_atoms_init):
+	* src/core/mb-wm-client-base.c: (mb_wm_client_base_realize),
+	(mb_wm_client_base_display_sync):
+	* src/core/mb-wm-client.c: (mb_wm_client_get_coverage):
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-core.c: (mb_wm_core_handle_config_request),
+	(mb_wm_core_sync), (mb_wm_core_manage_client), (mb_wm_run),
+	(mb_wm_get_display_geometry), (mb_wm_display_sync_queue),
+	(mb_wm_new), (mb_wm_init):
+	* src/core/mb-wm-core.h:
+	* src/core/mb-wm-decor.c: (mb_wm_decor_sync_window),
+	(mb_wm_decor_calc_geometry), (mb_wm_decor_get_type),
+	(mb_wm_decor_unref), (mb_wm_decor_ref):
+	* src/core/mb-wm-decor.h:
+	* src/core/mb-wm-layout.c: (mb_wm_layout_manager_update):
+	* src/managers/Makefile.am:
+	* src/managers/matchbox-window-manager-2-simple.c: (main):
+	* src/theme-engines/Makefile.am:
+	* src/theme-engines/mb-wm-theme.h:
+	* src/theme-engines/theme-cairo.c:
+	* src/theme-engines/theme-simple.c:
+	Add beginning of theme code with initial optional cairo and GTK
+        support. Now paints frames.
+	Manage pre-existing windows on start up.
+	Various tweaks here and there.
+
+
+2006-01-31  Matthew Allum  <mallum@openedhand.com>
+
+	* src/client-types/mb-wm-client-app.c: (mb_wm_client_app_get_type),
+	(mb_wm_client_app_request_geometry), (decor_resize),
+	(decor_repaint), (mb_wm_client_app_new):
+	* src/core/Makefile.am:
+	* src/core/mb-wm-client-base.c: (mb_wm_client_base_realize),
+	(mb_wm_client_base_display_sync), (mb_wm_client_base_destroy),
+	(mb_wm_client_base_request_geometry):
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-core.c: (test_destroy_notify),
+	(mb_wm_core_handle_map_request), (stack_get_window_list),
+	(stack_sync_to_display), (mb_wm_core_sync),
+	(mb_wm_core_manage_client), (mb_wm_run), (mb_wm_init):
+	* src/core/mb-wm-decor.c: (mb_wm_decor_sync_window),
+	(mb_wm_decor_reparent), (mb_wm_decor_calc_geometry),
+	(mb_wm_decor_handle_map), (mb_wm_decor_handle_repaint),
+	(mb_wm_decor_handle_resize), (mb_wm_decor_create),
+	(mb_wm_decor_get_x_window), (mb_wm_decor_get_type),
+	(mb_wm_decor_get_geometry), (mb_wm_decor_mark_dirty):
+	* src/core/mb-wm-decor.h:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-util.c: (mb_wm_util_malloc0):
+	* src/core/mb-wm-util.h:
+	* src/core/mb-wm-window.c: (mb_wm_client_window_new):
+	* src/core/mb-wm.h:
+	Redo decor handling.
+	Simplify syncing queue a little more.
+	Various up minor cleanups and tweaks.
+
+2006-01-25  Matthew Allum  <mallum@openedhand.com>
+
+	* src/core/Makefile.am:
+	* src/core/mb-wm-client-base.c: (mb_wm_client_base_display_sync):
+	* src/core/mb-wm-client.c: (mb_wm_client_visibility_mark_dirty),
+	(mb_wm_client_needs_visibility_sync),
+	(mb_wm_client_needs_geometry_sync):
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-core.c:
+	* src/core/mb-wm-decor.c: (mb_wm_decor_create),
+	(mb_wm_decor_get_x_window), (mb_wm_decor_mark_dirty),
+	(mb_wm_decor_attach), (mb_wm_decor_detach), (mb_wm_decor_unref),
+	(mb_wm_decor_ref), (mb_wm_decor_button_create):
+	* src/core/mb-wm-decor.h:
+	* src/core/mb-wm.h:
+	Add some initial infrastructure for window decorations
+
+2006-01-15  Matthew Allum  <mallum@openedhand.com>
+
+	* src/client-types/mb-wm-client-app.c:
+	* src/client-types/mb-wm-client-app.h:
+	* src/client-types/mb-wm-client-panel.c: (mb_wm_client_panel_new):
+	* src/client-types/mb-wm-client-panel.h:
+	* src/core/mb-wm-client-base.c: (mb_wm_client_base_init),
+	(mb_wm_client_base_realize), (mb_wm_client_base_stack),
+	(mb_wm_client_base_show), (mb_wm_client_base_hide),
+	(mb_wm_client_base_display_sync), (mb_wm_client_base_destroy):
+	* src/core/mb-wm-client-base.h:
+	* src/core/mb-wm-client.c: (mb_wm_client_needs_stack_sync),
+	(mb_wm_client_hide):
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-core.c: (test_destroy_notify),
+	(mb_wm_core_handle_map_request), (stack_get_window_list),
+	(mb_wm_core_sync), (mb_wm_core_manage_client),
+	(mb_wm_core_unmanage_client), (mb_wm_run),
+	(mb_wm_get_display_geometry), (mb_wm_display_sync_queue),
+	(mb_wm_init):
+	* src/core/mb-wm-core.h:
+	* src/core/mb-wm-keys.c: (mb_wm_keys_press):
+	* src/core/mb-wm-stack.c: (mb_wm_stack_insert_above_client),
+	(mb_wm_stack_prepend_bottom):
+	* src/core/mb-wm-stack.h:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-util.c: (mb_wm_util_warn),
+	(mb_wm_util_list_length), (mb_wm_util_list_get_last),
+	(mb_wm_util_list_get_first), (mb_wm_util_list_get_nth_data),
+	(mb_wm_util_list_append):
+	* src/core/mb-wm-util.h:
+	* src/core/mb-wm-window.c: (mb_wm_window_sync_properties):
+	* src/core/mb-wm.h:
+	* src/managers/matchbox-window-manager-2-simple.c:
+	(key_binding_func), (main):
+	Various minor tweaks.
+
+2005-11-17  Matthew Allum  <mallum@openedhand.com>
+
+	* configure.ac:
+	* src/client-types/mb-wm-client-app.c:
+	* src/client-types/mb-wm-client-app.h:
+	* src/client-types/mb-wm-client-panel.c: (mb_wm_client_panel_new):
+	* src/client-types/mb-wm-client-panel.h:
+	* src/core/mb-wm-client.h:
+	Make things build again.
+
+	* src/managers/matchbox-window-manager-2-simple.c: (client_new):
+	* src/matchbox-window-manager-2.c:
+	Move and rename.
+
+2005-11-17  Matthew Allum  <mallum@openedhand.com>
+
+	* configure.ac:
+	* src/Makefile.am:
+	* src/client-types/Makefile.am:
+	* src/client-types/mb-wm-client-app.c:
+	* src/client-types/mb-wm-client-app.h:
+	* src/client-types/mb-wm-client-panel.c:
+	* src/client-types/mb-wm-client-panel.h:
+	* src/core/Makefile.am:
+	* src/core/mb-wm-atoms.c: (mb_wm_atoms_init):
+	* src/core/mb-wm-client-base.c:
+	* src/core/mb-wm-client-base.h:
+	* src/core/mb-wm-client.c:
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-decor.c:
+	* src/core/mb-wm-decor.h:
+	* src/core/mb-wm-props.c: (mb_wm_xwin_get_geometry_reply):
+	* src/core/mb-wm-props.h:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-window.h:
+	* src/core/mb-wm.h:
+	* src/managers/Makefile.am:
+	* src/matchbox-window-manager-2.c:
+	More refactoring. Add initial decoration framework code
+
+2005-11-11  Matthew Allum  <mallum@openedhand.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* src/core/mb-wm-atoms.c: (mb_wm_atoms_init):
+	* src/core/mb-wm-props.c: (mb_wm_property_reply):
+	* src/core/mb-wm-props.h:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-window.c: (mb_wm_window_sync_properties):
+	* src/core/mb-wm-window.h:
+
+2005-11-10  Matthew Allum  <mallum@openedhand.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* src/core/mb-wm-atoms.c: (mb_wm_atoms_init):
+	* src/core/mb-wm-props.c: (mb_wm_property_reply):
+	* src/core/mb-wm-props.h:
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-window.c: (mb_wm_window_sync_properties):
+	* src/core/mb-wm-window.h:
+
+2005-11-08  Matthew Allum  <mallum@openedhand.com>
+
+	* Makefile:
+	* Makefile.am:
+	* autogen.sh:
+	* configure.ac:
+	* matchbox-window-manager-2.c:
+	* mb-wm-atoms.c:
+	* mb-wm-atoms.h:
+	* mb-wm-client.c:
+	* mb-wm-client.h:
+	* mb-wm-core.c:
+	* mb-wm-core.h:
+	* mb-wm-keys.c:
+	* mb-wm-keys.h:
+	* mb-wm-layout.c:
+	* mb-wm-layout.h:
+	* mb-wm-props.c:
+	* mb-wm-props.h:
+	* mb-wm-stack.c:
+	* mb-wm-stack.h:
+	* mb-wm-types.h:
+	* mb-wm-util.c:
+	* mb-wm-util.h:
+	* mb-wm.h:
+	* src/Makefile.am:
+	* src/core/Makefile.am:
+	* src/core/mb-wm-client.c: (mb_wm_client_window_new),
+	(mb_wm_client_new), (mb_wm_client_base_init):
+	* src/core/mb-wm-client.h:
+	* src/core/mb-wm-core.c: (test_map_request), (mb_wm_run):
+	* src/core/mb-wm-types.h:
+	* src/core/mb-wm-window.c:
+	* src/core/mb-wm-window.h:
+	* src/core/mb-wm.h:
+	* src/matchbox-window-manager-2.c:
+	(test_panel_client_request_geometry), (test_client_new):
+	* xas.c:
+	* xas.h:
+	Autofooify. Split Window 'wrapper' code into its own file
+        and rejig a little.
+
+2005-11-06  Matthew Allum  <mallum@openedhand.com>
+
+	* Makefile:
+	* matchbox-window-manager-2.c: (client_new), (main):
+	* mb-wm-client.c: (mb_wm_client_set_layout_hints):
+	* mb-wm-client.h:
+	* mb-wm-core.c: (mb_wm_run), (mb_wm_init):
+	* mb-wm-keys.c:
+	* mb-wm-keys.h:
+	* mb-wm-types.h:
+	* mb-wm-util.c: (mb_wm_util_malloc0),
+	(mb_wm_util_list_get_nth_data), (mb_wm_util_list_append):
+	* mb-wm-util.h:
+	* mb-wm.h:
+	Add initial key bindings support.
+	Various other minor tweaks.
+
+2005-11-04  Matthew Allum  <mallum@openedhand.com>
+
+	* Makefile:
+	* matchbox-window-manager-2.c:
+	(test_panel_client_request_geometry), (test_panel_client_new),
+	(test_client_new), (client_new), (main):
+	* mb-wm-client.c: (mb_wm_client_window_new),
+	(mb_wm_client_base_init), (mb_wm_client_init),
+	(mb_wm_client_is_realized), (mb_wm_client_base_realize),
+	(mb_wm_client_needs_sync), (mb_wm_client_is_mapped),
+	(mb_wm_client_base_display_sync), (mb_wm_client_display_sync),
+	(mb_wm_client_destroy), (mb_wm_client_base_destroy),
+	(mb_wm_client_base_request_geometry),
+	(mb_wm_client_request_geometry):
+	* mb-wm-client.h:
+	* mb-wm-core.c: (mb_wm_init):
+	* mb-wm-layout-manager.c:
+	* mb-wm-layout-manager.h:
+	* mb-wm-layout.c: (maximise_geometry),
+	(mb_wm_layout_manager_get_edge_offset),
+	(mb_wm_layout_manager_update):
+	* mb-wm-util.c: (mb_wm_util_trap_x_errors), (mb_wm_util_malloc0):
+	* mb-wm-util.h:
+	* mb-wm.h:
+	* xas.c: (xas_async_handler):
+	Fix up layout manager and add some layout support for panels.

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<theme name="Default" author="Tomas Frydrych, tf@o-hand.com"
+       desc="" version="1.0" engine-version="2" engine-type="png">
+<img src="template.png" />
+<client type="app">
+ <decor type="north" color-fg="#ffffff"
+        template-x="0" template-y="0"
+        template-width="320" template-height="20"
+        font-family="Sans" font-size="12">
+  <button type="close"
+          template-x="302" template-y="2"
+          width="16" height="16"/>
+  <button type="minimize"
+          template-x="284" template-y="2"
+          width="16" height="16"/>
+  <button type="menu"
+          template-x="2" template-y="2"
+          width="16" height="16"/>
+ </decor>
+</client>
+
+<client type="dialog">
+ <decor type="north"
+        template-x="83" template-y="73"
+        template-width="146" template-height="3"/>
+ <decor type="south"
+        template-x="83" template-y="190"
+        template-width="146" template-height="3"/>
+ <decor type="west"
+        template-x="83" template-y="76"
+        template-width="3" template-height="114"/>
+ <decor type="east"
+        template-x="263" template-y="76"
+        template-width="3" template-height="114"/>
+</client>
+
+</theme>

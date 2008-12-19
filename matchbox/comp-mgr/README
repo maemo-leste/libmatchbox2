@@ -1,0 +1,70 @@
+
+BRIEF OVERVIEW OF THE COMPOSITING INFRASTRUCTURE
+================================================
+
+The composite manager framework consists of three primary classes,
+
+  * MBWMCompMgr       -- The compositor interface,
+
+  * MBWMCompMgrClient -- Per-client, compositor- specific data,
+
+  * MBWMCompMgrEffect -- A simple client effect.
+
+The whole framework, and its integration with the WM, can be outlined as
+follows:
+
+
+ MBWindowManager:
+  |      |
+  |      --> client stack
+  |              |
+  |              --> MBWindowManagerClient
+  |                     |
+==========================================================================
+  |                     |
+  |                     --> MBWMCompMgrClient
+  |                           |      |
+  |                           |      --> MBWMCompMgrBackendClient
+  |                           |
+  |                         event-effect mapping
+  |                                 |
+  |                                 -->an-event:effect-list pair
+  |                                      |
+  |                                      --> MBWMCompMgrEffect
+  |                                            |
+  |                                            --> MBWMCompMgrBackendEffect
+  |
+  --> MBWMCompMgr
+        |
+        --> MBWMCompMgrBackend
+
+
+The framwork seeks to provide a clean separation between the WM and the CM --
+the implementation of the CM is opaque to the WM, which simply deffers to the
+CM at appropriate points through its public interface. To this end each of the
+MBWindowManagerClient objects managed by the WM holds a pointer to a
+MBWMCompMgrClient object, which holds any per-client data that the CM
+requires; this data is allocated when the WM calls
+mb_wm_comp_mgr_register_client() and deallocated when it
+calls mb_wm_comp_mgr_unregister_client().
+
+As much as the CM internals are opaque to the WM, also the workings of the WM
+are intended to be opaque to the CM; its API is hooked into common operations
+that the WM carries out on its clients, such as map and unmap events, or
+processing of damage notifications, but the CM per se is agnostic of the inner
+workings of the WM.
+
+The effect framework is event driven. MBWMCompMgrEffect is a common interface
+for simple effect, defined by a type, duration (in ms) and gravity. Each
+MBWMCompMgrClient instance is then associated with a mapping between
+effect-events (such as client window mapping, unmapping or minimizing) and a
+list of effects that are to be triggered by the event; a small set of effects
+(such as scaling, fading or sliding, is predefined, and the event-effect
+mapping is defined on per-client-type basis by the theme.
+
+MBWMCompMgr, MBWMCompMgrClient and MBWMCompMgrEffect are abstract interfaces
+that provide public API through which the WM communicates with the
+CM; the CM itself is implememented by one or more backends,
+which subclass these objects. Currently, two backends are included with MBWM2:
+an XRender-based implementation MBWMCompMgrDefault, and a Clutter-based
+implementation MBWMCompMgrClutter.

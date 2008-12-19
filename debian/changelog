@@ -1,0 +1,142 @@
+matchbox-window-manager-2 (0.2.13-1~unreleased) unstable; urgency=low
+
+  * unreleased
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 16 Dec 2008 10:19:12 +0200
+
+matchbox-window-manager-2 (0.2.12-1) unstable; urgency=low
+
+  * Patch from Laszlo to fix order of items in the list returned by
+    mb_wm_client_get_transients(). Fixes: NB#93736
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 16 Dec 2008 10:02:19 +0200
+
+matchbox-window-manager-2 (0.2.11-1) unstable; urgency=low
+
+  * Do not force fixed-size for the menu window but only ensure
+    minimum x and y coordinates to keep it away from the application title bar.
+    Fixes: NB#95148
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 12 Dec 2008 15:29:55 +0200
+
+matchbox-window-manager-2 (0.2.10-1) unstable; urgency=low
+
+  * Thomas: title bar fixes.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue,  9 Dec 2008 18:14:32 +0200
+
+matchbox-window-manager-2 (0.2.9-1) unstable; urgency=low
+
+  * Gordon: Add workaround for new application menus.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 09 Dec 2008 16:57:43 +0200
+
+matchbox-window-manager-2 (0.2.8-1) unstable; urgency=low
+
+  * matchbox/core/mb-window-manager.c: Patch from Laszlo to ignore
+    synthetic unmap events sent by Gdk. Fixes: NB#91306
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 08 Dec 2008 10:09:34 +0200
+
+matchbox-window-manager-2 (0.2.7-1) unstable; urgency=low
+
+  * Laszlo: add new function mb_wm_stack_get_highest_full_screen() for
+    NB#89269
+  * Laszlo: Use set_window instead of set_pixmap when fetching the texture
+    contents. Fixes: NB#93845 
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 03 Dec 2008 16:43:09 +0200
+
+matchbox-window-manager-2 (0.2.6-1) unstable; urgency=low
+
+  * Jan Arne: fix for showing undecorated windows.
+  * Adam: fix some criticals.
+  * Thomas: add debug information.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 27 Nov 2008 10:15:35 +0200
+
+matchbox-window-manager-2 (0.2.5-1) unstable; urgency=low
+
+  * Drop 'maemo' from the version string.
+  * Thomas: API for title bar adjustment.
+  * Laszlo: focus transferring in case of overlayed dialogs. Fixes: NB#92785
+  * Laszlo: show window that has been set fullscreen before mapping.
+    Fixes: NB#92885
+  * Adam: move the focused window on top in a stack of transients. 
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 26 Nov 2008 14:36:09 +0200
+
+matchbox-window-manager-2 (0.2.4-0maemo1) unstable; urgency=low
+
+  * Fix for the recursion bug.
+  * Added MB_WM_DECOR_BUTTON_NOHANDLERS decor button property.
+  * Adam: Don't stack MBWMClientWindowEWMHStateFullscreen applications
+    above the others.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 25 Nov 2008 14:46:51 +0200
+
+matchbox-window-manager-2 (0.2.3-0maemo1) unstable; urgency=low
+
+  * Adam: fix theme path
+  * Build dependency change: x-dev -> x11proto-core-dev
+  * Temporarily recognise ../themes/default/matchbox/theme.xml as well.
+  * Back button segfault fix from Laszlo.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 17 Nov 2008 13:00:10 +0200
+
+matchbox-window-manager-2 (0.2.2-0maemo1) unstable; urgency=low
+
+  * Do not free pixmap in mb_wm_comp_mgr_clutter_client_configure_real
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 12 Nov 2008 18:58:58 +0200
+
+matchbox-window-manager-2 (0.2.1-0maemo1) unstable; urgency=low
+
+  * Work around for Status Menu and Status Area.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 12 Nov 2008 15:18:35 +0200
+
+matchbox-window-manager-2 (0.2.0-0maemo1) unstable; urgency=low
+
+  * Fixes from Thomas.
+  * Fix from Jan Arne. Related to NB#89607
+  * Packaging fixes (removed generated files, fixed debian/rules).
+  * Patch from Laszlo for the infinite loop problem. Fixes: NB#90653
+  * Patch from Laszlo for fullscreen windows. Fixes: NB#88740
+  * Use EGLX texture-from-pixmap extension.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 12 Nov 2008 11:10:22 +0200
+
+matchbox-window-manager-2 (0.1.0~20080730-0maemo5) unstable; urgency=low
+
+  * Workaround for the pop-up menu race condition.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 29 Sep 2008 15:29:00 +0300
+
+matchbox-window-manager-2 (0.1.0~20080730-0maemo4) unstable; urgency=low
+
+  * Removed broken recursion fix. Fixes: NB#88636
+  * Added checks for BadWindow errors. Fixes at least some of the
+    recursion problems.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Sat, 20 Sep 2008 17:40:51 +0300
+
+matchbox-window-manager-2 (0.1.0~20080730-0maemo3) unstable; urgency=low
+
+  * Workaround patch for 800x480 geometry hint (makes the browser visible).
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 15 Sep 2008 17:05:36 +0300
+
+matchbox-window-manager-2 (0.1.0~20080730-0maemo2) unstable; urgency=low
+
+  * Patch for evil recursion bug.
+  * Patch for sending GRAB_TRANSFER ClientMessage on title bar press, causing
+    the application menu to be opened.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 09 Sep 2008 17:09:05 +0300
+
+matchbox-window-manager-2 (0.1.0~20080730-0maemo1) unstable; urgency=low
+
+  * Initial packaging.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 30 Jul 2008 14:27:57 +0300

@@ -1,0 +1,37 @@
+
+#ifndef _MB_MW_CONFIG_H
+#define _MB_WM_CONFIG_H
+
+/* Enable composite manager code */
+#define ENABLE_COMPOSITE @ENABLE_COMPOSITE@
+
+/* Build PNG-image based theme engine */
+#define THEME_PNG @THEME_PNG@
+
+/* Use pango for text layout */
+#define USE_PANGO @USE_PANGO@
+
+/* Use pango for text layout */
+#define USE_PANGO @USE_PANGO@
+
+/* Use clutter for compositing */
+#define ENABLE_CLUTTER_COMPOSITE_MANAGER @ENABLE_CLUTTER_COMPOSITE_MANAGER@
+
+/* Use xrender compositing manager backend */
+#define ENABLE_XRENDER_COMPOSITE_MANAGER @ENABLE_XRENDER_COMPOSITE_MANAGER@
+
+/* Include at least one of the default compositing manager backends */
+#define COMP_MGR_BACKEND @COMP_MGR_BACKEND@
+
+/* Use glib main loop */
+#define USE_GLIB_MAINLOOP @USE_GLIB_MAINLOOP@
+
+/* GTK Integration */
+#define USE_GTK @USE_GTK@
+
+/* Debugging stuff */
+#ifndef MBWM_WANT_DEBUG
+#define MBWM_WANT_DEBUG @MBWM_WANT_DEBUG@
+#endif
+
+#endif

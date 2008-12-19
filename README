@@ -1,0 +1,93 @@
+This is the copy of matchbox2 which is under development for fremantle.
+It is held here in svn to save having to keep the original pristine and
+write patches against it.
+
+-------------------------------------------------
+
+Matchbox Window Manager II README.
+======
+
+Intro
+===
+
+Matchbox Window Manager II is a complete rewrite of the original
+m-w-m. It is in early stages of development.
+
+
+Plans/Aims Overview
+===
+
+o Manage windows in a restricted stack PDA style just like the original m-w-m.
+
+o Be small, fast, dependency light, flexible just like the original m-w-m.
+
+o Dont use libmb (XRender can be used for basic image compositing,
+  performance issues should be able to be addressed via clever caching)
+
+o Be very modular in nature using a simple object system. m-w-m-2
+  should consist of core and optional building blocks which can be
+  put togeather in various ways to form a window manager for a specific
+  embedded UI (with varying constraints). The object system should
+  provide this rather than being dependant on #ifdefs to add specific
+  behaviour for a specific platform/UI.
+
+o Form a Much cleaner and manageable code base.
+
+o Use Xlib on XCB (or options xlibint.h) for more async prop calls.
+
+o *Optional* support for glib mainloop and GTK.
+
+o Support various themeing/decoration engines.
+
+o Better support compositing.
+
+
+Design
+===
+
+m-w-m-2 source code is split into various components as follows;
+
+  - src/core
+
+  Contains the core code and classes for providing window
+  management. Ideally all objects should be overideable with an
+  alternate implimentation and policy.
+
+  TODO: Objectify things like the wm core and layout engine.
+	Window Decorations / Buttons.
+	Support EWMH. 
+
+  - src/client-types
+
+  Contains sub classes of the cores 'client' type to implement handling of
+  various window types (eg app windows, dialogs, panels).
+  
+  Each type sets layout and stacking as to how to wish to
+  be managed (eg the core knows nothing about what a 'dialog' is, just
+  the hints its provides). 
+
+  TODO: Basically pad this out more. 
+
+  - src/theme-engines
+
+  Implementations of various theme engines.
+
+  TODO: lots
+
+  - src/managers
+
+  The 'meat' which pulls the above togeather to form a window manager for a 
+  particular platform. Currently just a 'simple' implentation exists, but in
+  the future others could exists like matchbox-window-manager-maemo for 
+  example.
+
+  TODO: lots
+
+In the future other sub directorys could be 'composite', 'GTK' etc..
+
+
+Notes
+==
+
+It could be worth (optionally) building everything (except managers)
+as a lib so out of tree WM's could be built.

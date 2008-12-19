@@ -1,0 +1,14 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@/@MBWM2_PKGINCDIR@
+localedir=@localedir@
+apiversion=@MBWM2_API_VERSION@
+requires=@MBWM2_PKGREQUIRES@
+
+Name: libmatchbox
+Description: Framework to build window managers not on the Desktop.
+Requires: ${requires}
+Version: @VERSION@
+Libs: -L${libdir} -lmatchbox2-${apiversion}
+Cflags: -I${includedir}

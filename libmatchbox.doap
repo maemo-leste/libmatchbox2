@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This is a noddy doap file so that moap can be used with libmatchbox -->
+<Project
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns="http://usefulinc.com/ns/doap#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:admin="http://webns.net/mvcb/">
+
+ <name>Matchbox</name>
+ <shortname>Matchbox</shortname>
+
+ <homepage rdf:resource="http://matchbox-project.org/" />
+
+ <!-- The date when the source control was initialised. -->
+ <created>2005-11-04</created>
+
+ <shortdesc xml:lang="en">
+A lightweight window manager not for the desktop.
+</shortdesc>
+ <description xml:lang="en">
+A lightweight window manager not for the desktop.
+ </description>
+
+ <category>window-manager</category>
+
+ <programming-language>C</programming-language>
+ <license rdf:resource="http://usefulinc.com/doap/licenses/gpl" />
+
+ <author>
+  <foaf:Person>
+     <foaf:name>Matthew Allum</foaf:name>
+     <foaf:mbox rdf:resource="mailto:mallum@openedhand.com"/>
+  </foaf:Person>
+ </author>
+
+ <maintainer>
+  <foaf:Person>
+     <foaf:name>Thomas Thurman</foaf:name>
+     <foaf:mbox rdf:resource="mailto:thomas.thurman@collabora.co.uk"/>
+  </foaf:Person>
+ </maintainer>
+
+</Project>

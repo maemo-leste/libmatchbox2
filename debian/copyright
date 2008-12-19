@@ -1,0 +1,23 @@
+This package was debianised by Moray Allan <moray@debian.org> on
+Mon, 12 Jul 2004 20:39:00 +0100.
+
+It was downloaded from http://projects.o-hand.com/matchbox/sources/
+
+Upstream author: Matthew Allum <mallum@o-hand.com>
+
+Copyright:
+
+  Copyright (C) 2004 Matthew Allum <mallum@o-hand.com>
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+On Debian GNU/Linux systems, the complete text of the GNU Lesser General
+Public License can be found in '/usr/share/common-licenses/LGPL-2.1'.

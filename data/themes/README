@@ -1,0 +1,39 @@
+The MBWM2 theme is an xml file, that consists of the following elements:
+
+<theme>: top-level element
+	Properties: 
+		name
+		author
+       		desc
+		version
+		engine_version: must be 2
+		engine_type: default|png
+
+theme children:
+	<img>: background image for the theme (png engine only)
+		Properties:
+			src
+
+	<client>: description of a client window
+		Properties
+			type: app|dialog|input|panel|desktop
+
+	client children:
+		<decor>: description of decorations for the client type
+		Properties:
+ 			type: north|south|west|east 
+			color-bg: background color (default engine only)
+			color-fg: foreground color (default engine only)
+			template-x, template-y, template-width, template-height:
+			  geometry relative to parent
+			font-family,font-size: font to use for any text
+
+		decor children:
+			<button>
+			Properties:
+				type=close|minimize|fullscreen|menu|custom
+				template-x, template-y, template-width, template-height:
+				  geometry relative to parent
+
+Please note that the included theme files are just examples
+and are not meant to be enhanced or developed.

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<theme name="Default" author="Tomas Frydrych, tf@o-hand.com"
+       desc="" version="1.0" engine-version="2" engine-type="default"
+       shadow-type="gaussian" color-shadow="#44444444">
+<img src="test.png" />
+<client type="app">
+ <transition type="fade" duration="200" />
+
+ <effect event="minimize" duration="300" gravity="ne"   type="scale-down" />
+ <effect event="map"      duration="100" gravity="e"    type="slide-in" />
+ <effect event="unmap"    duration="100" gravity="none" type="fade" />
+
+ <decor type="north"
+        color-bg="#6699CF" color-fg="#FFFFFF"
+        template-height="22"
+        font-family="Sans" font-size="17">
+  <button type="close" packing="end"
+          color-fg="#ffffff" color-bg="#446C96"
+          template-x="2" template-y="2"
+          width="17" height="17"/>
+ </decor>
+
+ <decor type="east" template-width="0"/>
+ <decor type="south" template-height="0"/>
+ <decor type="west" template-width="0"/>
+
+</client>
+
+
+<client type="dialog">
+  <decor type="north"
+	 color-bg="#618BB8" color-fg="#FFFFFF"
+	 template-height="22"
+	 font-family="Sans" font-size="17">
+    <button type="close" packing="end"
+	    color-fg="#ffffff" color-bg="#446C96"
+	    template-x="2" template-y="2"
+	    width="17" height="17"/>
+  </decor>
+  
+  <decor type="east" color-bg="#618BB8" template-width="2"/>
+  <decor type="south" color-bg="#618BB8" template-height="2"/>
+  <decor type="west" color-bg="#618BB8" template-width="2"/>
+
+</client>
+
+</theme>
+
