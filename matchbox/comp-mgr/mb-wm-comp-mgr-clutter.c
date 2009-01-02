@@ -91,7 +91,8 @@ static void
 mb_wm_comp_mgr_clutter_client_hide_real (MBWMCompMgrClient * client);
 
 static void
-mb_wm_comp_mgr_clutter_client_repair_real (MBWMCompMgrClient * client, Damage damage);
+mb_wm_comp_mgr_clutter_client_repair_real (MBWMCompMgrClient *client,
+                                           Damage damage);
 
 static void
 mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client);
@@ -747,8 +748,8 @@ mb_wm_comp_mgr_clutter_turn_on_real (MBWMCompMgr *mgr)
 }
 
 static void
-mb_wm_comp_mgr_clutter_client_repair_real (
-    MBWMCompMgrClient * client, Damage damage)
+mb_wm_comp_mgr_clutter_client_repair_real (MBWMCompMgrClient *client,
+                                           Damage damage)
 {
   MBWMCompMgrClutterClient * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (client);
   MBWindowManager          * wm   = client->wm;
@@ -768,7 +769,7 @@ mb_wm_comp_mgr_clutter_client_repair_real (
        * First time we have been called since creation/configure,
        * fetch the whole texture.
        */
-      MBWM_NOTE (DAMAGE, "Full screen repair.");
+      printf ("%s: Full drawable repair\n", __FUNCTION__);
       XDamageSubtract (wm->xdpy, damage, None, None);
       mb_wm_comp_mgr_clutter_fetch_texture (client);
       return;
@@ -785,16 +786,17 @@ mb_wm_comp_mgr_clutter_client_repair_real (
 					 &r_count,
 					 &r_bounds);
 
-  if (r_damage)
+  if (r_damage && r_count < 3)
     {
       for (i = 0; i < r_count; ++i)
 	{
-	  MBWM_NOTE (DAMAGE, "Repairing %d,%d;%dx%d",
+                /*
+	  printf ("%s: Repairing %d,%d;%dx%d\n", __FUNCTION__,
 		     r_damage[i].x,
 		     r_damage[i].y,
 		     r_damage[i].width,
 		     r_damage[i].height);
-
+                     */
 	  clutter_x11_texture_pixmap_update_area (
 			CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
 			r_damage[i].x,
@@ -803,6 +805,19 @@ mb_wm_comp_mgr_clutter_client_repair_real (
 			r_damage[i].height);
 	}
 
+      XFree (r_damage);
+    }
+  else if (r_damage)
+    {
+          /*
+      printf ("%s: r_count %d >= 3, bounding box (%d %d %d %d) repair\n",
+              __FUNCTION__, r_count, r_bounds.x, r_bounds.y,
+              r_bounds.width, r_bounds.height);
+              */
+      clutter_x11_texture_pixmap_update_area (
+			CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
+			r_bounds.x, r_bounds.y,
+                        r_bounds.width, r_bounds.height);
       XFree (r_damage);
     }
 
