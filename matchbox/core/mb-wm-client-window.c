@@ -123,6 +123,8 @@ mb_wm_client_window_init (MBWMObject *this, va_list vap)
   win->xwindow = xwin;
   win->wm = wm;
 
+  /* TODO: handle properties after discovering them. E.g. fullscreen.
+   * See NB#97342 */
   return mb_wm_client_window_sync_properties (win, MBWM_WINDOW_PROP_ALL);
 }
 
