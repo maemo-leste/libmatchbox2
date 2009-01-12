@@ -846,17 +846,43 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
       wm_client->window, MBWMClientWindowEWMHStateFullscreen);
 
   if (fullscreen != cclient->priv->fullscreen)
-    cclient->priv->fullscreen = fullscreen;
-
-  /* FIXME xmas fix -- ignore the invisible systemui dialog, because it
-   * would show as white window for some reason */
-  if (!(ctype == MBWMClientTypeMenu && wm_client->window &&
-      g_strcmp0 ("systemui", wm_client->window->name) == 0))
     {
-      mb_wm_comp_mgr_clutter_fetch_texture (client);
+      cclient->priv->fullscreen = fullscreen;
+
+      /* FIXME xmas fix -- ignore the invisible systemui dialog, because it
+       * would show as white window for some reason */
+      if (!(ctype == MBWMClientTypeMenu && wm_client->window &&
+          g_strcmp0 ("systemui", wm_client->window->name) == 0))
+        {
+          mb_wm_comp_mgr_clutter_fetch_texture (client);
+        }
+      else
+        g_debug("%s: skip systemui dialog", __FUNCTION__);
     }
-  else
-    g_debug("%s: skip systemui dialog", __FUNCTION__);
+
+  /* Detect if the X size or position is different to our size and position
+   * and re-adjust */
+  if (cclient->priv->actor && cclient->priv->texture)
+    {
+      MBGeometry geom;
+      gint x, y;
+      guint width, height;
+      mb_wm_client_get_coverage (client->wm_client, &geom);
+      clutter_actor_get_position(cclient->priv->actor, &x, &y);
+      clutter_actor_get_size(cclient->priv->texture, &width, &height);
+      if (geom.x != x ||
+          geom.y != y ||
+          geom.width != width ||
+          geom.height != height)
+        {
+          clutter_actor_set_position(cclient->priv->actor, geom.x, geom.y);
+          clutter_actor_set_size(cclient->priv->texture,
+                            geom.width, geom.height);
+          g_debug("%s: Position Changed : %d, %d, %d, %d -> %d, %d, %d, %d",
+              __FUNCTION__, x,y,width,height,
+              geom.x, geom.y, geom.width, geom.height);
+        }
+    }
 }
 
 static Bool
