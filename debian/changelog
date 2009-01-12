@@ -1,8 +1,29 @@
-matchbox-window-manager-2 (0.2.13-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.13-1) unstable; urgency=low
 
-  * unreleased
+        Adam:
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 16 Dec 2008 10:19:12 +0200
+        * matchbox/core/mb-window-manager.c:
+        Don't set _MB_CURRENT_APP_WINDOW at all, but do it in h-d.
+        mb is not smart enough to know what an "application" is
+        and when it is changing, and the FKB hides when it believes
+        the current application has switched away.
+
+        Gordon:
+
+        * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+        Put brackets in the correct place so the EGLX pixmap is only renewed
+        when the fullscreen state has changed. Also added code to check the 
+        actor size and position against the X size and position and make sure 
+        it is the same. Fixes: NB#95594
+
+        Kimmo:
+
+        * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+        (mb_wm_comp_mgr_clutter_client_repair_real): Optimisation for file
+        manager like applications. Update the whole bounding box if there are
+        three or more damaged areas. (The threshold value may need adjusting.)
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 12 Jan 2009 17:36:10 +0200
 
 matchbox-window-manager-2 (0.2.12-1) unstable; urgency=low
 
