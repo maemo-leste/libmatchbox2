@@ -1,3 +1,11 @@
+2009-01-12  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        Added some basic test programs (not part of the build system yet)
+
+	* tests (added):
+	* tests/test-toplevel.c (added):
+	* tests/test-transience.c (added):
+
 2009-01-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.13
