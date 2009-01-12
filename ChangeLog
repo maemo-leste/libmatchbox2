@@ -1,4 +1,14 @@
-2008-01-08  Gordon Williams  <gordon.williams@collabora.co.uk>
+2009-01-12  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#97083
+
+	* matchbox/core/mb-window-manager.c:
+	Don't set _MB_CURRENT_APP_WINDOW at all, but do it in h-d.
+	mb is not smart enough to know what an "application" is
+	and when it is changing, and the FKB hides when it believes
+	the current application has switched away.
+
+2009-01-08  Gordon Williams  <gordon.williams@collabora.co.uk>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
 	Put brackets in the correct place so the EGLX pixmap is only renewed

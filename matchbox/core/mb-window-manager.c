@@ -1858,14 +1858,6 @@ mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c)
 		      (unsigned char *)&card, 1);
     }
 
-  if (is_desktop || c_type == MBWMClientTypeApp)
-    {
-      XChangeProperty(wm->xdpy, wm->root_win->xwindow,
-		      wm->atoms[MBWM_ATOM_MB_CURRENT_APP_WINDOW],
-		      XA_WINDOW, 32, PropModeReplace,
-		      (unsigned char *)&c->window->xwindow, 1);
-    }
-
   mb_wm_display_sync_queue (wm, MBWMSyncStacking | MBWMSyncVisibility);
 
   return True;
