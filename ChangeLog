@@ -1,3 +1,8 @@
+2009-01-13  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-window-manager.c:
+	  Removed the last traces of setting _MB_CURRENT_APP_WINDOW.
+
 2009-01-12  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
         Added some basic test programs (not part of the build system yet)

@@ -2025,17 +2025,6 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 	    client->next_focused_client = wm->focused_client;
 	}
 
-      /* Update MBWM_ATOM_MB_CURRENT_APP_WINDOW. */
-      for (app = client; app; app = app->transient_for)
-        if (MB_WM_CLIENT_CLIENT_TYPE (app) == MBWMClientTypeApp)
-          {
-            XChangeProperty(wm->xdpy, wm->root_win->xwindow,
-                            wm->atoms[MBWM_ATOM_MB_CURRENT_APP_WINDOW],
-                            XA_WINDOW, 32, PropModeReplace,
-                            (unsigned char *)&app->window->xwindow, 1);
-            break;
-          }
-
       wm->focused_client = client;
       return True;
     }
