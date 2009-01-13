@@ -239,4 +239,7 @@ mb_wm_decor_button_set_theme_data (MBWMDecorButton * button, void *themedata,
 void *
 mb_wm_decor_button_get_theme_data (MBWMDecorButton* button);
 
+int
+mb_wm_decor_class_type ();
+
 #endif

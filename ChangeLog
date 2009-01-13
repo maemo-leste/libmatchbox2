@@ -1,3 +1,7 @@
+2009-01-13  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/core/mb-wm-decor.h: declare mb_wm_decor_class_type().
+
 2009-01-13  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-window-manager.c:
