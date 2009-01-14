@@ -132,24 +132,6 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
   int                        shp_order;
   int                        shp_count;
   int                        i;
-
-  /*
-   * This is square of 32-bit comletely transparent values we use to
-   * clear bits of the texture from shaped windows; the size is a compromise
-   * between how much memory we want to allocate and how much tiling we are
-   * happy with.
-   *
-   * Make this power of 2 for efficient operation
-   */
-#define SHP_CLEAR_SIZE 4
-  static int clear_init = 0;
-  static guint32 clear_data[SHP_CLEAR_SIZE * SHP_CLEAR_SIZE];
-
-  if  (!clear_init)
-    {
-      memset (&clear_data, 0, sizeof (clear_data));
-      clear_init = 1;
-    }
 #endif
 
   if (!(cclient->priv->flags & MBWMCompMgrClutterClientMapped))
@@ -210,9 +192,13 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
 
 #ifdef HAVE_XEXT
   /*
-   * If the client is shaped, we have to manually clear any pixels in our
-   * texture in the non-visible areas.
+   * If the client is shaped, we have to tell our texture about which bits of
+   * it are visible. If it's not we want to just chear all shapes, and it'll
+   * know it needs to draw the whole thing
    */
+  clutter_x11_texture_pixmap_clear_shapes(
+                    CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture));
+
   if (mb_wm_theme_is_client_shaped (wm->theme, wm_client))
     {
       shp_rect = XShapeGetRectangles (wm->xdpy, xwin,
@@ -220,58 +206,20 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
 
       if (shp_rect && shp_count)
 	{
-	  XserverRegion clear_rgn;
-	  XRectangle rect;
-	  XRectangle * clear_rect;
-	  int clear_count;
-
-	  rect.x = 0;
-	  rect.y = 0;
-	  rect.width = geom.width;
-	  rect.height = geom.height;
-
-	  clear_rgn   = XFixesCreateRegion (wm->xdpy, shp_rect, shp_count);
-
-	  XFixesInvertRegion (wm->xdpy, clear_rgn, &rect, clear_rgn);
-
-	  clear_rect = XFixesFetchRegion (wm->xdpy, clear_rgn, &clear_count);
-
-	  for (i = 0; i < clear_count; ++i)
+	  for (i = 0; i < shp_count; ++i)
 	    {
-	      int k, l;
+	      ClutterGeometry geo;
+	      geo.x = shp_rect[i].x;
+	      geo.y = shp_rect[i].y;
+	      geo.width = shp_rect[i].width;
+	      geo.height = shp_rect[i].height;
 
-	      for (k = 0; k < clear_rect[i].width; k += SHP_CLEAR_SIZE)
-		for (l = 0; l < clear_rect[i].height; l += SHP_CLEAR_SIZE)
-		  {
-		    int w1 = clear_rect[i].width - k;
-		    int h1 = clear_rect[i].height - l;
-
-		    if (w1 > SHP_CLEAR_SIZE)
-		      w1 = SHP_CLEAR_SIZE;
-
-		    if (h1 > SHP_CLEAR_SIZE)
-		      h1 = SHP_CLEAR_SIZE;
-
-		    clutter_texture_set_area_from_rgb_data (
-					  CLUTTER_TEXTURE (cclient->priv->texture),
-					  (const guchar *)&clear_data,
-					  TRUE,
-					  clear_rect[i].x + k,
-					  clear_rect[i].y + l,
-					  w1, h1,
-					  SHP_CLEAR_SIZE * 4,
-					  4,
-					  CLUTTER_TEXTURE_RGB_FLAG_BGR,
-                                          NULL);
-		  }
+	      clutter_x11_texture_pixmap_add_shape(
+	          CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
+	          geo);
 	    }
 
-	  XFixesDestroyRegion (wm->xdpy, clear_rgn);
-
 	  XFree (shp_rect);
-
-	  if (clear_rect)
-	    XFree (clear_rect);
 	}
     }
 
