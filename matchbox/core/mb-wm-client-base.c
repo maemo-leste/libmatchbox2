@@ -440,6 +440,20 @@ move_resize_client_xwin (MBWindowManagerClient *client, int x, int y, int w, int
     }
 }
 
+static Bool
+is_window_mapped (
+    Display  *display,
+    Window    window)
+{
+  XWindowAttributes attr;
+
+  if (!XGetWindowAttributes (display, window, &attr))
+    return False;
+
+  return attr.map_state == IsViewable;
+}
+
+
 static void
 mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 {
@@ -476,7 +490,9 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 		}
 	      else
 		{
-		  client->skip_unmaps++;
+		  if (is_window_mapped(wm->xdpy, MB_WM_CLIENT_XWIN(client))) 
+		    client->skip_unmaps++;
+
 		  XReparentWindow(wm->xdpy, MB_WM_CLIENT_XWIN(client),
 				  wm->root_win->xwindow, 0, 0);
 		  XUnmapWindow(wm->xdpy, client->xwin_frame);
