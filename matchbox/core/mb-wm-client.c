@@ -447,18 +447,6 @@ mb_wm_client_focus (MBWindowManagerClient *client)
   if (klass->focus)
     ret = klass->focus(client);
 
-  if (ret)
-    {
-      /*
-       * If this client is transient, store it with the parent; if it is not
-       * transient, reset the last transient field
-       */
-      if (client->transient_for)
-	client->transient_for->last_focused_transient = client;
-      else
-	client->last_focused_transient = NULL;
-    }
-
   return ret;
 }
 
@@ -616,9 +604,48 @@ mb_wm_client_remove_transient (MBWindowManagerClient *client,
   transient->transient_for = NULL;
 
   client->transients = mb_wm_util_list_remove(client->transients, transient);
+}
 
-  if (client->last_focused_transient == transient)
-    client->last_focused_transient = transient->next_focused_client;
+/**
+ * Returns the client next above the given client in the
+ * stacking order.  Returns NULL if the client does not
+ * exist or is the topmost client.
+ */
+MBWindowManagerClient*
+mb_wm_client_get_next_focused_client (MBWindowManagerClient *client)
+{
+  MBWindowManagerClient *c;
+  gboolean get_this_one = FALSE;
+
+  /* enumerate goes from bottom to top, as opposed to enumerate_reverse
+   * which goes from top to bottom.
+   */
+  mb_wm_stack_enumerate (client->wmref, c)
+    {
+      if (get_this_one)
+        return c;
+      else if (c == client)
+        get_this_one = TRUE;
+    }
+
+  return NULL; /* oops, fell off the end. */
+}
+
+/**
+ * Returns the transient of client "client" which was most recently
+ * focused (i.e. which is closest to the top, in our model).
+ * Returns NULL if there are no transients for the given client.
+ */
+MBWindowManagerClient*
+mb_wm_client_get_last_focused_transient (MBWindowManagerClient *client)
+{
+  MBWindowManagerClient *result=NULL, *c;
+
+  mb_wm_stack_enumerate (client->wmref, c)
+      if (c->transient_for == client)
+        result = c;
+
+  return result;
 }
 
 MBWMList*

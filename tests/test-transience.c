@@ -23,15 +23,18 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
-GtkWidget *a, *b, *c;
+#include "hildon.h"
+
+GtkWidget *a;
+HildonDialog *b, *c;
 
 static char current_window (void)
 {
-	if (gtk_window_has_toplevel_focus (GTK_WINDOW (a)))
+	if (a && gtk_window_has_toplevel_focus (GTK_WINDOW (a)))
 		return 'a';
-	else if (gtk_window_has_toplevel_focus (GTK_WINDOW (b)))
+	else if (b && gtk_window_has_toplevel_focus (GTK_WINDOW (b)))
 		return 'b';
-	else if (gtk_window_has_toplevel_focus (GTK_WINDOW (c)))
+	else if (c && gtk_window_has_toplevel_focus (GTK_WINDOW (c)))
 		return 'c';
 	else
 		return '?';
@@ -45,37 +48,43 @@ gboolean do_something (gpointer dummy)
 	switch (count++)
 	{
 		case 0:
-			a = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-			gtk_widget_show_all (a);
-			g_warning ("Opened one window a");
+			a = hildon_window_new ();
+			gtk_window_set_title ( GTK_WINDOW (a), "a (should have two transients)");
+			gtk_widget_show_all (GTK_WIDGET (a));
+			g_warning ("Opened a window 'a'");
 			expecting = 'a';
 			break;
-			
+
 		case 2:
-			b = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-			gtk_widget_show_all (b);
-			gtk_window_set_transient_for (GTK_WINDOW (a), GTK_WINDOW (b));
-			g_warning ("Opened another window b, and set 'a' transient to 'b'");
+			b = HILDON_DIALOG (hildon_dialog_new ());
+			gtk_window_set_transient_for (GTK_WINDOW (b), GTK_WINDOW (a));
+			gtk_window_set_title ( GTK_WINDOW (b), "b (should be transient to a)");
+			gtk_widget_show_all (GTK_WIDGET (b));
+			g_warning ("Opened another window 'b' and set it transient to 'a'");
 			expecting = 'b';
 			break;
 
+
 		case 4:
-			c = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-			gtk_widget_show_all (c);
-			gtk_window_set_transient_for (GTK_WINDOW (c), GTK_WINDOW (b));
-			g_warning ("Opened a third window c, and set 'c' transient to 'b'");
+			c = HILDON_DIALOG (hildon_dialog_new ());
+			gtk_window_set_title (GTK_WINDOW (c), "c (should also be transient to a)");
+			gtk_window_set_transient_for (GTK_WINDOW (c), GTK_WINDOW (a));
+			gtk_widget_show_all (GTK_WIDGET (c));
+			g_warning ("Opened a third window 'c', and set 'c' transient to 'a'");
 			expecting = 'c';
 			break;
-	
-		case 6:
-			gtk_widget_hide_all (c);
 
-			g_warning ("Hidden that third window 'c'; focus should now pass to the other transient, 'a'");
-			expecting = 'a';
+		case 6:
+			gtk_object_destroy (GTK_OBJECT (c)); c = NULL;
+
+			g_warning ("Destroyed that third window 'c'; focus should now pass to the other transient, 'b'");
+			expecting = 'b';
 			break;
 
 		case 8:
 			g_warning ("Pass.");
+			gtk_object_destroy (GTK_OBJECT (a));  a = NULL;
+			gtk_object_destroy (GTK_OBJECT (b));  b = NULL;
 			gtk_main_quit ();
 			break;
 
@@ -85,13 +94,13 @@ gboolean do_something (gpointer dummy)
 			else
 			{
 				g_warning ("Fail: %c is focussed but we expected %c.", current_window (),
-					expecting);
-				gtk_main_quit ();
+						expecting);
+				//	gtk_main_quit ();
 			}
 	}
 }
 
-int
+	int
 main (int argc, char **argv)
 {
 

@@ -37,11 +37,12 @@ mb_wm_stack_ensure_trans_foreach (MBWindowManagerClient *client, void *data)
 void
 mb_wm_stack_dump (MBWindowManager *wm)
 {
-#if (MBWM_WANT_DEBUG)
+//#if (MBWM_WANT_DEBUG)
+#if 1
   MBWindowManagerClient *client;
   MBWMStackLayerType     stacking_layer;
 
-  fprintf(stderr, "\n==== window stack =====\n");
+  g_warning ("\n==== window stack =====\n");
 
   mb_wm_stack_enumerate_reverse (wm, client)
     {
@@ -62,7 +63,7 @@ mb_wm_stack_dump (MBWindowManager *wm)
 
       stacking_layer = mb_wm_client_get_stacking_layer (client);
 
-      fprintf(stderr, "%s XID: %lx NAME: %s, type %d, layer %d\n",
+      g_warning ("%s XID: %lx NAME: %s, type %d, layer %d\n",
 	      prefix,
 	      MB_WM_CLIENT_XWIN(client),
 	      client->window->name ? client->window->name : "unknown",
@@ -70,7 +71,7 @@ mb_wm_stack_dump (MBWindowManager *wm)
 	      stacking_layer);
     }
 
-  fprintf(stderr, "======================\n\n");
+  g_warning ("======================\n\n");
 #endif
 }
 

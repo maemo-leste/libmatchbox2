@@ -1,3 +1,25 @@
+2009-01-15  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/core/mb-wm-client-base.c: remove irrelevant stacking
+	  according to stanza 4 of bug #96965.
+	* matchbox/core/mb-wm-client.[ch]: add
+	  mb_wm_client_get_next_focused_client() and
+          mb_wm_client_get_last_focused_transient(); remove the corresponding
+	  attributes of MBWindowManagerClient according to stanzas 1 and 2
+	  of bug #96965.
+	* matchbox/core/mb-window-manager.c: rewrite anywhere which used the
+          removed attributes of MBWindowManager to use the new methods.
+	  mb_wm_unfocus_client() does not show the desktop if a client cannot
+	  be focussed, in case we have another client on top which can,
+	  according to stanzas 1 and 2 of bug #96965.
+	* matchbox/core/mb-wm-stack.c: mb_wm_stack_dump() should always dump.
+	* tests/test-transience.c: regularise test to use Hildon window types
+	  (but this could still be improved since it checks focus rather
+	   than stacking as stuch; correctness of changes above was checked
+	   using debug print statements).
+
+         Closes #96965.
+
 2009-01-15  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Patch from Laszlo Pere:

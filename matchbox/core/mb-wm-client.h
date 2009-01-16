@@ -150,13 +150,11 @@ struct MBWindowManagerClient
   MBWMClientLayoutHints        layout_hints;
 
   MBWindowManagerClient       *stacked_above, *stacked_below;
-  MBWindowManagerClient       *next_focused_client;
 
   MBGeometry frame_geometry;  /* FIXME: in ->priv ? */
   MBWMList                    *decor;
   MBWMList                    *transients;
   MBWindowManagerClient       *transient_for;
-  MBWindowManagerClient       *last_focused_transient;
 
   int                          skip_unmaps;
 
@@ -293,6 +291,12 @@ mb_wm_client_add_transient (MBWindowManagerClient *client,
 void
 mb_wm_client_remove_transient (MBWindowManagerClient *client,
 			       MBWindowManagerClient *transient);
+
+MBWindowManagerClient*
+mb_wm_client_get_next_focused_client (MBWindowManagerClient *client);
+
+MBWindowManagerClient*
+mb_wm_client_get_last_focused_transient (MBWindowManagerClient *client);
 
 MBWMList*
 mb_wm_client_get_transients (MBWindowManagerClient *client);

@@ -288,12 +288,6 @@ mb_wm_client_base_stack (MBWindowManagerClient *client,
 
   mb_wm_util_list_foreach (t, (MBWMListForEachCB)mb_wm_client_stack,
 			   (void*)flags);
-  for (li = t; li; li = li->next)
-    if (li->data == client->wmref->focused_client)
-      {
-        mb_wm_stack_move_top ((MBWindowManagerClient *)li->data);
-        break;
-      }
 
   mb_wm_util_list_free (t);
 }

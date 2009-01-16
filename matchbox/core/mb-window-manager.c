@@ -1180,21 +1180,6 @@ mb_wm_unmanage_client (MBWindowManager       *wm,
    */
   mb_wm_client_detransitise (client);
 
-  next_focused = client->next_focused_client;
-  mb_wm_stack_enumerate (wm, c)
-    {
-      /*
-       * Must avoid circular dependcy here
-       */
-      if (c->next_focused_client == client)
-	{
-	  if (c != next_focused)
-	    c->next_focused_client = next_focused;
-	  else
-	    c->next_focused_client = NULL;
-	}
-    }
-
 #if ENABLE_COMPOSITE
   if (mb_wm_comp_mgr_enabled (wm->comp_mgr))
     {
@@ -1796,7 +1781,7 @@ mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c)
   Bool was_desktop;
   Bool is_desktop;
   MBWindowManagerClient * c_focus = c;
-  MBWindowManagerClient * trans;
+  MBWindowManagerClient * trans, *last_focused_transient;
 
   if (c == NULL)
     return False;
@@ -1836,14 +1821,11 @@ mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c)
 
   mb_wm_client_show (c);
 
-  /* If the next focused client after this one is transient for it,
-   * activate it instead
-   */
-  if (c->last_focused_transient &&
-      c->last_focused_transient->transient_for == c)
-    {
-      c_focus = c->last_focused_transient;
-    }
+  last_focused_transient = mb_wm_client_get_last_focused_transient (c);
+
+  if (last_focused_transient) {
+    c_focus = last_focused_transient;
+  }
 
   mb_wm_focus_client (wm, c_focus);
   mb_wm_client_stack (c, 0);
@@ -1942,16 +1924,20 @@ mb_wm_set_layout (MBWindowManager *wm, MBWMLayout *layout)
 static Bool
 mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 {
-  MBWindowManagerClient * client = c;
+  MBWindowManagerClient *client = c,
+                        *last_focused_transient;
+ 
+  last_focused_transient = mb_wm_client_get_last_focused_transient (c);
 
   /*
-   * The last focused transient for this client is modal, we try to focus
+   * If the last focused transient for this client is modal, we try to focus
    * the transient rather than the client itself
    */
-  if (c->last_focused_transient &&
-      mb_wm_client_is_modal (c->last_focused_transient))
+
+  if (last_focused_transient &&
+      mb_wm_client_is_modal (last_focused_transient))
     {
-      client = c->last_focused_transient;
+      client = last_focused_transient;
     }
 
   /*
@@ -2009,20 +1995,6 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 
 	  while (trans_new->transient_for)
 	    trans_new = trans_new->transient_for;
-
-	  client->next_focused_client = NULL;
-
-	  /*
-	   * Are we both transient for the same thing ?
-	   */
-	  if (trans_new && trans_new == trans_old)
-	    client->next_focused_client = wm->focused_client;
-
-	  /* From regular dialog to transient for root dialogs */
-	  if (MB_WM_IS_CLIENT_DIALOG (client) &&
-	      !client->transient_for &&
-	      MB_WM_IS_CLIENT_DIALOG (wm->focused_client))
-	    client->next_focused_client = wm->focused_client;
 	}
 
       wm->focused_client = client;
@@ -2040,10 +2012,7 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
   if (client != wm->focused_client)
     return;
 
-  /*
-   * Remove this client from any other's next_focused_client
-   */
-  next = client->next_focused_client;
+  next = mb_wm_client_get_next_focused_client (client);
 
   if (!next && wm->stack_top)
     {
@@ -2060,10 +2029,6 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
     }
 
   wm->focused_client = NULL;
-
-  /* Show the desktop if we cannot focus @next. */
-  if (next && !mb_wm_focus_client (wm, next))
-    mb_wm_handle_show_desktop (wm, True);
 }
 
 void
