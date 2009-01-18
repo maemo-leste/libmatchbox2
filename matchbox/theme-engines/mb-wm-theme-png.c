@@ -1306,7 +1306,15 @@ mb_wm_theme_png_ximg (MBWMThemePng * theme, const char * img)
     for (x = 0; x < width; x++)
       {
 	unsigned char a, r, g, b;
+#if BYTE_ORDER==LITTLE_ENDIAN
+	/* This is probably an Intel scratchbox */
+	b = *p++; g = *p++; r = *p++; a = *p++;
+#elif BYTE_ORDER==BIG_ENDIAN
+	/* This is probably the ARM */
 	r = *p++; g = *p++; b = *p++; a = *p++;
+#else
+#error "Could not determine byte order!  Please define BYTE_ORDER to BIG_ENDIAN or LITTLE_ENDIAN"
+#endif
 	r = (r * (a + 1)) / 256;
 	g = (g * (a + 1)) / 256;
 	b = (b * (a + 1)) / 256;
