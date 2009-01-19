@@ -29,6 +29,9 @@
 #include <X11/extensions/Xrender.h>
 #endif
 
+/**
+ * Private data for MBWindowManagerClient.
+ */
 struct MBWindowManagerClientPriv
 {
   Bool          realized;

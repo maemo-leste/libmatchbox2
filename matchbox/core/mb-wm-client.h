@@ -32,7 +32,8 @@
 
 typedef void (*MBWindowManagerClientInitMethod) (MBWindowManagerClient *client);
 
-/* Clients hint to what stacking layer they exist in. By default all
+/**
+ * Clients hint to what stacking layer they exist in. By default all
  * transients to that client will also be stacked there.
  */
 typedef enum MBWMStackLayerType
@@ -47,7 +48,8 @@ typedef enum MBWMStackLayerType
 }
 MBWMStackLayerType;
 
-/* Clients can also hint to as how they would like to be managed by the
+/**
+ * Clients can also hint to as how they would like to be managed by the
  * layout manager.
  */
 typedef enum MBWMClientLayoutHints
@@ -116,6 +118,9 @@ typedef  void (*MBWMClientDetransitise) (MBWindowManagerClient *client);
 
 typedef  MBWMStackLayerType (*MBWMClientStackingLayer)(MBWindowManagerClient*);
 
+/**
+ * Class of MBWindowManagerClient.
+ */
 struct MBWindowManagerClientClass
 {
   MBWMObjectClass              parent;
@@ -134,6 +139,10 @@ struct MBWindowManagerClientClass
   MBWMClientStackingLayer      stacking_layer;
 };
 
+/**
+ * One X client, a window of one of the standard MBWMClientType types;
+ * in MBWindowManager; contains MBWMClientWindow.
+ */
 struct MBWindowManagerClient
 {
   MBWMObject                   parent;
@@ -152,7 +161,15 @@ struct MBWindowManagerClient
   MBWindowManagerClient       *stacked_above, *stacked_below;
 
   MBGeometry frame_geometry;  /* FIXME: in ->priv ? */
+  /**
+   * List of MBWMDecor objects.
+   * \bug Why is this not an array?  When do we ever not have four?
+   */
   MBWMList                    *decor;
+  /**
+   * List of MBWindowManagerClient objects which are transient to this
+   * object
+   */
   MBWMList                    *transients;
   MBWindowManagerClient       *transient_for;
 

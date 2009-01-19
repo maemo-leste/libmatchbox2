@@ -1,9 +1,16 @@
 #include "mb-wm.h"
 #include <ctype.h> 		/* isalpha etc */
 
-struct MBWMKeys /* FIXME: Probably do want to hide these here */
+/**
+ * All the keybinding information: a list of keybindings and the current
+ * masks for the various modifier keys; in MBWindowManager.
+ *
+ * \bug FIXME: Probably do want to hide these here
+ */
+struct MBWMKeys
 {
-  MBWMList *bindings;  /* Always points to first binding */
+  /** Always points to first binding */
+  MBWMList *bindings;
 
   int MetaMask;
   int HyperMask;
@@ -13,7 +20,6 @@ struct MBWMKeys /* FIXME: Probably do want to hide these here */
   int NumLockMask;
   int ScrollLockMask;
   int lock_mask;
-
 };
 
 static Bool

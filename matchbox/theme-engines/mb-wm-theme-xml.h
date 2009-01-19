@@ -3,10 +3,10 @@
 
 #include <matchbox/core/mb-wm.h>
 #include <matchbox/theme-engines/mb-wm-theme.h>
-/*
- * Helper structs for xml theme
+/**
+ * A button within an MBWMTheme
  */
-typedef struct Button
+typedef struct MBWMXmlButton
 {
   MBWMDecorButtonType type;
   MBWMDecorButtonPack packing;
@@ -29,17 +29,25 @@ typedef struct Button
   int press_activated;
 } MBWMXmlButton;
 
+/**
+ * Fonts are sized in either pixels or points
+ */
 typedef enum _MBWMXmlFontUnits
 {
   MBWMXmlFontUnitsPixels,
   MBWMXmlFontUnitsPoints,
 } MBWMXmlFontUnits;
 
-typedef struct Decor
+/**
+ * A decor within an MBWMTheme; contains MBWMXmlButton objects
+ */
+typedef struct MBWMXmlDecor
 {
   MBWMDecorType type;
 
+  /** foreground colour */
   MBWMColor clr_fg;
+  /** background colour */
   MBWMColor clr_bg;
 
   int x;
@@ -54,10 +62,17 @@ typedef struct Decor
   MBWMXmlFontUnits   font_units;
   char             * font_family;
 
+  /**
+   * Buttons on this decor (of type MBWMXmlButton).
+   * Currently only the North decor can have buttons.
+   */
   MBWMList * buttons;
-}MBWMXmlDecor;
+} MBWMXmlDecor;
 
-typedef struct Client
+/**
+ * A client within an MBWMTheme; contains Decors.
+ */
+typedef struct MBWMXmlClient
 {
   MBWMClientType  type;
 
@@ -71,7 +86,7 @@ typedef struct Client
   MBWMList       *decors;
 
   MBWMClientLayoutHints layout_hints;
-}MBWMXmlClient;
+} MBWMXmlClient;
 
 MBWMXmlButton *
 mb_wm_xml_button_new ();

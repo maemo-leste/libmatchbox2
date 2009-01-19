@@ -365,12 +365,18 @@ typedef enum
   XML_CTX_IMG,
 } XmlCtx;
 
+/**
+ * During XML parsing, stores the backtrace of which XML tags we're inside.
+ */
 struct stack_data
 {
   XmlCtx  ctx;
   void   *data;
 };
 
+/**
+ * The unprocessed result of parsing a theme XML file.
+ */
 struct expat_data
 {
   XML_Parser   par;
@@ -386,6 +392,9 @@ struct expat_data
   Bool          shaped;
 };
 
+/**
+ * Loads a theme into memory from disk, and returns it.
+ */
 MBWMTheme *
 mb_wm_theme_new (MBWindowManager * wm, const char * theme_path)
 {
@@ -675,8 +684,10 @@ mb_wm_theme_get_client_layout_hints (MBWMTheme             * theme,
   return c->layout_hints;
 }
 
-/*
- * Returns True if the theme prescribes at least one value for the geometry
+/**
+ * Finds the geometry prescribed for the given client.
+ *
+ * @return True if the theme prescribes at least one value for the geometry.
  */
 Bool
 mb_wm_theme_get_client_geometry (MBWMTheme             * theme,

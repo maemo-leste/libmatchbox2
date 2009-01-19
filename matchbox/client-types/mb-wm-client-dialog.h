@@ -31,12 +31,19 @@ typedef struct MBWMClientDialogClass MBWMClientDialogClass;
 #define MB_WM_TYPE_CLIENT_DIALOG (mb_wm_client_dialog_class_type ())
 #define MB_WM_IS_CLIENT_DIALOG(c) (MB_WM_OBJECT_TYPE(c)==MB_WM_TYPE_CLIENT_DIALOG)
 
+/**
+ * A MBWMClientBase for dialogue windows: that is, those whose type is
+ * _NET_WM_WINDOW_TYPE_DIALOG.
+ */
 struct MBWMClientDialog
 {
   MBWMClientBase    parent;
   MBWMDecorButton  *button_close;
 };
 
+/**
+ * Class for MBWMClientDialog.
+ */
 struct MBWMClientDialogClass
 {
   MBWMClientBaseClass parent;

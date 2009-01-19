@@ -39,7 +39,10 @@ typedef struct  XasContext XasContext;
 typedef unsigned long      XasCookie;
 typedef struct XasWindowAttributes XasWindowAttributes;
 
-/* XWindowAttributes without geom info */
+/**
+ * XWindowAttributes without geom info; must be kept identical to
+ * MBWMClientWindowAttributes
+ */
 struct XasWindowAttributes {
   Visual *visual;         
   Window root;            

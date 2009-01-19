@@ -28,29 +28,52 @@ typedef struct MBWMRootWindowClass   MBWMRootWindowClass;
 #define MB_WM_ROOT_WINDOW_CLASS(c) ((MBWMRootWindowClass*)(c))
 #define MB_WM_TYPE_ROOT_WINDOW (mb_wm_root_window_class_type ())
 
+/**
+ * The root window; don't confuse this with MBWMClientDesktop,
+ * which represents the desktop window.
+ */
 struct MBWMRootWindow
 {
   MBWMObject        parent;
 
+  /** ID of the root window */
   Window            xwindow;
+
+  /** ID of the magic offscreen window that shows we're EWMH-compatible */
   Window            hidden_window;
+
+  /** The window manager */
   MBWindowManager  *wm;
 };
 
+/**
+ * Class for MBWMRootWindow.
+ */
 struct MBWMRootWindowClass
 {
   MBWMObjectClass parent;
 };
 
+/**
+ * Finds the one and only root window of a window manager.
+ */
 MBWMRootWindow *
 mb_wm_root_window_get (MBWindowManager *wm);
 
 int
 mb_wm_root_window_class_type ();
 
+/**
+ * Handles a message sent to the root window.  Returns true iff the message
+ * was handled.
+ */
 int
 mb_wm_root_window_handle_message(MBWMRootWindow *win, XClientMessageEvent *e);
 
+/**
+ * Marks the root window with details of which properties this window
+ * manager can handle.
+ */
 void
 mb_wm_root_window_update_supported_props (MBWMRootWindow *win);
 

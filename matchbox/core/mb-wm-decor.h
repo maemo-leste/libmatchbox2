@@ -51,6 +51,10 @@ typedef enum MBWMDecorDirtyState
   MBWMDecorDirtyFull  = 0xffffffff,
 } MBWMDecorDirtyState;
 
+/**
+ * A decor (that is, a description of one of the four edges of a window's
+ * decorations); each decorated MBWindowManagerClient has four of these.
+ */
 struct MBWMDecor
 {
   MBWMObject                parent;
@@ -60,6 +64,9 @@ struct MBWMDecor
   MBGeometry                geom;
   MBWMDecorDirtyState       dirty;
   Bool                      absolute_packing;
+  /**
+   * A list of MBWMDecorButton objects.
+   */
   MBWMList                 *buttons;
   int                       pack_start_x;
   int                       pack_end_x;
@@ -71,6 +78,9 @@ struct MBWMDecor
   MBWMDecorDestroyUserData  destroy_themedata;
 };
 
+/**
+ * Class of MBWMDecor.
+ */
 struct MBWMDecorClass
 {
   MBWMObjectClass        parent;
@@ -153,6 +163,9 @@ typedef enum MBWMDecorButtonPack
   }
 MBWMDecorButtonPack;
 
+/**
+ * One of the buttons on a MBWMDecor.
+ */
 struct MBWMDecorButton
 {
   MBWMObject                  parent;
@@ -185,6 +198,9 @@ struct MBWMDecorButton
 
 };
 
+/**
+ * Class for an MBWMDecorButton.
+ */
 struct MBWMDecorButtonClass
 {
   MBWMObjectClass   parent;

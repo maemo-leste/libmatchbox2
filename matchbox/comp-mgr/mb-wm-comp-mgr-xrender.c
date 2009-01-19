@@ -36,8 +36,8 @@
 #define SHADOW_OFFSET_X	(-SHADOW_RADIUS)
 #define SHADOW_OFFSET_Y	(-SHADOW_RADIUS)
 
-/*
- * A helper object to store manager's per-client data
+/**
+ * An MBWMCompMgrClient rendered using XRender.
  */
 struct MBWMCompMgrDefaultClient
 {

@@ -21,6 +21,30 @@
 #ifndef _HAVE_MB_WM_WINDOW_MANAGER_H
 #define _HAVE_MB_WM_WINDOW_MANAGER_H
 
+/**
+ * \mainpage
+ *
+ * If you're looking for a quick overview, the best place to start
+ * reading is the MBWindowManager class.  MBWindowManager contains
+ * some MBWindowManagerClient objects, each of which represents a
+ * window of a particular type; there is a subclass for each of these
+ * types (such as MBWMClientDialog).  Each MBWindowManagerClient contains
+ * an MBWMClientWindow which represents the actual low-level X window.
+ 
+ * MBWindowManager also contains an MBWMTheme, which is usually in
+ * practice an instance of the subclass MBWMThemePng.
+ *
+ * MBWindowManager also contains an MBWMCompMgr, if this was enabled
+ * during configuration, which is either an MBWMCompMgrDefault
+ * (to use XRender) or an MBWMCompMgrClutter (to use Clutter).
+ *
+ * MBWindowManager also contains an MBWMMainContext, which contains an
+ * MBWMEventFuncs.  This is a homebrew signal system which can call any
+ * number of callback functions when a given X event occurs.
+ * The window manager also has its own object system which resembles GObject.
+ * Its root object is MBWMObject.
+ */
+
 #include <matchbox/mb-wm-config.h>
 #include <matchbox/core/mb-wm-object.h>
 #include <matchbox/core/mb-wm-root-window.h>
@@ -52,7 +76,11 @@ typedef enum
   _MBWindowManagerCursorLast
 } MBWindowManagerCursor;
 
-
+/**
+ * The general, overall state of this window manager, containing some
+ * MBWindowManagerClient objects, and the MBWMTheme, MBWMRootWindow,
+ * MBWMLayout, MBWMKeys, MBWMMainContext, and MBWMCompMgr if any.
+ */
 struct MBWindowManager
 {
   MBWMObject                   parent;
@@ -104,6 +132,9 @@ struct MBWindowManager
   int                          argc;
 };
 
+/**
+ * Class of MBWindowManager.
+ */
 struct MBWindowManagerClass
 {
   MBWMObjectClass parent;

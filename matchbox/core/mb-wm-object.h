@@ -47,6 +47,9 @@ typedef enum  MBWMObjectClassType
 }
 MBWMObjectClassType;
 
+/**
+ * Description of a class, used when registering an object.
+ */
 typedef struct MBWMObjectClassInfo
 {
   size_t              klass_size;
@@ -57,6 +60,9 @@ typedef struct MBWMObjectClassInfo
 }
 MBWMObjectClassInfo;
 
+/**
+ * Class for MBWMObject.
+ */
 struct MBWMObjectClass
 {
   int              type;
@@ -70,6 +76,9 @@ struct MBWMObjectClass
 #endif
 };
 
+/**
+ * The root of the object hierarchy.
+ */
 struct MBWMObject
 {
   MBWMObjectClass *klass;

@@ -67,10 +67,10 @@ static void
 mb_wm_comp_mgr_clutter_add_actor (MBWMCompMgrClutter *,
 				  MBWMCompMgrClutterClient *);
 
-/*
- * A helper object to store manager's per-client data
+/**
+ * Implementation of MBWMCompMgrClutterClient.
  */
-struct _MBWMCompMgrClutterClientPrivate
+struct MBWMCompMgrClutterClientPrivate
 {
   ClutterActor          * actor;  /* Overall actor */
   ClutterActor          * texture; /* The texture part of our actor */
@@ -112,7 +112,7 @@ mb_wm_comp_mgr_clutter_client_class_init (MBWMObjectClass *klass)
 #endif
 }
 
-/*
+/**
  * Fetch the entire texture for our client
  */
 static void
@@ -280,7 +280,7 @@ mb_wm_comp_mgr_clutter_client_class_type ()
   return type;
 }
 
-/*
+/**
  * This is a private method, hence static (all instances of this class are
  * created automatically by the composite manager).
  */
@@ -372,6 +372,10 @@ mb_wm_comp_mgr_clutter_client_event_free (MBWMCompMgrClutterClientEventEffect * 
   free (effect);
 }
 
+/**
+ * Data passed to the callback for ClutterTimeline::completed,
+ * comp_mgr_clutter_client_event_completed_cb().
+ */
 struct completed_cb_data
 {
   gulong                                my_id;
@@ -442,10 +446,10 @@ mb_wm_comp_mgr_clutter_client_event_new (MBWMCompMgrClient     *client,
   return eff;
 }
 
-/*
+/**
  * Implementation of MBWMCompMgrClutter
  */
-struct _MBWMCompMgrClutterPrivate
+struct MBWMCompMgrClutterPrivate
 {
   ClutterActor * arena;
   MBWMList     * desktops;
@@ -1139,6 +1143,9 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   mb_wm_comp_mgr_clutter_add_actor (cmgr, cclient);
 }
 
+/**
+ * Structure that gets passed to mb_wm_comp_mgr_clutter_transtion_fade_cb().
+ */
 struct _fade_cb_data
 {
   MBWMCompMgrClutterClient *cclient1;

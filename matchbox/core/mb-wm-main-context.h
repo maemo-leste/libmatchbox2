@@ -31,6 +31,10 @@
 
 typedef Bool (*MBWMMainContextXEventFunc) (XEvent * xev, void * userdata);
 
+/**
+ * All the handlers for the various kinds of X event.
+ * \bug It might be easier to use signals and let glib do the work for us.
+ */
 typedef struct MBWMEventFuncs
 {
   /* FIXME: figure our X wrap / unwrap mechanism */
@@ -58,18 +62,27 @@ typedef struct MBWMEventFuncs
 }
 MBWMEventFuncs;
 
+/**
+ * The state of one invocation of the window manager;
+ * in MBWindowManager; contains the MBWMEventFuncs.
+ */
 struct MBWMMainContext
 {
   MBWMObject       parent;
 
+  /** The current window manager */
   MBWindowManager *wm;
 
+  /** All the X event handlers */
   MBWMEventFuncs   event_funcs;
   struct pollfd   *poll_fds;
   int              n_poll_fds;
   Bool             poll_cache_dirty;
 };
 
+/**
+ * Class for MBWMMainContext.
+ */
 struct MBWMMainContextClass
 {
   MBWMObjectClass parent;
@@ -81,6 +94,7 @@ mb_wm_main_context_class_type ();
 MBWMMainContext*
 mb_wm_main_context_new(MBWindowManager *wm);
 
+/** Adds a new X event handler */
 unsigned long
 mb_wm_main_context_x_event_handler_add (MBWMMainContext *ctx,
 					Window           xwin,
@@ -88,6 +102,7 @@ mb_wm_main_context_x_event_handler_add (MBWMMainContext *ctx,
 					MBWMXEventFunc   func,
 					void            *userdata);
 
+/** Removes an existing X event handler */
 void
 mb_wm_main_context_x_event_handler_remove (MBWMMainContext *ctx,
 					   int              type,

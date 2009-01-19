@@ -31,11 +31,19 @@ typedef struct MBWMClientMenuClass MBWMClientMenuClass;
 #define MB_WM_TYPE_CLIENT_MENU (mb_wm_client_menu_class_type ())
 #define MB_WM_IS_CLIENT_MENU(c) (MB_WM_OBJECT_TYPE(c)==MB_WM_TYPE_CLIENT_MENU)
 
+/**
+ * A MBWMClientBase for menu windows: that is, those whose type is
+ * any of _NET_WM_WINDOW_TYPE_MENU, _NET_WM_WINDOW_TYPE_POPUP_MENU or
+ * _NET_WM_WINDOW_TYPE_DROPDOWN_MENU.
+ */
 struct MBWMClientMenu
 {
   MBWMClientBase    parent;
 };
 
+/**
+ * Class for MBWMClientMenu.
+ */
 struct MBWMClientMenuClass
 {
   MBWMClientBaseClass parent;

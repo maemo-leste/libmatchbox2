@@ -21,6 +21,10 @@
 #ifndef _HAVE_MB_WM_ATOMS_H
 #define _HAVE_MB_WM_ATOMS_H
 
+/**
+ * Interns (i.e. registers) all the atoms that the window manager
+ * needs with the X server.
+ */
 void
 mb_wm_atoms_init(MBWindowManager *wm);
 

@@ -31,12 +31,18 @@
 #include <pango/pangoxft.h>
 #endif
 
+/**
+ * Class for MBWMThemePng.
+ */
 struct MBWMThemePngClass
 {
   MBWMThemeClass    parent;
 
 };
 
+/**
+ * A MBWMTheme whose images are drawn from one large PNG image.
+ */
 struct MBWMThemePng
 {
   MBWMTheme        parent;

@@ -90,7 +90,6 @@ mb_wm_root_window_init (MBWMObject *this, va_list vap)
 					     CopyFromParent,
 					     CopyFromParent,
 					     CWOverrideRedirect, &attr);
-  mb_wm_rename_window (wm, root_window->hidden_window, "hidden");
 
   mb_wm_root_window_init_properties (root_window);
 

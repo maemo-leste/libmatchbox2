@@ -31,11 +31,18 @@ typedef struct MBWMClientDesktopClass MBWMClientDesktopClass;
 #define MB_WM_TYPE_CLIENT_DESKTOP (mb_wm_client_desktop_class_type ())
 #define MB_WM_IS_CLIENT_DESKTOP(c) (MB_WM_OBJECT_TYPE(c)==MB_WM_TYPE_CLIENT_DESKTOP)
 
+/**
+ * A MBWMClientBase for the one and only desktop window: that is,
+ * the window whose type is _NET_WM_WINDOW_TYPE_DESKTOP.
+ */
 struct MBWMClientDesktop
 {
   MBWMClientBase    parent;
 };
 
+/**
+ * Class of MBWMClientDesktop.
+ */
 struct MBWMClientDesktopClass
 {
   MBWMClientBaseClass parent;

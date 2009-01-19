@@ -32,11 +32,18 @@ typedef struct MBWMClientPanelClass MBWMClientPanelClass;
 #define MB_WM_IS_CLIENT_PANEL(c) \
                            (MB_WM_OBJECT_TYPE(c)==MB_WM_TYPE_CLIENT_PANEL)
 
+/**
+ * A MBWMClientBase for panels: that is, those whose type is
+ * _NET_WM_WINDOW_TYPE_DOCK.
+ */
 struct MBWMClientPanel
 {
   MBWMClientBase parent;
 };
 
+/**
+ * Class of MBWMClientPanel.
+ */
 struct MBWMClientPanelClass
 {
   MBWMClientBaseClass parent;

@@ -1,3 +1,44 @@
+2009-01-19  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	Added documentation comments in Doxygen-friendly format.
+
+	* matchbox/client-types/mb-wm-client-app.h:
+	* matchbox/client-types/mb-wm-client-desktop.h:
+	* matchbox/client-types/mb-wm-client-dialog.h:
+	* matchbox/client-types/mb-wm-client-input.h:
+	* matchbox/client-types/mb-wm-client-menu.h:
+	* matchbox/client-types/mb-wm-client-note.h:
+	* matchbox/client-types/mb-wm-client-override.h:
+	* matchbox/client-types/mb-wm-client-panel.h:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-xrender.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-xrender.h:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	* matchbox/core/mb-window-manager.h:
+	* matchbox/core/mb-wm-atoms.h:
+	* matchbox/core/mb-wm-client-base.h:
+	* matchbox/core/mb-wm-client-window.h:
+	* matchbox/core/mb-wm-client.c:
+	* matchbox/core/mb-wm-client.h:
+	* matchbox/core/mb-wm-decor.h:
+	* matchbox/core/mb-wm-keys.c:
+	* matchbox/core/mb-wm-layout.h:
+	* matchbox/core/mb-wm-macros.h:
+	* matchbox/core/mb-wm-main-context.h:
+	* matchbox/core/mb-wm-object-props.h:
+	* matchbox/core/mb-wm-object.h:
+	* matchbox/core/mb-wm-props.h:
+	* matchbox/core/mb-wm-root-window.c:
+	* matchbox/core/mb-wm-root-window.h:
+	* matchbox/core/mb-wm-types.h:
+	* matchbox/core/xas.h:
+	* matchbox/theme-engines/mb-wm-theme-png.c:
+	* matchbox/theme-engines/mb-wm-theme-png.h:
+	* matchbox/theme-engines/mb-wm-theme-xml.h:
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+
 2009-01-18  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	* matchbox/theme-engines/mb-wm-theme-png.c: Buttons should be

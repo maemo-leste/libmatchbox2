@@ -31,11 +31,19 @@ typedef struct MBWMClientOverrideClass MBWMClientOverrideClass;
 #define MB_WM_TYPE_CLIENT_OVERRIDE (mb_wm_client_override_class_type ())
 #define MB_WM_IS_CLIENT_OVERRIDE(c) (MB_WM_OBJECT_TYPE(c)==MB_WM_TYPE_CLIENT_OVERRIDE)
 
+/**
+ * A MBWMClientBase for override-redirect windows: that is, those which have the
+ * X window attribute "override-redirect"; the window manager must not attempt
+ * to decorate these windows.
+ */
 struct MBWMClientOverride
 {
   MBWindowManagerClient    parent;
 };
 
+/**
+ * Class for MBWMClientOverride.
+ */
 struct MBWMClientOverrideClass
 {
   MBWindowManagerClientClass parent;

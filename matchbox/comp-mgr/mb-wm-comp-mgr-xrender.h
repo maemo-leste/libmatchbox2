@@ -32,12 +32,18 @@
 #define MB_WM_COMP_MGR_DEFAULT_CLIENT_CLASS(c) ((MBWMCompMgrDefaultClientClass*)(c))
 #define MB_WM_TYPE_COMP_MGR_DEFAULT_CLIENT (mb_wm_comp_mgr_xrender_client_class_type ())
 
+/**
+ * An MBWMCompMgr which renders using XRender.
+ */
 struct MBWMCompMgrDefault
 {
   MBWMCompMgr                 parent;
   MBWMCompMgrDefaultPrivate  *priv;
 };
 
+/**
+ * Class of MBWMCompMgrDefault.
+ */
 struct MBWMCompMgrDefaultClass
 {
   MBWMCompMgrClass parent;
@@ -49,6 +55,9 @@ mb_wm_comp_mgr_xrender_class_type ();
 MBWMCompMgr*
 mb_wm_comp_mgr_xrender_new (MBWindowManager *wm);
 
+/**
+ * Class of MBWMCompMgrDefaultClient.
+ */
 struct MBWMCompMgrDefaultClientClass
 {
   MBWMCompMgrClientClass  parent;

@@ -140,6 +140,9 @@ mb_wm_theme_png_class_type ()
   return type;
 }
 
+/**
+ * A decor within an MBWMThemePng.  Returned by mb_wm_decor_get_theme_data().
+ */
 struct DecorData
 {
   Pixmap    xpix;
@@ -181,10 +184,15 @@ decordata_free (MBWMDecor * decor, void *data)
   free (dd);
 }
 
+/**
+ * A button within an MBWMThemePng.
+ */
 struct ButtonData
 {
+  /** Pixmap for the button's inactive state */
   Pixmap    xpix_i;
   XftDraw  *xftdraw_i;
+  /** Pixmap for the button's active state */
   Pixmap    xpix_a;
   XftDraw  *xftdraw_a;
 };

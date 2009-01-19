@@ -83,6 +83,10 @@ do                                                                \
 #endif
 
 /* FIXME: ifdef this with compile time flag */
+
+/**
+ * Returns void if the given expression is false.
+ */
 #define mbwm_return_if_fail(expr) do { \
         if LIKELY(expr) { } else       \
           {                            \
@@ -92,6 +96,9 @@ do                                                                \
           }                                                           \
 	 } while(0);
 
+/**
+ * Returns a value if the given expression is false.
+ */
 #define mbwm_return_val_if_fail(expr,val) do { \
         if LIKELY(expr) { } else       \
           {                            \

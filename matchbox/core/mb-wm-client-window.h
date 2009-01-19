@@ -110,6 +110,11 @@ MBWMClientWindowAllowedActions;
 #define MB_WM_CLIENT_WINDOW_CLASS(c) ((MBWMClientWindowClass*)(c))
 #define MB_WM_TYPE_CLIENT_WINDOW (mb_wm_client_window_class_type ())
 
+/**
+ * Any toplevel window on the X server; not necessarily of any
+ * type that we recognise; compare MBWindowManagerClient, which
+ * represents only types we recognise (and contains this class).
+ */
 struct MBWMClientWindow
 {
   MBWMObject    parent;
@@ -128,7 +133,7 @@ struct MBWMClientWindow
   Window                         xwin_group;
   Pixmap                         icon_pixmap, icon_pixmap_mask;
 
-  /* WithdrawnState 0, NormalState 1, IconicState 3 */
+  /** WithdrawnState 0, NormalState 1, IconicState 3 */
   int                            initial_state ;
 
   MBWMClientWindowEWMHState      ewmh_state;
@@ -151,6 +156,9 @@ struct MBWMClientWindow
   Bool                           undecorated;
 };
 
+/**
+ * Class of MBWMClientWindow.
+ */
 struct MBWMClientWindowClass
 {
   MBWMObjectClass parent;

@@ -115,11 +115,18 @@ mb_wm_props_send_x_message (MBWindowManager *wm,
 			     False,                                  \
 			     (wm)->atoms[MBWM_ATOM_UTF8_STRING]);
 
+/**
+ * Sets the name of a window, the WM_NAME property.
+ */
 void
 mb_wm_rename_window (MBWindowManager *wm,
 		     Window win,
 		     const char *name);
 
+/**
+ * Returns true iff the window is a sub-dialogue.
+ * \bug this should be removed now; it's unnecessary
+ */
 int
 mb_window_is_secondary (MBWindowManager *wm, Window w);
 

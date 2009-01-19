@@ -29,6 +29,9 @@
 
 #include <X11/Xlib.h>
 
+/**
+ * Description of a callback function, as used in our homebrew signal system
+ */
 typedef struct MBWMFuncInfo
 {
   void *func;
@@ -38,23 +41,33 @@ typedef struct MBWMFuncInfo
   unsigned long id;
 } MBWMFuncInfo;
 
+/**
+ * A rectangle described by the Cartesian coordinates of its top left-hand
+ * corner, its width, and its height.
+ */
 typedef struct MBGeometry
 {
   int x,y;
   int width,height;
-
 } MBGeometry;
 
 typedef struct MBWMList MBWMList;
 
 typedef void (*MBWMListForEachCB) (void *data, void *userdata);
 
+/**
+ * A simple list type (why don't we use GLib for this?)
+ */
 struct MBWMList
 {
   MBWMList *next, *prev;
   void *data;
 };
 
+/**
+ * An exact copy of XasWindowAttributes; beware code duplication; only used as
+ * the return value of mb_wm_xwin_get_attributes_reply().
+ */
 typedef struct MBWMClientWindowAttributes /* Needs to be sorted */
 {
   Visual *visual;
@@ -76,6 +89,9 @@ typedef struct MBWMClientWindowAttributes /* Needs to be sorted */
 
 } MBWMClientWindowAttributes ;
 
+/**
+ * An icon.
+ */
 typedef struct MBWMRgbaIcon
 {
   int width;
@@ -113,6 +129,9 @@ typedef struct MBWMCompMgrDefaultClient    MBWMCompMgrDefaultClient;
 typedef struct MBWMCompMgrDefaultClientClass MBWMCompMgrDefaultClientClass;
 typedef struct MBWMCompMgrDefaultClentPrivate MBWMCompMgrDefaultClientPrivate;
 
+/**
+ * The type of a MBWindowManagerClient; a particular species of X client.
+ */
 typedef enum MBWMClientType
 {
   MBWMClientTypeApp      = (1 << 0),
@@ -153,6 +172,10 @@ typedef enum _MBWMGravity
 
 typedef unsigned long MBWMCookie;
 
+/**
+ * All the static atoms we will ever need to use to communicate with
+ * the X server.
+ */
 typedef enum MBWMAtom
 {
   /* ICCCM */
@@ -288,6 +311,10 @@ typedef void (*MBWMKeyDestroyFunc) (MBWindowManager   *wm,
 				    MBWMKeyBinding    *binding,
 				    void              *userdata);
 
+/**
+ * A single keybinding, including callbacks for when its key is pressed and
+ * for when it is destroyed.
+ */
 struct MBWMKeyBinding
 {
   KeySym                   keysym;
@@ -368,6 +395,10 @@ typedef Bool (*MBWindowManagerFdWatchFunc)
       MBWMIOCondition          events,
       void                    *userdata);
 
+/**
+ * An association of an MBWMXEventFunc with a particular X window; for example,
+ * when a window receives a ButtonPress event.
+ */
 typedef struct MBWMXEventFuncInfo
 {
   MBWMXEventFunc func;
@@ -406,6 +437,9 @@ typedef enum MBWMSyncType
   MBWMSyncFullscreen        = (1<<6),
 } MBWMSyncType;
 
+/**
+ * A colour, with alpha value.  May also be marked unset.
+ */
 typedef struct MBWMColor
 {
   double r;

@@ -31,6 +31,10 @@ typedef struct MBWMClientInputClass MBWMClientInputClass;
 #define MB_WM_TYPE_CLIENT_INPUT (mb_wm_client_input_class_type ())
 #define MB_WM_IS_CLIENT_INPUT(c) (MB_WM_OBJECT_TYPE(c)==MB_WM_TYPE_CLIENT_INPUT)
 
+/**
+ * A MBWMClientBase for an input window: that is, those whose type is either
+ * _NET_WM_WINDOW_TYPE_INPUT or _NET_WM_WINDOW_TYPE_TOOLBAR.
+ */
 struct MBWMClientInput
 {
   MBWMClientBase    parent;
@@ -38,6 +42,9 @@ struct MBWMClientInput
   MBGeometry        transient_geom;
 };
 
+/**
+ * Class for MBWMClientInput.
+ */
 struct MBWMClientInputClass
 {
   MBWMClientBaseClass parent;

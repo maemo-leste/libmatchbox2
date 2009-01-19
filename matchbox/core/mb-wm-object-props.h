@@ -4,7 +4,7 @@
 
 #include <matchbox/core/mb-wm-types.h>
 
-/*
+/**
  * MBWMObject construction properties
  *
  * NB: the properties are only used at construction time, being passed to

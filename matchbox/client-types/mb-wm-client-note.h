@@ -32,11 +32,18 @@ typedef struct MBWMClientNoteClass MBWMClientNoteClass;
 #define MB_WM_TYPE_CLIENT_NOTE (mb_wm_client_note_class_type ())
 #define MB_WM_IS_CLIENT_NOTE(c) (MB_WM_OBJECT_TYPE(c)==MB_WM_TYPE_CLIENT_NOTE)
 
+/**
+ * A MBWMClientBase for a note window, also called a notification: that is,
+ * those whose type is MBWM_ATOM_NET_WM_WINDOW_TYPE_NOTIFICATION.
+ */
 struct MBWMClientNote
 {
   MBWMClientDialog  parent;
 };
 
+/**
+ * Class for MBWMClientNote.
+ */
 struct MBWMClientNoteClass
 {
   MBWMClientDialogClass parent;

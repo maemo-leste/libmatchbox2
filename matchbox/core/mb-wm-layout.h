@@ -27,6 +27,9 @@
 #define MB_WM_LAYOUT_CLASS(c) ((MBWMLayoutClass*)(c))
 #define MB_WM_TYPE_LAYOUT (mb_wm_layout_class_type ())
 
+/**
+ * Superclass of all systems which lay out the screen; in MBWindowManager.
+ */
 struct MBWMLayout
 {
   MBWMObject    parent;
@@ -34,6 +37,9 @@ struct MBWMLayout
   MBWindowManager *wm;
 };
 
+/**
+ * Class for MBWMLayout.
+ */
 struct MBWMLayoutClass
 {
   MBWMObjectClass parent;

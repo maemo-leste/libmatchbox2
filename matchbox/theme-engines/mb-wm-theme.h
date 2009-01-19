@@ -32,16 +32,28 @@
 #define MB_WM_THEME_PNG_CLASS(c) ((MBWMThemePngClass*)(c))
 #define MB_WM_TYPE_THEME_PNG (mb_wm_theme_png_class_type ())
 
+/**
+ * Features which a theme supports.
+ */
 enum MBWMThemeCaps
 {
+  /** The theme supports an "Accept" button. */
   MBWMThemeCapsFrameMainButtonActionAccept = (1<<0),
+  /** Apparently not used */
   MBWMThemeCapsFrameDlgButtonActionAccept  = (1<<1),
+  /** The theme supports a "Help" button. */
   MBWMThemeCapsFrameMainButtonActionHelp   = (1<<2),
+  /** Apparently not used */
   MBWMThemeCapsFrameDlgButtonActionHelp    = (1<<3),
+  /** The theme supports some custom button. */
   MBWMThemeCapsFrameMainButtonActionCustom = (1<<4),
+  /** Apparently not used */
   MBWMThemeCapsFrameDlgButtonActionCustom  = (1<<5),
 };
 
+/**
+ * An XML-based theme; in MBWindowManager; contains MBWMXmlClient objects.
+ */
 struct MBWMThemeClass
 {
   MBWMObjectClass               parent;
@@ -83,6 +95,9 @@ struct MBWMThemeClass
                      int                    new_padding);
 };
 
+/**
+ * An XML-based theme; in MBWindowManager; contains MBWMXmlClient objects.
+ */
 struct MBWMTheme
 {
   MBWMObject             parent;

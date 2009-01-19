@@ -25,12 +25,19 @@
 #define MB_WM_CLIENT_BASE_CLASS(c) ((MBWMClientBaseClass*)(c))
 #define MB_WM_TYPE_CLIENT_BASE (mb_wm_client_base_class_type ())
 
+/**
+ * A MBWindowManagerClient which exists to be the superclass of all classes
+ * representing particular types of client.
+ */
 typedef struct MBWMClientBase
 {
   MBWindowManagerClient parent;
 }
 MBWMClientBase;
 
+/**
+ * Class of MBWMClientBase.
+ */
 typedef struct MBWMClientBaseClass
 {
   MBWindowManagerClientClass parent;
@@ -41,6 +48,7 @@ MBWMClientBaseClass;
 int
 mb_wm_client_base_class_type ();
 
+/** A nasty hack to work around linking issues. */
 void base_foo(void);
 
 #endif

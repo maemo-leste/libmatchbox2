@@ -31,6 +31,11 @@
 #define MB_WM_COMP_MGR_CLIENT_CLASS(c) ((MBWMCompMgrClientClass*)(c))
 #define MB_WM_TYPE_COMP_MGR_CLIENT (mb_wm_comp_mgr_client_class_type ())
 
+/**
+ * A compositor; in MBWindowManager if it's turned on in configuration;
+ * this is an abstract superclass and MBWMCompMgrClutter or MBWMCompMgrDefault
+ * should be instantiated.
+ */
 struct MBWMCompMgr
 {
   MBWMObject           parent;
@@ -40,6 +45,9 @@ struct MBWMCompMgr
   unsigned long        damage_cb_id;
 };
 
+/**
+ * Class of MBWMCompMgr.
+ */
 struct MBWMCompMgrClass
 {
   MBWMObjectClass        parent;
@@ -119,6 +127,10 @@ mb_wm_comp_mgr_select_desktop (MBWMCompMgr * mgr,
 			       int           desktop,
 			       int           old_desktop);
 
+/**
+ * A composited client; contains but does not descend from
+ * MBWindowManagerClient; not sure why that is.
+ */
 struct MBWMCompMgrClient
 {
   MBWMObject              parent;
@@ -130,6 +142,9 @@ struct MBWMCompMgrClient
   Bool                    is_argb32;
 };
 
+/**
+ * Class for MBWMCompMgrClient.
+ */
 struct MBWMCompMgrClientClass
 {
   MBWMObjectClass        parent;

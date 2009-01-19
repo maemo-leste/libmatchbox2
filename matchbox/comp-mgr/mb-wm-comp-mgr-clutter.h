@@ -32,13 +32,13 @@
 #define MB_WM_COMP_MGR_CLUTTER_CLIENT_CLASS(c) ((MBWMCompMgrClutterClientClass*)(c))
 #define MB_WM_TYPE_COMP_MGR_CLUTTER_CLIENT (mb_wm_comp_mgr_clutter_client_class_type ())
 
-typedef struct _MBWMCompMgrClutter MBWMCompMgrClutter;
-typedef struct _MBWMCompMgrClutterClass MBWMCompMgrClutterClass;
-typedef struct _MBWMCompMgrClutterPrivate MBWMCompMgrClutterPrivate;
+typedef struct MBWMCompMgrClutter MBWMCompMgrClutter;
+typedef struct MBWMCompMgrClutterClass MBWMCompMgrClutterClass;
+typedef struct MBWMCompMgrClutterPrivate MBWMCompMgrClutterPrivate;
 
-typedef struct _MBWMCompMgrClutterClient MBWMCompMgrClutterClient;
-typedef struct _MBWMCompMgrClutterClientClass MBWMCompMgrClutterClientClass;
-typedef struct _MBWMCompMgrClutterClientPrivate MBWMCompMgrClutterClientPrivate;
+typedef struct MBWMCompMgrClutterClient MBWMCompMgrClutterClient;
+typedef struct MBWMCompMgrClutterClientClass MBWMCompMgrClutterClientClass;
+typedef struct MBWMCompMgrClutterClientPrivate MBWMCompMgrClutterClientPrivate;
 
 typedef enum
 {
@@ -48,13 +48,19 @@ typedef enum
   MBWMCompMgrClutterClientEffectRunning = (1<<3),
 } MBWMCompMgrClutterClientFlags;
 
-struct _MBWMCompMgrClutter
+/**
+ * An MBWMCompMgr which renders using Clutter.
+ */
+struct MBWMCompMgrClutter
 {
   MBWMCompMgr                 parent;
   MBWMCompMgrClutterPrivate  *priv;
 };
 
-struct _MBWMCompMgrClutterClass
+/**
+ * Class for MBWMCompMgrClutter.
+ */
+struct MBWMCompMgrClutterClass
 {
   MBWMCompMgrClass  parent;
 
@@ -67,14 +73,20 @@ mb_wm_comp_mgr_clutter_class_type ();
 MBWMCompMgr*
 mb_wm_comp_mgr_clutter_new (MBWindowManager *wm);
 
-struct _MBWMCompMgrClutterClient
+/**
+ * An MBWMCompMgrClient rendered using Clutter.
+ */
+struct MBWMCompMgrClutterClient
 {
   MBWMCompMgrClient               parent;
 
   MBWMCompMgrClutterClientPrivate *priv;
 };
 
-struct _MBWMCompMgrClutterClientClass
+/**
+ * Class for MBWMCompMgrClutterClient.
+ */
+struct MBWMCompMgrClutterClientClass
 {
   MBWMCompMgrClientClass parent;
 };
