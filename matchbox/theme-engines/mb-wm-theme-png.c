@@ -296,7 +296,7 @@ mb_wm_theme_png_paint_button (MBWMTheme *theme, MBWMDecorButton *button)
 	   */
 	  if (d->clr_bg.set)
 	    {
-          /* Composite the decor over */
+              /* Composite the decor over */
 	      XRenderComposite (xdpy, PictOpOver,
 				p_theme->xpic,
 				None,
@@ -329,9 +329,23 @@ mb_wm_theme_png_paint_button (MBWMTheme *theme, MBWMDecorButton *button)
 				p_theme->xpic,
 				None,
 				XftDrawPicture (bdata->xftdraw_i),
-				i_x, i_y, 0, 0, 0, 0, b->width, b->height);
+				d->x + (d->width - b->width),
+                                d->y,
+                                0, 0, 0, 0, b->width, b->height);
 
 	      XRenderComposite (xdpy, PictOpSrc,
+				XftDrawPicture (bdata->xftdraw_i),
+				None,
+				XftDrawPicture (bdata->xftdraw_a),
+				0, 0, 0, 0, 0, 0, b->width, b->height);
+
+	      XRenderComposite (xdpy, PictOpOver,
+				p_theme->xpic,
+				None,
+				XftDrawPicture (bdata->xftdraw_i),
+				i_x, i_y, 0, 0, 0, 0, b->width, b->height);
+
+	      XRenderComposite (xdpy, PictOpOver,
 				p_theme->xpic,
 				None,
 				XftDrawPicture (bdata->xftdraw_a),
@@ -358,11 +372,19 @@ mb_wm_theme_png_paint_button (MBWMTheme *theme, MBWMDecorButton *button)
        * as they come up.
        */
 
-      button->geom.x =
-            XDisplayWidth (theme->wm->xdpy, theme->wm->xscreen) - b->width;
+      button->geom.x = mb_wm_decor_get_pack_end_x (decor);
       button->geom.y = 0;
       button->geom.width = b->width;
       button->geom.height = b->height;
+
+      XWindowAttributes attr;
+      XGetWindowAttributes( xdpy, decor->xwin, &attr );
+      XRenderPictFormat *format = XRenderFindVisualFormat( xdpy, attr.visual );
+      gboolean hasAlpha             = ( format->type == PictTypeDirect && format->direct.alphaMask );
+
+      /* We can't use PictOpOver because the target window
+       * doesn't have an alpha channel
+       */
 
       XRenderComposite (xdpy, PictOpSrc,
 			button->state == MBWMDecorButtonStatePressed ?

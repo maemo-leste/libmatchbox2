@@ -1,5 +1,10 @@
 2009-01-18  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
+	* matchbox/theme-engines/mb-wm-theme-png.c: Buttons should be
+	  composited even if there's no background colour set.
+
+2009-01-18  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
 	* configure.ac: determine endianness
 	* matchbox/theme-engines/mb-wm-theme-png.c: PNG RGB values should
 	  be swapped on little-endian machines (e.g. the Intel scratchbox)
