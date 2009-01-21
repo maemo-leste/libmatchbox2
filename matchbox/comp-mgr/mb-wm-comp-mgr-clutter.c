@@ -738,34 +738,8 @@ mb_wm_comp_mgr_clutter_client_repair_real (MBWMCompMgrClient *client,
 					 &r_count,
 					 &r_bounds);
 
-  if (r_damage && r_count < 3)
+  if (r_damage)
     {
-      for (i = 0; i < r_count; ++i)
-	{
-                /*
-	  printf ("%s: Repairing %d,%d;%dx%d\n", __FUNCTION__,
-		     r_damage[i].x,
-		     r_damage[i].y,
-		     r_damage[i].width,
-		     r_damage[i].height);
-                     */
-	  clutter_x11_texture_pixmap_update_area (
-			CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
-			r_damage[i].x,
-			r_damage[i].y,
-			r_damage[i].width,
-			r_damage[i].height);
-	}
-
-      XFree (r_damage);
-    }
-  else if (r_damage)
-    {
-          /*
-      printf ("%s: r_count %d >= 3, bounding box (%d %d %d %d) repair\n",
-              __FUNCTION__, r_count, r_bounds.x, r_bounds.y,
-              r_bounds.width, r_bounds.height);
-              */
       clutter_x11_texture_pixmap_update_area (
 			CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
 			r_bounds.x, r_bounds.y,
