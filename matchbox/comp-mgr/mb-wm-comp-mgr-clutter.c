@@ -706,7 +706,7 @@ mb_wm_comp_mgr_clutter_client_repair_real (MBWMCompMgrClient *client,
   MBWMCompMgrClutterClient * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (client);
   MBWindowManager          * wm   = client->wm;
   XserverRegion              parts;
-  int                        i, r_count;
+  int                        r_count;
   XRectangle               * r_damage;
   XRectangle                 r_bounds;
 
