@@ -581,6 +581,8 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
     flag = MBWM_WINDOW_PROP_CLIENT_MACHINE;
   else if (xev->atom == wm->atoms[MBWM_ATOM_NET_WM_PID])
     flag = MBWM_WINDOW_PROP_NET_PID;
+  else if (xev->atom == wm->atoms[MBWM_ATOM_HILDON_STACKING_LAYER])
+    flag = MBWM_WINDOW_PROP_HILDON_STACKING;
 
   if (flag)
     mb_wm_client_window_sync_properties (client->window, flag);

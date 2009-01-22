@@ -318,6 +318,14 @@ mb_wm_client_on_property_change (MBWMClientWindow        *window,
   if (property & MBWM_WINDOW_PROP_GEOMETRY)
     mb_wm_client_geometry_mark_dirty (client);
 
+  if ((property & MBWM_WINDOW_PROP_HILDON_STACKING) && client->window)
+    {
+      if (client->window->hildon_stacking_layer > 0)
+        client->stacking_layer = client->window->hildon_stacking_layer
+		                 + MBWMStackLayerHildon1 - 1;
+      mb_wm_client_stacking_mark_dirty (client);
+    }
+
 #if ENABLE_COMPOSITE
   if ((property & MBWM_WINDOW_PROP_CM_TRANSLUCENCY) &&
       client->cm_client && mb_wm_comp_mgr_enabled (client->wmref->comp_mgr))

@@ -22,6 +22,7 @@
 
 #include "mb-wm-theme.h"
 
+#if 0  /* we have to respect stacking layers */
 static void
 mb_wm_client_override_stack (MBWindowManagerClient *client,
 			     int                    flags)
@@ -35,6 +36,7 @@ mb_wm_client_override_stack (MBWindowManagerClient *client,
 
   mb_wm_util_list_free (t);
 }
+#endif
 
 static void
 mb_wm_client_override_class_init (MBWMObjectClass *klass)
@@ -46,7 +48,9 @@ mb_wm_client_override_class_init (MBWMObjectClass *klass)
   client = (MBWindowManagerClientClass *)klass;
 
   client->client_type  = MBWMClientTypeOverride;
+/*
   client->stack        = mb_wm_client_override_stack;
+  */
 
 #if MBWM_WANT_DEBUG
   klass->klass_name = "MBWMClientOverride";
@@ -80,8 +84,12 @@ mb_wm_client_override_init (MBWMObject *this, va_list vap)
   else
     {
       MBWM_DBG ("Override is transient to root or intransient");
-      /* Stack with 'always on top' */
-      client->stacking_layer = MBWMStackLayerTop;
+      if (win->hildon_stacking_layer == 0)
+        /* Stack with 'always on top' */
+        client->stacking_layer = MBWMStackLayerTop;
+      else
+        client->stacking_layer = win->hildon_stacking_layer
+                                 + MBWMStackLayerHildon1 - 1;
     }
 
   return 1;

@@ -1,3 +1,14 @@
+2009-01-22  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/client-types/mb-wm-client-app.c,
+	matchbox/client-types/mb-wm-client-dialog.c,
+	matchbox/client-types/mb-wm-client-menu.c,
+	matchbox/client-types/mb-wm-client-override.c,
+	matchbox/core/mb-window-manager.c,
+	matchbox/core/mb-wm-atoms.c,
+	matchbox/core/mb-wm-client-window.c:
+	Implement Hildon stacking layers.
+
 2009-01-21  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c

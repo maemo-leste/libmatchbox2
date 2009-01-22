@@ -85,7 +85,11 @@ mb_wm_client_app_init (MBWMObject *this, va_list vap)
 		     sizeof (actions)/sizeof (actions[0]));
   }
 
-  client->stacking_layer = MBWMStackLayerMid;
+  if (client->window->hildon_stacking_layer == 0)
+    client->stacking_layer = MBWMStackLayerMid;
+  else
+    client->stacking_layer = client->window->hildon_stacking_layer
+	                     + MBWMStackLayerHildon1 - 1;
 
   mb_wm_client_set_layout_hints (client,
 				 LayoutPrefGrowToFreeSpace|LayoutPrefVisible);

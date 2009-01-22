@@ -41,6 +41,7 @@ enum {
   COOKIE_WIN_CM_TRANSLUCENCY,
   COOKIE_WIN_NET_STATE,
   COOKIE_WIN_MWM_HINTS,
+  COOKIE_WIN_HILDON_STACKING,
 
   N_COOKIES
 };
@@ -335,6 +336,13 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	= mb_wm_property_cardinal_req (wm,
 				       xwin,
 				       wm->atoms[MBWM_ATOM_CM_TRANSLUCENCY]);
+    }
+
+  if (props_req & MBWM_WINDOW_PROP_HILDON_STACKING)
+    {
+      cookies[COOKIE_WIN_HILDON_STACKING]
+	= mb_wm_property_cardinal_req (wm, xwin,
+	  	wm->atoms[MBWM_ATOM_HILDON_STACKING_LAYER]);
     }
 
   /* bundle all pending requests to server and wait for replys */
@@ -934,7 +942,11 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	{
 	  MBWM_DBG("### Warning _NET_WM_USER_TIME failed ###");
           if (x_error_code == BadWindow)
-            goto badwindow_error;
+	    {
+              if (user_time)
+	        XFree(user_time);
+              goto badwindow_error;
+	    }
 	}
       else
 	{
@@ -946,6 +958,46 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	XFree(user_time);
     }
 
+  if (props_req & MBWM_WINDOW_PROP_HILDON_STACKING)
+    {
+      unsigned long *value = NULL;
+
+      mb_wm_property_reply (wm,
+			    cookies[COOKIE_WIN_HILDON_STACKING],
+			    &actual_type_return,
+			    &actual_format_return,
+			    &nitems_return,
+			    &bytes_after_return,
+			    (unsigned char **)&value,
+			    &x_error_code);
+
+      if (x_error_code
+	  || actual_type_return != XA_CARDINAL
+	  || actual_format_return != 32
+	  || value == NULL
+	  )
+	{
+	  g_debug ("%s: _HILDON_STACKING_LAYER failed", __FUNCTION__);
+	  win->hildon_stacking_layer = 0;
+          if (x_error_code == BadWindow)
+	    {
+              if (value)
+	        XFree(value);
+              goto badwindow_error;
+	    }
+	}
+      else
+	{
+	  win->hildon_stacking_layer = (unsigned int)*value;
+	  g_debug ("%s: _HILDON_STACKING_LAYER is %u", __FUNCTION__,
+		   win->hildon_stacking_layer);
+	}
+
+      if (value)
+	XFree(value);
+
+      changes |= MBWM_WINDOW_PROP_HILDON_STACKING;
+    }
 
   if (changes)
     mb_wm_object_signal_emit (MB_WM_OBJECT (win), changes);

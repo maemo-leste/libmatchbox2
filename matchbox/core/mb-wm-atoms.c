@@ -102,6 +102,7 @@ mb_wm_atoms_init(MBWindowManager *wm)
     "_MB_GRAB_TRANSFER",
     "_MB_CURRENT_APP_WINDOW",
     "_MB_SECONDARY",
+    "_HILDON_STACKING_LAYER",
   };
 
   /* FIXME: Error Traps */

@@ -44,12 +44,23 @@ typedef enum MBWMStackLayerType
   MBWMStackLayerMid          ,	 /* Apps */
   MBWMStackLayerTopMid       ,	 /* Trans for root dialogs */
   MBWMStackLayerTop          ,	 /* Something else ? */
+
+  /* layers used for device-specific windows (e.g. touchscreen lock) */
+  MBWMStackLayerHildon1      ,
+  MBWMStackLayerHildon2      ,
+  MBWMStackLayerHildon3      ,
+  MBWMStackLayerHildon4      ,
+  MBWMStackLayerHildon5      ,
+  MBWMStackLayerHildon6      ,
+  MBWMStackLayerHildon7      ,
+  MBWMStackLayerHildon8      ,
+  MBWMStackLayerHildon9      ,
+  MBWMStackLayerHildon10     ,
   N_MBWMStackLayerTypes
 }
 MBWMStackLayerType;
 
-/**
- * Clients can also hint to as how they would like to be managed by the
+/* Clients can also hint to as how they would like to be managed by the
  * layout manager.
  */
 typedef enum MBWMClientLayoutHints

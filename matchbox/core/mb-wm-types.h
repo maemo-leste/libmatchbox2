@@ -294,6 +294,9 @@ typedef enum MBWMAtom
    *
   */
 
+  /* special layers above others for mobile use (e.g. touchscreen lock) */
+  MBWM_ATOM_HILDON_STACKING_LAYER,
+
   MBWM_ATOM_COUNT
 
 } MBWMAtom;

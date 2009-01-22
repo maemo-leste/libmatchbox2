@@ -95,7 +95,11 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
       client->stacking_layer = MBWMStackLayerTopMid;
     }
 #else
-  client->stacking_layer = MBWMStackLayerTop;
+  if (win->hildon_stacking_layer == 0)
+    client->stacking_layer = MBWMStackLayerTop;
+  else
+    client->stacking_layer = win->hildon_stacking_layer
+                             + MBWMStackLayerHildon1 - 1;
 #endif
 
   geom = client->window->geometry;
