@@ -130,7 +130,6 @@ mb_wm_client_dialog_init (MBWMObject *this, va_list vap)
     }
   else
     {
-      g_debug ("%s: Dialog is transient to root", __FUNCTION__);
       if (win->hildon_stacking_layer == 0)
         /* Stack with 'always on top' */
         client->stacking_layer = MBWMStackLayerTopMid;
