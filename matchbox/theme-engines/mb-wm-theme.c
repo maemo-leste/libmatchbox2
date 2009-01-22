@@ -32,6 +32,7 @@
 #define SIMPLE_FRAME_TITLEBAR_HEIGHT 40
 #define SIMPLE_FRAME_EDGE_SIZE 0
 
+/* FIXME! Global variable named like this? What about putting it to struct? */
 unsigned int left_padding = 0;
 
 MBWMThemeCustomClientTypeFunc  custom_client_type_func      = NULL;
