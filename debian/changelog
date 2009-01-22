@@ -1,6 +1,8 @@
 matchbox-window-manager-2 (0.2.14-1~unreleased) unstable; urgency=low
 
   * Implemented Hildon stacking layers.
+  * Depend on libclutter-0.8-dev > 0.8.2-0maemo13 because of new API for
+    shaped windows.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 12 Jan 2009 17:46:43 +0200
 
