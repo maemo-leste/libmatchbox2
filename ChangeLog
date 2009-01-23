@@ -1,3 +1,9 @@
+2009-01-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):
+	Fix positioning of new-style menus. Old-style menus are positioned
+	better, but not yet according to layout guide. Fixes: NB#92248
+
 2009-01-23  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-decor.c:

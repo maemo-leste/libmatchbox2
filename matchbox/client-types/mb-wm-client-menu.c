@@ -41,8 +41,6 @@ mb_wm_client_menu_destroy (MBWMObject *this)
 {
 }
 
-#define MENU_GUTTER 50
-
 static int
 mb_wm_client_menu_init (MBWMObject *this, va_list vap)
 {
@@ -55,8 +53,6 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
     wm->atoms[MBWM_ATOM_NET_WM_ACTION_MOVE],
     wm->atoms[MBWM_ATOM_NET_WM_ACTION_RESIZE],
   };
-
-  g_debug("This is a menu.\n");
 
   XChangeProperty (wm->xdpy, win->xwindow,
 		   wm->atoms[MBWM_ATOM_NET_WM_ALLOWED_ACTIONS],
@@ -94,26 +90,36 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
       /* Stack with 'always on top' */
       client->stacking_layer = MBWMStackLayerTopMid;
     }
-#else
+#endif
+
   if (win->hildon_stacking_layer == 0)
     client->stacking_layer = MBWMStackLayerTop;
   else
     client->stacking_layer = win->hildon_stacking_layer
                              + MBWMStackLayerHildon1 - 1;
-#endif
 
   geom = client->window->geometry;
-  
-  /* NOTE: Fremantle old-style menus set their width and height themselves,
-   * only ensure minimum x and y here to avoid obstructing the title bar. */
 
-  if (geom.x < MENU_GUTTER)
-    geom.x = MENU_GUTTER;
+  if (((MBWindowManagerClientClass*)mb_wm_object_get_class(this))->client_type
+      != MBWMClientTypeMenu)
+  {
+    /* new-style menu */
+    geom.width = wm->xdpy_width - 100;
+    geom.x = wm->xdpy_width / 2 - geom.width / 2;
+    geom.y = 0;
+  }
+  else
+  {
+    if (geom.x < 112 * 2)
+        /* TODO: this should be dynamic, depending on status area.
+         * Also, submenus need to be handled differently */
+        geom.x = 112 * 2;
 
-  if (geom.y < 56)
-    geom.y = 56; /* shouldn't this be taken from the theme? */
+    if (geom.y < 56)
+        geom.y = 56; /* shouldn't this be taken from the theme? */
+  }
 
-  g_debug ("Menu will be at %d %d %d %d", geom.x, geom.y,
+  printf ("%s: Menu will be at %d %d %d %d\n", __func__, geom.x, geom.y,
            geom.width, geom.height);
 
   mb_wm_client_menu_request_geometry (client, &geom,
