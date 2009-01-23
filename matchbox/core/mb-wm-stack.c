@@ -37,8 +37,6 @@ mb_wm_stack_ensure_trans_foreach (MBWindowManagerClient *client, void *data)
 void
 mb_wm_stack_dump (MBWindowManager *wm)
 {
-//#if (MBWM_WANT_DEBUG)
-#if 1
   MBWindowManagerClient *client;
   MBWMStackLayerType     stacking_layer;
 
@@ -72,7 +70,6 @@ mb_wm_stack_dump (MBWindowManager *wm)
     }
 
   g_warning ("======================\n\n");
-#endif
 }
 
 void
@@ -129,7 +126,9 @@ mb_wm_stack_ensure (MBWindowManager *wm)
 	}
     }
 
+  /*  ENABLE ME WHEN YOU NEED ME
   mb_wm_stack_dump (wm);
+  */
 }
 
 void
