@@ -6,7 +6,7 @@
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.[ch]: Add support for
 	HdWmClientTypeAnimationActor to the texture workaround.
 	MBWMCompMgrClutterClientDontPosition and
-	MBWMCompMgrClutterClientDontPosition.
+	MBWMCompMgrClutterClientDontShow.
 
 2009-01-23  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
