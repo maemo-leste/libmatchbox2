@@ -46,6 +46,8 @@ typedef enum
   MBWMCompMgrClutterClientDontUpdate    = (1<<1),
   MBWMCompMgrClutterClientDone          = (1<<2),
   MBWMCompMgrClutterClientEffectRunning = (1<<3),
+  MBWMCompMgrClutterClientDontPosition  = (1<<4),
+  MBWMCompMgrClutterClientDontShow      = (1<<5),
 } MBWMCompMgrClutterClientFlags;
 
 /**

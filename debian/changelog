@@ -5,6 +5,7 @@ matchbox-window-manager-2 (0.2.14-1~unreleased) unstable; urgency=low
     shaped windows.
   * Patch from Laszlo to focus next client when unfocusing. Fixes: NB#93431
   * Fix menu positioning. Fixes: NB#92248
+  * Added support for "WM assisted animations".
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 12 Jan 2009 17:46:43 +0200
 

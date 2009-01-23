@@ -61,6 +61,7 @@ typedef enum _HdWmClientType
   HdWmClientTypeAppMenu     = MBWMClientTypeLast << 2,
   HdWmClientTypeStatusArea  = MBWMClientTypeLast << 3,
   HdWmClientTypeStatusMenu  = MBWMClientTypeLast << 4,
+  HdWmClientTypeAnimationActor = MBWMClientTypeLast << 5,
 } HdWmClientType;
 
 static void
@@ -174,8 +175,12 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
            geom.x, x, geom.y, y,
            geom.width, w, geom.height, h);
            */
-  clutter_actor_set_position (cclient->priv->actor, geom.x, geom.y);
-  clutter_actor_set_size (cclient->priv->texture, geom.width, geom.height);
+
+  if (!(cclient->priv->flags & MBWMCompMgrClutterClientDontPosition))
+    {
+      clutter_actor_set_position (cclient->priv->actor, geom.x, geom.y);
+      clutter_actor_set_size (cclient->priv->texture, geom.width, geom.height);
+    }
 
   /* this will also cause updating the corresponding pixmap
    * and ensures window<->pixmap binding */
@@ -329,7 +334,9 @@ mb_wm_comp_mgr_clutter_client_show_real (MBWMCompMgrClient * client)
    * Clear the don't update flag, if set
    */
   cclient->priv->flags &= ~MBWMCompMgrClutterClientDontUpdate;
-  clutter_actor_show_all (cclient->priv->actor);
+
+  if (!(cclient->priv->flags & MBWMCompMgrClutterClientDontShow))
+    clutter_actor_show_all (cclient->priv->actor);
 }
 
 void
@@ -1078,7 +1085,8 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
       ctype == HdWmClientTypeStatusArea ||
       ctype == HdWmClientTypeStatusMenu ||
       ctype == HdWmClientTypeHomeApplet ||
-      ctype == HdWmClientTypeAppMenu
+      ctype == HdWmClientTypeAppMenu ||
+      ctype == HdWmClientTypeAnimationActor
       )
 #else
   if (FALSE)
@@ -1113,6 +1121,12 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 
   clutter_actor_set_position (actor, geom.x, geom.y);
   clutter_actor_set_size (texture, geom.width, geom.height);
+
+  /* If the client has a "do not show" flag set explicitly,
+     prevent it from being shown when it is added to the desktop */
+
+  if (cclient->priv->flags & MBWMCompMgrClutterClientDontShow)
+    g_object_set (actor, "show-on-set-parent", FALSE, NULL);
 
   mb_wm_comp_mgr_clutter_add_actor (cmgr, cclient);
 }
