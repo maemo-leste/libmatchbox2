@@ -1,3 +1,9 @@
+2009-01-23  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-wm-decor.c:
+	  Don't attempt to create 0-width decor windows.
+	  Destroy the decor's XWindow along with the object.
+
 2009-01-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Patch from Laszlo:

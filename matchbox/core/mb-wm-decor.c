@@ -334,6 +334,11 @@ mb_wm_decor_sync_window (MBWMDecor *decor)
 
   if (decor->xwin == None)
     {
+      if (!decor->geom.width || !decor->geom.height)
+        /* Don't bother creating 1-dimension windows, X would reject it
+         * anyway, but we wouldn't notice the error. */
+        return False;
+
       attr.override_redirect = True;
       /*attr.background_pixel  = WhitePixel(wm->xdpy, wm->xscreen);*/
       attr.background_pixmap = None;
@@ -675,6 +680,13 @@ mb_wm_decor_destroy (MBWMObject* obj)
 					       decor->press_cb_id);
     decor->press_cb_id = 0;
   }
+
+  if (decor->xwin != None)
+    {
+      mb_wm_util_trap_x_errors();
+      XDestroyWindow (decor->parent_client->wmref->xdpy, decor->xwin);
+      mb_wm_util_untrap_x_errors();
+    }
 }
 
 void
