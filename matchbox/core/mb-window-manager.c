@@ -2031,6 +2031,9 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
     }
 
   wm->focused_client = NULL;
+
+  if (next)
+	mb_wm_focus_client (wm, next);
 }
 
 void

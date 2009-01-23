@@ -1,3 +1,9 @@
+2009-01-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Patch from Laszlo:
+	* matchbox/core/mb-window-manager.c (mb_wm_unfocus_client): Focus next
+	client that wants focus. Fixes: NB#93431
+
 2009-01-22  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/client-types/mb-wm-client-app.c,
