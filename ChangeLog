@@ -1,3 +1,7 @@
+2009-01-26  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.14
+
 2009-01-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):
