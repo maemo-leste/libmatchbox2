@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.14-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.14-1) unstable; urgency=low
 
   * Implemented Hildon stacking layers.
   * Depend on libclutter-0.8-dev > 0.8.2-0maemo13 because of new API for
@@ -7,7 +7,7 @@ matchbox-window-manager-2 (0.2.14-1~unreleased) unstable; urgency=low
   * Fix menu positioning. Fixes: NB#92248
   * Added support for "WM assisted animations".
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 12 Jan 2009 17:46:43 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 26 Jan 2009 10:07:30 +0200
 
 matchbox-window-manager-2 (0.2.13-1) unstable; urgency=low
 
