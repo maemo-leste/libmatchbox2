@@ -1,3 +1,8 @@
+2009-01-27  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/theme-engines/mb-wm-theme-png.c: remove byte order
+	check which only worked in scratchbox :/
+
 2009-01-26  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.14
