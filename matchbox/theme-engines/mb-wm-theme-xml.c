@@ -29,12 +29,12 @@ mb_wm_xml_button_new ()
 {
   MBWMXmlButton * b = mb_wm_util_malloc0 (sizeof (MBWMXmlButton));
 
-  b->x = -1;
-  b->y = -1;
-  b->active_x = -1;
-  b->active_y = -1;
-  b->inactive_x = -1;
-  b->inactive_y = -1;
+  b->x = 0;
+  b->y = 0;
+  b->active_x = 0;
+  b->active_y = 0;
+  b->inactive_x = 0;
+  b->inactive_y = 0;
 
   return b;
 }

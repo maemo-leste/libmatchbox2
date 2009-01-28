@@ -1070,15 +1070,15 @@ mb_wm_theme_png_get_button_position (MBWMTheme             *theme,
 	       * then we assume padding happens in the center.
 	       * Note: we look at pad_length because pad_offset could be 0
 	       */
-	      button_x = b->x - d->x;
+	      button_x = b->x;
 	      if (button_x > (d->pad_length ? d->pad_offset : d->width/2) )
-		button_x = decor->geom.width - (d->x + d->width - b->x);
+		button_x = decor->geom.width + b->x - d->width;
 
 	      *x = button_x;
 	    }
 
 	  if (y)
-	    *y = b->y - d->y;
+	    *y = b->y;
 
 	  return;
 	}

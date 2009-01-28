@@ -53,6 +53,7 @@
 #define WIDTH  (3*MAX_TILE_SZ)
 #define HEIGHT (3*MAX_TILE_SZ)
 
+#if SGX_CORRUPTION_WORKAROUND
 /* FIXME: This is copied from hd-wm, and should be removed
  * when we take out the nasty X11 hack */
 typedef enum _HdWmClientType
@@ -63,6 +64,7 @@ typedef enum _HdWmClientType
   HdWmClientTypeStatusMenu  = MBWMClientTypeLast << 4,
   HdWmClientTypeAnimationActor = MBWMClientTypeLast << 5,
 } HdWmClientType;
+#endif
 
 static void
 mb_wm_comp_mgr_clutter_add_actor (MBWMCompMgrClutter *,
@@ -198,7 +200,7 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
 #ifdef HAVE_XEXT
   /*
    * If the client is shaped, we have to tell our texture about which bits of
-   * it are visible. If it's not we want to just chear all shapes, and it'll
+   * it are visible. If it's not we want to just clear all shapes, and it'll
    * know it needs to draw the whole thing
    */
   clutter_x11_texture_pixmap_clear_shapes(
@@ -238,6 +240,8 @@ mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
 
   cclient->priv =
     mb_wm_util_malloc0 (sizeof (MBWMCompMgrClutterClientPrivate));
+
+  cclient->priv->actor = clutter_group_new();
 
   return 1;
 }
@@ -360,98 +364,12 @@ mb_wm_comp_mgr_clutter_client_get_flags (MBWMCompMgrClutterClient  *cclient)
   return (MBWMCompMgrClutterClientFlags) cclient->priv->flags;
 }
 
-
-/*
- * MBWMCompMgrClutterClientEventEffect
- */
-typedef struct MBWMCompMgrClutterClientEventEffect
-{
-  ClutterTimeline        *timeline;
-  ClutterBehaviour       *behaviour; /* can be either behaviour or effect */
-} MBWMCompMgrClutterClientEventEffect;
-
-static void
-mb_wm_comp_mgr_clutter_client_event_free (MBWMCompMgrClutterClientEventEffect * effect)
-{
-  g_object_unref (effect->timeline);
-  g_object_unref (effect->behaviour);
-
-  free (effect);
-}
-
-/**
- * Data passed to the callback for ClutterTimeline::completed,
- * comp_mgr_clutter_client_event_completed_cb().
- */
-struct completed_cb_data
-{
-  gulong                                my_id;
-  MBWMCompMgrClutterClient            * cclient;
-  MBWMCompMgrClientEvent                event;
-  MBWMCompMgrClutterClientEventEffect * effect;
-};
-
 ClutterActor *
 mb_wm_comp_mgr_clutter_client_get_actor (MBWMCompMgrClutterClient *cclient)
 { /* Don't try to g_object_ref(NULL), which is when we're unmapped. */
   return cclient->priv->actor ? g_object_ref (cclient->priv->actor) : NULL;
 }
 
-static MBWMCompMgrClutterClientEventEffect *
-mb_wm_comp_mgr_clutter_client_event_new (MBWMCompMgrClient     *client,
-					 MBWMCompMgrClientEvent event,
-					 unsigned long          duration)
-{
-  MBWMCompMgrClutterClientEventEffect * eff;
-  ClutterTimeline          * timeline;
-  ClutterBehaviour         * behaviour = NULL;
-  ClutterAlpha             * alpha;
-  MBWMCompMgrClutterClient * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (client);
-  MBWindowManager          * wm = client->wm;
-  ClutterKnot                knots[2];
-  MBGeometry                 geom;
-
-  if (!cclient->priv->actor)
-    return NULL;
-
-  timeline = clutter_timeline_new_for_duration (duration);
-
-  if (!timeline)
-    return NULL;
-
-  alpha = clutter_alpha_new_full (timeline,
-				  CLUTTER_ALPHA_RAMP_INC, NULL, NULL);
-
-  mb_wm_client_get_coverage (client->wm_client, &geom);
-
-  switch (event)
-    {
-    case MBWMCompMgrClientEventMinimize:
-      behaviour =
-	clutter_behaviour_scale_newx (alpha, CFX_ONE, CFX_ONE, 0, 0);
-      break;
-    case MBWMCompMgrClientEventUnmap:
-      behaviour = clutter_behaviour_opacity_new (alpha, 0xff, 0);
-      break;
-    case MBWMCompMgrClientEventMap:
-      knots[0].x = -wm->xdpy_width;
-      knots[0].y = geom.y;
-      knots[1].x = geom.x;
-      knots[1].y = geom.y;
-      behaviour = clutter_behaviour_path_new (alpha, &knots[0], 2);
-      break;
-    default:
-      g_warning ("%s: unhandled switch case!", __FUNCTION__);
-    }
-
-  eff = mb_wm_util_malloc0 (sizeof (MBWMCompMgrClutterClientEventEffect));
-  eff->timeline = timeline;
-  eff->behaviour = behaviour;
-
-  clutter_behaviour_apply (behaviour, cclient->priv->actor);
-
-  return eff;
-}
 
 /**
  * Implementation of MBWMCompMgrClutter
@@ -460,7 +378,6 @@ struct MBWMCompMgrClutterPrivate
 {
   ClutterActor * arena;
   MBWMList     * desktops;
-  ClutterActor * shadow;
 
   Window         overlay_window;
 };
@@ -469,9 +386,6 @@ static void
 mb_wm_comp_mgr_clutter_private_free (MBWMCompMgrClutter *mgr)
 {
   MBWMCompMgrClutterPrivate * priv = mgr->priv;
-
-  if (priv->shadow)
-    clutter_actor_destroy (priv->shadow);
 
   free (priv);
 }
@@ -508,11 +422,6 @@ mb_wm_comp_mgr_clutter_client_transition_real (MBWMCompMgr * mgr,
                                                Bool reverse);
 
 static void
-mb_wm_comp_mgr_clutter_client_event_real (MBWMCompMgr            * mgr,
-                                          MBWindowManagerClient  * client,
-                                          MBWMCompMgrClientEvent   event);
-
-static void
 mb_wm_comp_mgr_clutter_restack_real (MBWMCompMgr *mgr);
 
 static Bool
@@ -546,8 +455,6 @@ mb_wm_comp_mgr_clutter_class_init (MBWMObjectClass *klass)
   cm_klass->turn_off          = mb_wm_comp_mgr_clutter_turn_off_real;
   cm_klass->map_notify        = mb_wm_comp_mgr_clutter_map_notify_real;
   cm_klass->my_window         = mb_wm_comp_mgr_is_my_window_real;
-  cm_klass->client_transition = mb_wm_comp_mgr_clutter_client_transition_real;
-  cm_klass->client_event      = mb_wm_comp_mgr_clutter_client_event_real;
   cm_klass->restack           = mb_wm_comp_mgr_clutter_restack_real;
   cm_klass->select_desktop    = mb_wm_comp_mgr_clutter_select_desktop;
   cm_klass->handle_damage     = mb_wm_comp_mgr_clutter_handle_damage;
@@ -1009,7 +916,6 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   MBWMCompMgrClient         * client  = c->cm_client;
   MBWMCompMgrClutterClient  * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
   MBWindowManager           * wm      = client->wm;
-  ClutterActor              * actor;
   ClutterActor              * texture;
   MBGeometry                  geom;
   MBWMClientType              ctype = MB_WM_CLIENT_CLIENT_TYPE (c);
@@ -1066,14 +972,9 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 
   mb_wm_client_get_coverage (c, &geom);
 
-  actor = g_object_ref (clutter_group_new ());
-
-  if (c->name)
-    g_snprintf(actor_name, 64, "window_%s", c->name);
-  else
-    g_snprintf(actor_name, 64, "window_0x%lx",
-            c->xwin_frame ? c->xwin_frame : c->window->xwindow);
-  clutter_actor_set_name(actor, actor_name);
+  g_snprintf(actor_name, 64, "window_0x%lx",
+             c->xwin_frame ? c->xwin_frame : c->window->xwindow);
+  clutter_actor_set_name(cclient->priv->actor, actor_name);
 
 #if HAVE_CLUTTER_GLX
   texture = clutter_glx_texture_pixmap_new ();
@@ -1112,265 +1013,27 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 
   clutter_actor_show (texture);
 
-  clutter_container_add (CLUTTER_CONTAINER (actor), texture, NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (cclient->priv->actor), texture);
+  /* We want to lower this below any decor */
+  clutter_actor_lower_bottom(texture);
 
-  cclient->priv->actor = actor;
+  if (cclient->priv->texture)
+    clutter_actor_destroy(cclient->priv->texture);
   cclient->priv->texture = texture;
 
-  g_object_set_data (G_OBJECT (actor), "MBWMCompMgrClutterClient", cclient);
+  g_object_set_data (G_OBJECT (cclient->priv->actor),
+      "MBWMCompMgrClutterClient", cclient);
 
-  clutter_actor_set_position (actor, geom.x, geom.y);
+  clutter_actor_set_position (cclient->priv->actor, geom.x, geom.y);
   clutter_actor_set_size (texture, geom.width, geom.height);
 
   /* If the client has a "do not show" flag set explicitly,
      prevent it from being shown when it is added to the desktop */
 
   if (cclient->priv->flags & MBWMCompMgrClutterClientDontShow)
-    g_object_set (actor, "show-on-set-parent", FALSE, NULL);
+    g_object_set (cclient->priv->actor, "show-on-set-parent", FALSE, NULL);
 
   mb_wm_comp_mgr_clutter_add_actor (cmgr, cclient);
-}
-
-/**
- * Structure that gets passed to mb_wm_comp_mgr_clutter_transtion_fade_cb().
- */
-struct _fade_cb_data
-{
-  MBWMCompMgrClutterClient *cclient1;
-  MBWMCompMgrClutterClient *cclient2;
-  ClutterTimeline  * timeline;
-  ClutterBehaviour * beh;
-};
-
-static void
-mb_wm_comp_mgr_clutter_transtion_fade_cb (ClutterTimeline * t, void * data)
-{
-  struct _fade_cb_data * d  = data;
-  ClutterActor   * a1 = d->cclient1->priv->actor;
-
-  clutter_actor_set_opacity (a1, 0xff);
-
-  d->cclient1->priv->flags &= ~MBWMCompMgrClutterClientEffectRunning;
-  d->cclient2->priv->flags &= ~MBWMCompMgrClutterClientEffectRunning;
-
-  mb_wm_object_unref (MB_WM_OBJECT (d->cclient1));
-  mb_wm_object_unref (MB_WM_OBJECT (d->cclient2));
-
-  g_object_unref (d->timeline);
-  g_object_unref (d->beh);
-}
-
-static void
-_fade_apply_behaviour_to_client (MBWindowManagerClient * wc,
-				 ClutterBehaviour      * b)
-{
-  MBWMList * l;
-  ClutterActor * a = MB_WM_COMP_MGR_CLUTTER_CLIENT (wc->cm_client)->priv->actor;
-
-  clutter_actor_set_opacity (a, 0);
-  clutter_behaviour_apply (b, a);
-
-  l = mb_wm_client_get_transients (wc);
-  while (l)
-    {
-      MBWindowManagerClient * c = l->data;
-
-      _fade_apply_behaviour_to_client (c, b);
-      l = l->next;
-    }
-}
-
-static void
-mb_wm_comp_mgr_clutter_client_transition_fade (MBWMCompMgrClutterClient *cclient1,
-                                               MBWMCompMgrClutterClient *cclient2,
-                                               unsigned long duration)
-{
-  ClutterTimeline             * timeline;
-  ClutterAlpha                * alpha;
-  static struct _fade_cb_data   cb_data;
-  ClutterBehaviour            * b;
-
-  /*
-   * Fade is simple -- we only need to animate the second actor and its
-   * children, as the stacking order automatically takes care of the
-   * actor appearing to fade out from the first one
-   */
-  timeline = clutter_timeline_new_for_duration (duration);
-
-  alpha = clutter_alpha_new_full (timeline,
-				  CLUTTER_ALPHA_RAMP_DEC, NULL, NULL);
-
-  b = clutter_behaviour_opacity_new (alpha, 0xff, 0);
-
-  cb_data.cclient1 = mb_wm_object_ref (MB_WM_OBJECT (cclient1));
-  cb_data.cclient2 = mb_wm_object_ref (MB_WM_OBJECT (cclient2));
-  cb_data.timeline = timeline;
-  cb_data.beh = b;
-
-  _fade_apply_behaviour_to_client (MB_WM_COMP_MGR_CLIENT (cclient2)->wm_client, b);
-
-  /*
-   * Must restore the opacity on the 'from' actor
-   */
-  g_signal_connect (timeline, "completed",
-		    G_CALLBACK (mb_wm_comp_mgr_clutter_transtion_fade_cb),
-		    &cb_data);
-
-  cclient1->priv->flags |= MBWMCompMgrClutterClientEffectRunning;
-  cclient2->priv->flags |= MBWMCompMgrClutterClientEffectRunning;
-
-  clutter_timeline_start (timeline);
-}
-
-static void
-mb_wm_comp_mgr_clutter_client_transition_real (MBWMCompMgr * mgr,
-                                               MBWindowManagerClient *c1,
-                                               MBWindowManagerClient *c2,
-                                               Bool reverse)
-{
-  MBWMCompMgrClutterClient * cclient1 =
-    MB_WM_COMP_MGR_CLUTTER_CLIENT (c1->cm_client);
-  MBWMCompMgrClutterClient * cclient2 =
-    MB_WM_COMP_MGR_CLUTTER_CLIENT (c2->cm_client);
-
-  mb_wm_comp_mgr_clutter_client_transition_fade (cclient1,
-					         cclient2,
-                                                 100);
-}
-
-/*
- * Callback for ClutterTimeline::completed signal.
- *
- * One-off; get connected when the timeline is started, and disconnected
- * again when it finishes.
- */
-static void
-mb_wm_comp_mgr_clutter_client_event_completed_cb (ClutterTimeline * t, void * data)
-{
-  struct completed_cb_data * d = data;
-
-  d->cclient->priv->flags &= ~MBWMCompMgrClutterClientEffectRunning;
-
-  g_signal_handler_disconnect (t, d->my_id);
-
-  switch (d->event)
-    {
-    case MBWMCompMgrClientEventUnmap:
-    case MBWMCompMgrClientEventMinimize:
-      clutter_actor_hide (d->cclient->priv->actor);
-      break;
-
-    default:
-      break;
-    }
-
-  /*
-   * Release the extra reference on the CM client that was added for the sake
-   * of the effect
-   */
-  mb_wm_object_unref (MB_WM_OBJECT (d->cclient));
-
-  mb_wm_comp_mgr_clutter_client_event_free (d->effect);
-
-  free (d);
-}
-
-static void
-mb_wm_comp_mgr_clutter_client_event_real (MBWMCompMgr            * mgr,
-					  MBWindowManagerClient  * client,
-					  MBWMCompMgrClientEvent   event)
-{
-  MBWMCompMgrClutterClientEventEffect * eff;
-  MBWMCompMgrClutterClient            * cclient =
-    MB_WM_COMP_MGR_CLUTTER_CLIENT (client->cm_client);
-
-  if (MB_WM_CLIENT_CLIENT_TYPE (client) != MBWMClientTypeApp)
-    return;
-
-  eff = mb_wm_comp_mgr_clutter_client_event_new (client->cm_client,
-						 event, 600);
-
-  if (eff)
-    {
-      ClutterActor *a;
-      Bool dont_run = False;
-
-      a = cclient->priv->actor;
-
-      if (CLUTTER_IS_BEHAVIOUR_PATH (eff->behaviour))
-	{
-	  /*
-	   * At this stage, if the actor is not yet visible, move it to
-	   * the starting point of the path (this is mostly because of
-	   * 'map' effects,  where the clutter_actor_show () is delayed
-	   * until this point, so that the actor can be positioned in the
-	   * correct location without visible artefacts).
-	   *
-	   * FIXME -- this is very clumsy; we need clutter API to query
-	   * the first knot of the path to avoid messing about with copies
-	   * of the list.
-	   */
-
-	  GSList * knots =
-	    clutter_behaviour_path_get_knots (
-				     CLUTTER_BEHAVIOUR_PATH (eff->behaviour));
-
-	  if (knots)
-	    {
-	      ClutterKnot * k = knots->data;
-
-	      clutter_actor_set_position (a, k->x, k->y);
-
-	      g_slist_free (knots);
-	    }
-	}
-
-      if (event == MBWMCompMgrClientEventUnmap)
-	{
-	  cclient->priv->flags |= MBWMCompMgrClutterClientDontUpdate;
-
-	  if (cclient->priv->flags & MBWMCompMgrClutterClientDone)
-	    dont_run = True;
-	  else
-	    cclient->priv->flags |= MBWMCompMgrClutterClientDone;
-	}
-      else if (event == MBWMCompMgrClientEventMinimize)
-	{
-	  /*
-	   * This is tied specifically to the unmap scale effect (the
-	   * themable version of effects allowed to handle this is a nice
-	   * generic fashion. :-(
-	   */
-	  clutter_actor_move_anchor_point_from_gravity (a,
-						CLUTTER_GRAVITY_SOUTH_EAST);
-	}
-
-      /*
-       * Make sure the actor is showing (for example with 'map' effects,
-       * the show() is delayed until the effect had chance to
-       * set up the actor postion).
-       */
-      if (!dont_run)
-	{
-	  struct completed_cb_data * d;
-
-	  d = mb_wm_util_malloc0 (sizeof (struct completed_cb_data));
-
-	  d->cclient = mb_wm_object_ref (MB_WM_OBJECT (cclient));
-	  d->event   = event;
-	  d->effect  = eff;
-
-	  d->my_id = g_signal_connect (eff->timeline, "completed",
-		  G_CALLBACK (mb_wm_comp_mgr_clutter_client_event_completed_cb),
-		  d);
-
-	  cclient->priv->flags |= MBWMCompMgrClutterClientEffectRunning;
-	  clutter_actor_show (a);
-	  clutter_timeline_start (eff->timeline);
-	}
-      else
-	mb_wm_comp_mgr_clutter_client_event_free (eff);
-    }
 }
 
 /*
@@ -1424,15 +1087,6 @@ mb_wm_comp_mgr_clutter_new (MBWindowManager *wm)
 
   return MB_WM_COMP_MGR (mgr);
 }
-
-/* ------------------------------- */
-/* Shadow Generation */
-
-typedef struct MBGaussianMap
-{
-  int	   size;
-  double * data;
-} MBGaussianMap;
 
 /*
  * TidyTextureFrame copied from tidy

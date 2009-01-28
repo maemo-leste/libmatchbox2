@@ -212,6 +212,9 @@ struct MBWMDecorButtonClass
   */
 };
 
+int
+mb_wm_decor_button_class_type (void);
+
 void
 mb_wm_decor_button_show (MBWMDecorButton *button);
 

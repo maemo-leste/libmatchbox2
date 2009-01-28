@@ -1,3 +1,21 @@
+2009-01-28  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Removed un-needed transition code + remnants of shadow code
+	Made the clutter group containing the texture be created along with
+	the class to allow decor to be added to it.
+	* matchbox/theme-engines/mb-wm-theme.h
+	* matchbox/theme-engines/mb-wm-theme.c:
+	Added a field for the image filename (for clutter title bars)
+	* matchbox/core/mb-wm-decor.h:
+	Allowed a class to extend MBWMDecor
+	* matchbox/theme-engines/mb-wm-theme-xml.c:
+	Fixed some badly initialised vars (-1 for offsets that may not exist
+	in XML)
+	* matchbox/theme-engines/mb-wm-theme-png.c:
+	Trying to fix issue where offsets in the XML theme were wrongly 
+	offsetting buttons
+
 2009-01-27  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	* matchbox/theme-engines/mb-wm-theme-png.c: remove byte order

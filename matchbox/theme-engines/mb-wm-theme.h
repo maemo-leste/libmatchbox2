@@ -92,7 +92,7 @@ struct MBWMThemeClass
 
   void  (*set_left_padding)     (MBWMTheme             *theme,
 			         MBWMDecor             *decor,
-                     int                    new_padding);
+                                 int                    new_padding);
 };
 
 /**
@@ -112,6 +112,7 @@ struct MBWMTheme
   MBWMColor              color_lowlight;
   MBWMColor              color_shadow;
   MBWMCompMgrShadowType  shadow_type;
+  char                  *image_filename;
 };
 
 int

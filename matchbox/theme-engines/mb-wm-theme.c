@@ -97,6 +97,9 @@ mb_wm_theme_destroy (MBWMObject *obj)
   if (theme->path)
     free (theme->path);
 
+  if (theme->image_filename)
+    free (theme->image_filename);
+
   MBWMList *l = theme->xml_clients;
 
   while (l)
@@ -118,6 +121,7 @@ mb_wm_theme_init (MBWMObject *obj, va_list vap)
   MBWMObjectProp    prop;
   MBWMList         *xml_clients = NULL;
   char             *path = NULL;
+  char             *image_filename = NULL;
   MBWMColor        *clr_lowlight = NULL;
   MBWMColor        *clr_shadow = NULL;
 
@@ -132,6 +136,9 @@ mb_wm_theme_init (MBWMObject *obj, va_list vap)
 	case MBWMObjectPropThemePath:
 	  path = va_arg(vap, char *);
 	  break;
+	case MBWMObjectPropThemeImg:
+	  image_filename = va_arg(vap, char *);
+          break;
 	case MBWMObjectPropThemeXmlClients:
 	  xml_clients = va_arg(vap, MBWMList *);
 	  break;
@@ -163,6 +170,11 @@ mb_wm_theme_init (MBWMObject *obj, va_list vap)
 
   if (path)
     theme->path = strdup (path);
+
+  if (image_filename)
+    theme->image_filename = strdup(image_filename);
+  else
+    theme->image_filename = 0;
 
   if (clr_shadow && clr_shadow->set)
     {
@@ -594,6 +606,7 @@ mb_wm_theme_new (MBWindowManager * wm, const char * theme_path)
 			MB_WM_TYPE_THEME,
 	                MBWMObjectPropWm,                  wm,
 			MBWMObjectPropThemeXmlClients,     xml_clients,
+			MBWMObjectPropThemeImg,            img,
 			MBWMObjectPropThemeColorLowlight, &clr_lowlight,
 			MBWMObjectPropThemeColorShadow,   &clr_shadow,
 			MBWMObjectPropThemeShadowType,     shadow_type,
@@ -1706,17 +1719,17 @@ mb_wm_theme_simple_get_decor_dimensions (MBWMTheme             *theme,
    * Returning all 0 if in the full screen mode.
    */
   if (mb_wm_client_window_is_state_set (
-	client->window, 
-	MBWMClientWindowEWMHStateFullscreen)) 
-  { 
-    if (north) 
-      *north = 0; 
-    if (south) 
-      *south = 0; 
-    if (west) 
-      *west = 0; 
-    if (east) 
-      *east = 0; 
+	client->window,
+	MBWMClientWindowEWMHStateFullscreen))
+  {
+    if (north)
+      *north = 0;
+    if (south)
+      *south = 0;
+    if (west)
+      *west = 0;
+    if (east)
+      *east = 0;
     return;
   }
 
@@ -1957,7 +1970,7 @@ mb_wm_theme_simple_paint_decor (MBWMTheme *theme, MBWMDecor *decor)
 			  &extents);
 	  centering_padding = (rec.width - extents.width) / 2;
       }
-      
+
       XftDrawSetClipRectangles (dd->xftdraw, 0, 0, &rec, 1);
 
       XftDrawStringUtf8(dd->xftdraw,
