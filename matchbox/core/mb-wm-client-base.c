@@ -276,20 +276,51 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
 	       PropertyChangeMask);
 }
 
+/*
+ * This window will move the client to the top of the stack with its transients.
+ */
+static void
+mb_wm_client_move_to_top_recursive (
+		MBWindowManagerClient   *client)
+{
+	MBWMList *transients;
+
+	/*
+	 * TODO: change this to a (yet to implement) function that uses the
+	 * stacking layer properly.
+	 */
+	mb_wm_stack_move_top (client);
+
+	transients = client->transients;
+	while (transients) {
+		mb_wm_client_move_to_top_recursive (
+				(MBWindowManagerClient *) transients->data);
+		transients = mb_wm_util_list_next (transients);
+	}
+}
+
 static void
 mb_wm_client_base_stack (MBWindowManagerClient *client,
 			 int                    flags)
 {
-  /* Stack to highest/lowest possible possition in stack */
-  MBWMList * t = mb_wm_client_get_transients (client);
-  MBWMList * li;
+  MBWindowManagerClient *transient_for = client->transient_for;
 
-  mb_wm_stack_move_top(client);
+  /*
+   * If this is a transient we have to find the very first element of the
+   * transient chain.
+   */
+  while (transient_for && transient_for->transient_for)
+	  transient_for = transient_for->transient_for;
+  /*
+   * And then we are going to use the parent.
+   */
+  if (transient_for) 
+	  client = transient_for;
 
-  mb_wm_util_list_foreach (t, (MBWMListForEachCB)mb_wm_client_stack,
-			   (void*)flags);
-
-  mb_wm_util_list_free (t);
+  /*
+   * Move the window to the top with its transients.
+   */
+  mb_wm_client_move_to_top_recursive (client);
 }
 
 static void
