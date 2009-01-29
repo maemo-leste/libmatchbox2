@@ -1153,10 +1153,8 @@ mb_wm_unmanage_client (MBWindowManager       *wm,
 		       Bool                   destroy)
 {
   /* FIXME: set a managed flag in client object ? */
-  MBWindowManagerClient *c;
   MBWMClientType c_type = MB_WM_CLIENT_CLIENT_TYPE (client);
   MBWMSyncType sync_flags = 0;
-  MBWindowManagerClient * next_focused;
 
   /*
    * Must not mess with stacking if the client if is of the override type
@@ -1985,8 +1983,6 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 
   if (mb_wm_client_focus (client))
     {
-      MBWindowManagerClient *app;
-
       if (wm->focused_client)
 	{
 	  MBWindowManagerClient *trans_old = wm->focused_client;

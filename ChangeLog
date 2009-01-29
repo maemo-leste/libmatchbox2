@@ -5,6 +5,9 @@
 	(mb_wm_client_base_stack): Handle transient chain correctly, so that
 	the whole stackable window stack is raised when one of the windows is
 	raised. Patch from Laszlo Pere.
+	* matchbox/theme-engines/mb-wm-theme-png.c,
+	matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c,
+	matchbox/core/mb-window-manager.c: Remove unused variables.
 
 2009-01-28  Gordon Williams  <gordon.williams@collabora.co.uk>
 

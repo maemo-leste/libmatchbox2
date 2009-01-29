@@ -387,8 +387,6 @@ mb_wm_theme_png_paint_button (MBWMTheme *theme, MBWMDecorButton *button)
 
       XWindowAttributes attr;
       XGetWindowAttributes( xdpy, decor->xwin, &attr );
-      XRenderPictFormat *format = XRenderFindVisualFormat( xdpy, attr.visual );
-      gboolean hasAlpha             = ( format->type == PictTypeDirect && format->direct.alphaMask );
 
       /* We can't use PictOpOver because the target window
        * doesn't have an alpha channel
@@ -400,7 +398,8 @@ mb_wm_theme_png_paint_button (MBWMTheme *theme, MBWMDecorButton *button)
 			XftDrawPicture (bdata->xftdraw_i),
 			None,
 			XftDrawPicture (ddata->xftdraw),
-			0, 0, 0, 0, button->geom.x, button->geom.y, b->width, b->height);
+			0, 0, 0, 0, button->geom.x, button->geom.y,
+                        b->width, b->height);
 
       XClearWindow (xdpy, decor->xwin);
     }

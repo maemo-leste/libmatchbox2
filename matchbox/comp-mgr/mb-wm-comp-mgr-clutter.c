@@ -416,12 +416,6 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 					MBWindowManagerClient *c);
 
 static void
-mb_wm_comp_mgr_clutter_client_transition_real (MBWMCompMgr * mgr,
-                                               MBWindowManagerClient *c1,
-                                               MBWindowManagerClient *c2,
-                                               Bool reverse);
-
-static void
 mb_wm_comp_mgr_clutter_restack_real (MBWMCompMgr *mgr);
 
 static Bool
