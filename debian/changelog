@@ -1,6 +1,7 @@
 matchbox-window-manager-2 (0.2.15-1~unreleased) unstable; urgency=low
 
-  * unreleased
+  * Handle transient chain correctly, so that the whole stackable window
+    stack is raised when one of the windows is raised. Patch from Laszlo Pere.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 26 Jan 2009 10:10:06 +0200
 
