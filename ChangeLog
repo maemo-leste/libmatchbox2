@@ -1,3 +1,18 @@
+2009-01-31  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-root-window.c
+	(mb_wm_root_window_handle_message): Print a line when a ping reply is
+	received (currently this never seems to happen).
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_unmap_notify): If
+	the client unmaps its window and that is being pinged, regard it as
+	responding to the ping.
+	(mb_wm_handle_hang_client): Stop the ping process if it is ongoing.
+	* matchbox/core/mb-wm-client.c (mb_wm_client_ping_timeout_cb): Call
+	mb_wm_handle_hang_client instead of mb_wm_client_shutdown on ping
+	timeout. This way the user can decide whether or not the client should
+	be killed.
+	(mb_wm_client_shutdown): Print debug when we kill a client.
+
 2009-01-29  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/core/mb-wm-client-base.c

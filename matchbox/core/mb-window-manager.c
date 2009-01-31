@@ -481,6 +481,19 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 
   if (client)
     {
+      if (mb_wm_client_ping_in_progress (client)) 
+        {
+          MBWindowManagerClass  *wm_klass;
+
+	  /* stop ping process since the client closed the window */
+          mb_wm_client_ping_stop (client);
+
+          wm_klass = MB_WINDOW_MANAGER_CLASS (MB_WM_OBJECT_GET_CLASS (wm));
+
+          if (wm_klass->client_responding)
+	    wm_klass->client_responding (wm, client);
+        } 
+
       if (client->skip_unmaps)
 	{
 	  MBWM_DBG ("skipping unmap for %p (skip count %d)\n",
@@ -1857,6 +1870,7 @@ mb_wm_get_visible_main_client(MBWindowManager *wm)
 void
 mb_wm_handle_ping_reply (MBWindowManager * wm, MBWindowManagerClient *c)
 {
+  g_debug ("%s: entered", __FUNCTION__);
   if (c == NULL)
     return;
 
@@ -1887,6 +1901,10 @@ mb_wm_handle_hang_client (MBWindowManager * wm, MBWindowManagerClient *c)
     {
       mb_wm_client_shutdown (c);
     }
+
+  if (mb_wm_client_ping_in_progress (c))
+    /* hung client is now handled, no need for ping process */
+    mb_wm_client_ping_stop (c);
 }
 
 void

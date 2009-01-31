@@ -775,11 +775,13 @@ mb_wm_client_deliver_ping_protocol (MBWindowManagerClient *client)
 }
 
 static Bool
-mb_wm_client_ping_timeout_cb (void * userdata)
+mb_wm_client_ping_timeout_cb (void *userdata)
 {
-  MBWindowManagerClient * client = userdata;
+  MBWindowManagerClient *client = userdata;
+  MBWindowManager *wm = client->wmref;
 
-  mb_wm_client_shutdown (client);
+  g_debug ("%s: entered", __FUNCTION__);
+  mb_wm_handle_hang_client (wm, client);
   return False;
 }
 
@@ -805,6 +807,7 @@ mb_wm_client_ping_stop (MBWindowManagerClient *client)
 {
   MBWMMainContext * ctx = client->wmref->main_ctx;
 
+  g_debug ("%s: entered", __FUNCTION__);
   if (!client->ping_cb_id)
     return;
 
@@ -827,11 +830,13 @@ mb_wm_client_shutdown (MBWindowManagerClient *client)
     {
       if (!strcmp (buf, machine))
 	{
+          g_debug ("%s: kill(%u)", __FUNCTION__, pid);
 	  if (kill (pid, sig) >= 0)
 	    return;
 	}
     }
 
+  g_debug ("%s: XKillClient for %lx", __FUNCTION__, xwin);
   XKillClient(wm->xdpy, xwin);
 }
 

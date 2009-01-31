@@ -354,6 +354,7 @@ mb_wm_root_window_handle_message (MBWMRootWindow *win, XClientMessageEvent *e)
   else if (e->message_type == wm->atoms[MBWM_ATOM_WM_PROTOCOLS]
 	   && e->data.l[0] == wm->atoms[MBWM_ATOM_NET_WM_PING])
     {
+      g_debug ("%s: NET_WM_PING reply for %lx", __FUNCTION__, e->data.l[2]);
       if ((c = mb_wm_managed_client_from_xwindow(wm, e->data.l[2])) != NULL)
 	mb_wm_handle_ping_reply (wm, c);
       return 1;
@@ -395,7 +396,6 @@ mb_wm_root_window_handle_message (MBWMRootWindow *win, XClientMessageEvent *e)
 	}
       return 1;
     }
-
   else if (e->message_type == wm->atoms[MBWM_ATOM_WM_CHANGE_STATE])
     {
       switch (e->data.l[0])
@@ -448,6 +448,8 @@ mb_wm_root_window_handle_message (MBWMRootWindow *win, XClientMessageEvent *e)
 	   ;
 	 }
     }
+  else
+    g_debug ("%s: unknown ClientMessage", __FUNCTION__);
 
   return 0;
 }
