@@ -977,6 +977,7 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 #if SGX_CORRUPTION_WORKAROUND
   if (ctype == MBWMClientTypeMenu ||
       ctype == MBWMClientTypeNote ||
+      ctype == MBWMClientTypeOverride ||
       ctype == HdWmClientTypeStatusArea ||
       ctype == HdWmClientTypeStatusMenu ||
       ctype == HdWmClientTypeHomeApplet ||
