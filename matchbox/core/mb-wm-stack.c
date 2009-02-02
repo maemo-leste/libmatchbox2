@@ -18,6 +18,7 @@
  *
  */
 
+#include <stdarg.h>
 #include "mb-wm.h"
 
 
@@ -35,12 +36,21 @@ mb_wm_stack_ensure_trans_foreach (MBWindowManagerClient *client, void *data)
 }
 
 void
-mb_wm_stack_dump (MBWindowManager *wm)
+mb_wm_stack_dump (MBWindowManager *wm, const char * why, ...)
 {
   MBWindowManagerClient *client;
   MBWMStackLayerType     stacking_layer;
 
   g_warning ("\n==== window stack =====\n");
+  if (why)
+    {
+      va_list printf_args;
+
+      va_start (printf_args, why);
+      vfprintf (stderr, why, printf_args);
+      fputc ('\n', stderr);
+      va_end (printf_args);
+    }
 
   mb_wm_stack_enumerate_reverse (wm, client)
     {
@@ -92,6 +102,8 @@ mb_wm_stack_ensure (MBWindowManager *wm)
    * FIXME: This isn't optimal
   */
 
+//  mb_wm_stack_dump (wm, "BEGIN");
+
   /* bottom -> top on layer types */
   for (i=1; i<N_MBWMStackLayerTypes; i++)
     {
@@ -99,6 +111,7 @@ mb_wm_stack_ensure (MBWindowManager *wm)
       client = wm->stack_bottom;
       seen   = NULL;
 
+//      mb_wm_stack_dump (wm, "TYPE=%d", i);
       while (client != seen && client != NULL)
 	{
 	  /* get the next valid client ( ignore transients ) before
@@ -121,14 +134,14 @@ mb_wm_stack_ensure (MBWindowManager *wm)
 		seen = client;
 
 	      mb_wm_client_stack (client, 0);
+//              mb_wm_stack_dump (wm, "AFTER CLIENT %p", client);
 	    }
 	  client = next;
 	}
     }
 
-  /*  ENABLE ME WHEN YOU NEED ME
-  mb_wm_stack_dump (wm);
-  */
+//  ENABLE ME WHEN YOU NEED ME
+//  mb_wm_stack_dump (wm, "FINISH");
 }
 
 void

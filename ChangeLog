@@ -1,3 +1,23 @@
+2009-02-02  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-window-manager.c:
+	  mb_adjust_dialog_title_position():
+	    Don't make the decor dirty if the old and new positions are the same.
+	* matchbox/core/mb-wm-stack.h
+	* matchbox/core/mb-wm-stack.c:
+	  Made mb_wm_stack_dump() more handy.
+
+	* mb_wm_handle_root_config_notify():
+	  Tell the cmgr the screen size has changed.
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	  New virtual method screen_size_changed().
+	  Warrants a version bump.
+	* matchbox/comp_mgr/mb-wm-comp-mgr-clutter.c:
+	  mb_wm_comp_mgr_clutter_turn_on_real():
+	    Set the size of the overlay window correctly.
+	  mb_wm_comp_mgr_clutter_screen_size_changed():
+	    Keep the root window, the stage and the overlay window size in sync.
+
 2009-02-02  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c

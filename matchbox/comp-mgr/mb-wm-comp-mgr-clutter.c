@@ -412,6 +412,10 @@ static void
 mb_wm_comp_mgr_clutter_turn_off_real (MBWMCompMgr *mgr);
 
 static void
+mb_wm_comp_mgr_clutter_screen_size_changed (MBWMCompMgr *mgr,
+                                            unsigned w, unsigned h);
+
+static void
 mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 					MBWindowManagerClient *c);
 
@@ -452,6 +456,7 @@ mb_wm_comp_mgr_clutter_class_init (MBWMObjectClass *klass)
   cm_klass->restack           = mb_wm_comp_mgr_clutter_restack_real;
   cm_klass->select_desktop    = mb_wm_comp_mgr_clutter_select_desktop;
   cm_klass->handle_damage     = mb_wm_comp_mgr_clutter_handle_damage;
+  cm_klass->screen_size_changed = mb_wm_comp_mgr_clutter_screen_size_changed;
 
   clutter_klass->client_new   = mb_wm_comp_mgr_clutter_client_new;
 }
@@ -574,8 +579,12 @@ mb_wm_comp_mgr_clutter_turn_on_real (MBWMCompMgr *mgr)
        */
       xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
+      /* Make sure the overlay window's size is the same as the screen's
+       * actual size.  Necessary if the screen is rotated. */
       priv->overlay_window =
 	XCompositeGetOverlayWindow (wm->xdpy, wm->root_win->xwindow);
+      XResizeWindow (wm->xdpy, priv->overlay_window,
+                     wm->xdpy_width, wm->xdpy_height);
 
       /*
        * Reparent the stage window to the overlay window, this makes it
@@ -605,6 +614,18 @@ mb_wm_comp_mgr_clutter_turn_on_real (MBWMCompMgr *mgr)
 
       clutter_actor_show (stage);
     }
+}
+
+/* Synchronize the size of the stage and the overlay window
+ * with the root window. */
+static void
+mb_wm_comp_mgr_clutter_screen_size_changed (MBWMCompMgr *mgr,
+                                            unsigned w, unsigned h)
+{
+  MBWMCompMgrClutterPrivate *priv = MB_WM_COMP_MGR_CLUTTER (mgr)->priv;
+
+  clutter_actor_set_size (clutter_stage_get_default (), w, h);
+  XResizeWindow (mgr->wm->xdpy, priv->overlay_window, w, h);
 }
 
 static void

@@ -93,6 +93,6 @@ void
 mb_wm_stack_remove (MBWindowManagerClient *client);
 
 void
-mb_wm_stack_dump (MBWindowManager *wm);
+mb_wm_stack_dump (MBWindowManager *wm, const char * why, ...);
 
 #endif

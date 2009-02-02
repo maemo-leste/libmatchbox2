@@ -636,6 +636,18 @@ mb_wm_handle_root_config_notify (XConfigureEvent *xev,
   wm->xdpy_width = xev->width;
   wm->xdpy_height = xev->height;
 
+#if ENABLE_COMPOSITE
+  if (wm->comp_mgr && !wm->comp_mgr->disabled)
+    {
+      MBWMCompMgrClass *k;
+
+      k = MB_WM_COMP_MGR_CLASS (MB_WM_OBJECT_GET_CLASS (wm->comp_mgr));
+      if (k->screen_size_changed)
+        k->screen_size_changed (wm->comp_mgr,
+                                wm->xdpy_width, wm->xdpy_height);
+    }
+#endif
+
   mb_wm_display_sync_queue (wm, MBWMSyncGeometry);
   return True;
 }
@@ -2275,11 +2287,15 @@ void
 mb_adjust_dialog_title_position (MBWindowManager *wm,
                                  int new_padding)
 {
-  MBWindowManagerClient *top = mb_wm_get_visible_main_client(wm);
+  MBWindowManagerClient *top;
 
-  left_padding = new_padding + LEFT_GUTTER;
+  new_padding += LEFT_GUTTER;
+  if (left_padding == new_padding)
+    return;
+  left_padding = new_padding;
   
-  if (!top)
+  top = mb_wm_get_visible_main_client(wm);
+  if (!top || top == wm->desktop)
     {
       g_debug ("No visible window-- bailing");
       return;

@@ -72,6 +72,7 @@ struct MBWMCompMgrClass
 
   void   (*select_desktop)    (MBWMCompMgr * mgr,
 			       int desktop, int old_desktop);
+  void   (*screen_size_changed) (MBWMCompMgr * mgr, unsigned w, unsigned h);
 };
 
 int
