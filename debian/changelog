@@ -5,6 +5,7 @@ matchbox-window-manager-2 (0.2.15-1~unreleased) unstable; urgency=low
   * Enable asking the user what to do when a client does not answer to ping.
     Fixes: NB#98486, NB#93128, NB#92261
   * Added override-redirect windows to the texture corruption workaround list.
+  * Adam: initial portrait mode support.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 26 Jan 2009 10:10:06 +0200
 
