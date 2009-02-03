@@ -348,6 +348,60 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
   /* bundle all pending requests to server and wait for replys */
   XSync(wm->xdpy, False);
 
+  if (props_req & MBWM_WINDOW_PROP_TRANSIENCY)
+    {
+      Window *trans_win = NULL;
+
+      trans_win
+	= mb_wm_property_get_reply_and_validate (wm,
+						 cookies[COOKIE_WIN_TRANSIENCY],
+						 MBWM_ATOM_WM_TRANSIENT_FOR,
+						 32,
+						 1,
+						 NULL,
+						 &x_error_code);
+
+      if (x_error_code == BadWindow)
+        goto badwindow_error;
+
+      if (trans_win)
+	{
+	  MBWM_DBG("@@@ Window transient for %lx @@@", *trans_win);
+
+	  if (*trans_win != win->xwin_transient_for)
+	    changes |= MBWM_WINDOW_PROP_TRANSIENCY;
+
+	  win->xwin_transient_for = *trans_win;
+	  XFree(trans_win);
+	}
+      else MBWM_DBG("@@@ Window transient for nothing @@@");
+
+      changes |= MBWM_WINDOW_PROP_TRANSIENCY;
+    }
+
+  if (props_req & MBWM_WINDOW_PROP_ATTR)
+    {
+      xwin_attr = mb_wm_xwin_get_attributes_reply (wm,
+						   cookies[COOKIE_WIN_ATTR],
+						   &x_error_code);
+
+      if (!xwin_attr || x_error_code)
+	{
+	  MBWM_DBG("### Warning Get Attr Failed ( %i ) ###", x_error_code);
+
+          if (x_error_code == BadWindow)
+            goto badwindow_error;
+
+	  goto abort;
+	}
+
+      win->visual            = xwin_attr->visual;
+      win->colormap          = xwin_attr->colormap;
+      win->gravity           = xwin_attr->win_gravity;
+      win->override_redirect = xwin_attr->override_redirect;
+      win->window_class      = xwin_attr->class;
+    }
+
   if (props_req & MBWM_WINDOW_PROP_WIN_TYPE)
     {
       mb_wm_property_reply (wm,
@@ -366,9 +420,25 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  || result_atom == NULL
 	  )
 	{
-	  MBWM_DBG("### Warning net type prop failed ###");
+	  g_debug ("%s: ### Warning net type prop failed ###", __FUNCTION__);
 	  if (x_error_code == BadWindow)
 	    goto badwindow_error;
+
+          /* FDO wm-spec says that managed windows without type and without
+           * TRANSIENT_FOR must be taken as _NET_WM_WINDOW_TYPE_NORMAL. Also,
+           * override-redirect windows without type must be taken as such. */
+          if (!win->override_redirect && win->xwin_transient_for == None)
+            {
+	      g_debug ("%s: managed, non-transient window without a type",
+                       __FUNCTION__);
+	      win->net_type = wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_NORMAL];
+            }
+          else if (win->override_redirect)
+            {
+	      g_debug ("%s: override-redirect window without a type",
+                       __FUNCTION__);
+	      win->net_type = wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_NORMAL];
+            }
 	}
       else
 	{
@@ -494,29 +564,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
        * win->geometry here, perhaps that should be left as a
        * responsability for a signal handler? */
       win->geometry = win->x_geometry;
-    }
-
-  if (props_req & MBWM_WINDOW_PROP_ATTR)
-    {
-      xwin_attr = mb_wm_xwin_get_attributes_reply (wm,
-						   cookies[COOKIE_WIN_ATTR],
-						   &x_error_code);
-
-      if (!xwin_attr || x_error_code)
-	{
-	  MBWM_DBG("### Warning Get Attr Failed ( %i ) ###", x_error_code);
-
-          if (x_error_code == BadWindow)
-            goto badwindow_error;
-
-	  goto abort;
-	}
-
-      win->visual            = xwin_attr->visual;
-      win->colormap          = xwin_attr->colormap;
-      win->gravity           = xwin_attr->win_gravity;
-      win->override_redirect = xwin_attr->override_redirect;
-      win->window_class      = xwin_attr->class;
     }
 
   if (props_req & MBWM_WINDOW_PROP_NAME)
@@ -667,37 +714,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  /* FIXME: should track better if thus has changed or not */
 	  changes |= MBWM_WINDOW_PROP_MWM_HINTS;
 	}
-    }
-
-  if (props_req & MBWM_WINDOW_PROP_TRANSIENCY)
-    {
-      Window *trans_win = NULL;
-
-      trans_win
-	= mb_wm_property_get_reply_and_validate (wm,
-						 cookies[COOKIE_WIN_TRANSIENCY],
-						 MBWM_ATOM_WM_TRANSIENT_FOR,
-						 32,
-						 1,
-						 NULL,
-						 &x_error_code);
-
-      if (x_error_code == BadWindow)
-        goto badwindow_error;
-
-      if (trans_win)
-	{
-	  MBWM_DBG("@@@ Window transient for %lx @@@", *trans_win);
-
-	  if (*trans_win != win->xwin_transient_for)
-	    changes |= MBWM_WINDOW_PROP_TRANSIENCY;
-
-	  win->xwin_transient_for = *trans_win;
-	  XFree(trans_win);
-	}
-      else MBWM_DBG("@@@ Window transient for nothing @@@");
-
-      changes |= MBWM_WINDOW_PROP_TRANSIENCY;
     }
 
   if (props_req & MBWM_WINDOW_PROP_PROTOS)

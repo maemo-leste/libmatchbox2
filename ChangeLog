@@ -1,3 +1,12 @@
+2009-02-03  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties): Collect window attributes and
+	transiency information before determining the window type. Use
+	_NET_WM_WINDOW_TYPE_NORMAL type for typeless managed non-transient
+	windows and for typeless override-redirect windows as the FDO wm-spec
+	specifies. (This avoids the Maemoblocks crash.)
+
 2009-02-02  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-window-manager.c (mb_adjust_dialog_title_position):
