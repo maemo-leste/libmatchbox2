@@ -383,8 +383,10 @@ mb_wm_decor_sync_window (MBWMDecor *decor)
       if (decor->type == MBWMDecorTypeNorth &&
 	  decor->parent_client->layout_hints & LayoutPrefMovable)
 	{
+                /*
           g_debug ("%s: add ButtonPress handler for %lx", __FUNCTION__,
                    decor->xwin);
+                   */
 	  decor->press_cb_id =
 	    mb_wm_main_context_x_event_handler_add (wm->main_ctx,
 			        decor->xwin,
