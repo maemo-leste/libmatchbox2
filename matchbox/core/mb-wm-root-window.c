@@ -269,11 +269,18 @@ mb_wm_root_window_init_properties (MBWMRootWindow * win)
   CARD32            card32;
   unsigned long     val[2];
   char             *app_name = "matchbox";
+  pid_t             pid;
 
+  pid = getpid ();
   val[0] = hwin;
 
   /* Window name */
   mb_wm_rename_window (wm, hwin, app_name);
+
+  XChangeProperty(wm->xdpy, hwin,
+		  wm->atoms[MBWM_ATOM_NET_WM_PID],
+		  XA_CARDINAL, 32, PropModeReplace, (unsigned char *)&pid,
+		  1);
 
   /* Crack Needed to stop gnome session hanging ? */
   XChangeProperty(wm->xdpy, rwin,
