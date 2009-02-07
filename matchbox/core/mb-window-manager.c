@@ -1156,7 +1156,7 @@ mb_wm_manage_client (MBWindowManager       *wm,
     sync_flags |= MBWMSyncStacking;
 
 #if ENABLE_COMPOSITE
-  if (mb_wm_comp_mgr_enabled (wm->comp_mgr))
+  if (mb_wm_comp_mgr_enabled (wm->comp_mgr) && !client->cm_client)
     mb_wm_comp_mgr_register_client (wm->comp_mgr, client);
 #endif
 
@@ -1338,7 +1338,7 @@ mb_wm_display_sync_queue (MBWindowManager* wm, MBWMSyncType sync)
 }
 
 static void
-mb_wm_manage_preexistsing_wins (MBWindowManager* wm)
+mb_wm_manage_preexisting_wins (MBWindowManager* wm)
 {
    unsigned int      nwins, i;
    Window            foowin1, foowin2, *wins;
@@ -1570,7 +1570,7 @@ mb_wm_init (MBWindowManager * wm)
     mb_wm_compositing_on (wm);
 #endif
 
-  mb_wm_manage_preexistsing_wins (wm);
+  mb_wm_manage_preexisting_wins (wm);
 
   /*
    * Force an initial stack sync even when there are no managed windows (when

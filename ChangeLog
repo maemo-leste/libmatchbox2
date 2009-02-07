@@ -1,3 +1,10 @@
+2009-02-07  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-window-manager.c (mb_wm_manage_client): Do not
+	register an already registered client to the compositor.
+	(mb_wm_manage_preexistsing_wins): Renamed to
+	mb_wm_manage_preexisting_wins.
+
 2009-02-05  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-root-window.c:
