@@ -649,8 +649,8 @@ mb_wm_comp_mgr_clutter_client_repair_real (MBWMCompMgrClient *client,
       /*
        * First time we have been called since creation/configure,
        * fetch the whole texture.
-       */
       printf ("%s: Full drawable repair\n", __FUNCTION__);
+       */
       XDamageSubtract (wm->xdpy, damage, None, None);
       mb_wm_comp_mgr_clutter_fetch_texture (client);
       return;
