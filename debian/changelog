@@ -1,6 +1,7 @@
 matchbox-window-manager-2 (0.2.16-1~unreleased) unstable; urgency=low
 
-  * unreleased
+  * Patch from Artem Egorkine to respect MBWMCompMgrClutterClientDontPosition
+    in ConfigureNotify handler. Fixes: NB#100887
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue,  3 Feb 2009 10:34:11 +0200
 

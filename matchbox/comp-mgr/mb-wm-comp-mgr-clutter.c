@@ -715,6 +715,10 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
         g_debug("%s: skip systemui dialog", __FUNCTION__);
     }
 
+  /* Don't touch clients that handle their own actor positioning */
+  if (cclient->priv->flags & MBWMCompMgrClutterClientDontPosition)
+      return;
+
   /* Detect if the X size or position is different to our size and position
    * and re-adjust */
   if (cclient->priv->actor && cclient->priv->texture)
