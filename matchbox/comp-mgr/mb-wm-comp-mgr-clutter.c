@@ -737,9 +737,11 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
           clutter_actor_set_position(cclient->priv->actor, geom.x, geom.y);
           clutter_actor_set_size(cclient->priv->texture,
                             geom.width, geom.height);
+          /*
           g_debug("%s: Position Changed : %d, %d, %d, %d -> %d, %d, %d, %d",
               __FUNCTION__, x,y,width,height,
               geom.x, geom.y, geom.width, geom.height);
+              */
         }
     }
 }
