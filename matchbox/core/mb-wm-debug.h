@@ -21,6 +21,10 @@
 #ifndef _HAVE_MB_DEBUG_H
 #define _HAVE_MB_DEBUG_H
 
+/* Enumerate the fields of an MBGeometry * such that you can use it in
+ * printf("%dx%d%+d%+d"). */
+#define MBWM_GEOMETRY(geo) (geo)->width, (geo)->height, (geo)->x, (geo)->y
+
 #if MBWM_WANT_DEBUG
 
 typedef enum {
