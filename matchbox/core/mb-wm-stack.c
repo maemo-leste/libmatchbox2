@@ -41,7 +41,7 @@ mb_wm_stack_dump (MBWindowManager *wm, const char * why, ...)
   MBWindowManagerClient *client;
   MBWMStackLayerType     stacking_layer;
 
-  g_warning ("\n==== window stack =====\n");
+  g_debug ("\n==== window stack =====\n");
   if (why)
     {
       va_list printf_args;
@@ -71,7 +71,7 @@ mb_wm_stack_dump (MBWindowManager *wm, const char * why, ...)
 
       stacking_layer = mb_wm_client_get_stacking_layer (client);
 
-      g_warning ("%s XID: %lx NAME: %s, type %d, layer %d\n",
+      g_debug ("%s XID: %lx NAME: %s, type %d, layer %d\n",
 	      prefix,
 	      MB_WM_CLIENT_XWIN(client),
 	      client->window->name ? client->window->name : "unknown",
@@ -79,7 +79,7 @@ mb_wm_stack_dump (MBWindowManager *wm, const char * why, ...)
 	      stacking_layer);
     }
 
-  g_warning ("======================\n\n");
+  g_debug ("======================\n\n");
 }
 
 void
