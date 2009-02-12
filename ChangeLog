@@ -1,3 +1,12 @@
+2009-02-12  Gordon Williams  <gordon.williams@collabora.co.uk>
+	
+	* matchbox/core/mb-wm-decor.c
+	* matchbox/core/mb-wm-decor.h:
+	  Added signals for button pressed + released (to help hd-button
+	  highlight correctly)
+	* matchbox/core/mb-window-manager.h:
+	  Fixed typo
+
 2009-02-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Fixes for Coverity issues:

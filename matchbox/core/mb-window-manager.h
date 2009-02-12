@@ -30,7 +30,7 @@
  * window of a particular type; there is a subclass for each of these
  * types (such as MBWMClientDialog).  Each MBWindowManagerClient contains
  * an MBWMClientWindow which represents the actual low-level X window.
- 
+
  * MBWindowManager also contains an MBWMTheme, which is usually in
  * practice an instance of the subclass MBWMThemePng.
  *
@@ -66,7 +66,7 @@ typedef enum MBWindowManagerFlag
 typedef enum
 {
   MBWindowManagerSignalThemeChange = 1,
-} MBWindowManagerSingal;
+} MBWindowManagerSignal;
 
 typedef enum
 {
