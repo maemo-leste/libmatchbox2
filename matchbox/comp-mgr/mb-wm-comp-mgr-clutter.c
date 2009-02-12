@@ -526,12 +526,13 @@ mb_wm_comp_mgr_clutter_class_type ()
 static void
 mb_wm_comp_mgr_clutter_turn_off_real (MBWMCompMgr *mgr)
 {
-  MBWindowManager            * wm = mgr->wm;
-  MBWMCompMgrClutterPrivate  * priv;
+  MBWindowManager            *wm;
+  MBWMCompMgrClutterPrivate  *priv;
 
   if (!mgr)
     return;
 
+  wm = mgr->wm;
   priv = MB_WM_COMP_MGR_CLUTTER (mgr)->priv;
 
   if (mgr->disabled)
@@ -706,7 +707,7 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
 
       /* FIXME xmas fix -- ignore the invisible systemui dialog, because it
        * would show as white window for some reason */
-      if (!(ctype == MBWMClientTypeMenu && wm_client->window &&
+      if (!(ctype == MBWMClientTypeMenu &&
           g_strcmp0 ("systemui", wm_client->window->name) == 0))
         {
           mb_wm_comp_mgr_clutter_fetch_texture (client);
@@ -1454,8 +1455,6 @@ tidy_texture_frame_class_init (TidyTextureFrameClass *klass)
 static void
 tidy_texture_frame_init (TidyTextureFrame *self)
 {
-  TidyTextureFramePrivate *priv;
-
-  self->priv = priv = TIDY_TEXTURE_FRAME_GET_PRIVATE (self);
+  self->priv = TIDY_TEXTURE_FRAME_GET_PRIVATE (self);
 }
 

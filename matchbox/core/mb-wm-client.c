@@ -144,6 +144,9 @@ mb_wm_client_init (MBWMObject *obj, va_list vap)
       prop = va_arg(vap, MBWMObjectProp);
     }
 
+  if (!wm)
+    return 0;
+
   MBWM_MARK();
 
   client = MB_WM_CLIENT(obj);

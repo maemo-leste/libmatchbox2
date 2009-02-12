@@ -634,6 +634,7 @@ mb_wm_main_context_x_event_handler_add (MBWMMainContext *ctx,
   switch (type)
     {
     case Expose:
+      free (func_info);
       break;
     case MapRequest:
       ctx->event_funcs.map_request =
@@ -685,6 +686,7 @@ mb_wm_main_context_x_event_handler_add (MBWMMainContext *ctx,
       break;
 
     default:
+      free (func_info);
       break;
     }
 
@@ -753,7 +755,8 @@ mb_wm_main_context_x_event_handler_remove (MBWMMainContext *ctx,
       break;
     }
 
-  l = *l_start;
+  if (l_start)
+    l = *l_start;
 
   while (l)
     {

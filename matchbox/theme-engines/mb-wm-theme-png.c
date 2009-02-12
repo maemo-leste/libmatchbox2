@@ -1292,7 +1292,10 @@ mb_wm_theme_png_ximg (MBWMThemePng * theme, const char * img)
   Bool shaped = MB_WM_THEME (theme)->shaped;
 
   if (!png_data || !width || !height)
-    return 0;
+    {
+      free (png_data);
+      return 0;
+    }
 
   ren_fmt = XRenderFindStandardFormat(dpy, PictStandardARGB32);
 

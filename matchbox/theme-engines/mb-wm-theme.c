@@ -669,11 +669,15 @@ mb_wm_theme_set_left_padding (MBWMTheme *theme,
 {
   MBWMThemeClass *klass = MB_WM_THEME_CLASS(MB_WM_OBJECT_GET_CLASS (theme));
   MBWMClientType c_type = MB_WM_CLIENT_CLIENT_TYPE (client);
-  MBWMDecor *decor = (MBWMDecor *)mb_wm_xml_decor_find_by_type
-        (mb_wm_xml_client_find_by_type (theme->xml_clients, c_type)->decors,
-         MBWMDecorTypeNorth);
+  MBWMDecor *decor = NULL, *decor_tmp;
+ 
+  decor_tmp = (MBWMDecor *)mb_wm_xml_client_find_by_type (theme->xml_clients,
+                                                          c_type);
+  if (decor_tmp)
+    decor = (MBWMDecor *)mb_wm_xml_decor_find_by_type (decor_tmp->decors,
+                                                       MBWMDecorTypeNorth);
 
-  if (klass->set_left_padding)
+  if (decor && klass->set_left_padding)
     klass->set_left_padding (theme, decor, new_padding);
 }
 
@@ -1010,6 +1014,7 @@ xml_element_start_cb (void *data, const char *tag, const char **expat_attr)
       if (ctx != XML_CTX_THEME)
 	{
 	  MBWM_DBG ("Expected context theme");
+          free (c);
 	  return;
 	}
 
@@ -1161,6 +1166,7 @@ xml_element_start_cb (void *data, const char *tag, const char **expat_attr)
       if (ctx != XML_CTX_CLIENT || !c)
 	{
 	  MBWM_DBG ("Expected context client");
+          free (d);
 	  return;
 	}
 
@@ -1264,6 +1270,7 @@ xml_element_start_cb (void *data, const char *tag, const char **expat_attr)
       if (ctx != XML_CTX_DECOR || !d)
 	{
 	  MBWM_DBG ("Expected context decor");
+          free (b);
 	  return;
 	}
 

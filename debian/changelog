@@ -1,6 +1,6 @@
 matchbox-window-manager-2 (0.2.17-1~unreleased) unstable; urgency=low
 
-  * unreleased
+  * Fixes for several Coverity-found issues.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 11 Feb 2009 09:25:48 +0200
 

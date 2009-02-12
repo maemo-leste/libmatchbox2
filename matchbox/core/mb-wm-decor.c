@@ -61,6 +61,7 @@ mb_wm_decor_init (MBWMObject *obj, va_list vap)
 	  break;
 	case MBWMObjectPropDecorAbsolutePacking:
 	  abs_packing = va_arg(vap, int);
+          break;
 	default:
 	  MBWMO_PROP_EAT (vap, prop);
 	}
@@ -1233,12 +1234,13 @@ mb_wm_decor_button_stock_new (MBWindowManager            *wm,
 void
 mb_wm_decor_button_handle_repaint (MBWMDecorButton *button)
 {
-  MBWMDecor * decor = button->decor;
-  MBWMTheme * theme = decor->parent_client->wmref->theme;
+  MBWMDecor *decor = button->decor;
+  MBWMTheme *theme;
 
   if (decor->parent_client == NULL)
     return;
 
+  theme = decor->parent_client->wmref->theme;
   mb_wm_theme_paint_button (theme, button);
 }
 

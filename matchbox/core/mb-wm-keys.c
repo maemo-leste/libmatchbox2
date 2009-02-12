@@ -323,6 +323,8 @@ mb_wm_keys_init(MBWindowManager *wm)
   MBWMKeys        *keys;
 
   mod_map = XGetModifierMapping(wm->xdpy);
+  if (!mod_map)
+    return False;
 
   keys = wm->keys = mb_wm_util_malloc0(sizeof(MBWMKeys));
 

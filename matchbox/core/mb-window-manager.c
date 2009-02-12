@@ -1991,8 +1991,11 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 
   if (wm->focused_client == client ||
       !mb_wm_client_want_focus (client) ||
-      (has_modal_focused_client && client == mb_wm_client_get_transient_for (wm->focused_client)) ||
-      (system_modal_focused_client && !client_is_system_modal && wm->focused_client != mb_wm_client_get_transient_for (client)))
+      (has_modal_focused_client &&
+       client == mb_wm_client_get_transient_for (wm->focused_client)) ||
+      (system_modal_focused_client &&
+       !client_is_system_modal &&
+       wm->focused_client != mb_wm_client_get_transient_for (client)))
     return False;
 
   if (!mb_wm_client_is_realized (client))

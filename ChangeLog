@@ -1,3 +1,40 @@
+2009-02-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Fixes for Coverity issues:
+	* matchbox/client-types/mb-wm-client-desktop.c
+	(mb_wm_client_desktop_init): Remove unused return value.
+	* matchbox/client-types/mb-wm-client-app.c (mb_wm_client_app_init):
+	Remove unused return value.
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_turn_off_real): NULL-check 'mgr' before (not
+	after) dereferencing it.
+	(mb_wm_comp_mgr_clutter_client_configure_real): Remove useless check
+	for window.
+	(tidy_texture_frame_class_init): Remove unused return value.
+	* matchbox/core/mb-wm-root-window.c (mb_wm_root_window_init):
+	NULL-check 'wm' before using it.
+	* matchbox/core/mb-wm-main-context.c
+	(mb_wm_main_context_x_event_handler_add): Free 'func_info' in Expose
+	and default case.
+	(mb_wm_main_context_x_event_handler_remove): NULL-check l_start before
+	using it.
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_init): Add a missing break.
+	(mb_wm_decor_button_stock_new): NULL-check decor->parent_client before
+	(not after) using it.
+	* matchbox/core/mb-window-manager.c (mb_wm_focus_client): White space
+	fixes to make the if condition more readable.
+	* matchbox/core/mb-wm-object.c (mb_wm_object_init_recurse): Free
+	'vap2' also in the error cases.
+	(mb_wm_object_init_object): Ditto.
+	(mb_wm_object_new): Free 'vap' in an error case.
+	* matchbox/core/mb-wm-keys.c (mb_wm_client_init): NULL-check 'wm'
+	before using it.
+	* matchbox/theme-engines/mb-wm-theme.c (mb_wm_theme_set_left_padding):
+	Check the result of both calls to mb_wm_xml_client_find_by_type().
+	(xml_element_start_cb): Free c, d, and b in the error cases.
+	* matchbox/theme-engines/mb-wm-theme-png.c (mb_wm_theme_png_ximg):
+	Free 'png_data' in the error case.
+
 2009-02-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.16

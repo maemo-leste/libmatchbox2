@@ -43,10 +43,7 @@ mb_wm_client_desktop_init (MBWMObject *this, va_list vap)
 {
   MBWindowManagerClient    *client         = MB_WM_CLIENT (this);
   MBWindowManager          *wm = NULL;
-  MBWMClientDesktopClass   *inp_class;
   MBGeometry                geom;
-
-  inp_class = MB_WM_CLIENT_DESKTOP_CLASS (MB_WM_OBJECT_GET_CLASS (this));
 
   wm = client->wmref;
 

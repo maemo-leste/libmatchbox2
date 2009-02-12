@@ -73,6 +73,12 @@ mb_wm_root_window_init (MBWMObject *this, va_list vap)
       prop = va_arg(vap, MBWMObjectProp);
     }
 
+  if (!wm)
+    {
+      MBWM_DBG ("Failed to initialize root window attributes.");
+      abort ();
+    }
+
   root_window->wm = wm;
   root_window->xwindow = RootWindow(wm->xdpy, wm->xscreen);
 
