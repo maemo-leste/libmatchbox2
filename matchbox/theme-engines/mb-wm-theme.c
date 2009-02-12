@@ -669,10 +669,10 @@ mb_wm_theme_set_left_padding (MBWMTheme *theme,
 {
   MBWMThemeClass *klass = MB_WM_THEME_CLASS(MB_WM_OBJECT_GET_CLASS (theme));
   MBWMClientType c_type = MB_WM_CLIENT_CLIENT_TYPE (client);
-  MBWMDecor *decor = NULL, *decor_tmp;
+  MBWMDecor *decor = NULL;
+  MBWMXmlClient *decor_tmp;
  
-  decor_tmp = (MBWMDecor *)mb_wm_xml_client_find_by_type (theme->xml_clients,
-                                                          c_type);
+  decor_tmp = mb_wm_xml_client_find_by_type (theme->xml_clients, c_type);
   if (decor_tmp)
     decor = (MBWMDecor *)mb_wm_xml_decor_find_by_type (decor_tmp->decors,
                                                        MBWMDecorTypeNorth);
