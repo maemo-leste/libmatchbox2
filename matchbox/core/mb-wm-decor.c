@@ -831,8 +831,6 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 	  mb_wm_theme_paint_button (wm->theme, button);
 	}
 
-      mb_wm_object_signal_emit(button, MBWMDecorButtonSignalPressed);
-
       if (button->press_activated)
 	{
 	  XUngrabPointer(wm->xdpy, CurrentTime);
@@ -957,9 +955,6 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 				retval = False;
 				goto done;
 			      }
-
-			    mb_wm_object_signal_emit(button,
-			        MBWMDecorButtonSignalReleased);
 
 			    if (button->release)
 			      button->release(wm, button, button->userdata);

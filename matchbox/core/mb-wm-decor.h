@@ -212,12 +212,6 @@ struct MBWMDecorButtonClass
   */
 };
 
-typedef enum
-{
-  MBWMDecorButtonSignalPressed = 1,
-  MBWMDecorButtonSignalReleased = 2,
-} MBWMDecorButtonSignal;
-
 int
 mb_wm_decor_button_class_type (void);
 
