@@ -1,6 +1,14 @@
-matchbox-window-manager-2 (0.2.17-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.17-1) unstable; urgency=low
 
   * Fixes for several Coverity-found issues.
+
+  Gordon:
+        * matchbox/core/mb-wm-decor.c
+        * matchbox/core/mb-wm-decor.h:
+          Added signals for button pressed + released (to help hd-button
+          highlight correctly)
+        * matchbox/core/mb-window-manager.h:
+          Fixed typo
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 11 Feb 2009 09:25:48 +0200
 
