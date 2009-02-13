@@ -1,5 +1,11 @@
 2009-02-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	* matchbox/client-types/mb-wm-client-dialog.c
+	(mb_wm_client_dialog_init): Respect the undecorated flag when
+	determining the size of the dialog.
+
+2009-02-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
 	Release 0.2.17
 
 2009-02-13  Gordon Williams  <gordon.williams@collabora.co.uk>

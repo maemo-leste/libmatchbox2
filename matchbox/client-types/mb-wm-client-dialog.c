@@ -90,7 +90,6 @@ mb_wm_client_dialog_init (MBWMObject *this, va_list vap)
   MBWindowManager       *wm = client->wmref;
   MBWMClientWindow      *win = client->window;
   MBGeometry             geom;
-  int                    n, s, w, e;
   Atom actions[] = {
     wm->atoms[MBWM_ATOM_NET_WM_ACTION_CLOSE],
     wm->atoms[MBWM_ATOM_NET_WM_ACTION_MOVE],
@@ -108,7 +107,7 @@ mb_wm_client_dialog_init (MBWMObject *this, va_list vap)
 				 LayoutPrefMovable      |
 				 LayoutPrefVisible);
 
-  if (!client->window->undecorated)
+  if (!client->window->undecorated && wm->theme)
     {
       mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeNorth);
       mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeSouth);
@@ -166,12 +165,25 @@ mb_wm_client_dialog_init (MBWMObject *this, va_list vap)
    * geometry from the layout manager -- we have to set the initial geometry
    * here
    */
-  mb_wm_theme_get_decor_dimensions (wm->theme, client, &n, &s, &w, &e);
+  if (client->window->undecorated)
+    {
+      geom.x      = client->window->geometry.x;
+      geom.y      = client->window->geometry.y;
+      geom.width  = client->window->geometry.width;
+      geom.height = client->window->geometry.height;
+    }
+  else
+    {
+      int n, s, w, e;
+      n = s = w = e = 0;
 
-  geom.x      = client->window->geometry.x;
-  geom.y      = client->window->geometry.y;
-  geom.width  = client->window->geometry.width + w + e;
-  geom.height = client->window->geometry.height + n + s;
+      mb_wm_theme_get_decor_dimensions (wm->theme, client, &n, &s, &w, &e);
+
+      geom.x      = client->window->geometry.x;
+      geom.y      = client->window->geometry.y;
+      geom.width  = client->window->geometry.width + w + e;
+      geom.height = client->window->geometry.height + n + s;
+    }
 
   mb_wm_client_dialog_request_geometry (client, &geom,
 					MBWMClientReqGeomForced);
@@ -228,7 +240,7 @@ mb_wm_client_dialog_request_geometry (MBWindowManagerClient *client,
       int north = 0, south = 0, west = 0, east = 0;
       MBWindowManager *wm = client->wmref;
 
-      if (client->decor)
+      if (!client->window->undecorated && client->decor)
 	mb_wm_theme_get_decor_dimensions (wm->theme, client,
 					  &north, &south, &west, &east);
 
