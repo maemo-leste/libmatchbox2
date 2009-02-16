@@ -202,7 +202,7 @@ Bool
 mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 				     unsigned long     props_req)
 {
-  MBWMCookie       cookies[N_COOKIES];
+  MBWMCookie       cookies[N_COOKIES] = {0};
   MBWindowManager *wm = win->wm;
   Atom             actual_type_return, *result_atom = NULL;
   int              actual_format_return;

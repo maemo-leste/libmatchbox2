@@ -1,3 +1,8 @@
+2009-02-16  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/core/mb-wm-client-window.c: initialise cookies
+        so the compiler won't complain about it
+
 2009-02-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/client-types/mb-wm-client-dialog.c
