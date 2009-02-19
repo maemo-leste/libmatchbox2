@@ -544,11 +544,11 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 	{
 	  /*
 	   * If we are the currently focused client,
-	   * we need to reset the focus to RevertToParent, since the
+	   * we need to reset the focus to RevertToPointerRoot, since the
 	   * focus was lost during the implicit unmap.
 	   */
 	  XSetInputFocus (wm->xdpy, client->window->xwindow,
-			  RevertToParent, CurrentTime);
+			  RevertToPointerRoot, CurrentTime);
 
 	}
     }
@@ -784,7 +784,7 @@ mb_wm_client_base_focus (MBWindowManagerClient *client)
 
   mb_wm_util_trap_x_errors ();
 
-  XSetInputFocus(wm->xdpy, xwin, RevertToParent, CurrentTime);
+  XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
 
   XChangeProperty(wm->xdpy, wm->root_win->xwindow,
 		  wm->atoms[MBWM_ATOM_NET_ACTIVE_WINDOW],
