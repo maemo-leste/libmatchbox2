@@ -1118,7 +1118,6 @@ mb_wm_decor_button_realize (MBWMDecorButton *button)
   if (!button->press_cb_id
       && !(button->flags & MB_WM_DECOR_BUTTON_NOHANDLERS))
   {
-    g_debug ("%s: add ButtonPress handler for %lx", __FUNCTION__, decor->xwin);
     button->press_cb_id =
       mb_wm_main_context_x_event_handler_add (wm->main_ctx,
 			    decor->xwin,
