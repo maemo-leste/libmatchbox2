@@ -1,3 +1,11 @@
+2009-02-19  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_display_sync,
+	mb_wm_client_base_focus): Use RevertToParent instead of
+	RevertToPointerRoot since we don't have pointer-based focus system
+	(in the sense that the user cannot see it, the user can still move
+	focus by pointer press).
+
 2009-02-16  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	* matchbox/core/mb-wm-client-window.c: initialise cookies
