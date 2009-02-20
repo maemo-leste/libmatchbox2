@@ -463,7 +463,7 @@ typedef enum MBWMCompMgrShadowType
 typedef enum MBWMModality
 {
   MBWMModalityNormal = 0, /* Handle modality per EWMH */
-  MBWMModalitySystem,     /* Treat all modal dialogs as if system modal */
+  MBWMModalitySystem,     /* Treat all intransient dialogs as if system modal */
   MBWMModalityNone,       /* Ignore modality */
 }MBWMModality;
 

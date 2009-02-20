@@ -1955,9 +1955,14 @@ static Bool
 mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 {
   MBWindowManagerClient *client = c,
-                        *last_focused_transient;
+    *last_focused_transient,
+    *focused_clients_parent;
  
   last_focused_transient = mb_wm_client_get_last_focused_transient (c);
+
+  focused_clients_parent = wm->focused_client?
+    mb_wm_client_get_transient_for (wm->focused_client):
+    NULL;
 
   /*
    * If the last focused transient for this client is modal, we try to focus
@@ -1971,31 +1976,33 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
     }
 
   /*
-   * If the 
-   * 1) client is currently focused, 
-   * 2) client does not want focus,  
-   * 3) client is a parent of a currently focused modal client,
-   * 4) the currently focused client is system-modal while the client is not 
-   *    and not its transient either
+   * Note: We now say that a system-modal dialogue is any dialogue which
+   * is intransient, or is transient to itself or to the root; a system-
+   * modal dialogue is not required to be modal.  In other words, testing
+   * "!mb_wm_client_get_transient_for(w)" is equivalent to testing whether
+   * w is system-modal.
+   *
+   * We refuse to focus a window if:
    */
-  gboolean has_modal_focused_client = 
-    wm->focused_client && mb_wm_client_is_modal (wm->focused_client);
 
-  gboolean system_modal_focused_client = 
-    has_modal_focused_client && 
-    !mb_wm_client_get_transient_for (wm->focused_client) && 
-    wm->modality_type == MBWMModalitySystem;
-
-  gboolean client_is_system_modal =
-    mb_wm_client_is_modal (client) && !mb_wm_client_get_transient_for (client);
-
-  if (wm->focused_client == client ||
+  if (
+      /* It's already focussed */
+      wm->focused_client == client ||
+      /* It doesn't want focus */
       !mb_wm_client_want_focus (client) ||
-      (has_modal_focused_client &&
-       client == mb_wm_client_get_transient_for (wm->focused_client)) ||
-      (system_modal_focused_client &&
-       !client_is_system_modal &&
-       wm->focused_client != mb_wm_client_get_transient_for (client)))
+      /* It's the parent of the current modal focus-holder */
+      (client == focused_clients_parent &&
+       wm->focused_client &&
+       mb_wm_client_is_modal (wm->focused_client)) ||
+      /* It isn't system-modal but the current focus-holder is,
+         unless its parent is the current focus-holder
+         (you're allowed to switch to the non-system-modal transients
+          of a system-modal window) */
+      (wm->modality_type == MBWMModalitySystem &&
+       !focused_clients_parent &&
+       mb_wm_client_get_transient_for (client) &&
+       wm->focused_client != mb_wm_client_get_transient_for (client))
+      )
     return False;
 
   if (!mb_wm_client_is_realized (client))

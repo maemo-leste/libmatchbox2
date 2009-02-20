@@ -1,3 +1,15 @@
+2009-02-20  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	Being intransient is now a sufficient condition to be considered
+	system-modal.  A dialog's modality is not relevant to its
+	system-modality.  After discussion with Kimmo.  
+	This isn't the change that fixes MB#97489 but is in sympathy
+	with it.
+
+	* matchbox/core/mb-window-manager.c: Change preresquisites for
+	being system-modal.
+	* matchbox/core/mb-wm-types.h: Update comment.
+
 2009-02-16  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	* matchbox/core/mb-wm-client-window.c: initialise cookies
