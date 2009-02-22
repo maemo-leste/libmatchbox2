@@ -2050,6 +2050,8 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
   if (client != wm->focused_client)
     return;
 
+  /* FIXME: shouldn't we always start from top of the stack, because
+   * the next client might not want focus? */
   next = mb_wm_client_get_next_focused_client (client);
 
   if (!next && wm->stack_top)
