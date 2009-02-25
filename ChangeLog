@@ -1,3 +1,9 @@
+2009-02-25  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Removed copied version of TidyTextureFrame that doesn't compile
+	with clutter trunk.
+
 2009-02-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.18
