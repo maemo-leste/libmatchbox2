@@ -705,15 +705,7 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
     {
       cclient->priv->fullscreen = fullscreen;
 
-      /* FIXME xmas fix -- ignore the invisible systemui dialog, because it
-       * would show as white window for some reason */
-      if (!(ctype == MBWMClientTypeMenu &&
-          g_strcmp0 ("systemui", wm_client->window->name) == 0))
-        {
-          mb_wm_comp_mgr_clutter_fetch_texture (client);
-        }
-      else
-        g_debug("%s: skip systemui dialog", __FUNCTION__);
+      mb_wm_comp_mgr_clutter_fetch_texture (client);
     }
 
   /* Don't touch clients that handle their own actor positioning */
