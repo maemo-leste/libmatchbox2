@@ -340,7 +340,7 @@ mb_wm_comp_mgr_clutter_client_show_real (MBWMCompMgrClient * client)
   cclient->priv->flags &= ~MBWMCompMgrClutterClientDontUpdate;
 
   if (!(cclient->priv->flags & MBWMCompMgrClutterClientDontShow))
-    clutter_actor_show_all (cclient->priv->actor);
+    clutter_actor_show (cclient->priv->actor);
 }
 
 void

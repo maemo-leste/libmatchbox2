@@ -1,3 +1,10 @@
+2009-02-25  Jan Arne Petersen  <jpetersen@openismus.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	  (mb_wm_comp_mgr_clutter_client_show_real): Use clutter_actor_show
+	  instead of clutter_actor_show_all, so not all children are forced to
+	  be shown too.
+
 2009-02-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
