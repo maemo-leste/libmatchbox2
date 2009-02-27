@@ -1,3 +1,13 @@
+2009-02-10  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#103417 Animation actors cannot be resized
+	Patch from Artem Egorkine.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	  Set the size (but not the position) of
+	  MBWMCompMgrClutterClientDontPosition clients
+	  when they are reconfigured.
+
 2009-02-25  Jan Arne Petersen  <jpetersen@openismus.com>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c

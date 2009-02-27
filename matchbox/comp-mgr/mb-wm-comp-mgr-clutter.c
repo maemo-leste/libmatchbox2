@@ -181,8 +181,8 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
   if (!(cclient->priv->flags & MBWMCompMgrClutterClientDontPosition))
     {
       clutter_actor_set_position (cclient->priv->actor, geom.x, geom.y);
-      clutter_actor_set_size (cclient->priv->texture, geom.width, geom.height);
     }
+  clutter_actor_set_size (cclient->priv->texture, geom.width, geom.height);
 
   /* this will also cause updating the corresponding pixmap
    * and ensures window<->pixmap binding */
@@ -708,10 +708,6 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
       mb_wm_comp_mgr_clutter_fetch_texture (client);
     }
 
-  /* Don't touch clients that handle their own actor positioning */
-  if (cclient->priv->flags & MBWMCompMgrClutterClientDontPosition)
-      return;
-
   /* Detect if the X size or position is different to our size and position
    * and re-adjust */
   if (cclient->priv->actor && cclient->priv->texture)
@@ -727,7 +723,10 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
           geom.width != width ||
           geom.height != height)
         {
-          clutter_actor_set_position(cclient->priv->actor, geom.x, geom.y);
+          if (!(cclient->priv->flags & MBWMCompMgrClutterClientDontPosition))
+	    {
+              clutter_actor_set_position(cclient->priv->actor, geom.x, geom.y);
+	    }
           clutter_actor_set_size(cclient->priv->texture,
                             geom.width, geom.height);
           /*
