@@ -23,7 +23,7 @@
 #define HAVE_CLUTTER_EGLX 0
 #endif
 
-#define SGX_CORRUPTION_WORKAROUND 1
+#define SGX_CORRUPTION_WORKAROUND 0
 
 #include "mb-wm.h"
 #include "mb-wm-client.h"
