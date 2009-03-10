@@ -1,9 +1,11 @@
-matchbox-window-manager-2 (0.2.20-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.20-1) unstable; urgency=low
 
-  * Removed auto-generated files from SVN.
-  * Added -DG_DEBUG_DISABLE for package compilation flags.
+  * Fixes: NB#103954 - don't consider desktop as system-modal window (Thomas)
+  * Gordon removed SGX corruption workaround (SGX 1.3 drivers now integrated)
+  * Kimmo removed auto-generated files from SVN.
+  * Kimmo added -DG_DEBUG_DISABLE for package compilation flags.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  2 Mar 2009 09:43:27 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 10 Mar 2009 09:24:18 +0200
 
 matchbox-window-manager-2 (0.2.19-1) unstable; urgency=low
 
