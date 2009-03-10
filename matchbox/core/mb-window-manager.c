@@ -1958,11 +1958,6 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
     *last_focused_transient,
     *focused_clients_parent;
 
-  /* types of clients that can't be system modal */
-  const int cannot_be_system_modal =
-    MBWMClientTypePanel |
-    MBWMClientTypeDesktop;
- 
   last_focused_transient = mb_wm_client_get_last_focused_transient (c);
 
   focused_clients_parent = wm->focused_client?
@@ -2006,7 +2001,7 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
       (wm->modality_type == MBWMModalitySystem &&
        !focused_clients_parent &&
        wm->focused_client &&
-       !(MB_WM_CLIENT_CLIENT_TYPE (wm->focused_client) & cannot_be_system_modal) &&
+       MB_WM_CLIENT_CLIENT_TYPE (wm->focused_client)==MBWMClientTypeDialog &&
        mb_wm_client_get_transient_for (client) &&
        wm->focused_client != mb_wm_client_get_transient_for (client))
       )

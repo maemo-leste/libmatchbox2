@@ -71,12 +71,13 @@ mb_wm_stack_dump (MBWindowManager *wm, const char * why, ...)
 
       stacking_layer = mb_wm_client_get_stacking_layer (client);
 
-      g_debug ("%s XID: %lx NAME: %s, type %d, layer %d\n",
+      g_debug ("%s XID: %lx NAME: %s, type %d, layer %d%s\n",
 	      prefix,
 	      MB_WM_CLIENT_XWIN(client),
 	      client->window->name ? client->window->name : "unknown",
 	      MB_WM_CLIENT_CLIENT_TYPE (client),
-	      stacking_layer);
+	      stacking_layer,
+              wm->focused_client==client? " FOCUSED":"" );
     }
 
   g_debug ("======================\n\n");
@@ -141,7 +142,7 @@ mb_wm_stack_ensure (MBWindowManager *wm)
     }
 
 //  ENABLE ME WHEN YOU NEED ME
-//  mb_wm_stack_dump (wm, "FINISH");
+ mb_wm_stack_dump (wm, "FINISH");
 }
 
 void

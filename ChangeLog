@@ -1,3 +1,11 @@
+2009-03-10  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        Fixes: NB#104487
+	
+	* matchbox/core/mb-window-manager.c: further to my previous
+	fix, let's just say that only MBWMClientTypeDialog can be
+	system-modal.
+
 2009-03-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.20
