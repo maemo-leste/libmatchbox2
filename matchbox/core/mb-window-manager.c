@@ -1793,6 +1793,8 @@ mb_wm_activate_client (MBWindowManager * wm, MBWindowManagerClient *c)
   MBWindowManagerClass  *wm_klass;
   wm_klass = MB_WINDOW_MANAGER_CLASS (MB_WM_OBJECT_GET_CLASS (wm));
 
+  g_warning ("MBWMAC\n");
+
   MBWM_ASSERT (wm_klass->client_activate);
 
   wm_klass->client_activate (wm, c);
@@ -1807,6 +1809,8 @@ mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c)
   Bool is_desktop;
   MBWindowManagerClient * c_focus = c;
   MBWindowManagerClient * trans, *last_focused_transient;
+
+  g_warning ("MBWMAC REAL\n");
 
   if (c == NULL)
     return False;
@@ -1957,6 +1961,11 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
   MBWindowManagerClient *client = c,
     *last_focused_transient,
     *focused_clients_parent;
+
+  /* types of clients that can't be system modal */
+  const int cannot_be_system_modal =
+    MBWMClientTypePanel |
+    MBWMClientTypeDesktop;
  
   last_focused_transient = mb_wm_client_get_last_focused_transient (c);
 
@@ -2000,6 +2009,8 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
           of a system-modal window) */
       (wm->modality_type == MBWMModalitySystem &&
        !focused_clients_parent &&
+       wm->focused_client &&
+       !(MB_WM_CLIENT_CLIENT_TYPE (wm->focused_client) & cannot_be_system_modal) &&
        mb_wm_client_get_transient_for (client) &&
        wm->focused_client != mb_wm_client_get_transient_for (client))
       )
@@ -2023,6 +2034,7 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 
   if (mb_wm_client_focus (client))
     {
+      /* FIXME this appears not to do anything */
       if (wm->focused_client)
 	{
 	  MBWindowManagerClient *trans_old = wm->focused_client;
@@ -2050,11 +2062,7 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
   if (client != wm->focused_client)
     return;
 
-  /* FIXME: shouldn't we always start from top of the stack, because
-   * the next client might not want focus? */
-  next = mb_wm_client_get_next_focused_client (client);
-
-  if (!next && wm->stack_top)
+  if (wm->stack_top)
     {
       MBWindowManagerClient *c;
 
@@ -2071,7 +2079,9 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
   wm->focused_client = NULL;
 
   if (next)
-	mb_wm_focus_client (wm, next);
+    {
+      mb_wm_focus_client (wm, next);
+    }
 }
 
 void
