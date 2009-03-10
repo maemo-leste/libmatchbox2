@@ -142,7 +142,7 @@ mb_wm_stack_ensure (MBWindowManager *wm)
     }
 
 //  ENABLE ME WHEN YOU NEED ME
- mb_wm_stack_dump (wm, "FINISH");
+// mb_wm_stack_dump (wm, "FINISH");
 }
 
 void
