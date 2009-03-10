@@ -1793,8 +1793,6 @@ mb_wm_activate_client (MBWindowManager * wm, MBWindowManagerClient *c)
   MBWindowManagerClass  *wm_klass;
   wm_klass = MB_WINDOW_MANAGER_CLASS (MB_WM_OBJECT_GET_CLASS (wm));
 
-  g_warning ("MBWMAC\n");
-
   MBWM_ASSERT (wm_klass->client_activate);
 
   wm_klass->client_activate (wm, c);
@@ -1809,8 +1807,6 @@ mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c)
   Bool is_desktop;
   MBWindowManagerClient * c_focus = c;
   MBWindowManagerClient * trans, *last_focused_transient;
-
-  g_warning ("MBWMAC REAL\n");
 
   if (c == NULL)
     return False;
