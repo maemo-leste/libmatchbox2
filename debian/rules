@@ -4,9 +4,9 @@ include /usr/share/cdbs/1/class/autotools.mk
 
 DEB_CONFIGURE_EXTRA_FLAGS := --enable-png-theme --enable-composite-managers=clutter --enable-glib-main-loop --enable-libmatchbox --disable-simple-manager --with-pango
 
+CFLAGS := -DG_DEBUG_DISABLE
+
 DEB_DH_STRIP_ARGS := --dbg-package=libmatchbox2
 
 makebuilddir/libmatchbox2::
-	aclocal
-	automake --add-missing
-	autoreconf
+	autoreconf -i -f

@@ -1,6 +1,7 @@
 matchbox-window-manager-2 (0.2.20-1~unreleased) unstable; urgency=low
 
-  * WRITEME
+  * Removed auto-generated files from SVN.
+  * Added -DG_DEBUG_DISABLE for package compilation flags.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  2 Mar 2009 09:43:27 +0200
 
