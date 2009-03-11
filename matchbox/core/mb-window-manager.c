@@ -663,7 +663,6 @@ mb_wm_handle_config_request (XConfigureRequestEvent *xev,
   int                    req_y = xev->y;
   int                    req_w = xev->width;
   int                    req_h = xev->height;
-  MBGeometry             req_geom, *win_geom;
 
   client = mb_wm_managed_client_from_xwindow(wm, xev->window);
 
@@ -689,28 +688,33 @@ mb_wm_handle_config_request (XConfigureRequestEvent *xev,
     }
 
   value_mask = xev->value_mask;
-  win_geom   = &client->window->geometry;
 
-  req_geom.x      = (value_mask & CWX)      ? req_x : win_geom->x;
-  req_geom.y      = (value_mask & CWY)      ? req_y : win_geom->y;
-  req_geom.width  = (value_mask & CWWidth)  ? req_w : win_geom->width;
-  req_geom.height = (value_mask & CWHeight) ? req_h : win_geom->height;
+  if (client->window && client->window->geometry)
+    {
+      MBGeometry req_geom,
+	*win_geom = &client->window->geometry;
 
-  /* We can't determine at this point what the right response
-   * to this configure request is since layout management might
-   * also want to tweak the window geometry.
-   *
-   * We make a note that the configure request needs a response
-   * and when we reach mb_wm_sync - but after all layout decisions
-   * have been made - then we can determine if the request
-   * has been accepted or not and send any synthetic events as
-   * needed.
-   */
-  mb_wm_client_configure_request_ack_queue (client);
+      req_geom.x      = (value_mask & CWX)      ? req_x : win_geom->x;
+      req_geom.y      = (value_mask & CWY)      ? req_y : win_geom->y;
+      req_geom.width  = (value_mask & CWWidth)  ? req_w : win_geom->width;
+      req_geom.height = (value_mask & CWHeight) ? req_h : win_geom->height;
 
-  mb_wm_client_request_geometry (client,
-				 &req_geom,
-				 MBWMClientReqGeomIsViaConfigureReq);
+      /* We can't determine at this point what the right response
+       * to this configure request is since layout management might
+       * also want to tweak the window geometry.
+       *
+       * We make a note that the configure request needs a response
+       * and when we reach mb_wm_sync - but after all layout decisions
+       * have been made - then we can determine if the request
+       * has been accepted or not and send any synthetic events as
+       * needed.
+       */
+      mb_wm_client_configure_request_ack_queue (client);
+
+      mb_wm_client_request_geometry (client,
+				     &req_geom,
+				     MBWMClientReqGeomIsViaConfigureReq);
+    }
 
   return True;
 }

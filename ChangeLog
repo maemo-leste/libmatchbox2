@@ -1,3 +1,7 @@
+2009-03-11  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/core/mb-window-manager.c: extra check for null dereference
+
 2009-03-11  Gordon Williams  <gordon.williams@collabora.co.uk>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
