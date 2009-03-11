@@ -1,4 +1,10 @@
-2009-03-09  Gordon Williams  <gordon.williams@collabora.co.uk>
+2009-03-11  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Re-added SGX_CORRUPTION_WORKAROUND as rover seems unstable without
+	it.
+
+2009-03-11  Gordon Williams  <gordon.williams@collabora.co.uk>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
 	Now don't create a pixmap for the window frame, but just the 
