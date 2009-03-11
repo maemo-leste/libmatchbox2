@@ -1,3 +1,14 @@
+2009-03-09  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	Now don't create a pixmap for the window frame, but just the 
+	inner window (saves memory and allows shaped title bars)
+	Refactored all resizing code into one place.
+	Fixed bug where fetch_texture did not actually fetch a texture if
+	the window id hadn't changed (eg. fullscreen -> windowed change).
+	Remove un-required XCompositeNameWindowPixmap that maybe caused
+	an extra redraw
+
 2009-03-10  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
         * matchbox/core/mb-wm-stack.c: remove debugging code

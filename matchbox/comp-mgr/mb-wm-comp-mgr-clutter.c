@@ -77,14 +77,14 @@ struct MBWMCompMgrClutterClientPrivate
 {
   ClutterActor          * actor;  /* Overall actor */
   ClutterActor          * texture; /* The texture part of our actor */
-  Pixmap                  pixmap;
-  int                     pxm_width;
-  int                     pxm_height;
-  int                     pxm_depth;
   unsigned int            flags;
   Bool                    fullscreen;
-  Damage                  frame_damage;
   Damage                  window_damage;
+  Bool                    bound;
+
+  /* have we been unmapped - if so we need to re-create our texture when
+   * we are re-mapped */
+  Bool                    unmapped;
 };
 
 static void
@@ -113,6 +113,54 @@ mb_wm_comp_mgr_clutter_client_class_init (MBWMObjectClass *klass)
 #if MBWM_WANT_DEBUG
   klass->klass_name = "MBWMCompMgrClutterClient";
 #endif
+}
+
+static void
+mb_wm_comp_mgr_clutter_client_set_size (
+            MBWMCompMgrClutterClient *cclient,
+            gboolean force)
+{
+  MBWMCompMgrClient  *client  = MB_WM_COMP_MGR_CLIENT(cclient);
+
+  ClutterActor *actor = cclient->priv->actor;
+  ClutterActor *texture = cclient->priv->texture;
+
+  if (!(cclient->priv->flags & MBWMCompMgrClutterClientDontPosition) ||
+      force)
+    {
+      /* We have 2 types - either we have a frame,
+       * or we don't. The texture sits inside our parent actor */
+      if (client->wm_client->xwin_frame)
+        {
+          /* So we're in a frame, but this frame is now rendered with clutter.
+           * So we treat our parent 'actor' as the frame and offset the
+           * X window in it */
+          MBGeometry geomf = client->wm_client->frame_geometry;
+          MBGeometry geomw = client->wm_client->window->geometry;
+          clutter_actor_set_position (actor, geomf.x, geomf.y);
+          clutter_actor_set_size (actor, geomf.width, geomf.height);
+          if (texture)
+            {
+              clutter_actor_set_position (texture,
+                  geomw.x-geomf.x,
+                  geomw.y-geomf.y);
+              clutter_actor_set_size (texture, geomw.width, geomw.height);
+            }
+        }
+      else
+        {
+          /* We're not in a frame - it's easy. Make the texture and actor
+           * the same size */
+          MBGeometry geom = client->wm_client->window->geometry;
+          clutter_actor_set_position (actor, geom.x, geom.y);
+          clutter_actor_set_size (actor, geom.width, geom.height);
+          if (texture)
+            {
+              clutter_actor_set_position (texture, 0, 0);
+              clutter_actor_set_size (texture, geom.width, geom.height);
+            }
+        }
+    }
 }
 
 /**
@@ -145,44 +193,15 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
   fullscreen = mb_wm_client_window_is_state_set (
       wm_client->window, MBWMClientWindowEWMHStateFullscreen);
 
-  xwin =
-    wm_client->xwin_frame && !fullscreen ?
-      wm_client->xwin_frame : wm_client->window->xwindow;
+  xwin = wm_client->window->xwindow;
 
-  mb_wm_util_trap_x_errors ();
-  XSync (wm->xdpy, False);
+  mb_wm_comp_mgr_clutter_client_set_size(cclient, FALSE);
 
-  if (cclient->priv->pixmap)
-    XFreePixmap (wm->xdpy, cclient->priv->pixmap);
-
-  cclient->priv->pixmap = XCompositeNameWindowPixmap (wm->xdpy, xwin);
-
-  if (!cclient->priv->pixmap)
-    {
-      mb_wm_util_untrap_x_errors ();
-      return;
-    }
-
-  XGetGeometry (wm->xdpy, cclient->priv->pixmap, &root,
-		&x, &y, &w, &h, &bw, &depth);
-
-  mb_wm_client_get_coverage (wm_client, &geom);
-
-  cclient->priv->pxm_width  = w;
-  cclient->priv->pxm_height = h;
-  cclient->priv->pxm_depth  = depth;
-
-  /*
-  g_debug ("%s: x: %d/%d y: %d/%d w: %d/%d h: %d/%d", __FUNCTION__,
-           geom.x, x, geom.y, y,
-           geom.width, w, geom.height, h);
-           */
-
-  if (!(cclient->priv->flags & MBWMCompMgrClutterClientDontPosition))
-    {
-      clutter_actor_set_position (cclient->priv->actor, geom.x, geom.y);
-    }
-  clutter_actor_set_size (cclient->priv->texture, geom.width, geom.height);
+  /* FORCE clutter to release it's old window. It won't do it
+   * if you just set the same window */
+  clutter_x11_texture_pixmap_set_window (
+          CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
+          0, FALSE);
 
   /* this will also cause updating the corresponding pixmap
    * and ensures window<->pixmap binding */
@@ -192,10 +211,11 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
 
   if (mb_wm_util_untrap_x_errors () == BadDrawable)
     {
-      g_debug ("%s: BadDrawable for %lx", __FUNCTION__, cclient->priv->pixmap);
-      cclient->priv->pixmap = None;
+      g_debug ("%s: BadDrawable for %lx", __FUNCTION__, client->wm_client->window);
       return;
     }
+
+  cclient->priv->bound = TRUE;
 
 #ifdef HAVE_XEXT
   /*
@@ -242,6 +262,7 @@ mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
     mb_wm_util_malloc0 (sizeof (MBWMCompMgrClutterClientPrivate));
 
   cclient->priv->actor = clutter_group_new();
+  cclient->priv->bound = FALSE;
 
   return 1;
 }
@@ -256,11 +277,6 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
   if (cclient->priv->actor)
     clutter_actor_destroy (cclient->priv->actor);
 
-  if (cclient->priv->pixmap)
-    XFreePixmap (wm->xdpy, cclient->priv->pixmap);
-
-  if (cclient->priv->frame_damage)
-    XDamageDestroy (wm->xdpy, cclient->priv->frame_damage);
   if (cclient->priv->window_damage)
     XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
 
@@ -640,12 +656,12 @@ mb_wm_comp_mgr_clutter_client_repair_real (MBWMCompMgrClient *client,
   XRectangle               * r_damage;
   XRectangle                 r_bounds;
 
-//  MBWM_NOTE (COMPOSITOR, "REPAIRING %lx", wm_client->window->xwindow);
+  MBWM_NOTE (COMPOSITOR, "REPAIRING %lx", client->wm_client->window->xwindow);
 
   if (!cclient->priv->actor)
     return;
 
-  if (!cclient->priv->pixmap)
+  if (!cclient->priv->bound)
     {
       /*
        * First time we have been called since creation/configure,
@@ -710,32 +726,7 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
 
   /* Detect if the X size or position is different to our size and position
    * and re-adjust */
-  if (cclient->priv->actor && cclient->priv->texture)
-    {
-      MBGeometry geom;
-      gint x, y;
-      guint width, height;
-      mb_wm_client_get_coverage (client->wm_client, &geom);
-      clutter_actor_get_position(cclient->priv->actor, &x, &y);
-      clutter_actor_get_size(cclient->priv->texture, &width, &height);
-      if (geom.x != x ||
-          geom.y != y ||
-          geom.width != width ||
-          geom.height != height)
-        {
-          if (!(cclient->priv->flags & MBWMCompMgrClutterClientDontPosition))
-	    {
-              clutter_actor_set_position(cclient->priv->actor, geom.x, geom.y);
-	    }
-          clutter_actor_set_size(cclient->priv->texture,
-                            geom.width, geom.height);
-          /*
-          g_debug("%s: Position Changed : %d, %d, %d, %d -> %d, %d, %d, %d",
-              __FUNCTION__, x,y,width,height,
-              geom.x, geom.y, geom.width, geom.height);
-              */
-        }
-    }
+  mb_wm_comp_mgr_clutter_client_set_size(cclient, FALSE);
 }
 
 static Bool
@@ -769,20 +760,7 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
        * In full-screen mode we are not watching the frame window. When the
        * full-screen mode is set we only watch the frame window.
        */
-      damage = ((XEvent *)de)->xany.window == c->xwin_frame ?
-	cclient->priv->frame_damage : cclient->priv->window_damage;
-
-      if (((XEvent *)de)->xany.window == c->xwin_frame) {
-	if (cclient->priv->fullscreen) {
-	  XDamageSubtract (wm->xdpy, damage, None, None);
-	  return False;
-	}
-      } else if (((XEvent *)de)->xany.window == c->window->xwindow) {
-	if (!cclient->priv->fullscreen && c->xwin_frame) {
-	  XDamageSubtract (wm->xdpy, damage, None, None);
-	  return False;
-	}
-      }
+      damage = cclient->priv->window_damage;
 
       mb_wm_comp_mgr_clutter_client_repair_real (c->cm_client, damage);
     }
@@ -930,7 +908,6 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   MBWMCompMgrClutterClient  * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
   MBWindowManager           * wm      = client->wm;
   ClutterActor              * texture;
-  MBGeometry                  geom;
   MBWMClientType              ctype = MB_WM_CLIENT_CLIENT_TYPE (c);
   char                        actor_name[64];
 
@@ -939,12 +916,6 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 
   if (mb_wm_client_is_hiding_from_desktop (c))
     {
-      /*
-       * We already have the resources, except we have to get a new
-       * backing pixmap
-       */
-      //Window xwin = c->xwin_frame ? c->xwin_frame : c->window->xwindow;
-
       /*
        * FIXME -- Must rebind the pixmap to the texture -- this is not ideal
        * since our texture already contains the correct data, but without
@@ -966,27 +937,11 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 
   cclient->priv->flags |= MBWMCompMgrClutterClientMapped;
 
-  /*
-   * In full screen mode the xwin_frame window is unmapped, an the application
-   * window (c->window->xwindow) is reparented to the root window. This is why
-   * we have to watch both windows using the damage extension.
-   *
-   * TODO: The title bar of the application window has an other window which we
-   * are not watching. This might be the why the title bar is not refreshing.
-   */
-  if (c->xwin_frame)
-    cclient->priv->frame_damage = XDamageCreate (wm->xdpy,
-				   c->xwin_frame,
-				   XDamageReportNonEmpty);
-
   cclient->priv->window_damage = XDamageCreate (wm->xdpy,
 				   c->window->xwindow,
 				   XDamageReportNonEmpty);
 
-  mb_wm_client_get_coverage (c, &geom);
-
-  g_snprintf(actor_name, 64, "window_0x%lx",
-             c->xwin_frame ? c->xwin_frame : c->window->xwindow);
+  g_snprintf(actor_name, 64, "window_0x%lx", c->window->xwindow);
   clutter_actor_set_name(cclient->priv->actor, actor_name);
 
 #if HAVE_CLUTTER_GLX
@@ -1038,8 +993,9 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   g_object_set_data (G_OBJECT (cclient->priv->actor),
       "MBWMCompMgrClutterClient", cclient);
 
-  clutter_actor_set_position (cclient->priv->actor, geom.x, geom.y);
-  clutter_actor_set_size (texture, geom.width, geom.height);
+  /* set up our sizes and positions. Force this because it's the first
+   * time we create the texture */
+  mb_wm_comp_mgr_clutter_client_set_size(cclient, TRUE);
 
   /* If the client has a "do not show" flag set explicitly,
      prevent it from being shown when it is added to the desktop */
@@ -1087,7 +1043,7 @@ mb_wm_comp_mgr_clutter_add_actor (MBWMCompMgrClutter       * cmgr,
 
   d = mb_wm_comp_mgr_clutter_get_nth_desktop (cmgr, desktop);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (d), cclient->priv->actor);
+  clutter_actor_reparent (cclient->priv->actor, CLUTTER_ACTOR (d));
 }
 
 MBWMCompMgr *
