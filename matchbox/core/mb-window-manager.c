@@ -689,7 +689,7 @@ mb_wm_handle_config_request (XConfigureRequestEvent *xev,
 
   value_mask = xev->value_mask;
 
-  if (client->window && client->window->geometry)
+  if (client->window)
     {
       MBGeometry req_geom,
 	*win_geom = &client->window->geometry;
