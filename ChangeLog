@@ -1,3 +1,13 @@
+2009-03-12  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	Root window handler gets to examine all the ClientMessages
+	sent (in accordance with the TODO) rather than special-casing.
+
+	Fixes: NB#105405
+	
+	* matchbox/core/mb-wm-main-context.c:
+	* matchbox/core/mb-wm-root-window.c:
+
 2009-03-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.21

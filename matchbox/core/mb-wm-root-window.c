@@ -416,6 +416,7 @@ mb_wm_root_window_handle_message (MBWMRootWindow *win, XClientMessageEvent *e)
 	case IconicState:
 	  if ((c = mb_wm_managed_client_from_xwindow (wm, e->window)))
 	    mb_wm_client_iconize (c);
+	  return 1;
 
 	default:
 	  MBWM_DBG ("Unhandled value %d for WM_CHANGE_STATE ClientMessage",
@@ -438,22 +439,23 @@ mb_wm_root_window_handle_message (MBWMRootWindow *win, XClientMessageEvent *e)
 	 {
 	 case MB_CMD_EXIT:
 	   exit(0);
+	   return 1; /* keep the compiler from getting confused */
 	 case MB_CMD_NEXT:
 	   mb_wm_cycle_apps (wm, False);
-	   break;
+	   return 1;
 	 case MB_CMD_PREV:
 	   mb_wm_cycle_apps (wm, True);
-	   break;
+	   return 1;
 	 case MB_CMD_DESKTOP:
 	   mb_wm_toggle_desktop (wm);
-	   break;
+	   return 1;
 #if ENABLE_COMPOSITE
 	 case MB_CMD_COMPOSITE:
 	   if (mb_wm_compositing_enabled (wm))
 	     mb_wm_compositing_off (wm);
 	   else
 	     mb_wm_compositing_on (wm);
-	   break;
+	   return 1;
 #endif
 	 default:
 	   /*FIXME -- not implemented yet */
@@ -461,8 +463,6 @@ mb_wm_root_window_handle_message (MBWMRootWindow *win, XClientMessageEvent *e)
 	   ;
 	 }
     }
-  else
-    g_debug ("%s: unknown ClientMessage", __FUNCTION__);
 
   return 0;
 }

@@ -226,35 +226,27 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
   switch (xev->type)
     {
     case ClientMessage:
-      /*
-       * TODO -- perhaps this should not be special-cased.
-       */
-      if (xev->xany.window == wm->root_win->xwindow ||
-	  ((XClientMessageEvent *)xev)->message_type ==
-	  wm->atoms[MBWM_ATOM_NET_ACTIVE_WINDOW] ||
-	  ((XClientMessageEvent *)xev)->message_type ==
-	  wm->atoms[MBWM_ATOM_NET_WM_STATE])
+      /* give the EWMH handler the first crack at it */
+      if (!mb_wm_root_window_handle_message (wm->root_win,
+					     (XClientMessageEvent *)xev))
 	{
-	  mb_wm_root_window_handle_message (wm->root_win,
-					    (XClientMessageEvent *)xev);
-	}
+	  iter = ctx->event_funcs.client_message;
 
-      iter = ctx->event_funcs.client_message;
-
-      while (iter)
-	{
-	  Window msg_xwin = XE_ITER_GET_XWIN(iter);
-	  MBWMList * next = iter->next;
-
-	  if (msg_xwin == None || msg_xwin == xwin)
+	  while (iter)
 	    {
-	      if (!(MBWindowManagerClientMessageFunc)XE_ITER_GET_FUNC(iter)
-		  ((XClientMessageEvent*)&xev->xclient,
-		   XE_ITER_GET_DATA(iter)))
-		break;
+	      Window msg_xwin = XE_ITER_GET_XWIN(iter);
+	      MBWMList * next = iter->next;
+	      
+	      if (msg_xwin == None || msg_xwin == xwin)
+		{
+		  if (!(MBWindowManagerClientMessageFunc)XE_ITER_GET_FUNC(iter)
+		      ((XClientMessageEvent*)&xev->xclient,
+		       XE_ITER_GET_DATA(iter)))
+		    break;
+		}
+	      
+	      iter = next;
 	    }
-
-	  iter = next;
 	}
       break;
     case Expose:
