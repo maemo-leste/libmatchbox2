@@ -1,9 +1,10 @@
-matchbox-window-manager-2 (0.2.21-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.21-1) unstable; urgency=low
 
   Thomas:
   * Fixes: NB#104487 - only dialog can be system-modal.
+  * SGX_CORRUPTION_WORKAROUND is back (Gordon)
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 10 Mar 2009 09:28:15 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 12 Mar 2009 15:23:00 +0200
 
 matchbox-window-manager-2 (0.2.20-1) unstable; urgency=low
 
