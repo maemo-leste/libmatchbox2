@@ -168,9 +168,6 @@ mb_wm_new_with_dpy (int argc, char **argv, Display * dpy);
 void
 mb_wm_init (MBWindowManager * wm);
 
-void
-mb_wm_set_layout (MBWindowManager *wm, MBWMLayout *layout);
-
 int
 mb_wm_class_type ();
 
@@ -187,16 +184,6 @@ int
 mb_wm_register_client_type (void);
 
 void
-mb_wm_manage_client (MBWindowManager       *wm,
-		     MBWindowManagerClient *client,
-		     Bool                   activate);
-
-void
-mb_wm_unmanage_client (MBWindowManager       *wm,
-		       MBWindowManagerClient *client,
-		       Bool                   destroy);
-
-void
 mb_wm_display_sync_queue (MBWindowManager* wm, MBWMSyncType sync);
 
 void
@@ -206,10 +193,10 @@ mb_wm_get_display_geometry (MBWindowManager  *wm,
 void
 mb_wm_activate_client(MBWindowManager * wm, MBWindowManagerClient *c);
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_handle_ping_reply (MBWindowManager * wm, MBWindowManagerClient *c);
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_handle_hang_client (MBWindowManager * wm, MBWindowManagerClient *c);
 
 void
@@ -228,21 +215,15 @@ void
 mb_wm_cycle_apps (MBWindowManager *wm, Bool reverse);
 
 void
-mb_wm_set_theme (MBWindowManager *wm, MBWMTheme * theme);
-
-void
 mb_wm_set_theme_from_path (MBWindowManager *wm, const char *theme_path);
 
-void
-mb_wm_set_cursor (MBWindowManager * wm, MBWindowManagerCursor cursor);
-
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_compositing_on (MBWindowManager * wm);
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_compositing_off (MBWindowManager * wm);
 
-Bool
+Bool __attribute__ ((visibility("hidden")))
 mb_wm_compositing_enabled (MBWindowManager * wm);
 
 MBWMModality
@@ -251,10 +232,7 @@ mb_wm_get_modality_type (MBWindowManager * wm);
 void
 mb_wm_sync (MBWindowManager *wm);
 
-void
-mb_wm_set_n_desktops (MBWindowManager *wm, int n_desktops);
-
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_select_desktop (MBWindowManager *wm, int desktop);
 
 void

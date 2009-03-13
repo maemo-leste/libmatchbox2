@@ -76,6 +76,28 @@ static Bool
 mb_wm_is_my_window (MBWindowManager *wm, Window xwin,
 		    MBWindowManagerClient **client);
 
+static void
+mb_wm_unmanage_client (MBWindowManager       *wm,
+		       MBWindowManagerClient *client,
+		       Bool                   destroy);
+
+static void
+mb_wm_manage_client (MBWindowManager       *wm,
+		     MBWindowManagerClient *client,
+		     Bool                   activate);
+
+static void
+mb_wm_set_layout (MBWindowManager *wm, MBWMLayout *layout);
+
+static void
+mb_wm_set_n_desktops (MBWindowManager *wm, int n_desktops);
+
+static void
+mb_wm_set_cursor (MBWindowManager * wm, MBWindowManagerCursor cursor);
+
+static void
+mb_wm_set_theme (MBWindowManager *wm, MBWMTheme * theme);
+
 static MBWindowManagerClient*
 mb_wm_client_new_func (MBWindowManager *wm, MBWMClientWindow *win)
 {
@@ -1103,7 +1125,7 @@ mb_wm_update_root_win_lists (MBWindowManager *wm)
     }
 }
 
-void
+static void
 mb_wm_manage_client (MBWindowManager       *wm,
 		     MBWindowManagerClient *client,
 		     Bool                   activate)
@@ -1176,7 +1198,7 @@ mb_wm_manage_client (MBWindowManager       *wm,
  * destroy indicates whether the client, if it is an application,
  * should be destroyed or moved into the iconized category.
  */
-void
+static void
 mb_wm_unmanage_client (MBWindowManager       *wm,
 		       MBWindowManagerClient *client,
 		       Bool                   destroy)
@@ -1883,7 +1905,7 @@ mb_wm_get_visible_main_client(MBWindowManager *wm)
   return mb_wm_stack_get_highest_by_type (wm, MBWMClientTypeApp);
 }
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_handle_ping_reply (MBWindowManager * wm, MBWindowManagerClient *c)
 {
   g_debug ("%s: entered", __FUNCTION__);
@@ -1903,7 +1925,7 @@ mb_wm_handle_ping_reply (MBWindowManager * wm, MBWindowManagerClient *c)
     }
 }
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_handle_hang_client (MBWindowManager * wm, MBWindowManagerClient *c)
 {
   MBWindowManagerClass  *wm_klass;
@@ -1948,7 +1970,7 @@ mb_wm_handle_show_desktop (MBWindowManager * wm, Bool show)
     }
 }
 
-void
+static void
 mb_wm_set_layout (MBWindowManager *wm, MBWMLayout *layout)
 {
   wm->layout = layout;
@@ -2104,7 +2126,7 @@ mb_wm_cycle_apps (MBWindowManager *wm, Bool reverse)
     }
 }
 
-void
+static void
 mb_wm_set_theme (MBWindowManager *wm, MBWMTheme * theme)
 {
   if (!theme)
@@ -2156,7 +2178,7 @@ mb_wm_set_theme_from_path (MBWindowManager *wm, const char *theme_path)
   mb_wm_set_theme (wm, theme);
 }
 
-void
+static void
 mb_wm_set_cursor (MBWindowManager * wm, MBWindowManagerCursor cursor)
 {
   static int major = 0, minor = 0, ev_base, err_base;
@@ -2205,7 +2227,7 @@ mb_wm_set_cursor (MBWindowManager * wm, MBWindowManagerCursor cursor)
     wm->cursor = cursor;
 }
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_compositing_on (MBWindowManager * wm)
 {
 #if ENABLE_COMPOSITE
@@ -2224,7 +2246,7 @@ mb_wm_compositing_on (MBWindowManager * wm)
 }
 
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_compositing_off (MBWindowManager * wm)
 {
 #if ENABLE_COMPOSITE
@@ -2233,7 +2255,7 @@ mb_wm_compositing_off (MBWindowManager * wm)
 #endif
 }
 
-Bool
+Bool __attribute__ ((visibility("hidden")))
 mb_wm_compositing_enabled (MBWindowManager * wm)
 {
 #if ENABLE_COMPOSITE
@@ -2249,7 +2271,7 @@ mb_wm_get_modality_type (MBWindowManager * wm)
   return wm->modality_type;
 }
 
-void
+static void
 mb_wm_set_n_desktops (MBWindowManager *wm, int n_desktops)
 {
   CARD32 card32 = n_desktops;
@@ -2265,7 +2287,7 @@ mb_wm_set_n_desktops (MBWindowManager *wm, int n_desktops)
 }
 
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_select_desktop (MBWindowManager *wm, int desktop)
 {
   CARD32                 card32 = desktop;

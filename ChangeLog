@@ -1,3 +1,16 @@
+2009-03-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Hide some symbols.
+
+	* matchbox/core/mb-window-manager.[ch]: Mark the following functions
+	static: mb_wm_unmanage_client, mb_wm_manage_client, mb_wm_set_layout,
+	mb_wm_set_n_desktops, mb_wm_set_cursor, mb_wm_set_theme.
+
+	Mark the following functions internal to the library (i.e. protected):
+	mb_wm_handle_ping_reply, mb_wm_handle_hang_client,
+	mb_wm_compositing_on, mb_wm_compositing_off,
+	mb_wm_compositing_enabled, mb_wm_select_desktop.
+
 2009-03-12  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	Root window handler gets to examine all the ClientMessages
