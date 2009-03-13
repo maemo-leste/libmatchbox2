@@ -600,7 +600,8 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
   if (xev->atom == wm->atoms[MBWM_ATOM_NET_WM_USER_TIME])
     flag = MBWM_WINDOW_PROP_NET_USER_TIME;
   else if (xev->atom == wm->atoms[MBWM_ATOM_WM_NAME] ||
-	   xev->atom == wm->atoms[MBWM_ATOM_NET_WM_NAME])
+	   xev->atom == wm->atoms[MBWM_ATOM_NET_WM_NAME] ||
+	   xev->atom == wm->atoms[MBWM_ATOM_HILDON_WM_NAME])
     flag = MBWM_WINDOW_PROP_NAME;
   else if (xev->atom == wm->atoms[MBWM_ATOM_WM_HINTS])
     flag = MBWM_WINDOW_PROP_WM_HINTS;

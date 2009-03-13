@@ -29,6 +29,7 @@ enum {
   COOKIE_WIN_GEOM,
   COOKIE_WIN_NAME,
   COOKIE_WIN_NAME_UTF8,
+  COOKIE_WIN_NAME_UTF8_XML,
   COOKIE_WIN_SIZE_HINTS,
   COOKIE_WIN_WM_HINTS,
   COOKIE_WIN_TRANSIENCY,
@@ -249,6 +250,10 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       cookies[COOKIE_WIN_NAME_UTF8] =
 	mb_wm_property_utf8_req(wm, xwin,
 				wm->atoms[MBWM_ATOM_NET_WM_NAME]);
+
+      cookies[COOKIE_WIN_NAME_UTF8_XML] =
+	mb_wm_property_utf8_req(wm, xwin,
+				wm->atoms[MBWM_ATOM_HILDON_WM_NAME]);
     }
 
   if (props_req & MBWM_WINDOW_PROP_WM_HINTS)
@@ -568,41 +573,76 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
   if (props_req & MBWM_WINDOW_PROP_NAME)
     {
+      /* We have three options for the name, which in priority order are:
+       *  1) _HILDON_WM_NAME, in UTF-8, in XML markup
+       *  2) _NET_WM_NAME, in UTF-8, no markup
+       *  3) WM_NAME, in ISO 8859-1, no markup
+       */
+      int name_types[] = {
+			  COOKIE_WIN_NAME_UTF8_XML,
+			  COOKIE_WIN_NAME_UTF8,
+			  COOKIE_WIN_NAME,
+			  0
+      };
+      int *cursor = name_types;
+      char *name = NULL;
+
       if (win->name)
-	XFree(win->name);
+	g_free(win->name);
 
-      /* Prefer UTF8 Naming... */
-      win->name
-	= mb_wm_property_get_reply_and_validate (wm,
-						 cookies[COOKIE_WIN_NAME_UTF8],
-						 wm->atoms[MBWM_ATOM_UTF8_STRING],
-						 8,
-						 0,
-						 NULL,
-						 &x_error_code);
-
-      if (x_error_code == BadWindow)
-        goto badwindow_error;
-
-      /* FIXME: Validate the UTF8 */
-
-      if (!win->name)
+      while (*cursor)
 	{
-	  /* FIXME: Should flag up name could be in some wacko encoding ? */
-	  win->name
+	  name
 	    = mb_wm_property_get_reply_and_validate (wm,
-						     cookies[COOKIE_WIN_NAME],
-						     XA_STRING,
+						     cookies[*cursor],
+						     *cursor==COOKIE_WIN_NAME? XA_STRING: wm->atoms[MBWM_ATOM_UTF8_STRING],
 						     8,
 						     0,
 						     NULL,
 						     &x_error_code);
+
+	  if (x_error_code == BadWindow)
+	    goto badwindow_error;
+
+	  if (name)
+	    break;
+
+	  cursor++;
 	}
 
-      if (win->name == NULL)
-	win->name = strdup("unknown");
+      switch (*cursor)
+	{
+	case COOKIE_WIN_NAME:
+	  /* TODO:  We could convert ISO 8859-1 to UTF-8 here,
+	   * if we thought anyone was likely to use ISO 8859-1
+	   * outside of the range where it coincides with ASCII
+	   * (and therefore also with UTF-8).
+	   */
+
+	  /* We also need to escape the text... */
+	  /* FALLTHROUGH */
+
+	case COOKIE_WIN_NAME_UTF8:
+	  /* We need to escape the text. */
+	  win->name = g_markup_escape_text (name, -1);
+	  break;
+
+	case COOKIE_WIN_NAME_UTF8_XML:
+	  /* Everything's lovely, so just take a copy */
+	  win->name = g_strdup (name);
+	  break;
+
+	case 0:
+	default:
+	  /* didn't find anything */
+	  win->name = g_strdup("unknown");
+	}
+
+      /* FIXME: We could also check the UTF-8 for validity here. */
 
       MBWM_DBG("@@@ New Window Name: '%s' @@@", win->name);
+
+      XFree (name);
 
       changes |= MBWM_WINDOW_PROP_NAME;
     }

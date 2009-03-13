@@ -5,7 +5,7 @@ mb_wm_atoms_init(MBWindowManager *wm)
 {
   /*
    *   The list below *MUST* be kept in the same order as the corresponding
-   *   emun in structs.h or *everything* will break.
+   *   enum in mb-wm-types.h or *everything* will break.
    *   Doing it like this avoids a mass of round trips on startup.
    */
 
@@ -103,6 +103,7 @@ mb_wm_atoms_init(MBWindowManager *wm)
     "_MB_CURRENT_APP_WINDOW",
     "_MB_SECONDARY",
     "_HILDON_STACKING_LAYER",
+    "_HILDON_WM_NAME",
   };
 
   /* FIXME: Error Traps */

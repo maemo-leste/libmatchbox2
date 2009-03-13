@@ -1,3 +1,16 @@
+2009-03-13  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	Add new _HILDON_WM_NAME property which can be used to name
+	a window and include markup (if you want to have italics
+	or whatever in your window names).
+
+	Fixes: NB#105404.
+
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-wm-atoms.c:
+	* matchbox/core/mb-wm-client-window.c:
+	* matchbox/core/mb-wm-types.h:
+
 2009-03-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Hide some symbols.
