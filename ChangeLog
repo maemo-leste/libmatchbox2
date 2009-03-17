@@ -1,3 +1,15 @@
+2009-03-17  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Regression fix: stack override-redirect windows where they belong.
+	Otherwise these clients are left where they happen to be by
+	mb_wm_stack_ensure().
+
+	* matchbox/core/mb-wm-client-base.h
+	* matchbox/core/mb-wm-client-base.c:
+	  Export mb_wm_client_base_stack().
+	* matchbox/client-types/mb-wm-client-override.c:
+	  Use it for MBWMClientOverride.
+
 2009-03-16  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	Fixes: NB#103836 (or at least its test case).

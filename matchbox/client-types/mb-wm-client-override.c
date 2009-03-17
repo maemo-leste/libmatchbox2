@@ -21,22 +21,7 @@
 #include "mb-wm-client-override.h"
 
 #include "mb-wm-theme.h"
-
-#if 0  /* we have to respect stacking layers */
-static void
-mb_wm_client_override_stack (MBWindowManagerClient *client,
-			     int                    flags)
-{
-  MBWMList * t = mb_wm_client_get_transients (client);
-
-  mb_wm_stack_move_top(client);
-
-  mb_wm_util_list_foreach (t, (MBWMListForEachCB)mb_wm_client_stack,
-			   (void*)flags);
-
-  mb_wm_util_list_free (t);
-}
-#endif
+#include "mb-wm-client-base.h"
 
 static void
 mb_wm_client_override_class_init (MBWMObjectClass *klass)
@@ -47,10 +32,14 @@ mb_wm_client_override_class_init (MBWMObjectClass *klass)
 
   client = (MBWindowManagerClientClass *)klass;
 
+  /*
+   * Inherit from MB_WM_CLIENT but use MB_WM_CLIENT_BASE's stack() method
+   * for, well, stacking.  Because otherwise ->stacking_layer is ignored.
+   * In other words poor client is not stacked at all.  Which means it is
+   * left rotten at the bottom.
+   */
   client->client_type  = MBWMClientTypeOverride;
-/*
-  client->stack        = mb_wm_client_override_stack;
-  */
+  client->stack        = mb_wm_client_base_stack;
 
 #if MBWM_WANT_DEBUG
   klass->klass_name = "MBWMClientOverride";

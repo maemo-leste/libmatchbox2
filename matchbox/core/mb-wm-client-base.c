@@ -36,9 +36,6 @@ static void
 mb_wm_client_base_realize (MBWindowManagerClient *client);
 
 static void
-mb_wm_client_base_stack (MBWindowManagerClient *client,
-			 int                    flags);
-static void
 mb_wm_client_base_show (MBWindowManagerClient *client);
 
 static void
@@ -299,7 +296,7 @@ mb_wm_client_move_to_top_recursive (
 	}
 }
 
-static void
+void
 mb_wm_client_base_stack (MBWindowManagerClient *client,
 			 int                    flags)
 {
