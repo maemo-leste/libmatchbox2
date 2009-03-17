@@ -48,11 +48,6 @@ MBWMClientBaseClass;
 int
 mb_wm_client_base_class_type ();
 
-/* Export it for MB_WM_CLIENT_OVERRIDE. */
-void
-mb_wm_client_base_stack (MBWindowManagerClient *client,
-			 int                    flags);
-
 /** A nasty hack to work around linking issues. */
 void base_foo(void);
 

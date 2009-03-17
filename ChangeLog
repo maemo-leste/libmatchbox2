@@ -1,3 +1,9 @@
+2009-03-17  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* Revert Thomas' transient for handling change.
+	* Revert Adam's override stacking change and use the original,
+	commented out code instead.
+
 2009-03-17  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Regression fix: stack override-redirect windows where they belong.
