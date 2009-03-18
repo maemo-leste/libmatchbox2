@@ -798,10 +798,3 @@ mb_wm_client_base_focus (MBWindowManagerClient *client)
 
   return True;
 }
-
-void base_foo(void)
-{
-  ; /* nasty hack to workaround linking issues WTF...
-     * use .la's rather than .a's ??
-    */
-}

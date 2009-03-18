@@ -1,3 +1,12 @@
+2009-03-18  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-client-base.[ch] (base_foo): Removed, does
+	not seem to be necessary hack anymore...
+	* matchbox/core/mb-window-manager.c (mb_wm_set_cursor,
+	mb_wm_init_cursors): Removed. Also remove call to base_foo.
+	(mb_window_manager_init): Replace mb_wm_init_cursors call with
+	XFixesHideCursor call.
+
 2009-03-17  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	NB#105933 Only close controls of thumbnails are shown in the switcher

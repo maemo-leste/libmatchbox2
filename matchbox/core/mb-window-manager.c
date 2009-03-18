@@ -51,14 +51,8 @@
 #include <X11/Xmd.h>
 
 #ifdef HAVE_XFIXES
-#include <X11/extensions/Xfixes.h> /* Used to *really* hide cursor */
+#include <X11/extensions/Xfixes.h> /* Used to hide the cursor */
 #endif
-
-#ifdef HAVE_XCURSOR
-#include <X11/Xcursor/Xcursor.h>
-#endif
-
-#include <X11/cursorfont.h>
 
 static void
 mb_wm_process_cmdline (MBWindowManager *wm);
@@ -91,9 +85,6 @@ mb_wm_set_layout (MBWindowManager *wm, MBWMLayout *layout);
 
 static void
 mb_wm_set_n_desktops (MBWindowManager *wm, int n_desktops);
-
-static void
-mb_wm_set_cursor (MBWindowManager * wm, MBWindowManagerCursor cursor);
 
 static void
 mb_wm_set_theme (MBWindowManager *wm, MBWMTheme * theme);
@@ -1531,27 +1522,6 @@ mb_wm_init_xdpy (MBWindowManager * wm, const char * display)
   return 1;
 }
 
-static void
-mb_wm_init_cursors (MBWindowManager * wm)
-{
-    XColor col;
-    Pixmap pix = XCreatePixmap (wm->xdpy, wm->root_win->xwindow, 1, 1, 1);
-
-    memset (&col, 0, sizeof (col));
-
-    wm->cursors[MBWindowManagerCursorNone] =
-      XCreatePixmapCursor (wm->xdpy, pix, pix, &col, &col, 1, 1);
-
-    XFreePixmap (wm->xdpy, pix);
-
-    wm->cursors[MBWindowManagerCursorLeftPtr] =
-      XCreateFontCursor(wm->xdpy, XC_left_ptr);
-
-    MBWM_ASSERT (wm->cursors[_MBWindowManagerCursorLast - 1] != 0);
-
-    mb_wm_set_cursor (wm, MBWindowManagerCursorLeftPtr);
-}
-
 #if ENABLE_COMPOSITE
 static Bool
 mb_wm_init_comp_extensions (MBWindowManager *wm)
@@ -1745,9 +1715,9 @@ mb_window_manager_init (MBWMObject *this, va_list vap)
 
   mb_wm_keys_init(wm);
 
-  mb_wm_init_cursors (wm);
-
-  base_foo ();
+#ifdef HAVE_XFIXES
+  XFixesHideCursor (wm->xdpy, wm->root_win->xwindow);
+#endif
 
   return 1;
 }
@@ -2185,55 +2155,6 @@ mb_wm_set_theme_from_path (MBWindowManager *wm, const char *theme_path)
   theme = wm_class->theme_new (wm, theme_path);
 
   mb_wm_set_theme (wm, theme);
-}
-
-static void
-mb_wm_set_cursor (MBWindowManager * wm, MBWindowManagerCursor cursor)
-{
-  static int major = 0, minor = 0, ev_base, err_base;
-  Display * dpy;
-  Window    rwin;
-
-  if (wm->cursor == cursor)
-    return;
-
-  dpy = wm->xdpy;
-  rwin = wm->root_win->xwindow;
-
-  mb_wm_util_trap_x_errors();
-
-#ifdef HAVE_XFIXES
-  if (!major)
-    {
-      if (XFixesQueryExtension (dpy, &ev_base, &err_base))
-	XFixesQueryVersion (dpy, &major, &minor);
-      else
-	major = -1;
-    }
-
-  if (major >= 4)
-    {
-      if (cursor == MBWindowManagerCursorNone)
-	{
-	  XFixesHideCursor (dpy, rwin);
-	}
-      else
-	{
-	  XDefineCursor(dpy, rwin, wm->cursors[cursor]);
-	  XFixesShowCursor (dpy, rwin);
-	  mb_wm_util_trap_x_errors();
-	}
-    }
-  else
-#endif
-    {
-      XDefineCursor(dpy, rwin, wm->cursors[cursor]);
-    }
-
-  XSync (dpy, False);
-
-  if (!mb_wm_util_untrap_x_errors())
-    wm->cursor = cursor;
 }
 
 void __attribute__ ((visibility("hidden")))

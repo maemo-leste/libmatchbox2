@@ -1,6 +1,7 @@
 matchbox-window-manager-2 (0.2.22-1~unreleased) unstable; urgency=low
 
   * Stop exporting some internal symbols.
+  * Make the cursor invisible using XFixesHideCursor() for the root window.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 13 Mar 2009 08:25:02 +0200
 
