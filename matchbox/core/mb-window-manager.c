@@ -485,10 +485,8 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 
   MBWM_MARK();
 
-  /*
-   * Ignoring syntetic events, not even decrementing the skip_unmaps counter.
-   */
-  if (((XAnyEvent *)xev)->send_event) 
+  /* Ignoring syntetic events, not even decrementing the skip_unmaps counter. */
+  if (xev->send_event) 
     return True;
   
   /*
@@ -496,7 +494,7 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
    * which is filtered out here. We will have an other event about the redirects
    * with the xany.window set to the parent window.
    */
-  if (xev->window == ((XEvent *)xev)->xany.window) 
+  if (xev->window == xev->event) 
     return True;
 
   client = mb_wm_managed_client_from_xwindow(wm, xev->window);
@@ -521,7 +519,9 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 	  MBWM_DBG ("skipping unmap for %p (skip count %d)\n",
 		    client, client->skip_unmaps);
 
+          /* When we skip an unmap, skip a map too. */
 	  client->skip_unmaps--;
+          client->skip_maps++;
 	}
       else
 	{
@@ -797,6 +797,10 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
 
   g_debug ("%s: @@@@ Map Notify for %lx @@@@", __func__, xev->window);
 
+  /* For the same reason as in mb_wm_handle_unmap_notify(). */
+  if (xev->window == xev->event) 
+    return True;
+
   if (!wm_class->client_new)
     {
       MBWM_DBG("### No new client hook exists ###");
@@ -805,7 +809,9 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
 
   if (mb_wm_is_my_window (wm, xev->window, &client))
     {
-      if (client)
+      if (client && client->skip_maps)
+        client->skip_maps--;
+      else if (client)
 	{
 	  /* If the client is undecorated or fullscreen use
            * client->window->xwindow as top, client->xwin_frame else */
@@ -1404,9 +1410,11 @@ mb_wm_manage_preexisting_wins (MBWindowManager* wm)
 	       /*
 		* When we realize the client, we reparent the application
 		* window to the new frame, which generates an unmap event.
-		* We need to skip it.
+		* We need to skip it.  On the other hand, don't skip the
+                * accompanying MapNotify this time.
 		*/
 	       client->skip_unmaps++;
+               client->skip_maps--;
 
 #if ENABLE_COMPOSITE
 	       /*

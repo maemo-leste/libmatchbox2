@@ -1,3 +1,21 @@
+2009-03-17  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#105933 Only close controls of thumbnails are shown in the switcher
+	          view and when tapped on them desktop is crashing in a
+		  mentioned scenario
+
+	Caused by extra unexpected MapNotify:es.
+
+	* matchbox/core/mb-wm-client.h:
+	  Add a skip_maps counter to MBWindowManagerClient.
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_map_notify):
+	  Ignore a MapNotify when we ignore an UnmapNotify due to
+	  window reparenting.  Also ignore MapNotify:es sent because
+	  of compositing.
+
+	This will break ABI so be sure to recompile hildon-desktop
+	with the changed header.
+
 2009-03-17  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* Revert Thomas' transient for handling change.

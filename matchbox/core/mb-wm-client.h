@@ -184,6 +184,7 @@ struct MBWindowManagerClient
   MBWMList                    *transients;
   MBWindowManagerClient       *transient_for;
 
+  int                          skip_maps;
   int                          skip_unmaps;
 
   /* ### Private ### */
