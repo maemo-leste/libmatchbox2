@@ -612,8 +612,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       int *cursor = name_types;
       char *name = NULL;
 
-      if (win->name)
-	g_free(win->name);
+      g_free(win->name);
+      win->name = NULL;
 
       while (*cursor)
 	{

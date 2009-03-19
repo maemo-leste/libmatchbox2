@@ -1,3 +1,11 @@
+2009-03-19  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_sync_properties):
+	  Regression fix.  When the the window name property changed but we
+	  failed to get the new value the old MBWMClientWindow::name field
+	  left dangling.  Fixes a crash with modest's new account wizard,
+	  which tries to set the dialog's title when it is cancelled.
+
 2009-03-18  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	Fixes: NB#103836 (or at least its test case).
