@@ -2,6 +2,8 @@
 
 	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler): Fix
 	a memory leak in freeing the list of transients.
+	* matchbox/core/mb-wm-layout.c (mb_wm_layout_real_layout_fullscreen):
+	Fix an identical list-related memory leak.
 
 2009-03-20  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 

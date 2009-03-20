@@ -597,7 +597,9 @@ mb_wm_layout_real_layout_fullscreen (MBWMLayout *layout, MBGeometry * avail_geom
     if (mb_wm_client_get_layout_hints (client) ==
 	(LayoutPrefFullscreen|LayoutPrefVisible))
       {
-	MBWMList *l = mb_wm_client_get_transients (client);
+	MBWMList *l, *transients;
+        
+        transients = l = mb_wm_client_get_transients (client);
 
 	mb_wm_client_get_coverage (client, &coverage);
 
@@ -673,7 +675,7 @@ mb_wm_layout_real_layout_fullscreen (MBWMLayout *layout, MBGeometry * avail_geom
 					 MBWMClientReqGeomIsViaLayoutManager);
 	  }
 
-	mb_wm_util_list_free (l);
+	mb_wm_util_list_free (transients);
       }
 }
 
