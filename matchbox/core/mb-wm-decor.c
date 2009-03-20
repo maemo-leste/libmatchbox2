@@ -774,7 +774,7 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
   MBWMDecorButton *button = (MBWMDecorButton *)userdata;
   MBWMDecor       *decor  = button->decor;
   MBWindowManager *wm = decor->parent_client->wmref;
-  MBWMList        *l = NULL;
+  MBWMList        *transients = NULL;
   Bool             retval = True;
 
   mb_wm_object_ref (MB_WM_OBJECT(button));
@@ -782,7 +782,9 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
   if (xev->window == decor->xwin)
     {
       int xmin, ymin, xmax, ymax;
-      l = mb_wm_client_get_transients (decor->parent_client);
+      MBWMList *l;
+
+      transients = l = mb_wm_client_get_transients (decor->parent_client);
 
       /* Ignore events on the main window decor if transients other than
        * input methods are present
@@ -982,7 +984,7 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
     }
 
  done:
-  mb_wm_util_list_free (l);
+  mb_wm_util_list_free (transients);
   mb_wm_object_unref (MB_WM_OBJECT(button));
   return retval;
 }
