@@ -1,11 +1,3 @@
-2009-03-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
-
-	* matchbox/core/mb-wm-decor.c (mb_wm_decor_release_handler,
-	mb_wm_decor_press_handler): Commented out since dragging windows
-	around is not supported and since NB#101901 reports a crash related to
-	this code.
-	(mb_wm_decor_sync_window): Do not install the press handler.
-
 2009-03-20  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
