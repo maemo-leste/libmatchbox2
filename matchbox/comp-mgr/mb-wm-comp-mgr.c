@@ -280,6 +280,10 @@ mb_wm_comp_mgr_unregister_client (MBWMCompMgr           * mgr,
   if (klass->unregister_client)
     klass->unregister_client (mgr, client);
 
+  /* Break the connection between #MBWindowManagerClient
+   * and #MBWMCompMgrClient back and forth.  If we don't
+   * cm_client may end up with a dangling pointer. */
+  client->cm_client->wm_client = NULL;
   mb_wm_object_unref (MB_WM_OBJECT (client->cm_client));
   client->cm_client = NULL;
 }

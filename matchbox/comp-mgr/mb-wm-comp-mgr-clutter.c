@@ -205,6 +205,7 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
 
   /* this will also cause updating the corresponding pixmap
    * and ensures window<->pixmap binding */
+  mb_wm_util_trap_x_errors();
   clutter_x11_texture_pixmap_set_window (
         CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
         xwin, FALSE);
@@ -278,7 +279,15 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
     clutter_actor_destroy (cclient->priv->actor);
 
   if (cclient->priv->window_damage)
-    XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
+    {
+      int err;
+
+      mb_wm_util_trap_x_errors();
+      XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
+      if ((err = mb_wm_util_untrap_x_errors()) != 0)
+        g_warning("XDamageDestroy(0x%lx) for %p: %d",
+                  cclient->priv->window_damage, c, err);
+    }
 
   free (cclient->priv);
 }

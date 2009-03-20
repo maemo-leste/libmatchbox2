@@ -1,3 +1,17 @@
+2009-03-20  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	  mb_wm_comp_mgr_unregister_client():
+	    break the connection between the wm-client and cmgr-client
+	    on both sides and don't leave dangling pointers around.
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	  mb_wm_comp_mgr_clutter_fetch_texture():
+	    added a missing mb_wm_util_trap_x_errors().
+	  mb_wm_comp_mgr_clutter_client_destroy():
+	    prepare for XDamageDestroy() erring out for whatever reason.
+	    fixes an abnormal program termination when incoming event
+	    notifications are unmapped.
+
 2009-03-19  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_sync_properties):
