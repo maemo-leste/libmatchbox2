@@ -200,6 +200,7 @@ mb_wm_decor_resize (MBWMDecor *decor)
 static Bool
 mb_wm_decor_reparent (MBWMDecor *decor);
 
+#if 0
 static Bool
 mb_wm_decor_release_handler (XButtonEvent    *xev,
 			     void            *userdata)
@@ -320,6 +321,7 @@ mb_wm_decor_press_handler (XButtonEvent    *xev,
 
   return retval;
 }
+#endif
 
 static Bool
 mb_wm_decor_sync_window (MBWMDecor *decor)
@@ -377,6 +379,9 @@ mb_wm_decor_sync_window (MBWMDecor *decor)
 		            (MBWMListForEachCB)mb_wm_decor_button_sync_window,
 			    NULL);
 
+#if 0 /* we don't need to support dragging windows around, and there was
+         a crash in mb_wm_decor_press_handler, so this is disabled for now */
+
       /*
        * If this is a decor with buttons, then we install button press handler
        * so we can drag the window, if it is movable.
@@ -395,6 +400,7 @@ mb_wm_decor_sync_window (MBWMDecor *decor)
 			        (MBWMXEventFunc)mb_wm_decor_press_handler,
 			        decor);
 	}
+#endif
 
       return mb_wm_decor_reparent (decor);
     }

@@ -1,3 +1,11 @@
+2009-03-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_release_handler,
+	mb_wm_decor_press_handler): Commented out since dragging windows
+	around is not supported and since NB#101901 reports a crash related to
+	this code.
+	(mb_wm_decor_sync_window): Do not install the press handler.
+
 2009-03-20  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
@@ -14,11 +22,12 @@
 
 2009-03-19  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
-	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_sync_properties):
-	  Regression fix.  When the the window name property changed but we
-	  failed to get the new value the old MBWMClientWindow::name field
-	  left dangling.  Fixes a crash with modest's new account wizard,
-	  which tries to set the dialog's title when it is cancelled.
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties):
+	Regression fix.  When the the window name property changed but we
+	failed to get the new value the old MBWMClientWindow::name field
+	left dangling.  Fixes a crash with modest's new account wizard,
+	which tries to set the dialog's title when it is cancelled.
 
 2009-03-18  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
