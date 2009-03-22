@@ -8,7 +8,7 @@
 
 2009-03-21  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
-        Refs NB#96260.
+        Refs NB#105404.
 	
 	* matchbox/core/mb-wm-client-window.c: newlines in window titles
 	are converted to spaces.
