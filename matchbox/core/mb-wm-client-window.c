@@ -1101,7 +1101,10 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
 badwindow_error:
 
+#if 0
+  /* error disabled because it happens far too often in legitimate cases */
   g_debug ("***** %s: BadWindow error for %lx *****", __FUNCTION__, xwin);
+#endif
   if (xwin_attr)
     XFree(xwin_attr);
 
