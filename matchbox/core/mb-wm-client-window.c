@@ -665,6 +665,15 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
       /* FIXME: We could also check the UTF-8 for validity here. */
 
+      /* If they put newlines in, it will look stupid, so
+	 take them out. */
+      {
+	char *newline;
+
+	while (newline = index (win->name, '\n'))
+	  *newline = ' ';
+      }
+
       MBWM_DBG("@@@ New Window Name: '%s' @@@", win->name);
 
       XFree (name);

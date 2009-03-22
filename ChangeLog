@@ -1,3 +1,10 @@
+2009-03-21  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        Refs NB#96260.
+	
+	* matchbox/core/mb-wm-client-window.c: newlines in window titles
+	are converted to spaces.
+
 2009-03-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler): Fix
