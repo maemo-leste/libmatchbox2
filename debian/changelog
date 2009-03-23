@@ -1,9 +1,15 @@
-matchbox-window-manager-2 (0.2.22-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.22-1) unstable; urgency=low
 
   * Stop exporting some internal symbols.
   * Make the cursor invisible using XFixesHideCursor() for the root window.
+  * Fixes: NB#103725 - comment out BadWindow error print
+  * Fixes: NB#105933 - Only close controls of thumbnails are shown in the
+    switcher view and when tapped on them desktop is crashing in a
+    mentioned scenario
+  * Fixes: NB#105404 - remove markup from _NET_WM_NAME.
+  * Fixes: NB#105405 - fix _NET_CLOSE_WINDOW support.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 13 Mar 2009 08:25:02 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 23 Mar 2009 09:45:59 +0200
 
 matchbox-window-manager-2 (0.2.21-1) unstable; urgency=low
 

@@ -1,6 +1,10 @@
+2009-03-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.22
+
 2009-03-21  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
-        Fixes NB#103725.
+	Fixes NB#103725.
 
 	* matchbox/core/mb-wm-client-window.c: remove warning about BadWindow
 	since it is commonplace to request details of a window which has been
@@ -8,7 +12,7 @@
 
 2009-03-21  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
-        Refs NB#105404.
+	Refs NB#105404.
 	
 	* matchbox/core/mb-wm-client-window.c: newlines in window titles
 	are converted to spaces.
@@ -45,7 +49,8 @@
 
 2009-03-18  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
-	Fixes: NB#103836 (or at least its test case).
+	Fixes: NB#103836 (or at least its test case). Kimmo: this was
+	reverted?
 	
 	* matchbox/core/mb-wm-client-window.c: When we're told that
 	a window's transiency has changed, update the information
@@ -66,7 +71,7 @@
 	          view and when tapped on them desktop is crashing in a
 		  mentioned scenario
 
-	Caused by extra unexpected MapNotify:es.
+	Caused by extra unexpected MapNotifies.
 
 	* matchbox/core/mb-wm-client.h:
 	  Add a skip_maps counter to MBWindowManagerClient.
