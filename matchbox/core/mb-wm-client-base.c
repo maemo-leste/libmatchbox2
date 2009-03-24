@@ -247,17 +247,21 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
       !mb_wm_client_get_transient_for (client) &&
       mb_wm_get_modality_type (wm) == MBWMModalitySystem)
     {
+      int d;
+
       XSetWindowAttributes attr;
       attr.override_redirect = True;
       attr.event_mask        = MBWMChildMask|ButtonPressMask|
                                ExposureMask;
 
+      /* Create a larger window because we might be rotated
+       * while the dialog is running. */
+      d = wm->xdpy_width > wm->xdpy_height ? wm->xdpy_width : wm->xdpy_height;
       client->xwin_modal_blocker =
 	  XCreateWindow (wm->xdpy,
 	                 wm->root_win->xwindow,
 			 0, 0,
-			 wm->xdpy_width,
-			 wm->xdpy_height,
+                         d, d,
 			 0,
 			 CopyFromParent,
 			 InputOnly,
