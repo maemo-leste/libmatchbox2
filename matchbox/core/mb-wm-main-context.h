@@ -143,7 +143,7 @@ gboolean
 mb_wm_main_context_gloop_xevent (gpointer userdata);
 #endif
 
-Bool
+void
 mb_wm_main_context_handle_x_event (XEvent          *xev,
 				   MBWMMainContext *ctx);
 

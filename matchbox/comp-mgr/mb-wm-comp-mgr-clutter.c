@@ -455,7 +455,7 @@ static void
 mb_wm_comp_mgr_clutter_select_desktop (MBWMCompMgr * mgr,
 				       int desktop, int old_desktop);
 
-static Bool
+static void
 mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
 				      MBWMCompMgr        * mgr);
 
@@ -739,7 +739,7 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
   mb_wm_comp_mgr_clutter_client_set_size(cclient, FALSE);
 }
 
-static Bool
+static void
 mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
 				      MBWMCompMgr        * mgr)
 {
@@ -756,7 +756,7 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
 
       if (!cclient->priv->actor ||
 	  (cclient->priv->flags & MBWMCompMgrClutterClientDontUpdate))
-	return False;
+	return;
 
       MBWM_NOTE (COMPOSITOR,
 		 "Repairing window %lx, geometry %d,%d;%dx%d; more %d\n",
@@ -781,8 +781,6 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
       g_debug ("Failed to find client for window %lx\n",
 		 de->drawable);
     }
-
-  return False;
 }
 
 static void

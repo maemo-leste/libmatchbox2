@@ -60,7 +60,7 @@ struct MBWMCompMgrClass
   void   (*restack)           (MBWMCompMgr * mgr);
   void   (*map_notify)        (MBWMCompMgr * mgr, MBWindowManagerClient *c);
   void   (*unmap_notify)      (MBWMCompMgr * mgr, MBWindowManagerClient *c);
-  Bool   (*handle_damage)     (XDamageNotifyEvent * xev, MBWMCompMgr * mgr);
+  void   (*handle_damage)     (XDamageNotifyEvent * xev, MBWMCompMgr * mgr);
   Bool   (*my_window)         (MBWMCompMgr * mgr, Window xwin);
   void   (*client_event)      (MBWMCompMgr * mgr,
 			       MBWindowManagerClient *c1,

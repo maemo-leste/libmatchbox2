@@ -1,3 +1,19 @@
+2009-03-24  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	Event handlers now return void and cannot stop processing
+	of further events.
+	Accoding to Kimmo:
+	Fixes NB#105014.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr-xrender.c:
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h:
+	* matchbox/core/mb-window-manager.c:
+	* matchbox/core/mb-wm-decor.c:
+	* matchbox/core/mb-wm-main-context.c:
+	* matchbox/core/mb-wm-main-context.h:
+	* matchbox/core/mb-wm-types.h:
+
 2009-03-24  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_realize):

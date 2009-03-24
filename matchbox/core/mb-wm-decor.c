@@ -200,7 +200,7 @@ mb_wm_decor_resize (MBWMDecor *decor)
 static Bool
 mb_wm_decor_reparent (MBWMDecor *decor);
 
-static Bool
+static void
 mb_wm_decor_release_handler (XButtonEvent    *xev,
 			     void            *userdata)
 {
@@ -213,17 +213,14 @@ mb_wm_decor_release_handler (XButtonEvent    *xev,
   decor->release_cb_id = 0;
 
   XUngrabPointer (wm->xdpy, CurrentTime);
-
-  return False;
 }
 
-static Bool
+static void
 mb_wm_decor_press_handler (XButtonEvent    *xev,
 			   void            *userdata)
 {
   MBWMDecor       *decor  = userdata;
   MBWindowManager *wm = decor->parent_client->wmref;
-  Bool             retval = True;
 
   if (xev->window == decor->xwin)
     {
@@ -309,7 +306,7 @@ mb_wm_decor_press_handler (XButtonEvent    *xev,
 		case ButtonRelease:
 		  {
 		    XUngrabPointer (wm->xdpy, CurrentTime);
-		    return False;
+		    return;
 		  }
 		default:
 		  ;
@@ -317,8 +314,6 @@ mb_wm_decor_press_handler (XButtonEvent    *xev,
 	    }
 	}
     }
-
-  return retval;
 }
 
 static Bool
@@ -767,7 +762,7 @@ mb_wm_decor_button_get_theme_data (MBWMDecorButton * button)
   return button->themedata;
 }
 
-static Bool
+static void
 mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 				  void            *userdata)
 {
@@ -775,7 +770,6 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
   MBWMDecor       *decor  = button->decor;
   MBWindowManager *wm = decor->parent_client->wmref;
   MBWMList        *transients = NULL;
-  Bool             retval = True;
 
   mb_wm_object_ref (MB_WM_OBJECT(button));
 
@@ -796,7 +790,6 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 	  if (MB_WM_CLIENT_CLIENT_TYPE (c) != MBWMClientTypeInput &&
 	      mb_wm_client_is_modal (c))
 	    {
-	      retval = True;
 	      goto done;
 	    }
 
@@ -813,7 +806,6 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 	  xev->y < ymin ||
 	  xev->y > ymax)
 	{
-	  retval = True;
 	  g_debug("%s not on button -- send GRAB_TRANSFER", __FUNCTION__);
 	  XUngrabPointer(wm->xdpy, CurrentTime);
 	  mb_wm_client_deliver_message (decor->parent_client,
@@ -954,7 +946,6 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 			    if (pev->x < xmin || pev->x > xmax ||
 				pev->y < ymin || pev->y > ymax)
 			      {
-				retval = False;
 				goto done;
 			      }
 
@@ -964,7 +955,6 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 			      mb_wm_decor_button_stock_button_action (button);
 
 			    mb_wm_object_unref (MB_WM_OBJECT(button));
-			    return False;
 			  }
 			}
 		    }
@@ -979,14 +969,11 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 		}
 	    }
 	}
-
-      retval = False;
     }
 
  done:
   mb_wm_util_list_free (transients);
   mb_wm_object_unref (MB_WM_OBJECT(button));
-  return retval;
 }
 
 static void

@@ -332,59 +332,11 @@ struct MBWMKeyBinding
 
 /* Event Callbacks */
 
-typedef Bool (*MBWMXEventFunc)
+typedef void (*MBWMXEventFunc)
      (void              *xev,
       void              *userdata);
 
-typedef Bool (*MBWindowManagerMapNotifyFunc)
-     (XMapEvent         *xev,
-      void              *userdata);
-
-typedef Bool (*MBWindowManagerClientMessageFunc)
-     (XClientMessageEvent *xev,
-      void                *userdata);
-
-typedef Bool (*MBWindowManagerMapRequestFunc)
-     (XMapRequestEvent  *xev,
-      void              *userdata);
-
-typedef Bool (*MBWindowManagerUnmapNotifyFunc)
-     (XUnmapEvent       *xev,
-      void              *userdata);
-
-typedef Bool (*MBWindowManagerDestroyNotifyFunc)
-     (XDestroyWindowEvent  *xev,
-      void                 *userdata);
-
-typedef Bool (*MBWindowManagerConfigureNotifyFunc)
-     (XConfigureEvent      *xev,
-      void                 *userdata);
-
-typedef Bool (*MBWindowManagerConfigureRequestFunc)
-     (XConfigureRequestEvent  *xev,
-      void                    *userdata);
-
-typedef Bool (*MBWindowManagerKeyPressFunc)
-     (XKeyEvent               *xev,
-      void                    *userdata);
-
-typedef Bool (*MBWindowManagerPropertyNotifyFunc)
-     (XPropertyEvent          *xev,
-      void                    *userdata);
-
-typedef Bool (*MBWindowManagerButtonPressFunc)
-     (XButtonEvent            *xev,
-      void                    *userdata);
-
-typedef Bool (*MBWindowManagerButtonReleaseFunc)
-     (XButtonEvent            *xev,
-      void                    *userdata);
-
-typedef Bool (*MBWindowManagerMotionNotifyFunc)
-     (XMotionEvent            *xev,
-      void                    *userdata);
-
-typedef Bool (*MBWindowManagerTimeOutFunc)
+typedef void (*MBWindowManagerTimeOutFunc)
      (void                    *userdata);
 
 #if USE_GLIB_MAINLOOP
