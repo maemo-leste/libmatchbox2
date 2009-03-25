@@ -373,7 +373,7 @@ mb_wm_new_with_dpy (int argc, char **argv, Display * dpy)
   return wm;
 }
 
-static void
+static Bool
 mb_wm_handle_key_press (XKeyEvent       *xev,
 			void            *userdata)
 {
@@ -382,21 +382,23 @@ mb_wm_handle_key_press (XKeyEvent       *xev,
   mb_wm_keys_press (wm,
 		    XKeycodeToKeysym(wm->xdpy, xev->keycode, 0),
 		    xev->state);
+
+  return True;
 }
 
-static void
+static Bool
 mb_wm_handle_button_press (XButtonEvent *xev, void *userdata)
 {
   MBWindowManager *wm = (MBWindowManager*)userdata;
   MBWindowManagerClient *client = NULL;
 
   if (xev->button != 1)
-    return;
+    return True;
 
   mb_wm_is_my_window (wm, xev->window, &client);
 
   if (!client)
-    return;
+    return True;
 
   /*
    * If the client is not application, we make sure it has focus.
@@ -418,9 +420,11 @@ mb_wm_handle_button_press (XButtonEvent *xev, void *userdata)
     }
 
   XAllowEvents (wm->xdpy, ReplayPointer, CurrentTime);
+
+  return True;
 }
 
-static void
+static Bool
 mb_wm_handle_destroy_notify (XDestroyWindowEvent  *xev,
 			     void                 *userdata)
 {
@@ -459,9 +463,11 @@ mb_wm_handle_destroy_notify (XDestroyWindowEvent  *xev,
       else
 	mb_wm_unmanage_client (wm, client, True);
     }
+
+  return True;
 }
 
-static void
+static Bool
 mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 			   void                 *userdata)
 {
@@ -472,7 +478,7 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 
   /* Ignoring syntetic events, not even decrementing the skip_unmaps counter. */
   if (xev->send_event) 
-    return;
+    return True;
   
   /*
    * When the XCompositeRedirectWindow() is used we get an extra unmap event
@@ -480,7 +486,7 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
    * with the xany.window set to the parent window.
    */
   if (xev->window == xev->event) 
-    return;
+    return True;
 
   client = mb_wm_managed_client_from_xwindow(wm, xev->window);
 
@@ -538,9 +544,11 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 	    }
 	}
     }
+
+  return True;
 }
 
-static void
+static Bool
 mb_wm_handle_property_notify (XPropertyEvent          *xev,
 			      void                    *userdata)
 {
@@ -565,20 +573,20 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
 			      (unsigned char **)&theme_path);
 
 	  if (!type || !items)
-	    return;
+	    return True;
 
 	  mb_wm_set_theme_from_path (wm, theme_path);
 
 	  XFree (theme_path);
 	}
 
-      return;
+      return True;
     }
 
   client = mb_wm_managed_client_from_xwindow(wm, xev->window);
 
   if (!client)
-    return;
+    return True;
 
   if (xev->atom == wm->atoms[MBWM_ATOM_NET_WM_USER_TIME])
     flag = MBWM_WINDOW_PROP_NET_USER_TIME;
@@ -606,11 +614,11 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
   if (flag)
     mb_wm_client_window_sync_properties (client->window, flag);
 
-  return;
+  return True;
 }
 
 #if ENABLE_COMPOSITE
-static void
+static  Bool
 mb_wm_handle_composite_config_notify (XConfigureEvent *xev,
 			    void            *userdata)
 {
@@ -625,7 +633,7 @@ mb_wm_handle_composite_config_notify (XConfigureEvent *xev,
       if (client)
 	mb_wm_comp_mgr_client_configure (client->cm_client);
     }
-  return;
+  return True;
 }
 #endif
 
@@ -633,7 +641,7 @@ mb_wm_handle_composite_config_notify (XConfigureEvent *xev,
  * This is called if the root window resizes itself, which happens when RANDR is
  * used to resize or rotate the display.
  */
-static void
+static  Bool
 mb_wm_handle_root_config_notify (XConfigureEvent *xev,
 			    void            *userdata)
 {
@@ -655,9 +663,10 @@ mb_wm_handle_root_config_notify (XConfigureEvent *xev,
 #endif
 
   mb_wm_display_sync_queue (wm, MBWMSyncGeometry);
+  return True;
 }
 
-static void
+static  Bool
 mb_wm_handle_config_request (XConfigureRequestEvent *xev,
 			     void                   *userdata)
 {
@@ -689,7 +698,7 @@ mb_wm_handle_config_request (XConfigureRequestEvent *xev,
 
       XConfigureWindow (wm->xdpy, xev->window, xev->value_mask, &xwc);
 
-      return;
+      return True;
     }
 
   value_mask = xev->value_mask;
@@ -720,6 +729,8 @@ mb_wm_handle_config_request (XConfigureRequestEvent *xev,
 				     &req_geom,
 				     MBWMClientReqGeomIsViaConfigureReq);
     }
+
+  return True;
 }
 
 /*
@@ -764,7 +775,7 @@ mb_wm_is_my_window (MBWindowManager *wm,
 /*  For the compositing engine we need to track overide redirect
  *  windows so the compositor can paint them.
  */
-static void
+static Bool
 mb_wm_handle_map_notify   (XMapEvent  *xev,
 			   void       *userdata)
 {
@@ -779,12 +790,12 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
 
   /* For the same reason as in mb_wm_handle_unmap_notify(). */
   if (xev->window == xev->event) 
-    return;
+    return True;
 
   if (!wm_class->client_new)
     {
       MBWM_DBG("### No new client hook exists ###");
-      return;
+      return True;
     }
 
   if (mb_wm_is_my_window (wm, xev->window, &client))
@@ -817,7 +828,7 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
 	    }
 	}
 
-      return;
+      return True;
     }
 
   XGetWindowAttributes(wm->xdpy, xev->window, &attrs);
@@ -825,7 +836,7 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
     {
       g_debug ("%s: unmap for %lx has happened after MapRequest",
                __FUNCTION__, xev->window);
-      return;
+      return True;
     }
 
   win = mb_wm_client_window_new (wm, xev->window);
@@ -833,13 +844,13 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
   if (!win)
     {
       g_debug ("%s: mb_wm_client_window_new failed", __FUNCTION__);
-      return;
+      return True;
     }
 
   if (win->window_class == InputOnly)
     {
       mb_wm_object_unref (MB_WM_OBJECT (win));
-      return;
+      return True;
     }
 
   client = wm_class->client_new (wm, win);
@@ -847,15 +858,17 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
   if (!client)
     {
       mb_wm_object_unref (MB_WM_OBJECT (win));
-      return;
+      return True;
     }
 
   mb_wm_manage_client (wm, client, True);
   mb_wm_comp_mgr_map_notify (wm->comp_mgr, client);
+
+  return True;
 }
 #endif
 
-static void
+static Bool
 mb_wm_handle_map_request (XMapRequestEvent  *xev,
 			  void              *userdata)
 {
@@ -874,32 +887,34 @@ mb_wm_handle_map_request (XMapRequestEvent  *xev,
       if (client)
 	mb_wm_activate_client (wm, client);
 
-      return;
+      return True;
     }
 
   if (!wm_class->client_new)
     {
       MBWM_DBG("### No new client hook exists ###");
-      return;
+      return True;
     }
 
   win = mb_wm_client_window_new (wm, xev->window);
 
   if (!win)
-    return;
+    return True;
 
   client = wm_class->client_new (wm, win);
 
   if (!client)
     {
       mb_wm_object_unref (MB_WM_OBJECT (win));
-      return;
+      return True;
     }
 
   if (mb_wm_client_window_is_state_set (win, MBWMClientWindowEWMHStateFullscreen))
     mb_wm_client_fullscreen_mark_dirty (client);
 
   mb_wm_manage_client (wm, client, True);
+
+  return True;
 }
 
 

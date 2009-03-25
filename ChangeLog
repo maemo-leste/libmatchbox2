@@ -1,9 +1,20 @@
+2009-03-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Revert Thomas' event handler changes, because it makes HD to crash
+	easily when pressing the close button. Needs more work to fix the
+	issue --- maybe some handler works only because it was not called?
+
+	* matchbox/core/mb-wm-client-window.c: Revert Thomas' transiency
+	setting because it wasn't working for stackable windows, and add a
+	note for it. For stackables, the transiency is set at mapping and
+	unmapping time.
+
 2009-03-24  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	Event handlers now return void and cannot stop processing
 	of further events.
 	Accoding to Kimmo:
-	Fixes NB#105014.
+	Fixes NB#105014. (Kimmo: didn't quite, see above...)
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
 	* matchbox/comp-mgr/mb-wm-comp-mgr-xrender.c:

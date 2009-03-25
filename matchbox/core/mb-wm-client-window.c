@@ -369,44 +369,27 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       if (x_error_code == BadWindow)
         goto badwindow_error;
 
+      /* FIXME: we cannot really change transiency lists after mapping the
+       * window because the compositor cannot handle that. Maybe we should
+       * have a virtual function for window classes for change in transiency,
+       * so that the compositor could implement it and handle it. */
       if (trans_win)
 	{
 	  MBWM_DBG("@@@ Window transient for %lx @@@", *trans_win);
 
 	  if (*trans_win != win->xwin_transient_for)
 	    {
-	      MBWindowManagerClient *new_parent =
-		mb_wm_managed_client_from_xwindow (wm, *trans_win);
-
 	      changes |= MBWM_WINDOW_PROP_TRANSIENCY;
 
-	      if (!new_parent)
-		{
-		  g_warning ("Window %07x attempted to become transient to %07x "
-			     "which isn't a real window; ignoring",
-			     (int) win->xwindow, *trans_win);
-		}
-	      else
-		{
-		  MBWindowManagerClient *child =
-		    mb_wm_managed_client_from_xwindow (wm, win->xwindow);
-
-		  win->xwin_transient_for = *trans_win;
-
-		  if (child)
-		    {
-		      /* it's already mapped */
-		      mb_wm_client_remove_transient (child->transient_for, child);
-		      mb_wm_client_add_transient (new_parent, child);
-		    }
-		}
+	      win->xwin_transient_for = *trans_win;
 	    }
 
 	  XFree(trans_win);
 	}
-      else MBWM_DBG("@@@ Window transient for nothing @@@");
-
-      changes |= MBWM_WINDOW_PROP_TRANSIENCY;
+      else
+        {
+          MBWM_DBG("@@@ Window transient for nothing @@@");
+        }
     }
 
   if (props_req & MBWM_WINDOW_PROP_ATTR)

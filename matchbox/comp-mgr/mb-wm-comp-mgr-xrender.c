@@ -380,7 +380,7 @@ mb_wm_comp_mgr_xrender_turn_off_real (MBWMCompMgr *mgr);
 static void
 mb_wm_comp_mgr_xrender_render_real (MBWMCompMgr *mgr);
 
-static void
+static Bool
 mb_wm_comp_mgr_xrender_handle_damage (XDamageNotifyEvent * de,
 				      MBWMCompMgr        * mgr);
 
@@ -1346,7 +1346,7 @@ mb_wm_comp_mgr_xrender_client_configure_real (MBWMCompMgrClient * client)
   mb_wm_comp_mgr_xrender_add_damage (mgr, damage);
 }
 
-static void
+static Bool
 mb_wm_comp_mgr_xrender_handle_damage (XDamageNotifyEvent * de,
 				      MBWMCompMgr        * mgr)
 {
