@@ -178,23 +178,71 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
   Window           xwin = xev->xany.window;
 
 #if (MBWM_WANT_DEBUG)
-  {
-   if (mbwm_debug_flags & MBWM_DEBUG_EVENT)
-     {
-       MBWindowManagerClient *ev_client;
+  if (mbwm_debug_flags & MBWM_DEBUG_EVENT)
+    {
+      MBWindowManagerClient *ev_client;
+      
+      ev_client = mb_wm_managed_client_from_xwindow(wm, xev->xany.window);
 
-       ev_client = mb_wm_managed_client_from_xwindow(wm, xev->xany.window);
+      printf ("  @ XEvent: '%s:%i' for %lx %s%s\n",
+	      xev->type < sizeof (MBWMDEBUGEvents)/sizeof(MBWMDEBUGEvents[0])
+	      ? MBWMDEBUGEvents[xev->type] : "unknown",
+	      xev->type,
+	      xev->xany.window,
+	      xev->xany.window == wm->root_win->xwindow ? "(root)" : "",
+	      ev_client ? ev_client->name : ""
+	      );
 
-       printf ("  @ XEvent: '%s:%i' for %lx %s%s\n",
-	       xev->type < sizeof (MBWMDEBUGEvents)/sizeof(MBWMDEBUGEvents[0])
-	       ? MBWMDEBUGEvents[xev->type] : "unknown",
-	       xev->type,
-	       xev->xany.window,
-	       xev->xany.window == wm->root_win->xwindow ? "(root)" : "",
-	       ev_client ? ev_client->name : ""
-	       );
-     }
-  }
+      switch (xev->type)
+	{
+	case UnmapNotify:
+	  {
+	    XUnmapEvent * uev = & xev->xunmap;
+	    printf ("    window %x, event %x, %d\n",
+		    uev->window,
+		    uev->event,
+		    uev->from_configure);
+	  }
+	  break;
+	case ConfigureNotify:
+	  {
+	    XConfigureEvent * cev = & xev->xconfigure;
+	    printf ("    window %x, event %x, [%d,%d;%dx%d]\n",
+		    cev->window,
+		    cev->event,
+		    cev->x,
+		    cev->y,
+		    cev->width,
+		    cev->height);
+	  }
+	  break;
+	case ConfigureRequest:
+	  {
+	    XConfigureRequestEvent * cev = & xev->xconfigurerequest;
+	    printf ("    window %x, parent %x, [%d,%d;%dx%d]\n",
+		    cev->window,
+		    cev->parent,
+		    cev->x,
+		    cev->y,
+		    cev->width,
+		    cev->height);
+	  }
+	  break;
+	case PropertyNotify:
+	  {
+	    XPropertyEvent * pev = & xev->xproperty;
+	    char * prop = XGetAtomName (wm->xdpy, pev->atom);
+	    printf ("    window %x, prop %s, state %d\n",
+		    pev->window,
+		    prop,
+		    pev->state);
+	    
+	    if (prop)
+	      XFree (prop);
+	  }
+	  break;
+	}
+    }
 #endif
 
 #define XE_ITER_GET_FUNC(i) (((MBWMXEventFuncInfo *)((i)->data))->func)
@@ -250,6 +298,7 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 	}
       break;
     case Expose:
+      /* we do nothing */
       break;
     case MapRequest:
       iter = ctx->event_funcs.map_request;
@@ -290,16 +339,6 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 	}
       break;
     case UnmapNotify:
-#if MBWM_WANT_DEBUG
-   if (mbwm_debug_flags & MBWM_DEBUG_EVENT)
-     {
-       XUnmapEvent * uev = & xev->xunmap;
-       printf ("    window %x, event %x, %d\n",
-	       uev->window,
-	       uev->event,
-	       uev->from_configure);
-     }
-#endif
       xwin = xev->xunmap.window;
       iter = ctx->event_funcs.unmap_notify;
 
@@ -339,19 +378,6 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 	}
       break;
     case ConfigureNotify:
-#if MBWM_WANT_DEBUG
-   if (mbwm_debug_flags & MBWM_DEBUG_EVENT)
-     {
-       XConfigureEvent * cev = & xev->xconfigure;
-       printf ("    window %x, event %x, [%d,%d;%dx%d]\n",
-	       cev->window,
-	       cev->event,
-	       cev->x,
-	       cev->y,
-	       cev->width,
-	       cev->height);
-     }
-#endif
       xwin = xev->xconfigure.window;
       iter = ctx->event_funcs.configure_notify;
 
@@ -372,19 +398,6 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 	}
       break;
     case ConfigureRequest:
-#if MBWM_WANT_DEBUG
-   if (mbwm_debug_flags & MBWM_DEBUG_EVENT)
-     {
-       XConfigureRequestEvent * cev = & xev->xconfigurerequest;
-       printf ("    window %x, parent %x, [%d,%d;%dx%d]\n",
-	       cev->window,
-	       cev->parent,
-	       cev->x,
-	       cev->y,
-	       cev->width,
-	       cev->height);
-      }
-#endif
       xwin = xev->xconfigurerequest.window;
       iter = ctx->event_funcs.configure_request;
 
@@ -424,20 +437,6 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 	}
       break;
     case PropertyNotify:
-#if MBWM_WANT_DEBUG
-   if (mbwm_debug_flags & MBWM_DEBUG_EVENT)
-     {
-       XPropertyEvent * pev = & xev->xproperty;
-       char * prop = XGetAtomName (wm->xdpy, pev->atom);
-       printf ("    window %x, prop %s, state %d\n",
-	       pev->window,
-	       prop,
-	       pev->state);
-
-       if (prop)
-	 XFree (prop);
-     }
-#endif
       xwin = xev->xproperty.window;
       iter = ctx->event_funcs.property_notify;
 
