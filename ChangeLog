@@ -1,5 +1,7 @@
 2009-03-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.23
+
 	Revert Thomas' event handler changes, because it makes HD to crash
 	easily when pressing the close button. Needs more work to fix the
 	issue --- maybe some handler works only because it was not called?

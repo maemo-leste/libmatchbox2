@@ -1,6 +1,8 @@
-matchbox-window-manager-2 (0.2.23-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.23-1) unstable; urgency=low
 
-  * writeme
+  * Revert Thomas' transiency setting because it causes problems with
+    stackable windows. Also, revert the event handler calling change, since it
+    makes hildon-desktop unstable.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 23 Mar 2009 14:32:26 +0200
 
