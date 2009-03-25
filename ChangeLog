@@ -1,5 +1,11 @@
 2009-03-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
+	The next step from the reverted patch.  Crashes still not evident.
+
+	* matchbox/core/mb-wm-main-context.c: unify loop processing for events.
+
+2009-03-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
 	Step-by-step inclusion of reverted patch.
 
 	* matchbox/core/mb-wm-main-context.c: move debugging messages into
