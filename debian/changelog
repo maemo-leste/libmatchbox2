@@ -1,8 +1,13 @@
 matchbox-window-manager-2 (0.2.24-1~unreleased) unstable; urgency=low
 
-  * writeme
+  Kimmo:
+  * Fixes: NB#104271 - Hildon desktop crash observed by tapping outside
+    ringing tone dialog.
+  Thomas:
+  * Fixes: NB#105014 - Close button fails to close app. Light up, then locks
+    up.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 26 Mar 2009 10:01:40 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 26 Mar 2009 18:10:09 +0200
 
 matchbox-window-manager-2 (0.2.23-1) unstable; urgency=low
 
