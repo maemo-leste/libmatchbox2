@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.24-1~unreleased) unstable; urgency=low
+
+  * writeme
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 26 Mar 2009 10:01:40 +0200
+
 matchbox-window-manager-2 (0.2.23-1) unstable; urgency=low
 
   * Revert Thomas' transiency setting because it causes problems with
