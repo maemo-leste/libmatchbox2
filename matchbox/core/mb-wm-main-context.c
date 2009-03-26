@@ -178,9 +178,8 @@ call_handlers_for_event (MBWMList *iter,
   while (iter)
     {
       MBWMXEventFuncInfo *i = iter->data;
-      Window msg_xwin = i->xwindow;
 
-      if (msg_xwin == None || msg_xwin == xwin)
+      if (i && (i->xwindow == None || i->xwindow == xwin))
 	{
 	  if (!i->func (event, i->userdata))
 	    {

@@ -1,3 +1,8 @@
+2009-03-26  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/core/mb-wm-main-context.c: apparently sometimes someone
+	adds a null handler; protect against this.
+
 2009-03-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	* matchbox/core/mb-wm-main-context.c: don't allow event handlers
