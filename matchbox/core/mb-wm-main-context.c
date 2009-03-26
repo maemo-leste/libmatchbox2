@@ -179,26 +179,29 @@ call_handlers_for_event (MBWMList *iter,
     {
       MBWMXEventFuncInfo *i = iter->data;
       Window msg_xwin = i->xwindow;
-      MBWMList * next = iter->next;
 
       if (msg_xwin == None || msg_xwin == xwin)
 	{
 	  if (!(i->func (event, i->userdata)))
-	      break;
+	    {
+	      MBWMXEventFuncInfo *breaker = i;
+	      iter = iter->next;
+
+	      /* This can get spammy. */
+	      while (iter)
+		{
+		  MBWMXEventFuncInfo *i = iter->data;
+		  
+		  g_warning ("Warning: Ignoring handler %p because of %p", i->func, breaker->func);
+		  iter = iter->next;
+		}
+	      
+	      return;
+	    }
 	}
 
       iter = iter->next;
     }
-
-  /* This can get spammy.
-  while (iter)
-    {
-      MBWMXEventFuncInfo *i = iter->data;
-
-      g_warning ("Warning: Ignoring handler %p", i->func);
-      iter = iter->next;
-    }
-  */
 }
 
 Bool

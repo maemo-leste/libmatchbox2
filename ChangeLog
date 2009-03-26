@@ -1,5 +1,10 @@
 2009-03-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
+	* matchbox/core/mb-wm-main-context.c: slight fixup of warnings in
+	loop processing for events.
+
+2009-03-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
 	The next step from the reverted patch.  Crashes still not evident.
 
 	* matchbox/core/mb-wm-main-context.c: unify loop processing for events.
