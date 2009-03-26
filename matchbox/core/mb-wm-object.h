@@ -112,6 +112,9 @@ mb_wm_object_ref (MBWMObject *this);
 void
 mb_wm_object_unref (MBWMObject *this);
 
+int
+mb_wm_object_get_refcount (MBWMObject *this);
+
 MBWMObject*
 mb_wm_object_new (int type, ...);
 

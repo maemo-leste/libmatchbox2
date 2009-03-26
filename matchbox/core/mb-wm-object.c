@@ -188,6 +188,12 @@ mb_wm_object_destroy_recursive (const MBWMObjectClass * klass,
     mb_wm_object_destroy_recursive (parent_klass, this);
 }
 
+int
+mb_wm_object_get_refcount (MBWMObject *this)
+{
+  return this->refcnt;
+}
+
 void
 mb_wm_object_unref (MBWMObject *this)
 {

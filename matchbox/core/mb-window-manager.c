@@ -1914,14 +1914,19 @@ mb_wm_handle_hang_client (MBWindowManager * wm, MBWindowManagerClient *c)
 
   wm_klass = MB_WINDOW_MANAGER_CLASS (MB_WM_OBJECT_GET_CLASS (wm));
 
+  /* reference it in case it gets unreffed in the hang handlers */
+  mb_wm_object_ref (MB_WM_OBJECT (c));
   if (!wm_klass->client_hang || !wm_klass->client_hang (wm, c))
     {
-      mb_wm_client_shutdown (c);
+      /* if this client is still managed/mapped, refcount is > 1 */
+      if (mb_wm_object_get_refcount (MB_WM_OBJECT (c)) > 1)
+        mb_wm_client_shutdown (c);
     }
 
   if (mb_wm_client_ping_in_progress (c))
     /* hung client is now handled, no need for ping process */
     mb_wm_client_ping_stop (c);
+  mb_wm_object_unref (MB_WM_OBJECT (c));
 }
 
 void

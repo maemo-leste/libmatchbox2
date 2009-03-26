@@ -1,3 +1,13 @@
+2009-03-26  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Fix crash of NB#104271
+
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_hang_client):
+	Reference the client for the case that it is unreffed while we are in
+	the hang client handler. When returning from the handler, check if the
+	client was unreffed (unmapped) before trying shut it down.
+	* matchbox/core/mb-wm-object.[ch] (mb_wm_object_get_refcount): New.
+
 2009-03-26  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	* matchbox/core/mb-wm-main-context.c: apparently sometimes someone
