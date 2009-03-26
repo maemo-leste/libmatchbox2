@@ -182,21 +182,15 @@ call_handlers_for_event (MBWMList *iter,
 
       if (msg_xwin == None || msg_xwin == xwin)
 	{
-	  if (!(i->func (event, i->userdata)))
+	  if (!i->func (event, i->userdata))
 	    {
-	      MBWMXEventFuncInfo *breaker = i;
-	      iter = iter->next;
-
-	      /* This can get spammy. */
-	      while (iter)
-		{
-		  MBWMXEventFuncInfo *i = iter->data;
-		  
-		  g_warning ("Warning: Ignoring handler %p because of %p", i->func, breaker->func);
-		  iter = iter->next;
-		}
-	      
-	      return;
+	      /* We don't stop when they ask us to now.
+	       * But only warn about this if it's not the last
+	       * handler in the chain!
+	       */
+	      if (iter->next)
+		g_warning ("Handler %p asked us to stop.  But we won't.",
+			   i->func);
 	    }
 	}
 

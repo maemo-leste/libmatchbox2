@@ -1,5 +1,16 @@
 2009-03-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
+	* matchbox/core/mb-wm-main-context.c: don't allow event handlers
+	to stop processing of further events.  Give a warning if
+	behaviour would have differed before this change.  This does not
+	crash the system, so I'm not sure what the crasher yesterday was:
+	I wonder whether it was caused by passing a function which still
+	returned bool to some function which expected it to return void
+	now.  Anyway, if Kimmo was right about the causes of that bug:
+	Fixes NB#105014.
+
+2009-03-25  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
 	* matchbox/core/mb-wm-main-context.c: slight fixup of warnings in
 	loop processing for events.
 
