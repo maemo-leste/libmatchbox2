@@ -1,8 +1,12 @@
+2009-03-27  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.25
+
 2009-03-27  Gordon Williams  <gordon.williams@collabora.co.uk>
 
-        * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Removed corruption
-          workaround, as it causes problems with the new kernel (and there
-          is no need for it now anyway)
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Removed corruption
+	workaround, as it causes problems with the new kernel (and there
+	is no need for it now anyway)
 
 2009-03-27  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
