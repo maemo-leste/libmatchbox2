@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.26-1~unreleased) unstable; urgency=low
+
+  * writeme
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 27 Mar 2009 15:15:20 +0200
+
 matchbox-window-manager-2 (0.2.25-1) unstable; urgency=low
 
   * Gordon removed the SGX corruption workaround.
