@@ -394,8 +394,8 @@ mb_wm_comp_mgr_clutter_client_get_flags (MBWMCompMgrClutterClient  *cclient)
 
 ClutterActor *
 mb_wm_comp_mgr_clutter_client_get_actor (MBWMCompMgrClutterClient *cclient)
-{ /* Don't try to g_object_ref(NULL), which is when we're unmapped. */
-  return cclient->priv->actor ? g_object_ref (cclient->priv->actor) : NULL;
+{
+  return cclient->priv->actor ? cclient->priv->actor : NULL;
 }
 
 

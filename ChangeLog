@@ -1,3 +1,8 @@
+2009-03-27  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_client_get_actor): Do not reference the actor.
+
 2009-03-30  Gordon Williams  <gordon.williams@collabora.co.uk>
 
         * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Applied patch from
