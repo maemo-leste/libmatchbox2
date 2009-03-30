@@ -1,6 +1,9 @@
 #include "mb-wm.h"
 #include <stdarg.h>
 
+#undef  G_LOG_DOMAIN
+#define G_LOG_DOMAIN "libmatchbox"
+
 static int TrappedErrorCode = 0;
 static int (*old_error_handler) (Display *, XErrorEvent *);
 
@@ -9,6 +12,7 @@ error_handler(Display     *xdpy,
 	      XErrorEvent *error)
 {
   TrappedErrorCode = error->error_code;
+  g_debug("X error %d", TrappedErrorCode);
   return 0;
 }
 

@@ -118,7 +118,7 @@ mb_wm_client_window_init (MBWMObject *this, va_list vap)
 
   if (!wm || !xwin)
     {
-      fprintf (stderr, "--- error, no wm or xwin ---\n");
+      g_critical ("--- error, no wm or xwin ---");
       return 0;
     }
 

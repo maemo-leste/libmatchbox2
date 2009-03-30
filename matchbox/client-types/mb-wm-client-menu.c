@@ -119,7 +119,7 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
         geom.y = 56; /* shouldn't this be taken from the theme? */
   }
 
-  printf ("%s: Menu will be at %d %d %d %d\n", __func__, geom.x, geom.y,
+  g_debug ("%s: Menu will be at %d %d %d %d", __func__, geom.x, geom.y,
            geom.width, geom.height);
 
   mb_wm_client_menu_request_geometry (client, &geom,

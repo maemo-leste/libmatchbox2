@@ -151,7 +151,7 @@ mb_wm_client_new_func (MBWindowManager *wm, MBWMClientWindow *win)
   else
     {
       char * name = XGetAtomName (wm->xdpy, win->net_type);
-      printf("### unhandled window type %s (%lx) ###\n",
+      g_warning ("### unhandled window type %s (%lx) ###",
 	     name?name:"[no net_type]",
 	     win->xwindow);
       XFree (name);
