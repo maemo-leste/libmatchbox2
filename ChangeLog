@@ -1,4 +1,9 @@
-2009-03-r0  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+2009-03-30  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+        * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Applied patch from
+        NB#108114 to fix problem with actor resizing
+
+2009-03-30  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* debian/rules:
 	  Recognize the "debug" DEB_BUILD_OPTIONS parameter
