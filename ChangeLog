@@ -2,7 +2,8 @@
 
         * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for NB#107323,
           Any actors that were children of the ClutterClient's actor are
-          now removed (this also fixes a possible double-free for hd-decor)
+          now removed (this also fixes hd-decor problems that appear to
+          be causing NB#108825)
 
 2009-03-31  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
