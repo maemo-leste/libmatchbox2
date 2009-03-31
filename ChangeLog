@@ -1,5 +1,10 @@
 2009-03-31  Gordon Williams  <gordon.williams@collabora.co.uk>
 
+        * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for NB#107323.
+          It really works this time...
+
+2009-03-31  Gordon Williams  <gordon.williams@collabora.co.uk>
+
         * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for NB#107323,
           Any actors that were children of the ClutterClient's actor are
           now removed (this also fixes hd-decor problems that appear to

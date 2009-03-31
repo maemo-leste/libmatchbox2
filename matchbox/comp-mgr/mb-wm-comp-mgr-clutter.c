@@ -265,7 +265,7 @@ mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
   cclient->priv =
     mb_wm_util_malloc0 (sizeof (MBWMCompMgrClutterClientPrivate));
 
-  cclient->priv->actor = clutter_group_new();
+  cclient->priv->actor = g_object_ref( clutter_group_new() );
   cclient->priv->bound = FALSE;
 
   return 1;
@@ -278,6 +278,8 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
   MBWMCompMgrClutterClient * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (obj);
   MBWindowManager          * wm  = c->wm;
 
+  /* We don't need g_object_unrefs for actors, as destroy gets rid
+   * of them regardless */
   if (cclient->priv->texture)
     clutter_actor_destroy (cclient->priv->texture);
   if (cclient->priv->actor)
@@ -996,9 +998,6 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   texture = clutter_x11_texture_pixmap_new ();
 #endif
 
-  /* We need to reference this object so it does not get accidentally freed in
-   * the case of AnimationActors */
-  texture = g_object_ref(texture);
 
   sprintf(actor_name, "texture_0x%lx",
           c->xwin_frame ? c->xwin_frame : c->window->xwindow);
@@ -1012,7 +1011,9 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 
   if (cclient->priv->texture)
     clutter_actor_destroy(cclient->priv->texture);
-  cclient->priv->texture = texture;
+  /* We need to reference this object so it does not get accidentally freed in
+   * the case of AnimationActors */
+  cclient->priv->texture = g_object_ref(texture);
 
   g_object_set_data (G_OBJECT (cclient->priv->actor),
       "MBWMCompMgrClutterClient", cclient);
