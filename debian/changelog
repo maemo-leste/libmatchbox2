@@ -1,8 +1,9 @@
-matchbox-window-manager-2 (0.2.26-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.26-1) unstable; urgency=low
 
-  * writeme
+  Gordon: 
+  * Fixes: NB#108114 - Animation actors cannot be resized, part 2
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 27 Mar 2009 15:15:20 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 31 Mar 2009 09:02:33 +0300
 
 matchbox-window-manager-2 (0.2.25-1) unstable; urgency=low
 
