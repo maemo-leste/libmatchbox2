@@ -278,8 +278,15 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
   MBWMCompMgrClutterClient * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (obj);
   MBWindowManager          * wm  = c->wm;
 
+  if (cclient->priv->texture)
+    clutter_actor_destroy (cclient->priv->texture);
   if (cclient->priv->actor)
-    clutter_actor_destroy (cclient->priv->actor);
+    {
+      /* We want to destroy our main group, but not any children - as they
+       * may have been added by hd-decor, or hd-animation-actor */
+      clutter_group_remove_all(CLUTTER_GROUP(cclient->priv->actor));
+      clutter_actor_destroy (cclient->priv->actor);
+    }
 
   if (cclient->priv->window_damage)
     {
@@ -988,6 +995,11 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 #else
   texture = clutter_x11_texture_pixmap_new ();
 #endif
+
+  /* We need to reference this object so it does not get accidentally freed in
+   * the case of AnimationActors */
+  texture = g_object_ref(texture);
+
   sprintf(actor_name, "texture_0x%lx",
           c->xwin_frame ? c->xwin_frame : c->window->xwindow);
   clutter_actor_set_name(texture, actor_name);
