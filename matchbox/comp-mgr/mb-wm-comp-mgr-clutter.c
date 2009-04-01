@@ -268,6 +268,9 @@ mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
   cclient->priv->actor = g_object_ref( clutter_group_new() );
   cclient->priv->bound = FALSE;
 
+  g_object_set_data (G_OBJECT (cclient->priv->actor),
+                     "HD-MBWMCompMgrClutterClient", cclient);
+
   return 1;
 }
 
@@ -278,16 +281,25 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
   MBWMCompMgrClutterClient * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (obj);
   MBWindowManager          * wm  = c->wm;
 
-  /* We don't need g_object_unrefs for actors, as destroy gets rid
-   * of them regardless */
+  /* We just unref our actors here and clutter will free them if required */
   if (cclient->priv->texture)
-    clutter_actor_destroy (cclient->priv->texture);
+    {
+      g_object_unref (cclient->priv->texture);
+      cclient->priv->texture = NULL;
+    }
   if (cclient->priv->actor)
     {
-      /* We want to destroy our main group, but not any children - as they
-       * may have been added by hd-decor, or hd-animation-actor */
+      /* Hildon-desktop may have set this, but we need to unset it now,
+       * because we are being destroyed */
+      g_object_set_data (G_OBJECT (cclient->priv->actor),
+                         "HD-MBWMCompMgrClutterClient", NULL);
+
+      /* If the main group gets destroyed, it destroys all children - which
+       * is not what we want, as they may have been added by hd-decor or
+       * hd-animation-actor. Instead remove all children beforehand. */
       clutter_group_remove_all(CLUTTER_GROUP(cclient->priv->actor));
-      clutter_actor_destroy (cclient->priv->actor);
+      g_object_unref (cclient->priv->actor);
+      cclient->priv->actor = NULL;
     }
 
   if (cclient->priv->window_damage)
@@ -1014,9 +1026,6 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   /* We need to reference this object so it does not get accidentally freed in
    * the case of AnimationActors */
   cclient->priv->texture = g_object_ref(texture);
-
-  g_object_set_data (G_OBJECT (cclient->priv->actor),
-      "MBWMCompMgrClutterClient", cclient);
 
   /* set up our sizes and positions. Force this because it's the first
    * time we create the texture */
