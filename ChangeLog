@@ -1,3 +1,9 @@
+2009-04-01  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/core/mb-wm-main-context.c (call_handlers_for_event):
+	Fix for the case where a handler is removed from the handlers list
+	while it is being called.
+
 2009-04-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/core/mb-wm-client-window.c

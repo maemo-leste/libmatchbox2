@@ -178,6 +178,7 @@ call_handlers_for_event (MBWMList *iter,
   while (iter)
     {
       MBWMXEventFuncInfo *i = iter->data;
+      MBWMList        *next = iter->next;
 
       if (i && (i->xwindow == None || i->xwindow == xwin))
 	{
@@ -187,13 +188,13 @@ call_handlers_for_event (MBWMList *iter,
 	       * But only warn about this if it's not the last
 	       * handler in the chain!
 	       */
-	      if (iter->next)
+	      if (next)
 		g_warning ("Handler %p asked us to stop.  But we won't.",
 			   i->func);
 	    }
 	}
 
-      iter = iter->next;
+      iter = next;
     }
 }
 
@@ -209,7 +210,7 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
   if (mbwm_debug_flags & MBWM_DEBUG_EVENT)
     {
       MBWindowManagerClient *ev_client;
-      
+
       ev_client = mb_wm_managed_client_from_xwindow(wm, xev->xany.window);
 
       printf ("  @ XEvent: '%s:%i' for %lx %s%s\n",
@@ -264,7 +265,7 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 		    pev->window,
 		    prop,
 		    pev->state);
-	    
+
 	    if (prop)
 	      XFree (prop);
 	  }
