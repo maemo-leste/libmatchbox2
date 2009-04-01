@@ -1,20 +1,26 @@
+2009-04-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties): Remove escaping from
+	WM_NAME and _NET_WM_NAME titles.
+
 2009-04-01  Gordon Williams  <gordon.williams@collabora.co.uk>
 
-        * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for BN#107681.
-          Moved setting and unsetting a pointer to the ClutterClient from
-          HD to inside the ClutterClient
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for BN#107681.
+	Moved setting and unsetting a pointer to the ClutterClient from
+	HD to inside the ClutterClient
 
 2009-03-31  Gordon Williams  <gordon.williams@collabora.co.uk>
 
-        * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for NB#107323.
-          It really works this time...
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for NB#107323.
+	It really works this time...
 
 2009-03-31  Gordon Williams  <gordon.williams@collabora.co.uk>
 
-        * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for NB#107323,
-          Any actors that were children of the ClutterClient's actor are
-          now removed (this also fixes hd-decor problems that appear to
-          be causing NB#108825)
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for NB#107323,
+	Any actors that were children of the ClutterClient's actor are
+	now removed (this also fixes hd-decor problems that appear to
+	be causing NB#108825)
 
 2009-03-31  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 

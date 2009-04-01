@@ -600,14 +600,14 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
       while (*cursor)
 	{
-	  name
-	    = mb_wm_property_get_reply_and_validate (wm,
-						     cookies[*cursor],
-						     *cursor==COOKIE_WIN_NAME? XA_STRING: wm->atoms[MBWM_ATOM_UTF8_STRING],
-						     8,
-						     0,
-						     NULL,
-						     &x_error_code);
+	  name = mb_wm_property_get_reply_and_validate (wm,
+                        cookies[*cursor],
+		        *cursor == COOKIE_WIN_NAME ?
+                                XA_STRING : wm->atoms[MBWM_ATOM_UTF8_STRING],
+		        8,
+		        0,
+		        NULL,
+		        &x_error_code);
 
 	  if (x_error_code == BadWindow)
 	    goto badwindow_error;
@@ -621,28 +621,13 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       switch (*cursor)
 	{
 	case COOKIE_WIN_NAME:
-	  /* TODO:  We could convert ISO 8859-1 to UTF-8 here,
-	   * if we thought anyone was likely to use ISO 8859-1
-	   * outside of the range where it coincides with ASCII
-	   * (and therefore also with UTF-8).
-	   */
-
-	  /* We also need to escape the text... */
-	  /* FALLTHROUGH */
-
 	case COOKIE_WIN_NAME_UTF8:
-	  /* We need to escape the text. */
-	  win->name = g_markup_escape_text (name, -1);
-	  break;
-
 	case COOKIE_WIN_NAME_UTF8_XML:
-	  /* Everything's lovely, so just take a copy */
 	  win->name = g_strdup (name);
 	  break;
 
 	case 0:
 	default:
-	  /* didn't find anything */
 	  win->name = g_strdup("unknown");
 	}
 
