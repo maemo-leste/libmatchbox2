@@ -1,3 +1,8 @@
+2009-04-02  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Made sure g_object_unref
+	  works properly on clutter actors
+
 2009-04-02  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.27

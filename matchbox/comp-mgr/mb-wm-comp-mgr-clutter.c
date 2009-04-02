@@ -257,6 +257,14 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
 #endif
 }
 
+#if DEBUG_ACTOR
+static void
+destroy_cb(ClutterActor *actor, MBWMCompMgrClutterClient *cclient) {
+  const char *name = clutter_actor_get_name(actor);
+  g_debug("### DESTROY %s", name?name:"?");
+}
+#endif
+
 static int
 mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
 {
@@ -270,6 +278,9 @@ mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
 
   g_object_set_data (G_OBJECT (cclient->priv->actor),
                      "HD-MBWMCompMgrClutterClient", cclient);
+#if DEBUG_ACTOR
+  g_signal_connect(cclient->priv->actor, "destroy", G_CALLBACK(destroy_cb), cclient);
+#endif
 
   return 1;
 }
@@ -282,24 +293,51 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
   MBWindowManager          * wm  = c->wm;
 
   /* We just unref our actors here and clutter will free them if required */
-  if (cclient->priv->texture)
-    {
-      g_object_unref (cclient->priv->texture);
-      cclient->priv->texture = NULL;
-    }
   if (cclient->priv->actor)
     {
+      int i,n;
       /* Hildon-desktop may have set this, but we need to unset it now,
        * because we are being destroyed */
       g_object_set_data (G_OBJECT (cclient->priv->actor),
                          "HD-MBWMCompMgrClutterClient", NULL);
 
+      /* Unparent our actor */
+      if (CLUTTER_IS_CONTAINER(clutter_actor_get_parent(cclient->priv->actor)))
+        clutter_container_remove_actor(
+            CLUTTER_CONTAINER(clutter_actor_get_parent(cclient->priv->actor)),
+            cclient->priv->actor);
+
       /* If the main group gets destroyed, it destroys all children - which
        * is not what we want, as they may have been added by hd-decor or
-       * hd-animation-actor. Instead remove all children beforehand. */
-      clutter_group_remove_all(CLUTTER_GROUP(cclient->priv->actor));
+       * hd-animation-actor. Instead remove all children that aren't ours
+       * beforehand. */
+      n = clutter_group_get_n_children(CLUTTER_GROUP(cclient->priv->actor));
+      for (i=0;i<n;i++)
+        {
+          ClutterActor *actor =
+            clutter_group_get_nth_child(CLUTTER_GROUP(cclient->priv->actor), i);
+          if (actor != cclient->priv->texture)
+            {
+              clutter_group_remove(CLUTTER_GROUP(cclient->priv->actor),
+                                   actor);
+              n = clutter_group_get_n_children(
+                  CLUTTER_GROUP(cclient->priv->actor));
+              i--;
+            }
+        }
+
+      /* We can't just call clutter_group_new or it gets freed if it gets
+       * reparented, so we have to ref it - which means we need TWO
+       * unrefs here */
       g_object_unref (cclient->priv->actor);
+      g_object_unref (cclient->priv->actor);
+
       cclient->priv->actor = NULL;
+    }
+  if (cclient->priv->texture)
+    {
+      g_object_unref (cclient->priv->texture);
+      cclient->priv->texture = NULL;
     }
 
   if (cclient->priv->window_damage)
@@ -1026,6 +1064,9 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   /* We need to reference this object so it does not get accidentally freed in
    * the case of AnimationActors */
   cclient->priv->texture = g_object_ref(texture);
+#if DEBUG_ACTOR
+  g_signal_connect(cclient->priv->texture, "destroy", G_CALLBACK(destroy_cb), cclient);
+#endif
 
   /* set up our sizes and positions. Force this because it's the first
    * time we create the texture */
