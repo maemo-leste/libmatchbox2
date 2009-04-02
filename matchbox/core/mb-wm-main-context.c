@@ -170,17 +170,15 @@ mb_wm_main_context_new (MBWindowManager *wm)
 }
 
 static inline void
-call_handlers_for_event (MBWMList *iter_base,
+call_handlers_for_event (MBWMList *iter,
 			 void *event,
 			 Window xwin
 			 )
 {
-  MBWMList *iter = iter_base;
   while (iter)
     {
       MBWMXEventFuncInfo *i = iter->data;
       MBWMList        *next = iter->next;
-      MBWMList        *iter_check = iter_base;
 
       if (i && (i->xwindow == None || i->xwindow == xwin))
 	{
@@ -195,10 +193,6 @@ call_handlers_for_event (MBWMList *iter_base,
 			   i->func);
 	    }
 	}
-
-      while (iter_check && iter_check!=next)
-        iter_check = iter_check->next;
-      g_assert(iter_check == next);
 
       iter = next;
     }

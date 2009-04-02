@@ -670,11 +670,12 @@ mb_wm_decor_destroy (MBWMObject* obj)
 
   while (l)
     {
-      MBWMList * old = l;
+      MBWMList * next = l->next;
       mb_wm_decor_button_unrealize((MBWMDecorButton *)l->data);
       mb_wm_object_unref (MB_WM_OBJECT (l->data));
-      l = l->next;
-      free (old);
+      l = next;
+      /* we don't free, because the dispose handler of the decor button
+       * removes itself */
     }
 
   if (decor->press_cb_id)
@@ -1103,12 +1104,16 @@ mb_wm_decor_button_class_type ()
 static void
 mb_wm_decor_button_destroy (MBWMObject* obj)
 {
-  //MBWMDecorButton * button = MB_WM_DECOR_BUTTON (obj);
-  /*
-   * We are doing the job in the mb_wm_decor_button_unrealize() while the
-   * decoration still exists.
-   */
+  MBWMDecorButton * button = MB_WM_DECOR_BUTTON (obj);
 
+  /* unrealise ourselves */
+  if (button->realized)
+    mb_wm_decor_button_unrealize(button);
+
+  /* remove ourselves from the list of buttons in decor */
+  if (button->decor)
+    button->decor->buttons = mb_wm_util_list_remove(button->decor->buttons,
+                                                    button);
 }
 
 static void

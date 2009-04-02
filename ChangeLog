@@ -1,5 +1,12 @@
 2009-04-02  Gordon Williams  <gordon.williams@collabora.co.uk>
 
+	* matchbox/core/mb-wm-main-context.c: Removed accidentally checked
+	in code
+	* matchbox/core/mb-wm-decor.c: Fixed NB#109094 - crash caused by
+	clicking on title bar button repeatedly very quickly
+
+2009-04-02  Gordon Williams  <gordon.williams@collabora.co.uk>
+
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: More fixes for
 	  g_object_unref - deal with weak reference on clutter
 	  actors.
