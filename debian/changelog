@@ -1,8 +1,13 @@
-matchbox-window-manager-2 (0.2.27-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.27-1) unstable; urgency=low
 
+  Kimmo:
   * Remove escaping of markup from window titles.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed,  1 Apr 2009 14:57:29 +0300
+  Gordon:
+  * Fixes: NB#107323 - Destroying a toplevel window destoys clutter actors for
+    HildonAnimationActors parented into it
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 02 Apr 2009 10:13:14 +0300
 
 matchbox-window-manager-2 (0.2.26-1) unstable; urgency=low
 
