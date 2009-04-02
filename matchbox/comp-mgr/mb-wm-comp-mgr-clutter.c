@@ -18,6 +18,8 @@
  *
  */
 
+//#define DEBUG_ACTOR 1
+
 #ifndef HAVE_CLUTTER_EGLX
 /* Gordon says: */
 #define HAVE_CLUTTER_EGLX 0
@@ -273,7 +275,7 @@ mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
   cclient->priv =
     mb_wm_util_malloc0 (sizeof (MBWMCompMgrClutterClientPrivate));
 
-  cclient->priv->actor = g_object_ref( clutter_group_new() );
+  cclient->priv->actor = g_object_ref_sink( clutter_group_new() );
   cclient->priv->bound = FALSE;
 
   g_object_set_data (G_OBJECT (cclient->priv->actor),
@@ -326,12 +328,7 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
             }
         }
 
-      /* We can't just call clutter_group_new or it gets freed if it gets
-       * reparented, so we have to ref it - which means we need TWO
-       * unrefs here */
       g_object_unref (cclient->priv->actor);
-      g_object_unref (cclient->priv->actor);
-
       cclient->priv->actor = NULL;
     }
   if (cclient->priv->texture)
@@ -1063,7 +1060,7 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
     clutter_actor_destroy(cclient->priv->texture);
   /* We need to reference this object so it does not get accidentally freed in
    * the case of AnimationActors */
-  cclient->priv->texture = g_object_ref(texture);
+  cclient->priv->texture = g_object_ref_sink(texture);
 #if DEBUG_ACTOR
   g_signal_connect(cclient->priv->texture, "destroy", G_CALLBACK(destroy_cb), cclient);
 #endif
