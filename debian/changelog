@@ -1,6 +1,7 @@
-matchbox-window-manager-2 (0.2.28-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.28-1) unstable; urgency=low
 
-  * writeme
+  Gordon:
+  * Made sure g_object_unref works properly on clutter actors
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu,  2 Apr 2009 10:24:01 +0300
 
