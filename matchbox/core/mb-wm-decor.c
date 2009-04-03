@@ -1104,16 +1104,12 @@ mb_wm_decor_button_class_type ()
 static void
 mb_wm_decor_button_destroy (MBWMObject* obj)
 {
-  MBWMDecorButton * button = MB_WM_DECOR_BUTTON (obj);
+  //MBWMDecorButton * button = MB_WM_DECOR_BUTTON (obj);
+  /*
+   * We are doing the job in the mb_wm_decor_button_unrealize() while the
+   * decoration still exists.
+   */
 
-  /* unrealise ourselves */
-  if (button->realized)
-    mb_wm_decor_button_unrealize(button);
-
-  /* remove ourselves from the list of buttons in decor */
-  if (button->decor)
-    button->decor->buttons = mb_wm_util_list_remove(button->decor->buttons,
-                                                    button);
 }
 
 static void
