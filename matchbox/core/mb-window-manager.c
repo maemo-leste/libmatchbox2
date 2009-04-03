@@ -564,18 +564,18 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
 	  int  format;
 	  unsigned long items;
 	  unsigned long left;
-	  char         *theme_path;
+	  unsigned char *theme_path;
 
 	  XGetWindowProperty (wm->xdpy, wm->root_win->xwindow,
 			      xev->atom, 0, 8192, False,
 			      XA_STRING, &type, &format,
 			      &items, &left,
-			      (unsigned char **)&theme_path);
+			      &theme_path);
 
 	  if (!type || !items)
 	    return True;
 
-	  mb_wm_set_theme_from_path (wm, theme_path);
+	  mb_wm_set_theme_from_path (wm, (char*)theme_path);
 
 	  XFree (theme_path);
 	}

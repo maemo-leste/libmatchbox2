@@ -203,10 +203,10 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 				   MBWMMainContext *ctx)
 {
   MBWindowManager *wm = ctx->wm;
+#if (MBWM_WANT_DEBUG)
   MBWMList        *iter;
   Window           xwin = xev->xany.window;
 
-#if (MBWM_WANT_DEBUG)
   if (mbwm_debug_flags & MBWM_DEBUG_EVENT)
     {
       MBWindowManagerClient *ev_client;

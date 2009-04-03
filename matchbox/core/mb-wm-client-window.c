@@ -168,12 +168,12 @@ mb_wm_client_window_new (MBWindowManager *wm, Window xwin)
  * pointer to where the next icon might be in the data
  */
 static unsigned long *
-icon_from_net_wm_icon (unsigned long * data, MBWMRgbaIcon ** mb_icon)
+icon_from_net_wm_icon (unsigned long * data, void ** mb_icon)
 {
   MBWMRgbaIcon * icon = mb_wm_rgba_icon_new ();
   size_t byte_len;
 
-  *mb_icon = icon;
+  *((MBWMRgbaIcon**)mb_icon) = icon;
 
   if (!icon)
     return data;
@@ -205,7 +205,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 {
   MBWMCookie       cookies[N_COOKIES] = {0};
   MBWindowManager *wm = win->wm;
-  Atom             actual_type_return, *result_atom = NULL;
+  Atom             actual_type_return;
+  unsigned char   *result_atom = NULL;
   int              actual_format_return;
   unsigned long    nitems_return;
   unsigned long    bytes_after_return;
@@ -423,7 +424,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &actual_format_return,
 			    &nitems_return,
 			    &bytes_after_return,
-			    (unsigned char **)&result_atom,
+			    &result_atom,
 			    &x_error_code);
 
       if (x_error_code
@@ -475,7 +476,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &actual_format_return,
 			    &nitems_return,
 			    &bytes_after_return,
-			    (unsigned char **)&result_atom,
+			    &result_atom,
 			    &x_error_code);
 
       if (x_error_code
@@ -492,43 +493,34 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       else
 	{
 	  int i;
+          Atom *a = (Atom*)result_atom;
 	  win->ewmh_state = 0;
 
 	  for (i = 0; i < nitems_return; ++i)
 	    {
-	      if (result_atom[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_MODAL])
+	      if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_MODAL])
 		win->ewmh_state |= MBWMClientWindowEWMHStateModal;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_STICKY])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_STICKY])
 		win->ewmh_state |= MBWMClientWindowEWMHStateSticky;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_MAXIMIZED_VERT])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_MAXIMIZED_VERT])
 		win->ewmh_state |= MBWMClientWindowEWMHStateMaximisedVert;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_MAXIMIZED_HORZ])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_MAXIMIZED_HORZ])
 		win->ewmh_state |= MBWMClientWindowEWMHStateMaximisedHorz;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_SHADED])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_SHADED])
 		win->ewmh_state |= MBWMClientWindowEWMHStateShaded;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_SKIP_TASKBAR])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_SKIP_TASKBAR])
 		win->ewmh_state |= MBWMClientWindowEWMHStateSkipTaskbar;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_SKIP_PAGER])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_SKIP_PAGER])
 		win->ewmh_state |= MBWMClientWindowEWMHStateSkipPager;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_HIDDEN])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_HIDDEN])
 		win->ewmh_state |= MBWMClientWindowEWMHStateHidden;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_FULLSCREEN])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_FULLSCREEN])
 		win->ewmh_state |= MBWMClientWindowEWMHStateFullscreen;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_ABOVE])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_ABOVE])
 		win->ewmh_state |= MBWMClientWindowEWMHStateAbove;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_STATE_BELOW])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_STATE_BELOW])
 		win->ewmh_state |= MBWMClientWindowEWMHStateBelow;
-	      else if (result_atom[i] ==
+	      else if (a[i] ==
 		       wm->atoms[MBWM_ATOM_NET_WM_STATE_DEMANDS_ATTENTION])
 		win->ewmh_state |= MBWMClientWindowEWMHStateDemandsAttention;
 	    }
@@ -638,7 +630,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       {
 	char *newline;
 
-	while (newline = index (win->name, '\n'))
+	while ((newline = index (win->name, '\n')))
 	  *newline = ' ';
       }
 
@@ -847,7 +839,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
   if (props_req & MBWM_WINDOW_PROP_NET_PID)
     {
-      unsigned int *pid = NULL;
+      unsigned char *pid = NULL;
 
       mb_wm_property_reply (wm,
 			    cookies[COOKIE_WIN_PID],
@@ -855,7 +847,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &actual_format_return,
 			    &nitems_return,
 			    &bytes_after_return,
-			    (unsigned char **)&pid,
+			    &pid,
 			    &x_error_code);
 
       if (x_error_code
@@ -880,7 +872,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
   if (props_req & MBWM_WINDOW_PROP_CM_TRANSLUCENCY)
     {
-      int *translucency = NULL;
+      unsigned char *translucency = NULL;
 
       mb_wm_property_reply (wm,
 			    cookies[COOKIE_WIN_CM_TRANSLUCENCY],
@@ -888,7 +880,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &actual_format_return,
 			    &nitems_return,
 			    &bytes_after_return,
-			    (unsigned char **)&translucency,
+			    &translucency,
 			    &x_error_code);
 
       if (x_error_code
@@ -904,7 +896,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	}
       else
 	{
-	  win->translucency = *translucency;
+	  win->translucency = (int)*translucency;
 	  MBWM_DBG("@@@ translucency %d @@@", win->translucency);
 	}
 
@@ -916,7 +908,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
   if (props_req & MBWM_WINDOW_PROP_NET_ICON)
     {
-      unsigned long *icons = NULL;
+      unsigned char *icons = NULL;
 
       mb_wm_property_reply (wm,
 			    cookies[COOKIE_WIN_ICON],
@@ -924,7 +916,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &actual_format_return,
 			    &nitems_return,
 			    &bytes_after_return,
-			    (unsigned char **)&icons,
+			    &icons,
 			    &x_error_code);
 
       if (x_error_code
@@ -941,8 +933,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	{
 	  MBWMList *l = win->icons;
 	  MBWMList *list_end = NULL;
-	  unsigned long *p = icons;
-	  unsigned long *p_end = icons + nitems_return;
+	  unsigned long *p = (unsigned long *)icons;
+	  unsigned long *p_end = (unsigned long *)icons + nitems_return;
 
 	  while (l)
 	    {
@@ -956,7 +948,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  while (p < p_end)
 	    {
 	      l = mb_wm_util_malloc0 (sizeof (MBWMList));
-	      p = icon_from_net_wm_icon (p, (MBWMRgbaIcon **)&l->data);
+	      p = icon_from_net_wm_icon (p, &l->data);
 
 	      if (list_end)
 		{
@@ -981,7 +973,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
   if (props_req & MBWM_WINDOW_PROP_NET_USER_TIME)
     {
-      unsigned long *user_time = NULL;
+      unsigned char *user_time = NULL;
 
       mb_wm_property_reply (wm,
 			    cookies[COOKIE_WIN_USER_TIME],
@@ -989,7 +981,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &actual_format_return,
 			    &nitems_return,
 			    &bytes_after_return,
-			    (unsigned char **)&user_time,
+			    &user_time,
 			    &x_error_code);
 
       if (x_error_code
@@ -1008,7 +1000,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	}
       else
 	{
-	  win->user_time = *user_time;
+	  win->user_time = (unsigned long)*user_time;
 	  MBWM_DBG("@@@ user time %d @@@", win->user_time);
 	}
 
@@ -1018,7 +1010,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
   if (props_req & MBWM_WINDOW_PROP_HILDON_STACKING)
     {
-      unsigned long *value = NULL;
+      unsigned char *value = NULL;
 
       mb_wm_property_reply (wm,
 			    cookies[COOKIE_WIN_HILDON_STACKING],
@@ -1026,7 +1018,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &actual_format_return,
 			    &nitems_return,
 			    &bytes_after_return,
-			    (unsigned char **)&value,
+			    &value,
 			    &x_error_code);
 
       if (x_error_code

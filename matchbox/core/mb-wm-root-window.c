@@ -25,6 +25,7 @@
 #include "../client-types/mb-wm-client-app.h"
 
 #include <X11/Xmd.h>
+#include <unistd.h>
 
 static void
 mb_wm_root_window_class_init (MBWMObjectClass *klass)

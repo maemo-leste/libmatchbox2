@@ -420,7 +420,7 @@ xas_async_get_property_handler (XasContext         *ctx,
 		       bytes_read, nbytes, netbytes);
 
               /* _XReadPad (dpy, (char *) task->data, netbytes); */
-              _XGetAsyncData (dpy, task->data, buf, len,
+              _XGetAsyncData (dpy, (char *)task->data, buf, len,
                               bytes_read, nbytes,
                               netbytes);
             }
@@ -437,7 +437,7 @@ xas_async_get_property_handler (XasContext         *ctx,
                       __FUNCTION__, bytes_read, nbytes, netbytes);
 
               /* _XRead16Pad (dpy, (short *) task->data, netbytes); */
-              _XGetAsyncData (dpy, task->data, buf, len,
+              _XGetAsyncData (dpy, (char*)task->data, buf, len,
                               bytes_read, nbytes, netbytes);
             }
           break;
@@ -464,7 +464,7 @@ xas_async_get_property_handler (XasContext         *ctx,
                   /* Store the 32-bit values in the end of the array */
                   netdata = task->data + nbytes / 2;
 
-                  _XGetAsyncData (dpy, netdata, buf, len,
+                  _XGetAsyncData (dpy, (char*)netdata, buf, len,
                                   bytes_read, netbytes,
                                   netbytes);
 
@@ -482,7 +482,7 @@ xas_async_get_property_handler (XasContext         *ctx,
               else
                 {
                   /* Here the wire format matches our actual format */
-                  _XGetAsyncData (dpy, task->data, buf, len,
+                  _XGetAsyncData (dpy, (char*)task->data, buf, len,
                                   bytes_read, netbytes,
                                   netbytes);
                 }

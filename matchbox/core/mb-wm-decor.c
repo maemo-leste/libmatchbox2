@@ -1059,8 +1059,8 @@ mb_wm_decor_button_init (MBWMObject *obj, va_list vap)
   mb_wm_theme_get_button_size (wm->theme,
 			       decor,
 			       type,
-			       &button->geom.width,
-			       &button->geom.height);
+			       (int *)&button->geom.width,
+			       (int *)&button->geom.height);
 
   button->press   = press;
   button->release = release;

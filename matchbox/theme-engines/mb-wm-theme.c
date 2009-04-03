@@ -1973,7 +1973,7 @@ mb_wm_theme_simple_paint_decor (MBWMTheme *theme, MBWMDecor *decor)
 
 	  XftTextExtentsUtf8 (xdpy,
 			  dd->font,
-			  title, strlen(title),
+			  (unsigned char*)title, strlen(title),
 			  &extents);
 	  centering_padding = (rec.width - extents.width) / 2;
       }
@@ -1983,8 +1983,9 @@ mb_wm_theme_simple_paint_decor (MBWMTheme *theme, MBWMDecor *decor)
       XftDrawStringUtf8(dd->xftdraw,
 			&dd->clr,
 			dd->font,
-			left_padding + centering_padding + west_width + pack_start_x + (h / 5), y,
-			title, strlen (title));
+			left_padding + centering_padding + west_width +
+                        pack_start_x + (h / 5), y,
+			(unsigned char*)title, strlen (title));
     }
 
   XFreeGC (xdpy, gc);
@@ -2096,6 +2097,7 @@ mb_wm_theme_simple_paint_button (MBWMTheme *theme, MBWMDecorButton *button)
       XRenderColor rclr;
       XftColor clr;
       XRectangle rec;
+      const char *qmark = "?";
 
       snprintf (desc, sizeof (desc), "%s-%i:bold",
 	    d && d->font_family ? d->font_family : "Sans", h*3/4);
@@ -2122,7 +2124,7 @@ mb_wm_theme_simple_paint_button (MBWMTheme *theme, MBWMDecorButton *button)
 			 x + 4 + left_padding,
 			 y + (h - (font->ascent + font->descent))/2 +
 			 font->ascent,
-			 "?", 1);
+			 (unsigned char*)qmark, 1);
 
       XftFontClose (xdpy, font);
     }

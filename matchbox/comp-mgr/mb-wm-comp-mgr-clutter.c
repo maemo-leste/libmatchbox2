@@ -176,11 +176,7 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
   MBWMCompMgrClutterClient  *cclient  = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
   MBWindowManagerClient     *wm_client = client->wm_client;
   MBWindowManager           *wm        = client->wm;
-  MBGeometry                 geom;
   Window                     xwin;
-  Window root;
-  int                        x, y;
-  unsigned int               w, h, bw, depth;
 #ifdef HAVE_XEXT
   /* Stuff we need for shaped windows */
   XRectangle                *shp_rect;
@@ -770,7 +766,6 @@ mb_wm_comp_mgr_clutter_client_configure_real (MBWMCompMgrClient * client)
   MBWindowManagerClient    * wm_client = client->wm_client;
   MBWMCompMgrClutterClient * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (client);
   Bool                       fullscreen;
-  MBWMClientType             ctype = MB_WM_CLIENT_CLIENT_TYPE (wm_client);
 
   /*
    * We used to release the backing pixmap here, but there seems no point
@@ -976,7 +971,9 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   MBWMCompMgrClutterClient  * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
   MBWindowManager           * wm      = client->wm;
   ClutterActor              * texture;
+#if SGX_CORRUPTION_WORKAROUND
   MBWMClientType              ctype = MB_WM_CLIENT_CLIENT_TYPE (c);
+#endif
   char                        actor_name[64];
 
   cclient->priv->fullscreen = mb_wm_client_window_is_state_set (

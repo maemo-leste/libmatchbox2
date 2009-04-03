@@ -48,7 +48,7 @@ typedef struct MBWMFuncInfo
 typedef struct MBGeometry
 {
   int x,y;
-  int width,height;
+  unsigned int width, height;
 } MBGeometry;
 
 typedef struct MBWMList MBWMList;

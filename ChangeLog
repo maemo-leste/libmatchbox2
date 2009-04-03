@@ -1,5 +1,8 @@
 2009-04-03  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Made libmatchbox2 warning-free.
+
+	* configure.ac: Add -Werror compilation flag.
 	* matchbox/core/mb-window-manager.h: Remove unused return value from
 	the client_responding handler type.
 	* matchbox/core/mb-wm-client.c (mb_wm_client_init): According to Mox's
