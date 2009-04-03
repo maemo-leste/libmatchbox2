@@ -1,3 +1,10 @@
+2009-04-03  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-window-manager.h: Remove unused return value from
+	the client_responding handler type.
+	* matchbox/core/mb-wm-client.c (mb_wm_client_init): According to Mox's
+	wish, increase ping timeout from 1000 to 6000 ms.
+
 2009-04-03  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_destroy):

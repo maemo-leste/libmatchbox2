@@ -154,7 +154,7 @@ mb_wm_client_init (MBWMObject *obj, va_list vap)
 
   client->window        = win;
   client->wmref         = wm;
-  client->ping_timeout  = 1000;
+  client->ping_timeout  = 6000;
 
   if (wm->theme)
     {

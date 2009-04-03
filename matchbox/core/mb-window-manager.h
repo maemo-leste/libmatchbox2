@@ -147,7 +147,7 @@ struct MBWindowManagerClass
 
   /* These return True if now further action to be taken */
   Bool (*client_activate)   (MBWindowManager *wm, MBWindowManagerClient *c);
-  Bool (*client_responding) (MBWindowManager *wm, MBWindowManagerClient *c);
+  void (*client_responding) (MBWindowManager *wm, MBWindowManagerClient *c);
   Bool (*client_hang)       (MBWindowManager *wm, MBWindowManagerClient *c);
 
   MBWMTheme * (*theme_new)  (MBWindowManager *wm, const char * path);
