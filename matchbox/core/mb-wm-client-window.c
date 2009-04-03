@@ -456,10 +456,10 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	}
       else
 	{
-	  if (win->net_type != result_atom[0])
+	  if (win->net_type != ((Atom *)result_atom)[0])
 	    changes |= MBWM_WINDOW_PROP_WIN_TYPE;
 
-	  win->net_type = result_atom[0];
+	  win->net_type = ((Atom*)result_atom)[0];
 	}
 
       if (result_atom)
