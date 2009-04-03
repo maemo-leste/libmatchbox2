@@ -1,6 +1,8 @@
-matchbox-window-manager-2 (0.2.29-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.29-1) unstable; urgency=low
 
-  * writeme
+  Gordon:
+  * Fixes: NB#109094 - crash caused by clicking on title bar button
+    repeatedly very quickly
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu,  2 Apr 2009 13:24:45 +0300
 
