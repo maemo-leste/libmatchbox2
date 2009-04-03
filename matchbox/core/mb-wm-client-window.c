@@ -758,7 +758,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &actual_format_return,
 			    &nitems_return,
 			    &bytes_after_return,
-			    (unsigned char **)&result_atom,
+			    &result_atom,
 			    &x_error_code);
 
       if (x_error_code
@@ -774,31 +774,26 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       else
 	{
 	  int i;
+          Atom *a = (Atom*)result_atom;
 
 	  for (i = 0; i < nitems_return; ++i)
 	    {
-	      if (result_atom[i] == wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS])
+	      if (a[i] == wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS])
 		win->protos |= MBWMClientWindowProtosFocus;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_WM_DELETE_WINDOW])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_WM_DELETE_WINDOW])
 		win->protos |= MBWMClientWindowProtosDelete;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_CONTEXT_HELP])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_CONTEXT_HELP])
 		win->protos |= MBWMClientWindowProtosContextHelp;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_CONTEXT_ACCEPT])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_CONTEXT_ACCEPT])
 		win->protos |= MBWMClientWindowProtosContextAccept;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_CONTEXT_CUSTOM])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_CONTEXT_CUSTOM])
 		win->protos |= MBWMClientWindowProtosContextCustom;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_PING])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_PING])
 		win->protos |= MBWMClientWindowProtosPing;
-	      else if (result_atom[i] ==
-		       wm->atoms[MBWM_ATOM_NET_WM_SYNC_REQUEST])
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_SYNC_REQUEST])
 		win->protos |= MBWMClientWindowProtosSyncRequest;
 	      else
-		MBWM_DBG("Unhandled WM Protocol %d", result_atom[i]);
+		MBWM_DBG("Unhandled WM Protocol %d", ((Atom*)result_atom)[i]);
 	    }
 	}
 
