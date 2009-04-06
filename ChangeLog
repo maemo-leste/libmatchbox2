@@ -59,7 +59,7 @@
 
 2009-04-01  Gordon Williams  <gordon.williams@collabora.co.uk>
 
-	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for BN#107681.
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for NB#107681.
 	Moved setting and unsetting a pointer to the ClutterClient from
 	HD to inside the ClutterClient
 
