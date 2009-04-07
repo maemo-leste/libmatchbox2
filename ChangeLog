@@ -1,3 +1,9 @@
+2009-04-07  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-window-manager.c (mb_window_manager_init): Use an
+	invisible pixmap instead of XFixesHideCursor to allow applications to
+	show it. Fixes: NB#109073
+
 2009-04-03  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Made libmatchbox2 warning-free.
