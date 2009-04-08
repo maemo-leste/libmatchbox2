@@ -213,7 +213,7 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
   if (mb_wm_util_untrap_x_errors () == BadDrawable)
     {
       g_debug ("%s: BadDrawable for %lx", __FUNCTION__,
-               client->wm_client->window);
+               client->wm_client->window->xwindow);
       return;
     }
 
