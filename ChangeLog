@@ -1,5 +1,7 @@
 2009-04-08  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.31
+
 	* matchbox/core/mb-window-manager.c (mb_wm_sync, mb_wm_set_theme):
 	Call XFlush before each XUngrabServer to fix a lock-up. NB#104842
 
