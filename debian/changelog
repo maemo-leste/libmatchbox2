@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.31-1~unreleased) unstable; urgency=low
+
+  * Fixes: NB#104842 - Ocassional White Screen of Death locks
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed,  8 Apr 2009 12:32:59 +0300
+
 matchbox-window-manager-2 (0.2.30-1) unstable; urgency=low
 
   * Fixes: NB#109073 - Unable to show mouse pointer.

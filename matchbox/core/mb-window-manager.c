@@ -1025,6 +1025,7 @@ mb_wm_sync (MBWindowManager *wm)
    *        synced up here.
   */
 
+  XFlush(wm->xdpy);
   XUngrabServer(wm->xdpy);
 
   wm->sync_type = 0;
@@ -2142,7 +2143,7 @@ mb_wm_set_theme (MBWindowManager *wm, MBWMTheme * theme)
   mb_wm_object_signal_emit (MB_WM_OBJECT (wm),
 			    MBWindowManagerSignalThemeChange);
 
-
+  XFlush(wm->xdpy);
   XUngrabServer(wm->xdpy);
 }
 
