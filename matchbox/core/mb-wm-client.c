@@ -751,9 +751,10 @@ mb_wm_client_deliver_message (MBWindowManagerClient   *client,
   ev.xclient.data.l[3] = data3;
   ev.xclient.data.l[4] = data4;
 
+  mb_wm_util_trap_x_errors();
   XSendEvent(wm->xdpy, xwin, False, NoEventMask, &ev);
-
   XSync(wm->xdpy, False);
+  mb_wm_util_untrap_x_errors();
 }
 
 void

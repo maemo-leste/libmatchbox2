@@ -337,8 +337,10 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
     {
       int err;
 
+      /* Sing after me: "untrap" without XSync() is un*re*li*ab*le! */
       mb_wm_util_trap_x_errors();
       XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
+      XSync (wm->xdpy, False);
       if ((err = mb_wm_util_untrap_x_errors()) != 0)
         g_warning("XDamageDestroy(0x%lx) for %p: %d",
                   cclient->priv->window_damage, c, err);

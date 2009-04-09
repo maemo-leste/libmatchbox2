@@ -1,3 +1,13 @@
+2009-04-09  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Reliability improvements.
+
+	* comp-mgr/mb-wm-comp-mgr-clutter.c (mb_wm_comp_mgr_clutter_client_destroy):
+	  Sync before untrapping the error; if not gdk will get it and it
+	  won't appreciate it.
+	* core/mb-wm-client.c (mb_wm_client_deliver_message):
+	  Trap and ignore errors (BadWindow in particular) from XSendEvent().
+
 2009-04-08  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.31
