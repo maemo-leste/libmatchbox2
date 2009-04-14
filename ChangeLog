@@ -1,3 +1,10 @@
+2009-04-14  Gordon Williams  <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Fix for NB#108826 (other
+	mods in hildon-desktop). Add a check to see if the top bit of the
+	width or height is set, and if so set to 0 so we don't have 2^32 wide
+	clutter actors when we have negative window sizes.
+
 2009-04-14  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.32

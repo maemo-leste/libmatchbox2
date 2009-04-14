@@ -129,6 +129,13 @@ mb_wm_comp_mgr_clutter_client_set_size (
 
   int position = !(cclient->priv->flags & MBWMCompMgrClutterClientDontPosition) | force;
 
+  MBGeometry geomw = client->wm_client->window->geometry;
+  /* make sure that if sizes were negative, we make them zero */
+  if (geomw.width & 0x8000000)
+    geomw.width = 0;
+  if (geomw.height & 0x8000000)
+    geomw.height = 0;
+
   /* We have 2 types - either we have a frame,
    * or we don't. The texture sits inside our parent actor */
   if (client->wm_client->xwin_frame)
@@ -137,7 +144,12 @@ mb_wm_comp_mgr_clutter_client_set_size (
        * So we treat our parent 'actor' as the frame and offset the
        * X window in it */
       MBGeometry geomf = client->wm_client->frame_geometry;
-      MBGeometry geomw = client->wm_client->window->geometry;
+      /* make sure that if sizes were negative, we make them zero */
+      if (geomf.width & 0x8000000)
+        geomf.width = 0;
+      if (geomf.height & 0x8000000)
+        geomf.height = 0;
+
       if (position)
         clutter_actor_set_position (actor, geomf.x, geomf.y);
       clutter_actor_set_size (actor, geomf.width, geomf.height);
@@ -154,15 +166,14 @@ mb_wm_comp_mgr_clutter_client_set_size (
     {
       /* We're not in a frame - it's easy. Make the texture and actor
        * the same size */
-      MBGeometry geom = client->wm_client->window->geometry;
       if (position)
-        clutter_actor_set_position (actor, geom.x, geom.y);
-      clutter_actor_set_size (actor, geom.width, geom.height);
+        clutter_actor_set_position (actor, geomw.x, geomw.y);
+      clutter_actor_set_size (actor, geomw.width, geomw.height);
 
       if (texture)
         {
           clutter_actor_set_position (texture, 0, 0);
-          clutter_actor_set_size (texture, geom.width, geom.height);
+          clutter_actor_set_size (texture, geomw.width, geomw.height);
         }
     }
 }
