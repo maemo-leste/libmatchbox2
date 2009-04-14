@@ -1,8 +1,17 @@
+2009-04-14  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.32
+
+	* matchbox/core/mb-window-manager.c (mb_wm_sync, mb_wm_set_theme):
+	Move XFlushes after XUngrabServer calls. Also, trap X errors for them
+	to fix a crash Bhabani saw.
+
 2009-04-09  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Reliability improvements.
 
-	* comp-mgr/mb-wm-comp-mgr-clutter.c (mb_wm_comp_mgr_clutter_client_destroy):
+	* comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_client_destroy):
 	  Sync before untrapping the error; if not gdk will get it and it
 	  won't appreciate it.
 	* core/mb-wm-client.c (mb_wm_client_deliver_message):

@@ -1,3 +1,10 @@
+matchbox-window-manager-2 (0.2.32-1) unstable; urgency=low
+
+  * Move XFlush after the corresponding XUngrabServer call.
+  * Trap more X errors.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 14 Apr 2009 13:43:32 +0300
+
 matchbox-window-manager-2 (0.2.31-1) unstable; urgency=low
 
   * Fixes: NB#104842 - Ocassional White Screen of Death locks
