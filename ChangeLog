@@ -1,3 +1,12 @@
+2009-04-16  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_press_handler): Remove the
+	ButtonRelease handler if we catch ButtonRelease in the loop.
+	(mb_wm_decor_button_press_handler): Set up ButtonRelease handler to
+	catch ButtonRelease events that are caught while we spin in the main
+	loop. Also repaint the button to remove the pressed state effect if
+	the handler was called. Fixes: NB#110052
+
 2009-04-14  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.32

@@ -267,12 +267,11 @@ mb_wm_decor_press_handler (XButtonEvent    *xev,
 
 	  for (;;)
 	    {
-	      /*
-	       * If we have no release_cb installed, i.e., the ButtonRelease
-	       * has already happened, quit this loop.
-	       */
-	      if (!decor->release_cb_id)
-		break;
+              if (!decor->release_cb_id)
+                {
+                  /* the handler was called while we spinned the loop */
+		  return False;
+                }
 
 	      XMaskEvent(wm->xdpy,
 			 ButtonPressMask|ButtonReleaseMask|
@@ -308,6 +307,10 @@ mb_wm_decor_press_handler (XButtonEvent    *xev,
 		  break;
 		case ButtonRelease:
 		  {
+                    mb_wm_main_context_x_event_handler_remove (
+                                   wm->main_ctx, ButtonRelease,
+			           decor->release_cb_id);
+                    decor->release_cb_id = 0;
 		    XUngrabPointer (wm->xdpy, CurrentTime);
 		    return False;
 		  }
@@ -868,6 +871,14 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 			   GrabModeAsync,
 			   None, None, CurrentTime) == GrabSuccess)
 	    {
+              /* set up release handler to catch ButtonRelease while we
+               * are spinning the main loop */
+	      decor->release_cb_id = mb_wm_main_context_x_event_handler_add (
+				 wm->main_ctx,
+			         xev->subwindow,
+			         ButtonRelease,
+			         (MBWMXEventFunc)mb_wm_decor_release_handler,
+			         decor);
 	      if (button->state == MBWMDecorButtonStateInactive)
 		{
 		  button->state = MBWMDecorButtonStatePressed;
@@ -882,14 +893,33 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 		   * are interested in are actually intercepted here).
 		   */
 		  XSync (wm->xdpy, False);
+
 		  /*
 		   * Someone might destroy the window while we are waiting for
 		   * the events here.
 		   */
-		  if (!button->realized) {
+		  if (!button->realized)
+                  {
+                    /* if the window disappeared, ungrab was done by X.
+                       Just remove the handler */
+                    mb_wm_main_context_x_event_handler_remove (
+                                   wm->main_ctx, ButtonRelease,
+			           decor->release_cb_id);
+                    decor->release_cb_id = 0;
 		    mb_wm_object_unref (MB_WM_OBJECT(button));
 		    return False;
 		  }
+
+                  if (!decor->release_cb_id)
+                    {
+                     /* the handler was called while we spinned the loop */
+		     if (button->state == MBWMDecorButtonStatePressed)
+		       {
+                         button->state = MBWMDecorButtonStateInactive;
+                         mb_wm_theme_paint_button (wm->theme, button);
+                       }
+		     return False;
+                    }
 
 		  if (XCheckMaskEvent(wm->xdpy,
 				      ButtonPressMask|ButtonReleaseMask|
@@ -952,6 +982,11 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 			    XUngrabPointer (wm->xdpy, CurrentTime);
 			    XSync (wm->xdpy, False); /* necessary */
 
+                            mb_wm_main_context_x_event_handler_remove (
+                                   wm->main_ctx, ButtonRelease,
+			           decor->release_cb_id);
+                            decor->release_cb_id = 0;
+
 			    if (pev->x < xmin || pev->x > xmax ||
 				pev->y < ymin || pev->y > ymax)
 			      {
@@ -975,7 +1010,9 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 		       * No pending X event, so spin the main loop (this allows
 		       * things like timers to work.
 		       */
-		      mb_wm_main_context_spin_loop (wm->main_ctx);
+		      if (!mb_wm_main_context_spin_loop (wm->main_ctx))
+                        /* no events, sleep a while so we don't busy loop */
+                        g_usleep (1000 * 100);
 		    }
 		}
 	    }
