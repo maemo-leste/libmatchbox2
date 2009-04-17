@@ -614,13 +614,19 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	{
 	case COOKIE_WIN_NAME:
 	case COOKIE_WIN_NAME_UTF8:
+	  win->name = g_strdup (name);
+	  win->name_has_markup = False;
+          break;
+
 	case COOKIE_WIN_NAME_UTF8_XML:
 	  win->name = g_strdup (name);
+	  win->name_has_markup = True;
 	  break;
 
 	case 0:
 	default:
 	  win->name = g_strdup("unknown");
+	  win->name_has_markup = False;
 	}
 
       /* FIXME: We could also check the UTF-8 for validity here. */

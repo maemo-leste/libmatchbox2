@@ -124,6 +124,7 @@ struct MBWMClientWindow
   MBGeometry                     x_geometry;
   unsigned int                   depth;
   char                          *name;
+  Bool                           name_has_markup;
   Window                         xwindow;
   Visual                        *visual;
   Colormap                       colormap;

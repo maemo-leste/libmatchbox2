@@ -2,6 +2,7 @@ matchbox-window-manager-2 (0.2.33-1~unreleased) unstable; urgency=low
 
   * Fixes: NB#110052 - Tapping on [X] icon does not always succeed in closing
     applications
+  * Added name_has_markup member to struct MBWMClientWindow.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 16 Apr 2009 18:55:46 +0300
 
