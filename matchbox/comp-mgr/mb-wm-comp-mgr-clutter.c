@@ -342,8 +342,8 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
       XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
       XSync (wm->xdpy, False);
       if ((err = mb_wm_util_untrap_x_errors()) != 0)
-        g_warning("XDamageDestroy(0x%lx) for %p: %d",
-                  cclient->priv->window_damage, c, err);
+        g_debug ("XDamageDestroy(0x%lx) for %p: %d",
+                 cclient->priv->window_damage, c, err);
     }
 
   free (cclient->priv);
