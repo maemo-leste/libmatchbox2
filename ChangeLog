@@ -1,5 +1,7 @@
 2009-04-17  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.33
+
 	* matchbox/core/mb-wm-client-window.h: Add name_has_markup member to
 	struct MBWMClientWindow.
 	* matchbox/core/mb-wm-client-window.c
