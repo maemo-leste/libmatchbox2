@@ -1,3 +1,10 @@
+2009-04-21  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Patch from Michal Maruska for handling WM_TAKE_FOCUS protocol.
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_focus):
+	Send WM_TAKE_FOCUS ClientMessage if the window expects that.
+
 2009-04-17  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.33

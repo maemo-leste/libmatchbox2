@@ -1,6 +1,8 @@
 matchbox-window-manager-2 (0.2.34-1~unreleased) unstable; urgency=low
 
-  * writeme
+  * Patch from Michal Maruska for supporting WM_TAKE_FOCUS protocol.
+  * Fixes: NB#111307 - WM: implement WM_TAKE_FOCUS, as XEmbed implem. in Gtk
+    relies on it
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 17 Apr 2009 11:15:27 +0300
 

@@ -788,7 +788,29 @@ mb_wm_client_base_focus (MBWindowManagerClient *client)
 
   mb_wm_util_trap_x_errors ();
 
-  XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
+  if (client->window->protos & MBWMClientWindowProtosFocus)
+    {
+      XClientMessageEvent ev;
+
+      ev.type = ClientMessage;
+      ev.window = xwin;           /* our window! */
+
+      ev.message_type = wm->atoms[MBWM_ATOM_WM_PROTOCOLS];
+
+      ev.format = 32;
+      ev.data.l[0] = wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS];
+      ev.data.l[1] = CurrentTime;
+
+      MBWM_NOTE (CLIENT, "sending XEvent WM_TAKE_FOCUS to %x", xwin);
+
+      XSendEvent(wm->xdpy, xwin, False, 0L, (XEvent *)&ev);
+    }
+  else
+    {
+      MBWM_NOTE (CLIENT, "calling XSetInputFocus directly for %x", xwin);
+
+      XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
+    }
 
   XChangeProperty(wm->xdpy, wm->root_win->xwindow,
 		  wm->atoms[MBWM_ATOM_NET_ACTIVE_WINDOW],
