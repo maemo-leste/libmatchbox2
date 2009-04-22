@@ -811,7 +811,10 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
 
       if (!cclient->priv->actor ||
 	  (cclient->priv->flags & MBWMCompMgrClutterClientDontUpdate))
-	return False;
+        {
+          XDamageSubtract (wm->xdpy, cclient->priv->window_damage, None, None);
+          return False;
+        }
 
       MBWM_NOTE (COMPOSITOR,
 		 "Repairing window %lx, geometry %d,%d;%dx%d; more %d\n",

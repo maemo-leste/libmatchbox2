@@ -1,3 +1,13 @@
+2009-04-22  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	  mb_wm_comp_mgr_clutter_handle_damage():
+	    Handle the damage even if we don't want to repair.
+	    If we fail to do so and we do get a damage while
+	    updating is disabled (like in effects) then we won't
+	    get damages anymore at all.  May fix some X errors
+	    around XDamageDestroy() as well.
+
 2009-04-22  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.34
