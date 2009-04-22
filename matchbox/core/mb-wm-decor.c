@@ -205,7 +205,13 @@ mb_wm_decor_release_handler (XButtonEvent    *xev,
 			     void            *userdata)
 {
   MBWMDecor       *decor  = userdata;
-  MBWindowManager *wm = decor->parent_client->wmref;
+  MBWindowManager *wm;
+ 
+  if (decor == NULL || decor->parent_client == NULL
+      || decor->parent_client->wmref == NULL)
+    return False;
+
+  wm = decor->parent_client->wmref;
 
   mb_wm_main_context_x_event_handler_remove (wm->main_ctx, ButtonRelease,
 					     decor->release_cb_id);
