@@ -1,5 +1,7 @@
 2009-04-22  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.34
+
 	* matchbox/core/mb-wm-decor.c (mb_wm_decor_release_handler): Add some
 	missing NULL checks.
 
