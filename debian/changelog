@@ -1,3 +1,10 @@
+matchbox-window-manager-2 (0.2.35-1) unstable; urgency=low
+
+  Thomas:
+  * Fixes: NB#105384 - Adding an interface for closing current application
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 27 Apr 2009 10:07:39 +0300
+
 matchbox-window-manager-2 (0.2.34-1) unstable; urgency=low
 
   * Patch from Michal Maruska for supporting WM_TAKE_FOCUS protocol.
