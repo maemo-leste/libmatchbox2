@@ -110,13 +110,16 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
   }
   else
   {
-    if (geom.x < 112 * 2)
-        /* TODO: this should be dynamic, depending on status area.
-         * Also, submenus need to be handled differently */
-        geom.x = 112 * 2;
+    if (win->net_type != wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_POPUP_MENU])
+      {
+	if (geom.x < 112 * 2)
+	  /* TODO: this should be dynamic, depending on status area.
+	   * Also, submenus need to be handled differently */
+	  geom.x = 112 * 2;
 
-    if (geom.y < 56)
-        geom.y = 56; /* shouldn't this be taken from the theme? */
+	if (geom.y < 56)
+	  geom.y = 56; /* shouldn't this be taken from the theme? */
+      }
   }
 
   g_debug ("%s: Menu will be at %d %d %d %d", __func__, geom.x, geom.y,

@@ -1,3 +1,12 @@
+2009-04-28  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/client-types/mb-wm-client-menu.c:
+	Popup menus aren't restricted to appear to the right
+        of a particular X coordinate.  Other kinds of menu
+        still are.
+
+        Fixes NB#101437.
+
 2009-04-27  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.35
