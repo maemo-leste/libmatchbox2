@@ -1,3 +1,15 @@
+2009-04-28  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_map_notify):
+	  Only notify the cmgr if the mapped window is the client's,
+	  and don't try to be smart about fullscreenness.  Fixes the
+	  problem remaining after NB#113103 ie. that a ghost thumbnail
+	  remained in the switcher.  In the described use case the
+	  main window got unfullscreened.  We ignored the unmaps and
+	  maps as usual but later on we got a map for the frame window
+	  and notified the cmgr about it -- but we didn't have an
+	  intermediate unmap.
+
 2009-04-28  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	* matchbox/client-types/mb-wm-client-menu.c:

@@ -804,19 +804,11 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
         client->skip_maps--;
       else if (client)
 	{
-	  /* If the client is undecorated or fullscreen use
-           * client->window->xwindow as top, client->xwin_frame else */
-	  Window xwin_top = 
-	    client->xwin_frame == None ||
-	    mb_wm_client_window_is_state_set (client->window,
-                                       MBWMClientWindowEWMHStateFullscreen) ?
-                        client->window->xwindow : client->xwin_frame;
-
 	  /*
 	   * Only notify the CM when the top-level window maps, not for the
 	   * decors, etc.
 	   */
-	  if (xev->window == xwin_top && wm->comp_mgr)
+	  if (xev->window == client->window->xwindow && wm->comp_mgr)
 	    {
 	      MBWM_NOTE (COMPOSITOR, "@@@@ client %p @@@@\n", client);
 	      mb_wm_comp_mgr_map_notify (wm->comp_mgr, client);
