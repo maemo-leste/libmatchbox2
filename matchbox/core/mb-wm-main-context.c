@@ -189,8 +189,8 @@ call_handlers_for_event (MBWMList *iter,
 	       * handler in the chain!
 	       */
 	      if (next)
-		g_warning ("Handler %p asked us to stop.  But we won't.",
-			   i->func);
+		g_debug ("Handler %p asked us to stop.  But we won't.",
+                         i->func);
 	    }
 	}
 
