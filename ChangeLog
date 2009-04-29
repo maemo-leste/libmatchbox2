@@ -1,3 +1,17 @@
+2009-04-29  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Reliability fixes.  Do not freak out when the wm is restarted
+	with a fullscreen application in front.
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_realize):
+	  When a fullscreen client is realized (mapped effectively)
+	  do not create its frame not even if it's not undecorated
+	  otherwise because then XRestackWindow() won't be able to
+	  stack it properly (because the client window will be a child
+	  of the frame, not the root window).
+	* matchbox/core/mb-window-manager.c (stack_sync_to_display):
+	  Missing XSync() added after XRestackWindows().
+
 2009-04-28  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-window-manager.c (mb_wm_handle_map_notify):

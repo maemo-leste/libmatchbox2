@@ -166,9 +166,11 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
   /*
    * We only create a frame window if the client is decorated (decors are
    * constructed in the _init functions, so we can easily test if the frame
-   * is needed or not).
+   * is needed or not).  An exception is fullscreen windows, which should not
+   * have a frame, otherwise XRestackWindows() will be irritated.
    */
-  if (client->decor)
+  if (client->decor
+      && !(client->window->ewmh_state & MBWMClientWindowEWMHStateFullscreen))
     {
       if (client->xwin_frame == None)
 	{

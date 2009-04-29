@@ -938,7 +938,7 @@ static void
 stack_sync_to_display (MBWindowManager *wm)
 {
   Window *win_list = NULL;
-  int count = 0;
+  int count = 0, error;
 
   if (!wm->stack_n_clients)
     return;
@@ -955,7 +955,9 @@ stack_sync_to_display (MBWindowManager *wm)
 
   mb_wm_util_trap_x_errors();
   XRestackWindows(wm->xdpy, win_list, count);
-  mb_wm_util_untrap_x_errors();
+  XSync(wm->xdpy, False);
+  if ((error = mb_wm_util_untrap_x_errors()) != 0)
+    g_warning("XRestackWindows(): %d", error);
 }
 
 void
