@@ -1,3 +1,9 @@
+2009-04-29  Marc Ordinas i Llopis  <marc.ordinasillopis@collabora.co.uk>
+
+	Fixed handling of _NET_WM_PID property.
+
+	* matchbox/core/mb-wm-client-window.c:
+
 2009-04-29  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Reliability fixes.  Do not freak out when the wm is restarted

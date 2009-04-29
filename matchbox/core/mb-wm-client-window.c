@@ -564,7 +564,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	       win->x_geometry.y,
 	       win->x_geometry.width,
 	       win->x_geometry.height);
-      
+
       /* FIXME is it right that we directly/immeditaly update
        * win->geometry here, perhaps that should be left as a
        * responsability for a signal handler? */
@@ -863,7 +863,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	}
       else
 	{
-	  win->pid = (pid_t) *pid;
+	  win->pid = *(pid_t *)pid;
 	  MBWM_DBG("@@@ pid %d @@@", win->pid);
 	}
 
