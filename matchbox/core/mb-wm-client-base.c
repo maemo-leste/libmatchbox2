@@ -276,10 +276,6 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
   XSetWindowBorderWidth(wm->xdpy, MB_WM_CLIENT_XWIN(client), 0);
 
   XAddToSaveSet(wm->xdpy, MB_WM_CLIENT_XWIN(client));
-
-  XSelectInput(wm->xdpy,
-	       MB_WM_CLIENT_XWIN(client),
-	       PropertyChangeMask);
 }
 
 /*

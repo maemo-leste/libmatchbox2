@@ -124,6 +124,14 @@ mb_wm_client_window_init (MBWMObject *this, va_list vap)
 
   win->xwindow = xwin;
   win->wm = wm;
+ 
+  /*
+   * We need to call XSelectInput() so we are going to be notified about the
+   * WM_TRANSIENT_FOR changes.
+   */
+  XSelectInput(wm->xdpy,
+	       xwin,
+	       PropertyChangeMask);
 
   /* TODO: handle properties after discovering them. E.g. fullscreen.
    * See NB#97342 */

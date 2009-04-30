@@ -6,6 +6,8 @@ matchbox-window-manager-2 (0.2.36-1~unreleased) unstable; urgency=low
 
   Laszlo:
   * Fixes: NB#106208 - Wrong window shown after pushing 2 windows
+  * Fixes: NB#110527 - Adding two window to stack using
+    hildon_window_stack_push, topmost window is black
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 27 Apr 2009 17:32:26 +0300
 
