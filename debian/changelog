@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.36-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.36-1) unstable; urgency=low
 
   Adam:
   * Fix for missing textures after restarting the wm.
@@ -11,7 +11,7 @@ matchbox-window-manager-2 (0.2.36-1~unreleased) unstable; urgency=low
   Kimmo:
   * Minor Coverity fixes & remove FIXME'd code.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 27 Apr 2009 17:32:26 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 30 Apr 2009 13:01:52 +0300
 
 matchbox-window-manager-2 (0.2.35-1) unstable; urgency=low
 
