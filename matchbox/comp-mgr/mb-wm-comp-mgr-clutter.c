@@ -1071,6 +1071,9 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
    * time we create the texture */
   mb_wm_comp_mgr_clutter_client_set_size(cclient, TRUE);
 
+  g_assert (!cclient->priv->bound);
+  mb_wm_comp_mgr_clutter_fetch_texture (client);
+
   /* If the client has a "do not show" flag set explicitly,
      prevent it from being shown when it is added to the desktop */
 
