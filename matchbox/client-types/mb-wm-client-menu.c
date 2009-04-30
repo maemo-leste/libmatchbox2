@@ -110,7 +110,10 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
   }
   else
   {
+#if 0  /* FIXME Return this code when Gtk+ sets the legacy menu to different
+          type than the CSM pop-up menu */
     if (win->net_type != wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_POPUP_MENU])
+#endif
       {
 	if (geom.x < 112 * 2)
 	  /* TODO: this should be dynamic, depending on status area.

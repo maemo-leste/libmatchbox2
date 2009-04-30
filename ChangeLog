@@ -5,6 +5,9 @@
 	mb_wm_managed_client_from_xwindow to shut up Coverity.
 	* matchbox/theme-engines/mb-wm-theme.c (mb_wm_theme_new): Remove code
 	marked with FIXME since the theme package seems to be OK now.
+	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):
+	Comment out Thomas' fix for NB#101437 -- it requires toolkit changes
+	before it works.
 
 2009-04-29  Marc Ordinas i Llopis  <marc.ordinasillopis@collabora.co.uk>
 
