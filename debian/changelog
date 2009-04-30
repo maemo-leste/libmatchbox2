@@ -1,13 +1,15 @@
 matchbox-window-manager-2 (0.2.36-1~unreleased) unstable; urgency=low
 
-  Thomas:
-  * A fix related to NB#101437 - Invoking CSM on the left side of page area is
-    displayed in wrong location. (Works when widget side has been fixed.)
+  Adam:
+  * Fix for missing textures after restarting the wm.
+  * Reliability fixes.  Do not freak out when the wm is restarted
+    with a fullscreen application in front.
 
-  Laszlo:
-  * Fixes: NB#106208 - Wrong window shown after pushing 2 windows
-  * Fixes: NB#110527 - Adding two window to stack using
-    hildon_window_stack_push, topmost window is black
+  Marc:
+  * Fixed handling of _NET_WM_PID property.
+
+  Kimmo:
+  * Minor Coverity fixes & remove FIXME'd code.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 27 Apr 2009 17:32:26 +0300
 

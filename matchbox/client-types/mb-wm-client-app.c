@@ -1,8 +1,4 @@
 #include "mb-wm-client-app.h"
-#include "mb-wm-client-dialog.h"
-#include "mb-wm-client-menu.h"
-#include "mb-wm-client-override.h"
-#include "mb-wm-client-input.h"
 
 #include "mb-wm-theme.h"
 
@@ -101,29 +97,6 @@ mb_wm_client_app_init (MBWMObject *this, va_list vap)
       mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeSouth);
       mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeWest);
       mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeEast);
-    }
-
-  /*
-   * The transient parent might be mapped after the client is mapped so we go
-   * back and if we find the client we register the transient parent now.
-   */
-  MBWMList *l = wm->clients;
-  MBWindowManagerClient *c;
-  while (l)
-    {
-       c = l->data;
-       if (c->window->xwin_transient_for &&
-           client->window->xwindow == c->window->xwin_transient_for &&
-           (MB_WM_IS_CLIENT_APP(c) || MB_WM_PARENT_IS_CLIENT_APP(c) ||
-            MB_WM_IS_CLIENT_DIALOG(c) || MB_WM_PARENT_IS_CLIENT_DIALOG(c) ||
-            MB_WM_IS_CLIENT_MENU(c) ||
-            MB_WM_IS_CLIENT_OVERRIDE(c) ||
-            MB_WM_IS_CLIENT_INPUT(c))) {
-         mb_wm_client_add_transient (client, c);
-         c->stacking_layer = client->stacking_layer;
-       }
-       
-       l = l->next;
     }
 
   return 1;
