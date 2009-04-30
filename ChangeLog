@@ -1,8 +1,21 @@
+2009-04-30  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Apply a second patch from Laszlo Pere for NB#106208.
+
+	* matchbox/client-types/mb-wm-client-app.c (mb_wm_client_app_init):
+	Set transiency properly if the parent is mapped after the child (in
+	transiency sense).
+	* matchbox/client-types/mb-wm-client-app.h,
+	matchbox/client-types/mb-wm-client-dialog.h,
+	matchbox/core/mb-wm-object.h: Add macros for checking type of the
+	parent class.
+
 2009-04-30  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Fix for missing textures after restarting the wm.
 
-	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c (mb_wm_comp_mgr_clutter_map_notify_real):
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_map_notify_real):
 	  Fetch the texture unconditionally when the client is mapped.
 	  Otherwise we fetch the texture on the first damage or when
 	  the client changes fullscreenness, but in case of non-topmost
