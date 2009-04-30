@@ -1,3 +1,11 @@
+2009-04-30  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/client-types/mb-wm-client-input.c
+	(mb_wm_client_input_init): Check return value of
+	mb_wm_managed_client_from_xwindow to shut up Coverity.
+	* matchbox/theme-engines/mb-wm-theme.c (mb_wm_theme_new): Remove code
+	marked with FIXME since the theme package seems to be OK now.
+
 2009-04-29  Marc Ordinas i Llopis  <marc.ordinasillopis@collabora.co.uk>
 
 	Fixed handling of _NET_WM_PID property.

@@ -473,20 +473,6 @@ mb_wm_theme_new (MBWindowManager * wm, const char * theme_path)
 	  if (stat (path, &st))
 	    path = NULL;
 	}
-
-      /* FIXME: temporary fallback for the time before theme package update
-       */
-      if (!path)
-	{
-	  const char * fmt = "%s/themes/%s/matchbox/theme.xml";
-
-	  size = strlen (theme_path) + strlen (fmt) + strlen (DATADIR);
-	  path = alloca (size);
-	  snprintf (path, size, fmt, DATADIR, theme_path);
-
-	  if (stat (path, &st))
-	    path = NULL;
-	}
     }
 
   if (path)

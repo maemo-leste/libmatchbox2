@@ -59,10 +59,13 @@ mb_wm_client_input_init (MBWMObject *this, va_list vap)
 	mb_wm_managed_client_from_xwindow (wm,
 					   win->xwin_transient_for);
 
-      mb_wm_client_get_coverage (t, & client_input->transient_geom);
+      if (t) /* silence Coverity */
+      {
+        mb_wm_client_get_coverage (t, & client_input->transient_geom);
 
-      MBWM_DBG ("Adding to '%lx' transient list", win->xwin_transient_for);
-      mb_wm_client_add_transient (t, client);
+        MBWM_DBG ("Adding to '%lx' transient list", win->xwin_transient_for);
+        mb_wm_client_add_transient (t, client);
+      }
       client->stacking_layer = 0;  /* We stack with whatever transient too */
     }
   else
