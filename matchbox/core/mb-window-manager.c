@@ -387,44 +387,6 @@ mb_wm_handle_key_press (XKeyEvent       *xev,
 }
 
 static Bool
-mb_wm_handle_button_press (XButtonEvent *xev, void *userdata)
-{
-  MBWindowManager *wm = (MBWindowManager*)userdata;
-  MBWindowManagerClient *client = NULL;
-
-  if (xev->button != 1)
-    return True;
-
-  mb_wm_is_my_window (wm, xev->window, &client);
-
-  if (!client)
-    return True;
-
-  /*
-   * If the client is not application, we make sure it has focus.
-   * If the client is an application, we top it if it is currently not the top
-   * application; otherwise, we ensure it has focus.
-   */
-  if (MB_WM_CLIENT_CLIENT_TYPE (client) == MBWMClientTypeApp)
-    {
-      MBWindowManagerClient * top = mb_wm_get_visible_main_client(wm);
-
-      if (top == client)
-	mb_wm_focus_client (wm, client);
-      else
-	mb_wm_activate_client (wm, client);
-    }
-  else
-    {
-      mb_wm_focus_client (wm, client);
-    }
-
-  XAllowEvents (wm->xdpy, ReplayPointer, CurrentTime);
-
-  return True;
-}
-
-static Bool
 mb_wm_handle_destroy_notify (XDestroyWindowEvent  *xev,
 			     void                 *userdata)
 {
@@ -1702,12 +1664,6 @@ mb_window_manager_init (MBWMObject *this, va_list vap)
 			     None,
 			     KeyPress,
 			     (MBWMXEventFunc)mb_wm_handle_key_press,
-			     wm);
-
-  mb_wm_main_context_x_event_handler_add (wm->main_ctx,
-			     None,
-			     ButtonPress,
-			     (MBWMXEventFunc)mb_wm_handle_button_press,
 			     wm);
 
   mb_wm_keys_init(wm);

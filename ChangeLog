@@ -1,3 +1,15 @@
+2009-05-04  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#112601 An application from the background is topped when panning
+		  or tapping on the right side of the touch screen
+
+	* matchbox/core/mb-wm-client.c (mb_wm_client_init):
+	  Don't set up a passive grab when a client is created...
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_button_press):
+	  ...and don't handle all button press events.  It's thought
+	  to be dead code and caused the problem because we reactivated
+	  the clicked client in home view.
+
 2009-04-30  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.36
