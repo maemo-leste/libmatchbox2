@@ -38,6 +38,7 @@ typedef void (*MBWMClassFunc)   (MBWMObjectClass* klass);
 #define MB_WM_OBJECT_GET_CLASS(x) (mb_wm_object_get_class (MB_WM_OBJECT(x)))
 #define MB_WM_OBJECT_GET_PARENT_CLASS(x) \
     ((mb_wm_object_get_class (MB_WM_OBJECT(x)))->parent)
+#define MB_WM_OBJECT_PARENT_TYPE(x) (MB_WM_OBJECT_GET_PARENT_CLASS(x)->type)
 
 typedef enum  MBWMObjectClassType
 {

@@ -1,6 +1,13 @@
 matchbox-window-manager-2 (0.2.37-1~unreleased) unstable; urgency=low
 
-  * writeme
+  Laszlo:
+  * Fixes: NB#110527 - Adding two window to stack using
+    hildon_window_stack_push, topmost window is black
+  * Fixes: NB#106208 - Wrong window shown after pushing 2 windows
+
+  Adam:
+  * Fixes: NB#112601 - An application from the background is topped when
+    panning or tapping on the right side of the touch screen
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 30 Apr 2009 14:47:01 +0300
 

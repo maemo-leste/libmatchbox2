@@ -1,3 +1,17 @@
+2009-05-04  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Applied two patches from Laszlo Pere for NB#110527 and NB#106208.
+
+	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_init): Call
+	XSelectInput here instead of in matchbox/core/mb-wm-client-base.c
+	(mb_wm_client_base_realize), except for override-redirect windows.
+	* matchbox/client-types/mb-wm-client-app.c,
+	matchbox/client-types/mb-wm-client-app.h,
+	matchbox/client-types/mb-wm-client-dialog.h,
+	matchbox/core/mb-wm-object.h: If parent MBWMClientApp is mapped after
+	the child (in transiency sense), set the transiency in
+	mb_wm_client_app_init.
+
 2009-05-04  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	NB#112601 An application from the background is topped when panning
