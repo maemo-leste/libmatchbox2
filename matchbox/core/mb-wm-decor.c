@@ -693,6 +693,13 @@ mb_wm_decor_destroy (MBWMObject* obj)
 					       decor->press_cb_id);
     decor->press_cb_id = 0;
   }
+  
+  if (decor->release_cb_id)
+  {
+    mb_wm_main_context_x_event_handler_remove (ctx, ButtonRelease,
+					     decor->release_cb_id);
+    decor->release_cb_id = 0;
+  }
 
   if (decor->xwin != None)
     {
@@ -787,6 +794,9 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
   MBWMList        *transients = NULL;
   Bool             retval = True;
 
+  if (!button->realized)
+    return False;
+  
   mb_wm_object_ref (MB_WM_OBJECT(button));
 
   if (xev->window == decor->xwin)
@@ -1147,11 +1157,29 @@ mb_wm_decor_button_class_type ()
 static void
 mb_wm_decor_button_destroy (MBWMObject* obj)
 {
-  //MBWMDecorButton * button = MB_WM_DECOR_BUTTON (obj);
+  MBWMDecorButton * button = MB_WM_DECOR_BUTTON (obj);
+  MBWMMainContext * ctx = button->decor->parent_client->wmref->main_ctx;
   /*
    * We are doing the job in the mb_wm_decor_button_unrealize() while the
    * decoration still exists.
    */
+  mb_wm_main_context_x_event_handler_remove (ctx, ButtonPress,
+					     button->press_cb_id);
+  button->press_cb_id = 0;
+
+  if (button->userdata && button->destroy_userdata)
+    {
+      button->destroy_userdata (button, button->userdata);
+      button->userdata = NULL;
+      button->destroy_userdata = NULL;
+    }
+
+  if (button->themedata && button->destroy_themedata)
+    {
+      button->destroy_themedata (button, button->themedata);
+      button->themedata = NULL;
+      button->destroy_themedata = NULL;
+    }
 
 }
 
@@ -1178,26 +1206,6 @@ mb_wm_decor_button_realize (MBWMDecorButton *button)
 static void
 mb_wm_decor_button_unrealize (MBWMDecorButton *button)
 {
-  MBWMMainContext * ctx = button->decor->parent_client->wmref->main_ctx;
-
-  mb_wm_main_context_x_event_handler_remove (ctx, ButtonPress,
-					     button->press_cb_id);
-  button->press_cb_id = 0;
-
-  if (button->userdata && button->destroy_userdata)
-    {
-      button->destroy_userdata (button, button->userdata);
-      button->userdata = NULL;
-      button->destroy_userdata = NULL;
-    }
-
-  if (button->themedata && button->destroy_themedata)
-    {
-      button->destroy_themedata (button, button->themedata);
-      button->themedata = NULL;
-      button->destroy_themedata = NULL;
-    }
-
   button->realized = False;
 }
 

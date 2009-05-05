@@ -1,14 +1,17 @@
 2009-05-05  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Applied a patch from Laszlo for NB#113598:
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_destroy): Remove
+	ButtonRelease handler as well.
+	(mb_wm_decor_button_destroy): Move code from
+	mb_wm_decor_button_unrealize to here.
+
 	Applied a fixed patch from Laszlo for NB#110527:
 	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_init):
 	Remove the XSelectInput call.
 	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_realize): Call
 	XSelectInput here and read the transiency property also.
 
-	* matchbox/core/mb-wm-client-window.c
-	(mb_wm_client_window_sync_properties): Remove the 'monster hack' for
-	800x480 windows, everything seems to work without it.
 	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):
 	Add support for fixing NB#101437 -- some parts of the code need to be
 	removed after the widget side uses the negative coordinates system for
