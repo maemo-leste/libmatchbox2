@@ -1,3 +1,13 @@
+2009-05-05  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties): Remove the 'monster hack' for
+	800x480 windows, everything seems to work without it.
+	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):
+	Add support for fixing NB#101437 -- some parts of the code need to be
+	removed after the widget side uses the negative coordinates system for
+	legacy application menus.
+
 2009-05-04  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Applied two patches from Laszlo Pere for NB#110527 and NB#106208.

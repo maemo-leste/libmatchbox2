@@ -564,12 +564,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  goto abort;
 	}
 
-      /* FIXME: Monster Hack to make Browser visible (800x480 was a problem) */
-      if (win->x_geometry.width >= wm->xdpy_width)
-	      win->x_geometry.width = wm->xdpy_width - 1;
-      if (win->x_geometry.height >= wm->xdpy_height)
-	      win->x_geometry.height = wm->xdpy_height - 1;
-
       MBWM_DBG("@@@ New Window Obj @@@");
       MBWM_DBG("Win:  %lx", win->xwindow);
       MBWM_DBG("Type: %lx",win->net_type);

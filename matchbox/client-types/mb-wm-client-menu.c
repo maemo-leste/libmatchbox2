@@ -108,21 +108,29 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
     geom.x = wm->xdpy_width / 2 - geom.width / 2;
     geom.y = 0;
   }
-  else
+  else if (geom.x < 0 && geom.y < 0) /* magic marker for
+                                        legacy application menu */
   {
-#if 0  /* FIXME Return this code when Gtk+ sets the legacy menu to different
-          type than the CSM pop-up menu */
-    if (win->net_type != wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_POPUP_MENU])
-#endif
-      {
-	if (geom.x < 112 * 2)
-	  /* TODO: this should be dynamic, depending on status area.
-	   * Also, submenus need to be handled differently */
-	  geom.x = 112 * 2;
+    geom.x += wm->xdpy_width;
+    geom.y += wm->xdpy_height;
 
-	if (geom.y < 56)
-	  geom.y = 56; /* shouldn't this be taken from the theme? */
-      }
+    if (geom.x < 112 * 2)
+      /* TODO: this should be dynamic, depending on status area.
+       * Also, submenus need to be handled differently */
+      geom.x = 112 * 2;
+
+    if (geom.y < 56)
+      geom.y = 56; /* shouldn't this be taken from the theme? */
+  }
+  else /* FIXME: remove this else branch after the widget side does
+          negative coordinates for legacy application menus,
+          see NB#101437 */
+  {
+    if (geom.x < 112 * 2)
+      geom.x = 112 * 2;
+
+    if (geom.y < 56)
+      geom.y = 56; /* shouldn't this be taken from the theme? */
   }
 
   g_debug ("%s: Menu will be at %d %d %d %d", __func__, geom.x, geom.y,
