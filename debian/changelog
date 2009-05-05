@@ -4,6 +4,7 @@ matchbox-window-manager-2 (0.2.37-1~unreleased) unstable; urgency=low
   * Fixes: NB#110527 - Adding two window to stack using
     hildon_window_stack_push, topmost window is black
   * Fixes: NB#106208 - Wrong window shown after pushing 2 windows
+  * Fixes: NB#113598 - hildon-desktop-11-1003.rcore.lzo crashed
 
   Adam:
   * Fixes: NB#112601 - An application from the background is topped when
