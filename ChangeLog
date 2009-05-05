@@ -1,5 +1,11 @@
 2009-05-05  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Applied a fixed patch from Laszlo for NB#110527:
+	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_init):
+	Remove the XSelectInput call.
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_realize): Call
+	XSelectInput here and read the transiency property also.
+
 	* matchbox/core/mb-wm-client-window.c
 	(mb_wm_client_window_sync_properties): Remove the 'monster hack' for
 	800x480 windows, everything seems to work without it.

@@ -125,20 +125,6 @@ mb_wm_client_window_init (MBWMObject *this, va_list vap)
   win->xwindow = xwin;
   win->wm = wm;
 
-  /*
-   * We need to call XSelectInput() early so we are going to be notified about
-   * the WM_TRANSIENT_FOR changes. However we don't want to XSelectInput() for
-   * override redirect windows, so we need to know if the window is an override
-   * redirect window before calling XSelectInput(). To avoid race condition we
-   * also need to call the XSelectInput() before reading the current transient
-   * parent settings.
-   */
-  mb_wm_client_window_sync_properties (win, MBWM_WINDOW_PROP_ATTR);
-  if (!win->override_redirect) 
-    XSelectInput(wm->xdpy,
-	       xwin,
-	       PropertyChangeMask);
-
   /* TODO: handle properties after discovering them. E.g. fullscreen.
    * See NB#97342 */
   return mb_wm_client_window_sync_properties (win, MBWM_WINDOW_PROP_ALL);
