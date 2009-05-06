@@ -1,3 +1,15 @@
+2009-05-06  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	NB#111652 legacy widget : application menu is not horizontally
+	aligned application title text
+	
+	* matchbox/client-types/mb-wm-client-menu.c:
+	Legacy app menus are positioned according to the
+	position of the window title.
+	* matchbox/theme-engines/mb-wm-theme.c:
+	* matchbox/theme-engines/mb-wm-theme.h:
+	Add accessor to retrieve the position of the window title.
+
 2009-05-06  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Now, try to deal with preexisting fullscreen clients correctly,

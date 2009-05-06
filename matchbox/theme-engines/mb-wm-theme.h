@@ -93,6 +93,10 @@ struct MBWMThemeClass
   void  (*set_left_padding)     (MBWMTheme             *theme,
 			         MBWMDecor             *decor,
                                  int                    new_padding);
+
+  void  (*get_title_xy)         (MBWMTheme             *theme,
+				 int                   *x,
+				 int                   *y);
 };
 
 /**
@@ -231,5 +235,8 @@ void
 mb_wm_theme_set_custom_theme_alloc_func (MBWMThemeCustomThemeAllocFunc  func);
 
 extern unsigned int left_padding;
+
+void
+mb_wm_theme_get_title_xy (MBWMTheme *theme, int *x, int *y);
 
 #endif

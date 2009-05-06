@@ -111,26 +111,34 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
   else if (geom.x < 0 && geom.y < 0) /* magic marker for
                                         legacy application menu */
   {
+    gint title_x, title_y;
+    const gint menu_left_gutter = 23;
+
     geom.x += wm->xdpy_width;
     geom.y += wm->xdpy_height;
 
-    if (geom.x < 112 * 2)
-      /* TODO: this should be dynamic, depending on status area.
-       * Also, submenus need to be handled differently */
-      geom.x = 112 * 2;
+    mb_wm_theme_get_title_xy (wm->theme, &title_x, &title_y);
+	
+    if (geom.x < title_x)
+      geom.x = title_x - menu_left_gutter;
 
-    if (geom.y < 56)
-      geom.y = 56; /* shouldn't this be taken from the theme? */
+    if (geom.y < title_y)
+      geom.y = title_y;
   }
   else /* FIXME: remove this else branch after the widget side does
           negative coordinates for legacy application menus,
           see NB#101437 */
   {
-    if (geom.x < 112 * 2)
-      geom.x = 112 * 2;
+    gint title_x, title_y;
+    const gint menu_left_gutter = 23;
 
-    if (geom.y < 56)
-      geom.y = 56; /* shouldn't this be taken from the theme? */
+    mb_wm_theme_get_title_xy (wm->theme, &title_x, &title_y);
+
+    if (geom.x < title_x)
+      geom.x = title_x - menu_left_gutter;
+
+    if (geom.y < title_y)
+      geom.y = title_y;
   }
 
   g_debug ("%s: Menu will be at %d %d %d %d", __func__, geom.x, geom.y,

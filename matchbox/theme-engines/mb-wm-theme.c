@@ -71,6 +71,8 @@ mb_wm_theme_simple_get_button_position (MBWMTheme *, MBWMDecor *,
 static MBWMDecor *
 mb_wm_theme_simple_create_decor (MBWMTheme *, MBWindowManagerClient *,
 				 MBWMDecorType);
+static void
+mb_wm_theme_simple_get_title_xy (MBWMTheme *theme, int *x, int *y);
 
 static void
 mb_wm_theme_class_init (MBWMObjectClass *klass)
@@ -83,6 +85,7 @@ mb_wm_theme_class_init (MBWMObjectClass *klass)
   t_class->button_size      = mb_wm_theme_simple_get_button_size;
   t_class->button_position  = mb_wm_theme_simple_get_button_position;
   t_class->create_decor     = mb_wm_theme_simple_create_decor;
+  t_class->get_title_xy     = mb_wm_theme_simple_get_title_xy;
 
 #if MBWM_WANT_DEBUG
   klass->klass_name = "MBWMTheme";
@@ -665,6 +668,26 @@ mb_wm_theme_set_left_padding (MBWMTheme *theme,
 
   if (decor && klass->set_left_padding)
     klass->set_left_padding (theme, decor, new_padding);
+}
+
+void
+mb_wm_theme_get_title_xy (MBWMTheme             *theme,
+			  int                   *x,
+			  int                   *y)
+{
+  MBWMThemeClass *klass;
+
+  /* defaults */
+  if (x) *x = 112 * 2;
+  if (y) *y = 56;
+
+  if (!theme)
+    return;
+
+  klass = MB_WM_THEME_CLASS(MB_WM_OBJECT_GET_CLASS (theme));
+
+  if (klass->get_title_xy)
+    klass->get_title_xy (theme, x, y);
 }
 
 MBWMClientLayoutHints
@@ -2130,7 +2153,7 @@ mb_wm_theme_simple_paint_button (MBWMTheme *theme, MBWMDecorButton *button)
   XClearWindow (wm->xdpy, xwin);
 }
 
-/*
+/**
  * Installs a global handler that can be used to translate custom client type
  * names to their numerical values.
  *
@@ -2145,7 +2168,7 @@ mb_wm_theme_set_custom_client_type_func (MBWMThemeCustomClientTypeFunc  func,
   custom_client_type_func_data = user_data;
 }
 
-/*
+/**
  * Installs a global handler that can be used to translate custom theme names
  * to their numerical (MBWMObject) values.
  *
@@ -2160,7 +2183,7 @@ mb_wm_theme_set_custom_theme_type_func (MBWMThemeCustomThemeTypeFunc  func,
   custom_theme_type_func_data = user_data;
 }
 
-/*
+/**
  * Installs a global handler that can be used to translate custom button names
  * to their numerical values.
  *
@@ -2175,7 +2198,7 @@ mb_wm_theme_set_custom_button_type_func (MBWMThemeCustomButtonTypeFunc  func,
   custom_button_type_func_data = user_data;
 }
 
-/*
+/**
  * Installs a global handler that can be used to allocate a custom
  * MBWMThemeSubclass.
  *
@@ -2186,4 +2209,19 @@ void
 mb_wm_theme_set_custom_theme_alloc_func (MBWMThemeCustomThemeAllocFunc  func)
 {
   custom_theme_alloc_func = func;
+}
+
+/**
+ * Gets the current X position of the left-hand side of
+ * the title in this theme, and the Y position of the
+ * bottom edge of the title.
+ */
+void
+mb_wm_theme_simple_get_title_xy (MBWMTheme *theme, int *x, int *y)
+{
+  /* The mysterious numbers are taken from the spec
+   * and were originally found in mb_wm_client_menu_init().
+   */
+  if (x) *x = 112 * 2;
+  if (y) *y = 56;
 }
