@@ -475,6 +475,7 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
           /* When we skip an unmap, skip a map too. */
 	  client->skip_unmaps--;
           client->skip_maps++;
+          MB_WM_DBG_SKIP_UNMAPS (client);
 	}
       else
 	{
@@ -763,7 +764,10 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
   if (mb_wm_is_my_window (wm, xev->window, &client))
     {
       if (client && client->skip_maps)
-        client->skip_maps--;
+        {
+          client->skip_maps--;
+          MB_WM_DBG_SKIP_UNMAPS (client);
+        }
       else if (client)
 	{
 	  /*
@@ -1365,6 +1369,7 @@ mb_wm_manage_preexisting_wins (MBWindowManager* wm)
 		*/
 	       client->skip_unmaps++;
                client->skip_maps--;
+               MB_WM_DBG_SKIP_UNMAPS (client);
 
 #if ENABLE_COMPOSITE
 	       /*

@@ -1,3 +1,17 @@
+2009-05-06  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Now, try to deal with preexisting fullscreen clients correctly,
+	for real.
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_realize):
+	  Do create xwin_frame for fs clients but don't reparent them;
+	  rather reparent them to the root window.  This way base_display_sync()
+	  won't be confused by the lack of xwin_frame.
+	* matchbox/core/mb-wm-client-base.h (MB_WM_DBG_SKIP_UNMAPS):
+	  Macro for skip_unmaps debugging.
+	* matchbox/core/mb-window-manager.c:
+	  Use it.
+
 2009-05-06  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.37
