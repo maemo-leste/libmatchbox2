@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.37-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.37-1) unstable; urgency=low
 
   Laszlo:
   * Fixes: NB#110527 - Adding two window to stack using
@@ -9,8 +9,10 @@ matchbox-window-manager-2 (0.2.37-1~unreleased) unstable; urgency=low
   Adam:
   * Fixes: NB#112601 - An application from the background is topped when
     panning or tapping on the right side of the touch screen
+  * Fixes: NB#114681 - Application shortcuts in the home view are getting
+    opened when tapped here and there in camera application UI.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 30 Apr 2009 14:47:01 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 06 May 2009 10:12:56 +0300
 
 matchbox-window-manager-2 (0.2.36-1) unstable; urgency=low
 

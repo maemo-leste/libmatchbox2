@@ -1,4 +1,8 @@
-2009-05-05  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+2009-05-06  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.37
+
+2009-05-06  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	NB#114681 Application shortcuts in the home view are getting opened
 		  when tapped here and there in camera application UI.
