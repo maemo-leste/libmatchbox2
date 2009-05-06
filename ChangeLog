@@ -1,3 +1,13 @@
+2009-05-05  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#114681 Application shortcuts in the home view are getting opened
+		  when tapped here and there in camera application UI.
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_realize):
+	  Reverting madam's change not to freak out when we start handling
+	  preexisting fullscreen clients.  Breaks initially fullscreen
+	  clients when they wants to unmap--we get skip_unmaps wrong.
+
 2009-05-05  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Applied a patch from Laszlo for NB#113598:
