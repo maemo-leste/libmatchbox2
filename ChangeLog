@@ -1,5 +1,9 @@
 2009-05-07  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Patch from Laszlo Pere:
+	* matchbox/core/mb-wm-client.c (mb_wm_client_destroy): Remove
+	unmapping of transients. Fixes: NB#109299
+
 	* matchbox/client-types/mb-wm-client-menu.c: Remove the negative
 	coordinates code, it's not going to happen. Some fixes to Thomas'
 	legacy menu layouting.

@@ -80,27 +80,6 @@ mb_wm_client_destroy (MBWMObject *obj)
 
   if (client->transient_for)
     mb_wm_client_remove_transient (client->transient_for, client);
-
-  /* If we have transient windows, we need to make sure they are unmapped; for
-   * application  dialogs this will happen automatically, but not for external
-   * transients, such as input windows.
-   *
-   * We also have to make sure that the transients no longer refer to this
-   * client, which is about the be destroyed.
-   */
-  l = client->transients;
-  while (l)
-    {
-      MBWindowManagerClient * c = l->data;
-      MBWMList * l2 = l;
-
-      c->transient_for = NULL;
-      XUnmapWindow (wm->xdpy, c->window->xwindow);
-
-      l = l->next;
-
-      free (l2);
-    }
 }
 
 static Bool
