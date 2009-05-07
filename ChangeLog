@@ -1,3 +1,11 @@
+2009-05-07  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/mb-wm-config.h.in:
+	  Introducing MBWM_DEB_VERSION to tell you the users of the library
+	  the Debian source package version which it was built from.
+	* debian/rules
+	* configure.ac
+
 2009-05-07  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Patch from Laszlo Pere:

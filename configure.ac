@@ -151,6 +151,7 @@ IFS="$save_ifs"
 
 AC_SUBST(COMPOSITE_MANAGER_DEFINE)
 
+AC_SUBST(MBWM_DEB_VERSION, $DEB_VERSION)
 
 MBWM_WANT_DEBUG=0
 if test "x$want_debug" = "xyes"; then

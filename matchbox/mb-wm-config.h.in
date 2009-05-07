@@ -34,4 +34,7 @@
 #define MBWM_WANT_DEBUG @MBWM_WANT_DEBUG@
 #endif
 
+/* The Debian source package version this binary is being build from. */
+#define MBWM_DEB_VERSION "@MBWM_DEB_VERSION@"
+
 #endif
