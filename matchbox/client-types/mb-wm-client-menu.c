@@ -108,34 +108,14 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
     geom.x = wm->xdpy_width / 2 - geom.width / 2;
     geom.y = 0;
   }
-  else if (geom.x < 0 && geom.y < 0) /* magic marker for
-                                        legacy application menu */
+  else
   {
     gint title_x, title_y;
-    const gint menu_left_gutter = 23;
-
-    geom.x += wm->xdpy_width;
-    geom.y += wm->xdpy_height;
-
-    mb_wm_theme_get_title_xy (wm->theme, &title_x, &title_y);
-	
-    if (geom.x < title_x)
-      geom.x = title_x - menu_left_gutter;
-
-    if (geom.y < title_y)
-      geom.y = title_y;
-  }
-  else /* FIXME: remove this else branch after the widget side does
-          negative coordinates for legacy application menus,
-          see NB#101437 */
-  {
-    gint title_x, title_y;
-    const gint menu_left_gutter = 23;
 
     mb_wm_theme_get_title_xy (wm->theme, &title_x, &title_y);
 
     if (geom.x < title_x)
-      geom.x = title_x - menu_left_gutter;
+      geom.x = title_x;
 
     if (geom.y < title_y)
       geom.y = title_y;

@@ -1,3 +1,9 @@
+2009-05-07  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/client-types/mb-wm-client-menu.c: Remove the negative
+	coordinates code, it's not going to happen. Some fixes to Thomas'
+	legacy menu layouting.
+
 2009-05-06  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	NB#111652 legacy widget : application menu is not horizontally
