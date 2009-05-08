@@ -1,3 +1,10 @@
+2009-05-08  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+	
+	NB#106650: ROTATION: HildonAppMenu is too narrow in portrait
+
+	* matchbox/client-types/mb-wm-client-menu.c: in portrait mode,
+	menus take up the whole width of the screen.  Fixes NB#106650.
+
 2009-05-08  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Regression fix.  We died when the transient-for was unmapped then

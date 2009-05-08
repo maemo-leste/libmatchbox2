@@ -104,9 +104,21 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
       != MBWMClientTypeMenu)
   {
     /* new-style menu */
-    geom.width = wm->xdpy_width - 100;
-    geom.x = wm->xdpy_width / 2 - geom.width / 2;
+
     geom.y = 0;
+
+    if (wm->xdpy_width > wm->xdpy_height)
+      {
+	/* Landscape mode: menu has a gutter either side */
+	geom.width = wm->xdpy_width - 100;
+	geom.x = wm->xdpy_width / 2 - geom.width / 2;
+      }
+    else
+      {
+	/* Portrait mode: menu takes up the full width */
+	geom.width = wm->xdpy_width;
+	geom.x = 0;
+      }
   }
   else
   {
