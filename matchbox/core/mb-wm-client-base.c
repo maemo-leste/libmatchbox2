@@ -84,6 +84,7 @@ mb_wm_client_base_destroy (MBWMObject *this)
   MBWindowManagerClient *parent;
   MBWindowManagerClient *client;
   MBWindowManager *wm;
+  MBWMList *li, *next;
 
   MBWM_MARK();
 
@@ -114,9 +115,17 @@ mb_wm_client_base_destroy (MBWMObject *this)
   mb_wm_util_untrap_x_errors();
 
   parent = mb_wm_client_get_transient_for (MB_WM_CLIENT(this));
-
   if (parent)
     mb_wm_client_remove_transient (parent, MB_WM_CLIENT(this));
+
+  /* We have to make sure that the transients no longer refer to this
+   * client, which is about the be destroyed. */
+  for (li = client->transients; li; li = next)
+    {
+      MB_WM_CLIENT(li->data)->transient_for = NULL;
+      next = li->next;
+      free (li);
+    }
 }
 
 static int

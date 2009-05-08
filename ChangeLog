@@ -1,3 +1,16 @@
+2009-05-08  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Regression fix.  We died when the transient-for was unmapped then
+	remapped again.  It's still garbage (the application becomes
+	unresponsive and uncloseable) but at least we surive.
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_destroy):
+	  Reinstantiated the code which detransitived the destroyed
+	  client's transients.  I don't know what does it take for
+	  people to read the **** comments around code?
+	* matchbox/core/mb-window-manager.c (mb_wm_focus_client):
+	  Removing some nonsense code.
+
 2009-05-07  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/mb-wm-config.h.in:

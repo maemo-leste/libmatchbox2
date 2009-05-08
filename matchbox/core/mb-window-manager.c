@@ -2001,19 +2001,6 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 
   if (mb_wm_client_focus (client))
     {
-      /* FIXME this appears not to do anything */
-      if (wm->focused_client)
-	{
-	  MBWindowManagerClient *trans_old = wm->focused_client;
-	  MBWindowManagerClient *trans_new = client;
-
-	  while (trans_old->transient_for)
-	    trans_old = trans_old->transient_for;
-
-	  while (trans_new->transient_for)
-	    trans_new = trans_new->transient_for;
-	}
-
       wm->focused_client = client;
       return True;
     }
