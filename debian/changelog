@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.38-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.38-1) unstable; urgency=low
 
   Laszlo:
   * Fixes: NB#109299 - Transient windows are not reshown together with parent
@@ -8,6 +8,9 @@ matchbox-window-manager-2 (0.2.38-1~unreleased) unstable; urgency=low
   * Fixes: NB#111652 - legacy widget : application menu is not horizontally
     aligned application title text
 
+  Thomas:
+  * Fixes: NB#106650 - ROTATION: HildonAppMenu is too narrow in portrait
+
   Kimmo:
   * Fixes: NB#115724 - hildon-desktop received an X Window System error:
     BadWindow (invalid Window parameter)
@@ -16,7 +19,7 @@ matchbox-window-manager-2 (0.2.38-1~unreleased) unstable; urgency=low
   Adam:
   * Now try to deal with preexisting fullscreen clients correctly, for real.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed,  6 May 2009 10:33:45 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 11 May 2009 14:34:31 +0300
 
 matchbox-window-manager-2 (0.2.37-1) unstable; urgency=low
 

@@ -1,5 +1,7 @@
 2009-05-11  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.38
+
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
 	(mb_wm_comp_mgr_clutter_turn_on_real): Trap X errors and check that
 	clutter_x11_get_stage_window succeeds. Fixes: NB#115724
