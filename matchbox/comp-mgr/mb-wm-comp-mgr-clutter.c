@@ -661,6 +661,13 @@ mb_wm_comp_mgr_clutter_turn_on_real (MBWMCompMgr *mgr)
        * Fetch the overlay window
        */
       xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+      if (!xwin)
+      {
+        g_critical ("%s: clutter_x11_get_stage_window failed", __func__);
+        return;
+      }
+
+      mb_wm_util_trap_x_errors();
 
       /* Make sure the overlay window's size is the same as the screen's
        * actual size.  Necessary if the screen is rotated. */
@@ -691,6 +698,10 @@ mb_wm_comp_mgr_clutter_turn_on_real (MBWMCompMgr *mgr)
 				  ShapeInput, 0, 0, region);
 
       XFixesDestroyRegion (wm->xdpy, region);
+
+      XSync (wm->xdpy, False);
+      if (mb_wm_util_untrap_x_errors())
+        g_warning ("%s: X errors", __func__);
 
       clutter_actor_set_size (stage, wm->xdpy_width, wm->xdpy_height);
       clutter_stage_set_color (CLUTTER_STAGE (stage), &clr);

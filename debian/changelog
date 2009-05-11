@@ -8,6 +8,10 @@ matchbox-window-manager-2 (0.2.38-1~unreleased) unstable; urgency=low
   * Fixes: NB#111652 - legacy widget : application menu is not horizontally
     aligned application title text
 
+  Kimmo:
+  * Fixes: NB#115724 - hildon-desktop received an X Window System error:
+    BadWindow (invalid Window parameter)
+
   Adam:
   * Now try to deal with preexisting fullscreen clients correctly, for real.
 
