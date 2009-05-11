@@ -11,6 +11,7 @@ matchbox-window-manager-2 (0.2.38-1~unreleased) unstable; urgency=low
   Kimmo:
   * Fixes: NB#115724 - hildon-desktop received an X Window System error:
     BadWindow (invalid Window parameter)
+  * Fixes: NB#114908 - hildon-desktop crash observed
 
   Adam:
   * Now try to deal with preexisting fullscreen clients correctly, for real.

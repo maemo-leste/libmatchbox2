@@ -3,6 +3,8 @@
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
 	(mb_wm_comp_mgr_clutter_turn_on_real): Trap X errors and check that
 	clutter_x11_get_stage_window succeeds. Fixes: NB#115724
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_map_notify): Trap X
+	errors for the XGetWindowAttributes. Fixes: NB#114908
 
 2009-05-08  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 	

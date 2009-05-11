@@ -748,6 +748,7 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
     MB_WINDOW_MANAGER_CLASS (MB_WM_OBJECT_GET_CLASS (wm));
   MBWMClientWindow *win = NULL;
   XWindowAttributes attrs = { 0 };
+  int err;
 
   g_debug ("%s: @@@@ Map Notify for %lx @@@@", __func__, xev->window);
 
@@ -789,7 +790,15 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
       return True;
     }
 
+  mb_wm_util_trap_x_errors();
   XGetWindowAttributes(wm->xdpy, xev->window, &attrs);
+  if ((err = mb_wm_util_untrap_x_errors()))
+    {
+      g_warning ("%s: XGetWindowAttributes for %lx failed with code %d",
+                 __FUNCTION__, xev->window, err);
+      return True;
+    }
+
   if (!attrs.override_redirect)
     {
       g_debug ("%s: unmap for %lx has happened after MapRequest",
