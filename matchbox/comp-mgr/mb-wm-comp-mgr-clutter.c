@@ -20,11 +20,6 @@
 
 //#define DEBUG_ACTOR 1
 
-#ifndef HAVE_CLUTTER_EGLX
-/* Gordon says: */
-#define HAVE_CLUTTER_EGLX 0
-#endif
-
 #define SGX_CORRUPTION_WORKAROUND 0
 
 #include "mb-wm.h"
@@ -35,9 +30,7 @@
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
-#if HAVE_CLUTTER_GLX
-#include <clutter/glx/clutter-glx-texture-pixmap.h>
-#elif HAVE_CLUTTER_EGLX
+#if HAVE_CLUTTER_EGLX
 #include <clutter/clutter-eglx-texture-pixmap.h>
 #endif
 #include <X11/Xresource.h>
@@ -750,10 +743,7 @@ mb_wm_comp_mgr_clutter_client_repair_real (MBWMCompMgrClient *client,
       return;
     }
 
-  /*
-   * Retrieve the damaged region and break it down into individual
-   * rectangles so we do not have to update the whole shebang.
-   */
+  /* Retrieve the damaged region and update just the bounding area */
   parts = XFixesCreateRegion (wm->xdpy, 0, 0);
   XDamageSubtract (wm->xdpy, damage, None, parts);
 
@@ -820,8 +810,20 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
       MBWMCompMgrClutterClient *cclient =
 	MB_WM_COMP_MGR_CLUTTER_CLIENT (c->cm_client);
 
+/* We ignore the DontUpdate flag for i386, as it uses the X11 Texture Pixmap
+ * class, which requires damage events to keep its internal texture in sync.
+ * We could store damage events and hook onto actor->paint to make sure we
+ * update the texture correctly - but this is overkill as it only applies
+ * to scratchbox where we're more interested in correctness than speed
+ * in transitions. NOTE: This is useless in Rover anyway as the texture
+ * updates regardless. */
       if (!cclient->priv->actor ||
-	  (cclient->priv->flags & MBWMCompMgrClutterClientDontUpdate))
+#ifdef __i386__
+          FALSE
+#else
+	  (cclient->priv->flags & MBWMCompMgrClutterClientDontUpdate)
+#endif
+	  )
         {
           XDamageSubtract (wm->xdpy, cclient->priv->window_damage, None, None);
           return False;
@@ -1025,9 +1027,7 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   g_snprintf(actor_name, 64, "window_0x%lx", c->window->xwindow);
   clutter_actor_set_name(cclient->priv->actor, actor_name);
 
-#if HAVE_CLUTTER_GLX
-  texture = clutter_glx_texture_pixmap_new ();
-#elif HAVE_CLUTTER_EGLX
+#if HAVE_CLUTTER_EGLX
 
 #if SGX_CORRUPTION_WORKAROUND
   if (ctype == MBWMClientTypeMenu ||
