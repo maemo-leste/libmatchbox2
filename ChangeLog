@@ -1,16 +1,23 @@
 2009-05-13  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
+	Tapping the screen during the split second a fullscreen application
+	is ceasing to be fullscreen does not result in the click reaching the
+	application below.  Fixes NB#112423.
+
+	* matchbox/core/mb-wm-client-base.c: map frame before reparenting
+	window to it.
+
+2009-05-13  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
 	* matchbox/core/mb-wm-client-base.c: use mb_wm_client_deliver_message()
 	instead of attempting to do the identical work ourselves.
 	* matchbox/core/mb-wm-client.c (mb_wm_client_deliver_message): returns
 	a gboolean to indicate success.
-	* matchbox/core/mb-wm-client.c (mb_wm_client_get_next_focused_client):
+	* matchbox/core/mb-wm-client.[ch] (mb_wm_client_get_next_focused_client):
 	removed loop, rewrote as equivalent single line.
-	* matchbox/core/mb-wm-client.h:
 	* matchbox/core/mb-wm-props.[ch]: remove mb_wm_props_send_x_message()
 	which is redundant (does exactly the same as
 	mb_wm_client_deliver_message()) and is never used.
-	* matchbox/core/mb-wm-props.h:
 
 2009-05-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 

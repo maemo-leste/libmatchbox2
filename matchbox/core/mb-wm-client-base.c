@@ -526,9 +526,9 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 		{
 		  client->skip_unmaps++;
                   MB_WM_DBG_SKIP_UNMAPS (client);
+		  XMapWindow(wm->xdpy, client->xwin_frame);
 		  XReparentWindow(wm->xdpy, MB_WM_CLIENT_XWIN(client),
 				  client->xwin_frame, 0, 0);
-		  XMapWindow(wm->xdpy, client->xwin_frame);
 		  XMapSubwindows(wm->xdpy, client->xwin_frame);
 
 		  /* The frame is very likely the correct dimensions (since the
