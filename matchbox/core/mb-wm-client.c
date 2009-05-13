@@ -623,13 +623,14 @@ mb_wm_client_get_next_focused_client (MBWindowManagerClient *client)
 MBWindowManagerClient*
 mb_wm_client_get_last_focused_transient (MBWindowManagerClient *client)
 {
-  MBWindowManagerClient *result=NULL, *c;
+  MBWindowManagerClient *result = NULL, *c;
 
-  /* FIXME: should this be enumerate_reverse?
-   * Now it begins from the bottom? */
-  mb_wm_stack_enumerate (client->wmref, c)
-      if (c->transient_for == client)
+  mb_wm_stack_enumerate_reverse (client->wmref, c)
+    if (c->transient_for == client)
+      {
         result = c;
+        break;
+      }
 
   return result;
 }
