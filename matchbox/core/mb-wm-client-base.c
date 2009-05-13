@@ -802,8 +802,9 @@ static Bool
 mb_wm_client_base_focus (MBWindowManagerClient *client)
 {
   static Window     last_focused = None;
+  Window xwin = client->window->xwindow;
   MBWindowManager  *wm = client->wmref;
-  Window            xwin = client->window->xwindow;
+  gboolean success = True;
 
   if (!mb_wm_client_want_focus (client))
     return False;
@@ -811,24 +812,21 @@ mb_wm_client_base_focus (MBWindowManagerClient *client)
   if (xwin == last_focused)
     return False;
 
-  mb_wm_util_trap_x_errors ();
-
   if (client->window->protos & MBWMClientWindowProtosFocus)
     {
-      XClientMessageEvent ev;
-
-      ev.type = ClientMessage;
-      ev.window = xwin;           /* our window! */
-
-      ev.message_type = wm->atoms[MBWM_ATOM_WM_PROTOCOLS];
-
-      ev.format = 32;
-      ev.data.l[0] = wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS];
-      ev.data.l[1] = CurrentTime;
-
       MBWM_NOTE (CLIENT, "sending XEvent WM_TAKE_FOCUS to %x", xwin);
 
-      XSendEvent(wm->xdpy, xwin, False, 0L, (XEvent *)&ev);
+      success = mb_wm_client_deliver_message
+	(client,
+	 wm->atoms[MBWM_ATOM_WM_PROTOCOLS],
+	 wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS],
+	 /* FIXME: The spec explicitly says not to use CurrentTime in l[1].
+	  * It works, but we shouldn't do it.
+	  * (This will involve storing a per-display event timestamp, or a
+	  * round trip to get the time.)
+	  */
+	 CurrentTime,
+	 0, 0, 0);
     }
   else
     {
@@ -842,7 +840,7 @@ mb_wm_client_base_focus (MBWindowManagerClient *client)
 		  XA_WINDOW, 32, PropModeReplace,
 		  (unsigned char *)&xwin, 1);
 
-  if (mb_wm_util_untrap_x_errors())
+  if (!success)
     return False;
 
   last_focused = xwin;

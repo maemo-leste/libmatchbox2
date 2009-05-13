@@ -146,43 +146,6 @@ mb_wm_xwin_get_geometry_reply (MBWindowManager   *wm,
 				 x_error_code);
 }
 
-
-void
-mb_wm_props_send_x_message (MBWindowManager *wm,
-			    Window           xwin_src,
-			    Window           xwin_dest,
-			    Atom             delivery_atom,
-			    unsigned long    data0,
-			    unsigned long    data1,
-			    unsigned long    data2,
-			    unsigned long    data3,
-			    unsigned long    data4,
-			    unsigned long    mask)
-{
-  XEvent ev;
-
-  memset(&ev, 0, sizeof(ev));
-
-  ev.xclient.type = ClientMessage;
-  ev.xclient.window = xwin_src;
-  ev.xclient.message_type = delivery_atom;
-  ev.xclient.format = 32;
-  ev.xclient.data.l[0] = data0;
-  ev.xclient.data.l[1] = data1;
-  ev.xclient.data.l[2] = data2;
-  ev.xclient.data.l[3] = data3;
-  ev.xclient.data.l[4] = data4;
-
-  if (!mask)
-    mask = NoEventMask;
-
-  /* FIXME: traps */
-
-  XSendEvent(wm->xdpy, xwin_dest, False, mask, &ev);
-  XSync(wm->xdpy, False);
-
-}
-
 void
 mb_wm_props_sync_root_props (MBWindowManager *wm)
 {

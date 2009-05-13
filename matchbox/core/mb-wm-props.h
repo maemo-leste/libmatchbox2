@@ -74,18 +74,6 @@ mb_wm_xwin_get_geometry_reply (MBWindowManager   *wm,
 			       unsigned int      *depth_return,
 			       int               *x_error_code);
 
-void
-mb_wm_props_send_x_message (MBWindowManager *wm,
-			    Window           xwin_src,
-			    Window           xwin_dest,
-			    Atom             delivery_atom,
-			    unsigned long    data0,
-			    unsigned long    data1,
-			    unsigned long    data2,
-			    unsigned long    data3,
-			    unsigned long    data4,
-			    unsigned long    mask);
-
 /* Utils */
 
 #define mb_wm_property_cardinal_req(wm, win, prop)                   \

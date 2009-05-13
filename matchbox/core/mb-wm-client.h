@@ -339,7 +339,7 @@ mb_wm_client_get_name (MBWindowManagerClient *client);
 void
 mb_wm_client_deliver_delete (MBWindowManagerClient *client);
 
-void
+gboolean
 mb_wm_client_deliver_message (MBWindowManagerClient   *client,
 			      Atom          delivery_atom,
 			      unsigned long data0,

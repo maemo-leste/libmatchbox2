@@ -598,21 +598,7 @@ mb_wm_client_remove_transient (MBWindowManagerClient *client,
 MBWindowManagerClient*
 mb_wm_client_get_next_focused_client (MBWindowManagerClient *client)
 {
-  MBWindowManagerClient *c;
-  gboolean get_this_one = FALSE;
-
-  /* enumerate goes from bottom to top, as opposed to enumerate_reverse
-   * which goes from top to bottom.
-   */
-  mb_wm_stack_enumerate (client->wmref, c)
-    {
-      if (get_this_one)
-        return c;
-      else if (c == client)
-        get_this_one = TRUE;
-    }
-
-  return NULL; /* oops, fell off the end. */
+  return client->stacked_above;
 }
 
 /**
@@ -697,7 +683,7 @@ mb_wm_client_get_name (MBWindowManagerClient *client)
   return client->window->name;
 }
 
-void
+gboolean
 mb_wm_client_deliver_message (MBWindowManagerClient   *client,
 			      Atom          delivery_atom,
 			      unsigned long data0,
@@ -725,7 +711,7 @@ mb_wm_client_deliver_message (MBWindowManagerClient   *client,
   mb_wm_util_trap_x_errors();
   XSendEvent(wm->xdpy, xwin, False, NoEventMask, &ev);
   XSync(wm->xdpy, False);
-  mb_wm_util_untrap_x_errors();
+  return mb_wm_util_untrap_x_errors()==0;
 }
 
 void
