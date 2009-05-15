@@ -812,11 +812,7 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
 
 /* We ignore the DontUpdate flag for i386, as it uses the X11 Texture Pixmap
  * class, which requires damage events to keep its internal texture in sync.
- * We could store damage events and hook onto actor->paint to make sure we
- * update the texture correctly - but this is overkill as it only applies
- * to scratchbox where we're more interested in correctness than speed
- * in transitions. NOTE: This is useless in Rover anyway as the texture
- * updates regardless. */
+ */
       if (!cclient->priv->actor ||
 #ifdef __i386__
           FALSE

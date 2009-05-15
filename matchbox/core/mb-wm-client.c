@@ -401,14 +401,12 @@ mb_wm_client_hide (MBWindowManagerClient *client)
   klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
 
   if (klass->hide)
-    {
-      klass->hide (client);
+    klass->hide (client);
 
-      client->priv->mapped = False;
+  client->priv->mapped = False;
 
-      mb_wm_unfocus_client (client->wmref, client);
-      mb_wm_client_visibility_mark_dirty (client);
-    }
+  mb_wm_unfocus_client (client->wmref, client);
+  mb_wm_client_visibility_mark_dirty (client);
 }
 
 /*

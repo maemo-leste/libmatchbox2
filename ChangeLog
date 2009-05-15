@@ -1,3 +1,13 @@
+2009-05-15  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Patch from Laszlo Pere to fix NB#103219:
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_display_sync):
+	Update _NET_WORKAREA according to the window's geometry (minus the
+	frame). 
+
+	* matchbox/core/mb-wm-client.c (mb_wm_client_hide): Always update
+	'mapped' even if the hide virtual function is not implemented.
+
 2009-05-13  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	Tapping the screen during the split second a fullscreen application
@@ -13,7 +23,8 @@
 	instead of attempting to do the identical work ourselves.
 	* matchbox/core/mb-wm-client.c (mb_wm_client_deliver_message): returns
 	a gboolean to indicate success.
-	* matchbox/core/mb-wm-client.[ch] (mb_wm_client_get_next_focused_client):
+	* matchbox/core/mb-wm-client.[ch]
+	(mb_wm_client_get_next_focused_client):
 	removed loop, rewrote as equivalent single line.
 	* matchbox/core/mb-wm-props.[ch]: remove mb_wm_props_send_x_message()
 	which is redundant (does exactly the same as

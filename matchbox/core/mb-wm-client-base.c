@@ -705,6 +705,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 
   if (mb_wm_client_needs_decor_sync (client))
     {
+      unsigned int area[4];
       /*
        * First, we set the base shape mask, if needed, so that individual
        * decors can add themselves to it.
@@ -724,6 +725,17 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 				   0, 0, rects, 1, ShapeSet, 0 );
 	}
 #endif
+
+      area[0] = client->window->geometry.x - client->frame_geometry.x;
+      area[1] = client->window->geometry.y - client->frame_geometry.y;
+      area[2] = client->window->geometry.width;
+      area[3] = client->window->geometry.height;
+
+      XChangeProperty(wm->xdpy, wm->root_win->xwindow,  
+		      wm->atoms[MBWM_ATOM_NET_WORKAREA], 
+		      XA_CARDINAL, 32, PropModeReplace, 
+		      (unsigned char*)area, 4);
+
 #if 0
       /*
        * I don't think this part is doing any good...

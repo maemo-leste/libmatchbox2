@@ -1,6 +1,8 @@
 matchbox-window-manager-2 (0.2.39-1~unreleased) unstable; urgency=low
 
-  * foo
+  Laszlo:
+  * Fixes: NB#103219 - Could not select Block speed to 1 from the drop down
+    box.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 11 May 2009 16:16:37 +0300
 
