@@ -11,7 +11,7 @@ m4_define([mbwm2_version],
 m4_define([mbwm2_api_version],
           [mbwm2_major_version.mbwm2_minor_version])
 
-AC_PREREQ(2.59)
+AC_PREREQ([2.60])
 AC_INIT([matchbox-window-manager-2], mbwm2_version, [mallum@handhelds.org])
 AC_CONFIG_SRCDIR([matchbox/core/mb-window-manager.c])
 
@@ -31,6 +31,7 @@ clutter_package=clutter-0.8
 AM_MAINTAINER_MODE
 
 AC_PROG_CC
+AC_USE_SYSTEM_EXTENSIONS
 AM_PROG_LIBTOOL
 
 AC_HEADER_STDC

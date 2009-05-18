@@ -21,8 +21,6 @@
 #ifndef _HAVE_MB_WM_H
 #define _HAVE_MB_WM_H
 
-#define _GNU_SOURCE 		/* For vasprintf */
-
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
