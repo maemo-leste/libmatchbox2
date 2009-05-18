@@ -1,10 +1,21 @@
-matchbox-window-manager-2 (0.2.39-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.39-1) unstable; urgency=low
 
   Laszlo:
   * Fixes: NB#103219 - Could not select Block speed to 1 from the drop down
     box.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 11 May 2009 16:16:37 +0300
+  Kimmo:
+  * Fixes: NB#116072 - add trap for X error
+
+  Thomas:
+  * Fixes: NB#112423 - Black screen is displayed for a while or backgrounded
+    external application comes foreground on tapping several times on
+    viewfinder
+
+  Gordon:
+  * Fixes: NB#115698 - Windows not updating in some cases (in SB/x86)
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 18 May 2009 11:17:21 +0300
 
 matchbox-window-manager-2 (0.2.38-1) unstable; urgency=low
 
