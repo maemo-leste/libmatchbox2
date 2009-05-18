@@ -337,6 +337,7 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
       if ((err = mb_wm_util_untrap_x_errors()) != 0)
         g_debug ("XDamageDestroy(0x%lx) for %p: %d",
                  cclient->priv->window_damage, c, err);
+      cclient->priv->window_damage = 0;
     }
 
   free (cclient->priv);
@@ -809,6 +810,7 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
     {
       MBWMCompMgrClutterClient *cclient =
 	MB_WM_COMP_MGR_CLUTTER_CLIENT (c->cm_client);
+      int err;
 
 /* We ignore the DontUpdate flag for i386, as it uses the X11 Texture Pixmap
  * class, which requires damage events to keep its internal texture in sync.
@@ -839,7 +841,12 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
        */
       damage = cclient->priv->window_damage;
 
+      /* FIXME: As Adam said, reason for this X error should be discovered
+       * and avoided */
+      mb_wm_util_trap_x_errors ();
       mb_wm_comp_mgr_clutter_client_repair_real (c->cm_client, damage);
+      if ((err = mb_wm_util_untrap_x_errors ()))
+        g_warning ("%s: X error %d", __func__, err);
     }
   else
     {

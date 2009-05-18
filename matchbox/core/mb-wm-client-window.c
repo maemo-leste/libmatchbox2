@@ -351,8 +351,15 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  	wm->atoms[MBWM_ATOM_HILDON_STACKING_LAYER]);
     }
 
-  /* bundle all pending requests to server and wait for replys */
-  XSync(wm->xdpy, False);
+  {
+    int err;
+    /* FIXME: toggling 'offline' mode in power menu can cause X error here */
+    mb_wm_util_trap_x_errors ();
+    /* bundle all pending requests to server and wait for replys */
+    XSync(wm->xdpy, False);
+    if ((err = mb_wm_util_untrap_x_errors ()))
+      g_warning ("%s: X error %d", __func__, err);
+  }
 
   if (props_req & MBWM_WINDOW_PROP_TRANSIENCY)
     {
