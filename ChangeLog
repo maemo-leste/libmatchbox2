@@ -1,3 +1,9 @@
+2009-05-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-layout.c (mb_wm_layout_real_layout_free): Stop
+	reconfiguring windows once a window covering the whole screen was
+	encountered in the stack. Fixes: NB#117392
+
 2009-05-18  Daniel Elstner  <danielk@openismus.com>
 
         * matchbox/core/mb-wm.h: Do not define _GNU_SOURCE here, as this is

@@ -540,7 +540,7 @@ mb_wm_layout_real_layout_free (MBWMLayout *layout, MBGeometry * avail_geom)
   MBGeometry             coverage;
   Bool                   need_change;
 
-  mb_wm_stack_enumerate(wm, client)
+  mb_wm_stack_enumerate_reverse(wm, client)
     if (mb_wm_client_get_layout_hints (client) ==
 	(LayoutPrefGrowToFreeSpace|LayoutPrefVisible))
       {
@@ -560,6 +560,17 @@ mb_wm_layout_real_layout_free (MBWMLayout *layout, MBGeometry * avail_geom)
 					 &coverage,
 					 MBWMClientReqGeomIsViaLayoutManager);
 	  }
+
+        if (avail_geom->width < avail_geom->height &&
+            coverage.width >= avail_geom->width &&
+            coverage.height >= avail_geom->height)
+        {
+                /*
+          g_warning ("%s: don't configure background windows in portrait",
+                     __func__);
+                     */
+          break;
+        }
       }
 
   mb_wm_stack_enumerate(wm, client)

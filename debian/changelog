@@ -1,6 +1,8 @@
 matchbox-window-manager-2 (0.2.40-1~unreleased) unstable; urgency=low
 
-  * write_something_here
+  Kimmo:
+  * Fixes: NB#117392 - Window manager resizes/rotates applications that aren't
+    visible and don't support rotation
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 18 May 2009 11:20:12 +0300
 
