@@ -564,13 +564,13 @@ mb_wm_layout_real_layout_free (MBWMLayout *layout, MBGeometry * avail_geom)
         if (avail_geom->width < avail_geom->height &&
             coverage.width >= avail_geom->width &&
             coverage.height >= avail_geom->height)
-        {
+          {
                 /*
-          g_warning ("%s: don't configure background windows in portrait",
+            g_warning ("%s: don't configure background windows in portrait",
                      __func__);
                      */
-          break;
-        }
+            break;
+          }
       }
 
   mb_wm_stack_enumerate(wm, client)
