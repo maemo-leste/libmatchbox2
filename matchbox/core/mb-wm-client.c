@@ -46,7 +46,7 @@ mb_wm_client_destroy (MBWMObject *obj)
 {
   MBWindowManagerClient * client = MB_WM_CLIENT(obj);
   MBWindowManager       * wm = client->wmref;
-  MBWMList              * l = client->decor;
+  MBWMList              * l;
 
   if (client->sig_theme_change_id)
     mb_wm_object_signal_disconnect (MB_WM_OBJECT (wm),
@@ -72,10 +72,13 @@ mb_wm_client_destroy (MBWMObject *obj)
 
   mb_wm_object_unref (MB_WM_OBJECT (client->window));
 
-  while (l)
+  for (l = client->decor; l; l = l->next)
+    mb_wm_object_unref (l->data);
+
+  if (client->decor)
     {
-      mb_wm_object_unref (l->data);
-      l = l->next;
+      mb_wm_util_list_free (client->decor);
+      client->decor = NULL;
     }
 
   if (client->transient_for)
