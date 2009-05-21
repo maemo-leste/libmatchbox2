@@ -3,7 +3,7 @@ matchbox-window-manager-2 (0.2.40-1~unreleased) unstable; urgency=low
   Kimmo:
   * Fixes: NB#117392 - Window manager resizes/rotates applications that aren't
     visible and don't support rotation
-  * Plug a memory leak in mb_wm_client_destroy.
+  * Several memory leak fixes.
 
   Thomas:
   * Fixes: NB#117562 - _GNU_SOURCE defined in public header file

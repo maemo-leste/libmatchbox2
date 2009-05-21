@@ -1,11 +1,11 @@
 2009-05-21  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_destroy): Free buttons list
+	as well.
 	* matchbox/core/mb-wm-client.c (mb_wm_client_destroy): Free priv
 	member as well.
-
 	* matchbox/core/mb-wm-object.c (mb_wm_object_init): Do not allocate
 	ObjectClasses and ObjectClassesInfo every time the function is called.
-
 	* matchbox/core/mb-wm-client.c (mb_wm_client_destroy): Free decor list
 	after unreffing the objects in the list.
 

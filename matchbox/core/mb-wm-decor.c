@@ -147,11 +147,11 @@ mb_wm_decor_resize (MBWMDecor *decor)
 
 	  mb_wm_decor_button_move_to (btn, off_x, off_y);
 
-	  /*
-	   * We need to simulate packing when placing buttons at absolute
-	   * positions (e.g., in png-based theme) so that we know the size
-	   * of the area into which we can place the document title
-	   */
+          /*
+           * We need to simulate packing when placing buttons at absolute
+           * positions (e.g., in png-based theme) so that we know the size
+           * of the area into which we can place the document title
+           */
 	  if (off_x + bw < width)
 	    {
 	      int x = off_x + bw;
@@ -665,7 +665,7 @@ static void
 mb_wm_decor_destroy (MBWMObject* obj)
 {
   MBWMDecor       * decor = MB_WM_DECOR(obj);
-  MBWMList        * l     = decor->buttons;
+  MBWMList        * l;
   MBWMMainContext * ctx   = decor->parent_client->wmref->main_ctx;
 
   if (decor->themedata && decor->destroy_themedata)
@@ -677,14 +677,18 @@ mb_wm_decor_destroy (MBWMObject* obj)
 
   mb_wm_decor_detach (decor);
 
-  while (l)
+  for (l = decor->buttons; l; l = l->next)
     {
-      MBWMList * next = l->next;
       mb_wm_decor_button_unrealize((MBWMDecorButton *)l->data);
       mb_wm_object_unref (MB_WM_OBJECT (l->data));
-      l = next;
       /* we don't free, because the dispose handler of the decor button
        * removes itself */
+    }
+
+  if (decor->buttons)
+    {
+      mb_wm_util_list_free (decor->buttons);
+      decor->buttons = NULL;
     }
 
   if (decor->press_cb_id)
