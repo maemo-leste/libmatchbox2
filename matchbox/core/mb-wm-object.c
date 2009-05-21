@@ -83,11 +83,15 @@ mb_wm_object_dump ()
 void
 mb_wm_object_init(void)
 {
-  ObjectClasses     = mb_wm_util_malloc0 (sizeof(void*) * N_CLASSES_PREALLOC);
-  ObjectClassesInfo = mb_wm_util_malloc0 (sizeof(void*) * N_CLASSES_PREALLOC);
+  if (!ObjectClasses || !ObjectClassesInfo)
+    {
+      ObjectClasses = mb_wm_util_malloc0 (sizeof(void*) * N_CLASSES_PREALLOC);
+      ObjectClassesInfo = mb_wm_util_malloc0 (
+                                sizeof(void*) * N_CLASSES_PREALLOC);
 
-  if (ObjectClasses && ObjectClassesInfo)
-    ObjectClassesAllocated = N_CLASSES_PREALLOC;
+      if (ObjectClasses && ObjectClassesInfo)
+        ObjectClassesAllocated = N_CLASSES_PREALLOC;
+    }
 }
 
 static void
