@@ -83,6 +83,12 @@ mb_wm_client_destroy (MBWMObject *obj)
 
   if (client->transient_for)
     mb_wm_client_remove_transient (client->transient_for, client);
+
+  if (client->priv)
+    {
+      free (client->priv);
+      client->priv = NULL;
+    }
 }
 
 static Bool
