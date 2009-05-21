@@ -4,6 +4,9 @@ matchbox-window-manager-2 (0.2.40-1~unreleased) unstable; urgency=low
   * Fixes: NB#117392 - Window manager resizes/rotates applications that aren't
     visible and don't support rotation
 
+  Thomas:
+  * Fixes: NB#117562 - _GNU_SOURCE defined in public header file
+
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 18 May 2009 11:20:12 +0300
 
 matchbox-window-manager-2 (0.2.39-1) unstable; urgency=low
