@@ -1,3 +1,7 @@
+2009-05-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.40
+
 2009-05-21  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/core/mb-wm-decor.c (mb_wm_decor_destroy): Free buttons list
@@ -17,13 +21,13 @@
 
 2009-05-18  Daniel Elstner  <danielk@openismus.com>
 
-        * matchbox/core/mb-wm.h: Do not define _GNU_SOURCE here, as this is
-        a public header file.  Also, the header itself doesn't actually need
-        this feature macro.
-        * util/matchbox-remote.c: Remove _GNU_SOURCE from here, too.
-        * configure.ac: Invoke the Autoconf macro AC_USE_SYSTEM_EXTENSIONS
-        to define feature macros such as _GNU_SOURCE automatically.
-        (AC_PREREQ): Increase Autoconf version requirement to 2.60.
+	* matchbox/core/mb-wm.h: Do not define _GNU_SOURCE here, as this is
+	a public header file.  Also, the header itself doesn't actually need
+	this feature macro.
+	* util/matchbox-remote.c: Remove _GNU_SOURCE from here, too.
+	* configure.ac: Invoke the Autoconf macro AC_USE_SYSTEM_EXTENSIONS
+	to define feature macros such as _GNU_SOURCE automatically.
+	(AC_PREREQ): Increase Autoconf version requirement to 2.60.
 
 2009-05-18  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
