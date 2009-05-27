@@ -1,3 +1,15 @@
+2009-05-27  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#112098 HildonProgram's is-topmost property is behaving oddly
+
+	This is rather a fix for NB#115761 but magomez says it closes the
+	parent bug as well.  What's happened in NB#112098 is not clear but
+	with the later camera changed its fullscreenness while it was zooming
+	out, which caused its reactivation.
+
+	* matchbox/core/mb-wm-client.c (mb_wm_client_set_state):
+	  Don't (re)activate the client when it's changing state.
+
 2009-05-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.40

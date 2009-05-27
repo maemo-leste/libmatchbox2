@@ -836,7 +836,6 @@ mb_wm_client_set_state (MBWindowManagerClient *client,
   MBWMClientWindow  *win = client->window;
   Bool               old_state;
   Bool               new_state = False;
-  Bool               activate = True;
   MBWMClientWindowEWMHState state_flag;
 
   switch (state)
@@ -905,14 +904,13 @@ mb_wm_client_set_state (MBWindowManagerClient *client,
   if ((state_flag & MBWMClientWindowEWMHStateFullscreen))
     {
       mb_wm_client_fullscreen_mark_dirty (client);
+      mb_wm_display_sync_queue (wm, MBWMSyncStacking);
     }
 
   /*
    * FIXME -- resize && move, possibly redraw decors when returning from
    * fullscreen
    */
-  if (activate) 
-    mb_wm_activate_client(wm, client);
 }
 
 Bool
