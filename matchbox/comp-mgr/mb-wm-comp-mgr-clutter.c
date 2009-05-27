@@ -267,6 +267,9 @@ mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
   cclient->priv->actor = g_object_ref_sink( clutter_group_new() );
   cclient->priv->bound = FALSE;
 
+  /* Explicitly enable maemo-specific visibility detection to cut down
+   * spurious paints */
+  clutter_actor_set_visibility_detect(cclient->priv->actor, TRUE);
   g_object_set_data (G_OBJECT (cclient->priv->actor),
                      "HD-MBWMCompMgrClutterClient", cclient);
 #if DEBUG_ACTOR
@@ -1065,7 +1068,9 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   sprintf(actor_name, "texture_0x%lx",
           c->xwin_frame ? c->xwin_frame : c->window->xwindow);
   clutter_actor_set_name(texture, actor_name);
-
+  /* Explicitly enable maemo-specific visibility detection to cut down
+   * spurious paints */
+  clutter_actor_set_visibility_detect(texture, TRUE);
   clutter_actor_show (texture);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (cclient->priv->actor), texture);

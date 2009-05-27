@@ -1,3 +1,9 @@
+2009-05-27  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Added explicit enable of
+	visibility detection in readiness for clutter 0.8.2-0maemo33 which
+	will have detection off by default.
+
 2009-05-27  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	NB#112098 HildonProgram's is-topmost property is behaving oddly
