@@ -1,5 +1,8 @@
 2009-05-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	* configure.ac: Remove -O0 flag from compilation options, it is set
+	from debian/rules when needed.
+
 	* matchbox/core/mb-window-manager.[ch] (mb_wm_unredirect_client,
 	mb_wm_setup_redirection): New functions for offscreen redirection
 	manipulation.
