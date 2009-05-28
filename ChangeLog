@@ -1,3 +1,10 @@
+2009-05-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-window-manager.[ch] (mb_wm_unredirect_client,
+	mb_wm_setup_redirection): New functions for offscreen redirection
+	manipulation.
+	(mb_wm_handle_map_notify): Unredirect the client if we are in the mode.
+
 2009-05-27  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	Fixes: NB#117084 System-modal windows lose focus

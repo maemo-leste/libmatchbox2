@@ -1,6 +1,7 @@
 matchbox-window-manager-2 (0.2.41-1~unreleased) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Support functions for hildon-desktop's non-composited mode.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 25 May 2009 10:13:36 +0300
 

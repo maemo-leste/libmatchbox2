@@ -130,6 +130,7 @@ struct MBWindowManager
 
   char                       **argv;
   int                          argc;
+  Bool                         non_redirection;
 };
 
 /**
@@ -238,5 +239,7 @@ mb_wm_select_desktop (MBWindowManager *wm, int desktop);
 void
 mb_adjust_dialog_title_position (MBWindowManager *wm,
                                  int new_padding);
+void
+mb_wm_setup_redirection (MBWindowManager *wm, int redirection);
 
 #endif
