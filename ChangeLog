@@ -1,5 +1,9 @@
 2009-05-29  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):
+	Remove use of mb_wm_theme_get_title_xy and use a constant value to
+	make submenus usable again. Fixes: NB#117301. 
+
 	Apply patch from Laszlo Pere for NB#115253.
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c

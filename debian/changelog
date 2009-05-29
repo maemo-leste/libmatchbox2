@@ -5,6 +5,8 @@ matchbox-window-manager-2 (0.2.41-1~unreleased) unstable; urgency=low
 
   Kimmo:
   * Support functions for hildon-desktop's non-composited mode.
+  * Fixes: NB#117301 - Not able to select the view option from the menu in
+    calculator application
 
   Thomas:
   * Fixes: NB#117084 - System-modal windows lose focus if an app sends

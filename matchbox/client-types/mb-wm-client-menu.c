@@ -122,15 +122,22 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
   }
   else
   {
-    gint title_x, title_y;
+    /* hard-coded due to NB#117301 --- violates the Layout Guide a bit,
+     * but otherwise submenus can be placed on top of the main menu, making
+     * them unusable. */
+    int title_x;
 
-    mb_wm_theme_get_title_xy (wm->theme, &title_x, &title_y);
+    if (wm->xdpy_width > wm->xdpy_height)
+      title_x = 2 * 112 + 45;
+    else
+      /* portrait orientation */
+      title_x = 112 + 45;
 
     if (geom.x < title_x)
       geom.x = title_x;
 
-    if (geom.y < title_y)
-      geom.y = title_y;
+    if (geom.y < 56)
+      geom.y = 56;
   }
 
   g_debug ("%s: Menu will be at %d %d %d %d", __func__, geom.x, geom.y,
