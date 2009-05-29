@@ -1,3 +1,10 @@
+2009-05-29  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Apply patch from Laszlo Pere for NB#115253.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_client_get_actor): Fix the NULL checking.
+
 2009-05-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* configure.ac: Remove -O0 flag from compilation options, it is set

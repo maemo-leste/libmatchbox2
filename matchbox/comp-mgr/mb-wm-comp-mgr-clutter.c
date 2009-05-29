@@ -344,6 +344,7 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
     }
 
   free (cclient->priv);
+  cclient->priv = NULL;
 }
 
 int
@@ -446,7 +447,7 @@ mb_wm_comp_mgr_clutter_client_get_flags (MBWMCompMgrClutterClient  *cclient)
 ClutterActor *
 mb_wm_comp_mgr_clutter_client_get_actor (MBWMCompMgrClutterClient *cclient)
 {
-  return cclient->priv->actor ? cclient->priv->actor : NULL;
+  return cclient && cclient->priv ? cclient->priv->actor : NULL;
 }
 
 
