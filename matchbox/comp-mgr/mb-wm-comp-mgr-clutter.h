@@ -107,6 +107,10 @@ void
 mb_wm_comp_mgr_clutter_client_unset_flags (MBWMCompMgrClutterClient  *cclient,
 					   MBWMCompMgrClutterClientFlags flags);
 
+void
+mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
+                                            Bool track_damage);
+
 MBWMCompMgrClutterClientFlags
 mb_wm_comp_mgr_clutter_client_get_flags (MBWMCompMgrClutterClient  *cclient);
 

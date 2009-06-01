@@ -3,6 +3,17 @@
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
 	(mb_wm_comp_mgr_clutter_handle_damage): Don't handle damage in
 	non-composited mode.
+	(mb_wm_comp_mgr_clutter_client_track_damage): New function to toggle
+	damage event subscription on/off.
+	(mb_wm_comp_mgr_clutter_map_notify_real): Call
+	mb_wm_comp_mgr_clutter_client_track_damage to setup damage tracking.
+	Tries to handle the case when damage tracking is re-enabled after a
+	pause in the tracking.
+	(mb_wm_comp_mgr_clutter_client_destroy): Call
+	mb_wm_comp_mgr_clutter_client_track_damage to tear down damage
+	tracking.
+	(mb_wm_comp_mgr_clutter_fetch_texture): Set bound=FALSE if the window
+	is invalid (allows the caller to check for success).
 
 	Release 0.2.41
 

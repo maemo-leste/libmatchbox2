@@ -207,6 +207,7 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
     {
       g_debug ("%s: BadDrawable for %lx", __FUNCTION__,
                client->wm_client->window->xwindow);
+      cclient->priv->bound = FALSE;
       return;
     }
 
@@ -282,9 +283,7 @@ mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
 static void
 mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
 {
-  MBWMCompMgrClient        * c   = MB_WM_COMP_MGR_CLIENT (obj);
-  MBWMCompMgrClutterClient * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (obj);
-  MBWindowManager          * wm  = c->wm;
+  MBWMCompMgrClutterClient *cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (obj);
 
   /* We just unref our actors here and clutter will free them if required */
   if (cclient->priv->actor)
@@ -330,18 +329,7 @@ mb_wm_comp_mgr_clutter_client_destroy (MBWMObject* obj)
     }
 
   if (cclient->priv->window_damage)
-    {
-      int err;
-
-      /* Sing after me: "untrap" without XSync() is un*re*li*ab*le! */
-      mb_wm_util_trap_x_errors();
-      XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
-      XSync (wm->xdpy, False);
-      if ((err = mb_wm_util_untrap_x_errors()) != 0)
-        g_debug ("XDamageDestroy(0x%lx) for %p: %d",
-                 cclient->priv->window_damage, c, err);
-      cclient->priv->window_damage = 0;
-    }
+    mb_wm_comp_mgr_clutter_client_track_damage (cclient, False);
 
   free (cclient->priv);
   cclient->priv = NULL;
@@ -809,8 +797,7 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
   Damage                      damage;
 
   if (wm->non_redirection)
-    /* TODO: remember to refresh the client when we return to
-     * composited mode */
+    /* avoid some Clutter/EGL errors when in non-composited mode */
     return False;
 
   c = mb_wm_managed_client_from_frame (wm, de->drawable);
@@ -992,6 +979,59 @@ mb_wm_comp_mgr_clutter_select_desktop (MBWMCompMgr * mgr,
     }
 }
 
+/* Enable/disable damage tracking for a client */
+void
+mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
+                                            Bool track_damage)
+{
+  MBWindowManager *wm = MB_WM_COMP_MGR_CLIENT (cclient)->wm;
+  MBWindowManagerClient *c = MB_WM_COMP_MGR_CLIENT (cclient)->wm_client;
+
+  /* printf ("%s: client win %lx\n", __func__,
+          c && c->window ? c->window->xwindow : 0); */
+
+  if (track_damage)
+    {
+      if (!cclient->priv->window_damage)
+        {
+          cclient->priv->window_damage = XDamageCreate (wm->xdpy,
+				   c->window->xwindow,
+				   XDamageReportNonEmpty);
+
+          /* re-fetch the texture if there was an old texture, because it has
+           * probably missed damage events */
+          if (cclient->priv->texture)
+            {
+              guint w, h;
+
+              mb_wm_comp_mgr_clutter_fetch_texture (
+                                MB_WM_COMP_MGR_CLIENT (cclient));
+
+              if (cclient->priv->bound)
+                {
+                  clutter_actor_get_size (cclient->priv->texture, &w, &h);
+                  clutter_x11_texture_pixmap_update_area (
+			CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
+			0, 0, w, h);
+                }
+            }
+        }
+    }
+  else if (cclient->priv->window_damage)
+    {
+      int err;
+
+      /* Sing after me: "untrap" without XSync() is un*re*li*ab*le! */
+      mb_wm_util_trap_x_errors();
+      XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
+      XSync (wm->xdpy, False);
+      if ((err = mb_wm_util_untrap_x_errors()) != 0)
+        g_debug ("XDamageDestroy(0x%lx) for %p: %d",
+                 cclient->priv->window_damage, c, err);
+      cclient->priv->window_damage = 0;
+    }
+}
+
 static void
 mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 					MBWindowManagerClient *c)
@@ -999,7 +1039,6 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   MBWMCompMgrClutter        * cmgr    = MB_WM_COMP_MGR_CLUTTER (mgr);
   MBWMCompMgrClient         * client  = c->cm_client;
   MBWMCompMgrClutterClient  * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
-  MBWindowManager           * wm      = client->wm;
   ClutterActor              * texture;
 #if SGX_CORRUPTION_WORKAROUND
   MBWMClientType              ctype = MB_WM_CLIENT_CLIENT_TYPE (c);
@@ -1032,9 +1071,7 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 
   cclient->priv->flags |= MBWMCompMgrClutterClientMapped;
 
-  cclient->priv->window_damage = XDamageCreate (wm->xdpy,
-				   c->window->xwindow,
-				   XDamageReportNonEmpty);
+  mb_wm_comp_mgr_clutter_client_track_damage (cclient, True);
 
   g_snprintf(actor_name, 64, "window_0x%lx", c->window->xwindow);
   clutter_actor_set_name(cclient->priv->actor, actor_name);
@@ -1079,7 +1116,8 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   clutter_actor_set_visibility_detect(texture, TRUE);
   clutter_actor_show (texture);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (cclient->priv->actor), texture);
+  clutter_container_add_actor (CLUTTER_CONTAINER (cclient->priv->actor),
+                               texture);
   /* We want to lower this below any decor */
   clutter_actor_lower_bottom(texture);
 
