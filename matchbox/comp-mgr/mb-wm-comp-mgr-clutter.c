@@ -808,6 +808,11 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
   MBWindowManagerClient     * c;
   Damage                      damage;
 
+  if (wm->non_redirection)
+    /* TODO: remember to refresh the client when we return to
+     * composited mode */
+    return False;
+
   c = mb_wm_managed_client_from_frame (wm, de->drawable);
 
   if (c && c->cm_client)
