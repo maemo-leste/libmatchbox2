@@ -612,7 +612,31 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	    goto badwindow_error;
 
 	  if (name)
-	    break;
+	    {
+	      const int maximum_name_length = 512;
+	      if (strlen(name) > maximum_name_length)
+		{
+		  /* Bug 114352: stupidly long names get truncated. */
+		  g_warning ("Window name was too long; truncating it.\n");
+		  name[maximum_name_length] = 0;
+
+		  /* We run the risk of making the XML invalid,
+		   * which will cause no title at all to be shown,
+		   * so just pretend it's ordinary UTF-8 text.
+		   */
+		  if (*cursor==COOKIE_WIN_NAME_UTF8_XML)
+		    *cursor = COOKIE_WIN_NAME_UTF8;
+
+		  /*
+		   * (We also run the risk of making the UTF-8 invalid
+		   * by cutting a character in the middle, but since
+		   * this only causes a warning to be displayed and
+		   * doesn't stop the rest of the string being shown,
+		   * we don't need to deal with it.)
+		   */
+		}
+	      break;
+	    }
 
 	  cursor++;
 	}

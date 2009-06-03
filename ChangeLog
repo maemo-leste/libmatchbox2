@@ -1,3 +1,11 @@
+2009-06-03  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	Fixes: NB#114352 Unwanted line is displayed in contact starter view
+
+	* matchbox/core/mb-wm-client-window.c: Truncate window titles
+	longer than 512 bytes.  If the title is XML, fall back to treating
+	it as non-XML, or it won't show.
+
 2009-06-03  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.[ch]
