@@ -160,6 +160,20 @@ mb_wm_comp_mgr_clutter_client_set_size (
     }
 }
 
+/* Clutter sets XComposite redirection for windows corresponding to textures;
+ * this function is used to toggle redirection within Clutter. */
+void  __attribute__ ((visibility("hidden")))
+mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
+                                               gboolean setting)
+{
+  MBWMCompMgrClutterClient *cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
+
+  if (cclient->priv->texture)
+    clutter_x11_texture_pixmap_set_redirection (
+          CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
+          setting);
+}
+
 /**
  * Fetch the entire texture for our client
  */
@@ -1029,6 +1043,12 @@ mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
         g_debug ("XDamageDestroy(0x%lx) for %p: %d",
                  cclient->priv->window_damage, c, err);
       cclient->priv->window_damage = 0;
+
+      if (cclient->priv->texture)
+        /* release the window in Clutter */ 
+        clutter_x11_texture_pixmap_set_window (
+                CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
+                0, FALSE);
     }
 }
 

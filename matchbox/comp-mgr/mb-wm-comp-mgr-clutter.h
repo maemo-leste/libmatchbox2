@@ -123,4 +123,8 @@ mb_wm_comp_mgr_clutter_get_nth_desktop (MBWMCompMgrClutter *cmgr, int desktop);
 ClutterActor *
 mb_wm_comp_mgr_clutter_get_arena (MBWMCompMgrClutter *cmgr);
 
+void  __attribute__ ((visibility("hidden")))
+mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
+                                               gboolean setting);
+
 #endif

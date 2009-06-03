@@ -739,37 +739,40 @@ static void
 mb_wm_unredirect_client (MBWindowManager *wm,
                          MBWindowManagerClient *client)
 {     
-   if (client->xwin_frame)
-   {
-     XCompositeUnredirectWindow (wm->xdpy, client->xwin_frame,
-                                 CompositeRedirectManual);
-     XCompositeUnredirectSubwindows (wm->xdpy, client->xwin_frame,
-                                     CompositeRedirectManual);
-     XCompositeRedirectWindow (wm->xdpy, client->xwin_frame,
-                               CompositeRedirectAutomatic);
-   }
-   else
-   {
-     XCompositeUnredirectWindow (wm->xdpy, client->window->xwindow,
-                                 CompositeRedirectManual);
-     XCompositeUnredirectSubwindows (wm->xdpy, client->window->xwindow,
-                                     CompositeRedirectManual);
-   }
+  if (client->cm_client)
+    mb_wm_comp_mgr_clutter_set_client_redirection (client->cm_client, FALSE);
+
+  if (client->xwin_frame)
+    {
+      XCompositeUnredirectWindow (wm->xdpy, client->xwin_frame,
+                                  CompositeRedirectManual);
+      XCompositeUnredirectSubwindows (wm->xdpy, client->xwin_frame,
+                                      CompositeRedirectManual);
+    }
 }
 
 void
 mb_wm_setup_redirection (MBWindowManager *wm, int redirection)
 {
+  MBWindowManagerClient *c;
   Window root_win = wm->root_win->xwindow;
 
   if (redirection)
   {
+    for (c = wm->stack_bottom; c; c = c->stacked_above)
+      if (c->cm_client)
+        mb_wm_comp_mgr_clutter_set_client_redirection (c->cm_client, TRUE);
+
     XCompositeRedirectSubwindows (wm->xdpy, root_win,
                                   CompositeRedirectManual);
     wm->non_redirection = False;
   }
   else
   {
+    for (c = wm->stack_bottom; c; c = c->stacked_above)
+      if (c->cm_client)
+        mb_wm_comp_mgr_clutter_set_client_redirection (c->cm_client, FALSE);
+
     XCompositeUnredirectSubwindows (wm->xdpy, root_win,
                                     CompositeRedirectManual);
     wm->non_redirection = True;

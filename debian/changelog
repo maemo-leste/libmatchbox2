@@ -1,6 +1,8 @@
 matchbox-window-manager-2 (0.2.42-1~unreleased) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Fixes to non-compositing mode support.
+  * Update libclutter-dev build dependency because of new API there.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  1 Jun 2009 08:29:17 +0300
 

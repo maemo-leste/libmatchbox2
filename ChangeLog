@@ -1,3 +1,14 @@
+2009-06-03  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.[ch]
+	(mb_wm_comp_mgr_clutter_set_client_redirection): New function to
+	toggle redirection for the compositor's client object.
+	(mb_wm_comp_mgr_clutter_client_track_damage): Set the texture window
+	to zero when toggling damage tracking off.
+	* matchbox/core/mb-window-manager.c (mb_wm_unredirect_client): Update
+	Clutter's idea about redirection before changing it in the X side.
+	(mb_wm_setup_redirection): Update Clutter's idea about redirection.
+
 2009-06-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
