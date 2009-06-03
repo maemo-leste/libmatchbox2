@@ -1,5 +1,10 @@
 2009-06-03  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
+	* matchbox/theme-engines/mb-wm-theme-png.c: avoid warning about
+	unused result of fread().
+
+2009-06-03  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
 	Fixes: NB#114352 Unwanted line is displayed in contact starter view
 
 	* matchbox/core/mb-wm-client-window.c: Truncate window titles

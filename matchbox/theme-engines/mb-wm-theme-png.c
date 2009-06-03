@@ -1173,6 +1173,7 @@ mb_wm_theme_png_load_file (const char *file,
   unsigned char *data;
   unsigned char header[8];
   int  bit_depth, color_type;
+  size_t bytes_read;
 
   png_uint_32  png_width, png_height, i, rowbytes;
   png_structp png_ptr;
@@ -1182,8 +1183,8 @@ mb_wm_theme_png_load_file (const char *file,
   if ((fd = fopen (file, "rb")) == NULL)
     return NULL;
 
-  fread (header, 1, 8, fd);
-  if (!png_check_sig (header, 8))
+  bytes_read = fread (header, 1, 8, fd);
+  if (bytes_read != 8 || !png_check_sig (header, 8))
     {
       fclose(fd);
       return NULL;
