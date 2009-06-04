@@ -57,7 +57,7 @@
 static void
 mb_wm_process_cmdline (MBWindowManager *wm);
 
-static Bool
+static void
 mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *client);
 
 static Bool
@@ -2004,7 +2004,7 @@ is_system_modal (MBWindowManagerClient *c)
     !mb_wm_client_get_transient_for (c);
 }
 
-static Bool
+static void
 mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 {
   MBWindowManagerClient *client = c,
@@ -2043,7 +2043,7 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
        !is_system_modal (client) &&
        wm->focused_client != mb_wm_client_get_transient_for (client))
       )
-    return False;
+    return;
 
   if (!mb_wm_client_is_realized (client))
     {
@@ -2064,10 +2064,15 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
   if (mb_wm_client_focus (client))
     {
       wm->focused_client = client;
-      return True;
+      return;
     }
 
-  return False;
+  /*
+   * If the window is already destroyed we will get a notification about it
+   * later.
+   */
+  wm->focused_client = client;
+  return;
 }
 
 void

@@ -1,5 +1,12 @@
 2009-06-04  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Patch from Laszlo for NB#120014.
+
+	* matchbox/core/mb-window-manager.c (mb_wm_focus_client): Mark the
+	client focused even if it was destroyed. The focus will be corrected
+	when the unmap event comes. Also remove unused return value from the
+	function.
+
 	Patch from Laszlo Pere fox NB#117853.
 
 	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_destroy): Add NULL

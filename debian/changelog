@@ -6,6 +6,8 @@ matchbox-window-manager-2 (0.2.42-1~unreleased) unstable; urgency=low
 
   Laszlo:
   * Fixes: NB#117853 - Unreproducible crash -mb_wm_decor_button_destroy ()
+  * Fixes: NB#120014 - Parent window not getting keyboard focus in a mentioned
+    scenario.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  1 Jun 2009 08:29:17 +0300
 
