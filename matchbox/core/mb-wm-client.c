@@ -609,6 +609,23 @@ mb_wm_client_get_next_focused_client (MBWindowManagerClient *client)
 }
 
 /**
+ * Returns the app next above the given client in the
+ * stacking order.  Returns NULL if there is no app
+ * higher than this client.
+ */
+MBWindowManagerClient*
+mb_wm_client_get_next_focused_app (MBWindowManagerClient *client)
+{
+  while (client)
+    {
+      client = client->stacked_above;
+      if (client && MB_WM_CLIENT_CLIENT_TYPE (client)==MBWMClientTypeApp)
+	return client;
+    }
+  return NULL;
+}
+
+/**
  * Returns the transient of client "client" which was most recently
  * focused (i.e. which is closest to the top, in our model).
  * Returns NULL if there are no transients for the given client.

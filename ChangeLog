@@ -1,5 +1,11 @@
 2009-06-03  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
+	* matchbox/core/mb-wm-client.[ch]: add new function
+	mb_wm_client_get_next_focused_app() to return the app next above
+	a given client in the focus order.
+
+2009-06-03  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
 	* matchbox/theme-engines/mb-wm-theme-png.c: avoid warning about
 	unused result of fread().
 

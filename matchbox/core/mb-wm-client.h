@@ -325,6 +325,9 @@ MBWindowManagerClient*
 mb_wm_client_get_next_focused_client (MBWindowManagerClient *client);
 
 MBWindowManagerClient*
+mb_wm_client_get_next_focused_app (MBWindowManagerClient *client);
+
+MBWindowManagerClient*
 mb_wm_client_get_last_focused_transient (MBWindowManagerClient *client);
 
 MBWMList*
