@@ -1162,7 +1162,16 @@ static void
 mb_wm_decor_button_destroy (MBWMObject* obj)
 {
   MBWMDecorButton * button = MB_WM_DECOR_BUTTON (obj);
-  MBWMMainContext * ctx = button->decor->parent_client->wmref->main_ctx;
+  MBWMMainContext * ctx = NULL;
+  
+  ctx = button &&
+	  button->decor &&
+	  button->decor->parent_client &&
+	  button->decor->parent_client->wmref ? 
+	  button->decor->parent_client->wmref->main_ctx : NULL;
+
+  if (!ctx)
+	  return;
   /*
    * We are doing the job in the mb_wm_decor_button_unrealize() while the
    * decoration still exists.

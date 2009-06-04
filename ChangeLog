@@ -1,5 +1,10 @@
 2009-06-04  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Patch from Laszlo Pere fox NB#117853.
+
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_destroy): Add NULL
+	check to avoid possible crash.
+
 	Revert Thomas' fix for NB#114352, since there should be already 1024
 	byte limit (better fix that if it's broken), needs more investigation.
 
