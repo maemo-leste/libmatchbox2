@@ -1,15 +1,16 @@
+2009-06-04  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Revert Thomas' fix for NB#114352, since there should be already 1024
+	byte limit (better fix that if it's broken), needs more investigation.
+
 2009-06-03  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	* matchbox/core/mb-wm-client.[ch]: add new function
 	mb_wm_client_get_next_focused_app() to return the app next above
 	a given client in the focus order.
 
-2009-06-03  Thomas Thurman  <thomas.thurman@collabora.co.uk>
-
 	* matchbox/theme-engines/mb-wm-theme-png.c: avoid warning about
 	unused result of fread().
-
-2009-06-03  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	Fixes: NB#114352 Unwanted line is displayed in contact starter view
 
