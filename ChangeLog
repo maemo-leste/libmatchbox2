@@ -1,3 +1,12 @@
+2009-06-07  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	NB#120885: Animation actors steal focus when created.
+
+	* matchbox/core/mb-window-manager.c: don't focus animation
+	actors if they appear.
+	* matchbox/core/mb-wm-atoms.c: add atom for animation actors.
+	* matchbox/core/mb-wm-types.h: ditto.
+
 2009-06-05  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-layout.c (mb_wm_layout_real_layout_free):

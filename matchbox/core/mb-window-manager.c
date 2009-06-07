@@ -1882,8 +1882,12 @@ mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c)
     c_focus = last_focused_transient;
   }
 
-  mb_wm_focus_client (wm, c_focus);
-  mb_wm_client_stack (c, 0);
+  if (c->window->net_type==wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR]) {
+    g_debug ("Not focusing an animation actor.\n");
+  } else {
+    mb_wm_focus_client (wm, c_focus);
+    mb_wm_client_stack (c, 0);
+  }
 
   if (is_desktop != was_desktop)
     {
