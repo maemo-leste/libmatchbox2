@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.42-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.42-1) unstable; urgency=low
 
   Kimmo:
   * Fixes to non-compositing mode support.
@@ -8,8 +8,17 @@ matchbox-window-manager-2 (0.2.42-1~unreleased) unstable; urgency=low
   * Fixes: NB#117853 - Unreproducible crash -mb_wm_decor_button_destroy ()
   * Fixes: NB#120014 - Parent window not getting keyboard focus in a mentioned
     scenario.
+  * Fixes: NB#114352 - Unwated line is displayed in contact starter view
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  1 Jun 2009 08:29:17 +0300
+  Thomas:
+  * Fixes: NB#120885 - Animation actors steal focus when created.
+
+  Adam:
+  * matchbox/core/mb-wm-layout.c (mb_wm_layout_real_layout_free):
+    Undoing Kimmo's change not to reconfigure hidden windows.
+    Let's do it in h-d.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 08 Jun 2009 09:45:58 +0300
 
 matchbox-window-manager-2 (0.2.41-1) unstable; urgency=low
 

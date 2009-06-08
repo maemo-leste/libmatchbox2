@@ -1,3 +1,12 @@
+2009-06-08  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.42
+
+	Patch from Laszlo Pere for NB#114352.
+
+	* matchbox/core/mb-wm-props.h: Set maximum length of utf8 atoms to
+	512 * 4 bytes.
+
 2009-06-07  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	NB#120885: Animation actors steal focus when created.

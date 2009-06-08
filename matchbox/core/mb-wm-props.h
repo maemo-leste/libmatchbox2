@@ -99,7 +99,7 @@ mb_wm_xwin_get_geometry_reply (MBWindowManager   *wm,
 			     (win),                                  \
 			     (prop),                                 \
 			     0,     /* offset */                     \
-			     1024L, /* Length, FIXME: Check this */  \
+			     512L,                                   \
 			     False,                                  \
 			     (wm)->atoms[MBWM_ATOM_UTF8_STRING]);
 
