@@ -1,3 +1,11 @@
+2009-06-09  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	NB#118850
+	
+	* matchbox/core/mb-window-manager.c: When a window loses the
+	focus, and we look for a window to focus instead, don't
+	attempt to focus any window which can't take the focus!
+
 2009-06-08  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.42
