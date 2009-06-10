@@ -2108,20 +2108,26 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
    * (NB#118850.)
    */
 
-  while (next &&
-	 MB_WM_CLIENT_CLASS( mb_wm_object_get_class
-			     (MB_WM_OBJECT (next)))->focus==NULL)
+  while (next && !(MB_WM_IS_CLIENT_APP (next) ||
+		   MB_WM_PARENT_IS_CLIENT_APP (next) ||
+		   MB_WM_IS_CLIENT_MENU (next) ||
+		   MB_WM_IS_CLIENT_DIALOG (next) ||
+		   MB_WM_PARENT_IS_CLIENT_DIALOG (next)))
     {
-      g_warning ("Skipping %x because it can't be focussed\n",
-		 next->window->xwindow);
+      g_debug ("Skipping %x because it's not focusable %d\n",
+	       next->window->xwindow,
+	       MB_WM_OBJECT_GET_CLASS (next));
 
       next = next->stacked_below;    
     }
 
   if (next)
     {
+      g_debug ("Focussing %x", next->window->xwindow);
       mb_wm_focus_client (wm, next);
     }
+  else
+    g_debug ("Ran out of windows to focus.\n");
 }
 
 void
