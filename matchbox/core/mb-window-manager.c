@@ -2114,9 +2114,8 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
 		   MB_WM_IS_CLIENT_DIALOG (next) ||
 		   MB_WM_PARENT_IS_CLIENT_DIALOG (next)))
     {
-      g_debug ("Skipping %x because it's not focusable %d\n",
-	       next->window->xwindow,
-	       MB_WM_OBJECT_GET_CLASS (next));
+      g_debug ("Skipping %x because it's not focusable\n",
+	       next->window->xwindow);
 
       next = next->stacked_below;    
     }

@@ -1,5 +1,9 @@
 2009-06-10  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
+	* matchbox/core/mb-window-manager.c: remove debugging code.
+
+2009-06-10  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
 	* matchbox/core/mb-window-manager.c: Amendment to previous
 	fix.  Let's focus windows if they are apps or dialogues
 	or menus, rather than just if they are able to take the
