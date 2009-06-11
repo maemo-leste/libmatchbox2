@@ -2103,30 +2103,10 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
 
   wm->focused_client = NULL;
 
-  /* If a window can't be focussed, don't attempt to focus it.
-   * Instead, just skip over it and try the next one.
-   * (NB#118850.)
-   */
-
-  while (next && !(MB_WM_IS_CLIENT_APP (next) ||
-		   MB_WM_PARENT_IS_CLIENT_APP (next) ||
-		   MB_WM_IS_CLIENT_MENU (next) ||
-		   MB_WM_IS_CLIENT_DIALOG (next) ||
-		   MB_WM_PARENT_IS_CLIENT_DIALOG (next)))
-    {
-      g_debug ("Skipping %x because it's not focusable\n",
-	       next->window->xwindow);
-
-      next = next->stacked_below;    
-    }
-
   if (next)
     {
-      g_debug ("Focussing %x", next->window->xwindow);
       mb_wm_focus_client (wm, next);
     }
-  else
-    g_debug ("Ran out of windows to focus.\n");
 }
 
 void
