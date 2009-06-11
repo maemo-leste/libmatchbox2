@@ -300,6 +300,11 @@ typedef enum MBWMAtom
   MBWM_ATOM_HILDON_WM_NAME,
   MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR,
 
+  /* "hildon window type", currently used to tell apart legacy menus from
+   * CSMs. */
+  MBWM_ATOM_HILDON_WM_WINDOW_TYPE,
+  MBWM_ATOM_HILDON_WM_WINDOW_TYPE_LEGACY_MENU,
+
   MBWM_ATOM_COUNT
 
 } MBWMAtom;

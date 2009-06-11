@@ -120,24 +120,20 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
 	geom.x = 0;
       }
   }
-  else
+  else if (win->hildon_type ==
+                wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_LEGACY_MENU])
   {
-    /* hard-coded due to NB#117301 --- violates the Layout Guide a bit,
-     * but otherwise submenus can be placed on top of the main menu, making
-     * them unusable. */
-    int title_x;
+    /* placement code for legacy application menu, only for the main menu,
+     * not for the submenus */
+    gint title_x, title_y;
 
-    if (wm->xdpy_width > wm->xdpy_height)
-      title_x = 2 * 112 + 45;
-    else
-      /* portrait orientation */
-      title_x = 112 + 45;
+    mb_wm_theme_get_title_xy (wm->theme, &title_x, &title_y);
 
     if (geom.x < title_x)
       geom.x = title_x;
 
-    if (geom.y < 56)
-      geom.y = 56;
+    if (geom.y < title_y)
+      geom.y = title_y;
   }
 
   g_debug ("%s: Menu will be at %d %d %d %d", __func__, geom.x, geom.y,

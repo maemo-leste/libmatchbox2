@@ -1,3 +1,15 @@
+2009-06-11  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):
+	Add support for the new atom for legacy menus. Fixes: NB#121678. Also
+	returned the dynamic placement code since it does not break submenus
+	anymore.
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties),
+	matchbox/core/mb-wm-client-window.h, matchbox/core/mb-wm-types.h,
+	matchbox/core/mb-wm-atoms.c: Add support for _HILDON_WM_WINDOW_TYPE
+	and _HILDON_WM_WINDOW_TYPE_LEGACY_MENU atoms.
+
 2009-06-08  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.42

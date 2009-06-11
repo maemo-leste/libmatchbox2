@@ -47,6 +47,7 @@
 #define MBWM_WINDOW_PROP_CM_TRANSLUCENCY (1<<17)
 #define MBWM_WINDOW_PROP_MWM_HINTS       (1<<18)
 #define MBWM_WINDOW_PROP_HILDON_STACKING (1<<19)
+#define MBWM_WINDOW_PROP_WIN_HILDON_TYPE (1<<20)
 
 #define MBWM_WINDOW_PROP_ALL        (0xffffffff)
 
@@ -131,6 +132,7 @@ struct MBWMClientWindow
   MBWindowManager               *wm;
 
   Atom                           net_type;
+  Atom                           hildon_type;
   Bool                           want_key_input;
   Window                         xwin_group;
   Pixmap                         icon_pixmap, icon_pixmap_mask;

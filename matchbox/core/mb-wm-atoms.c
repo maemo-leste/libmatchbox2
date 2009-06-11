@@ -105,6 +105,8 @@ mb_wm_atoms_init(MBWindowManager *wm)
     "_HILDON_STACKING_LAYER",
     "_HILDON_WM_NAME",
     "_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR",
+    "_HILDON_WM_WINDOW_TYPE",
+    "_HILDON_WM_WINDOW_TYPE_LEGACY_MENU",
   };
 
   /* FIXME: Error Traps */

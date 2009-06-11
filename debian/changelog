@@ -1,6 +1,7 @@
 matchbox-window-manager-2 (0.2.43-1~unreleased) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Fixes: NB#121678 - Need WM support for _HILDON_WM_WINDOW_TYPE_LEGACY_MENU
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  8 Jun 2009 09:53:28 +0300
 

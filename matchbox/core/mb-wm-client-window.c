@@ -43,6 +43,7 @@ enum {
   COOKIE_WIN_NET_STATE,
   COOKIE_WIN_MWM_HINTS,
   COOKIE_WIN_HILDON_STACKING,
+  COOKIE_WIN_HILDON_TYPE,
 
   N_COOKIES
 };
@@ -223,6 +224,11 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
     cookies[COOKIE_WIN_TYPE]
       = mb_wm_property_atom_req(wm, xwin,
 				wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE]);
+
+  if (props_req & MBWM_WINDOW_PROP_WIN_HILDON_TYPE)
+    cookies[COOKIE_WIN_HILDON_TYPE]
+      = mb_wm_property_atom_req(wm, xwin,
+				wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE]);
 
   if (props_req & MBWM_WINDOW_PROP_NET_STATE)
     cookies[COOKIE_WIN_NET_STATE]
@@ -467,6 +473,42 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	    changes |= MBWM_WINDOW_PROP_WIN_TYPE;
 
 	  win->net_type = ((Atom*)result_atom)[0];
+	}
+
+      if (result_atom)
+	XFree(result_atom);
+
+      result_atom = NULL;
+    }
+
+  if (props_req & MBWM_WINDOW_PROP_WIN_HILDON_TYPE)
+    {
+      mb_wm_property_reply (wm,
+			    cookies[COOKIE_WIN_HILDON_TYPE],
+			    &actual_type_return,
+			    &actual_format_return,
+			    &nitems_return,
+			    &bytes_after_return,
+			    &result_atom,
+			    &x_error_code);
+
+      if (x_error_code
+	  || actual_type_return != XA_ATOM
+	  || actual_format_return != 32
+	  || nitems_return != 1
+	  || result_atom == NULL
+	  )
+	{
+	  g_debug ("%s: ### Warning hildon type prop failed ###", __func__);
+	  if (x_error_code == BadWindow)
+	    goto badwindow_error;
+	}
+      else
+	{
+	  if (win->hildon_type != ((Atom *)result_atom)[0])
+	    changes |= MBWM_WINDOW_PROP_WIN_HILDON_TYPE;
+
+	  win->hildon_type = ((Atom*)result_atom)[0];
 	}
 
       if (result_atom)
