@@ -1,3 +1,13 @@
+2009-06-12  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        NB#118850
+
+	* matchbox/core/mb-window-manager.c: When a window is unmapped,
+	check whether each window below it wants focus and is visible
+	in order to find the window which should be focussed next.
+	* matchbox/core/mb-wm-client.[ch]: Add functions to get whether
+	a window is visible, and whether a window covers the screen.
+
 2009-06-11  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):

@@ -1121,3 +1121,51 @@ mb_wm_client_reset_hiding_from_desktop (MBWindowManagerClient * client)
   client->priv->hiding_from_desktop = False;
 }
 
+/**
+ * Returns true iff the client is visible: it must be
+ * mapped, not hiding from the desktop, and at least
+ * partially onscreen.
+ * Does not check whether it's obscured by a higher
+ * window (should it?)
+ */
+Bool
+mb_wm_client_is_visible (MBWindowManagerClient * client)
+{
+  MBGeometry geometry;
+  MBWindowManager *wm = client->wmref;
+
+  mb_wm_client_get_coverage (client, &geometry);
+  
+  return
+    mb_wm_client_is_mapped (client) &&
+    !mb_wm_client_is_hiding_from_desktop (client) &&
+    geometry.x < wm->xdpy_width &&
+    geometry.y < wm->xdpy_height &&
+    geometry.x+geometry.width >= 0 &&
+    geometry.y+geometry.height >= 0;
+}
+
+/**
+ * Returns true iff the client (including its frame)
+ * covers at least the whole screen: it must be either
+ * maximised or fullscreen.
+ */
+Bool
+mb_wm_client_covers_screen (MBWindowManagerClient * client)
+{
+  MBGeometry geometry;
+  MBWindowManager *wm = client->wmref;
+  int right, bottom,
+    right_of_screen = wm->xdpy_width,
+    bottom_of_screen = wm->xdpy_height;
+
+  mb_wm_client_get_coverage (client, &geometry);
+  right = geometry.x+geometry.width;
+  bottom = geometry.y+geometry.height;
+
+  return
+    geometry.x <= 0 &&
+    geometry.y <= 0 &&    
+    right >= right_of_screen &&
+    bottom >= bottom_of_screen;
+}

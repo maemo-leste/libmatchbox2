@@ -2093,9 +2093,18 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
 
       mb_wm_stack_enumerate_reverse (wm, c)
 	{
-	  if (c != client && mb_wm_client_want_focus (c))
+	  if (c != client &&
+	      mb_wm_client_want_focus (c) &&
+	      mb_wm_client_is_visible (c))
 	    {
 	      next = c;
+	      break;
+	    }
+	  if (mb_wm_client_covers_screen (c))
+	    {
+	      /* anything below this is necessarily
+	       * invisible
+	       */
 	      break;
 	    }
 	}
