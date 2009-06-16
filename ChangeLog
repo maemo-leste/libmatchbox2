@@ -1,3 +1,14 @@
+2009-06-16  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Apply patch from Laszlo Pere for NB#121265.
+	* matchbox/core/mb-wm-keys.c (mb_wm_keys_press): Fix if condition for
+	the modifier mask.
+
+	My own fix for keyboard shortcuts:
+	* matchbox/core/mb-wm-keys.c (mb_wm_keys_binding_add_with_spec): Do
+	not use keysym_needs_shift, it's not working as it should.
+	Fixes: NB#120113
+
 2009-06-12  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
         NB#118850

@@ -1,7 +1,11 @@
 matchbox-window-manager-2 (0.2.43-1~unreleased) unstable; urgency=low
 
+  Laszlo:
+  * Fixes: NB#121265 - fix press handler for keyboard shortcuts.
+
   Kimmo:
   * Fixes: NB#121678 - Need WM support for _HILDON_WM_WINDOW_TYPE_LEGACY_MENU
+  * Fixes: NB#120113 - Cntl+back space does not go to task switcher screen
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  8 Jun 2009 09:53:28 +0300
 

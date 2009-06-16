@@ -22,6 +22,7 @@ struct MBWMKeys
   int lock_mask;
 };
 
+#if 0
 static Bool
 keysym_needs_shift (MBWindowManager *wm, KeySym keysym)
 {
@@ -39,6 +40,7 @@ keysym_needs_shift (MBWindowManager *wm, KeySym keysym)
 
   return False;
 }
+#endif
 
 static Bool
 key_binding_set_grab (MBWindowManager *wm,
@@ -60,7 +62,7 @@ key_binding_set_grab (MBWindowManager *wm,
 
       if (ungrab)
 	{
-	  MBWM_DBG("ungrabbing %i , %i",
+	  MBWM_DBG ("ungrabbing %i , %i\n",
 		   XKeysymToKeycode(wm->xdpy, key->keysym),
 		   key->modifier_mask);
 
@@ -75,7 +77,7 @@ key_binding_set_grab (MBWindowManager *wm,
 
 	  mb_wm_util_trap_x_errors();
 
-	  MBWM_DBG ("grabbing keycode: %i, keysym %li, mask: %i",
+	  MBWM_DBG ("grabbing keycode: %i, keysym %li, mask: %i\n",
 		   XKeysymToKeycode(wm->xdpy, key->keysym),
 		   key->keysym,
 		   key->modifier_mask | ignored_mask);
@@ -246,7 +248,10 @@ mb_wm_keys_binding_add_with_spec (MBWindowManager    *wm,
 	}
     }
 
+  /* FIXME: keysym_needs_shift is broken somehow... 
   if (keysym_needs_shift(wm, ks) || want_shift)
+  */
+  if (want_shift)
     mask |= ShiftMask;
 
   /* If we grab keycode 0, we end up grabbing the entire keyboard.. */
@@ -276,7 +281,7 @@ mb_wm_keys_press (MBWindowManager *wm,
   if (!wm->keys)
     return;
 
-  MBWM_DBG ("Looking up keysym <%li>, ( mask %i )", keysym, modifier_mask);
+  MBWM_DBG ("Looking up keysym <%li>, (mask %i)\n", keysym, modifier_mask);
 
   iter = wm->keys->bindings;
 
@@ -285,6 +290,10 @@ mb_wm_keys_press (MBWindowManager *wm,
       int ignored_mask = 0;
 
       binding = (MBWMKeyBinding*)iter->data;
+
+      if (!binding->pressed ||
+           binding->keysym != keysym)
+        goto next_item;
 
       MBWM_DBG ("Checking up keysym <%li>, ( mask %i )",
 	       binding->keysym,
@@ -299,9 +308,12 @@ mb_wm_keys_press (MBWindowManager *wm,
 	      continue;
 	    }
 
-	  if (binding->pressed
-	      && binding->keysym == keysym
-	      && binding->modifier_mask | (ignored_mask == modifier_mask))
+	  /*
+	   * If we are here we already know that the binding->pressed function
+	   * pointer is not NULL and the keysym is matched, only the modifier
+	   * mask must be checked.
+	   */
+	  if (binding->modifier_mask == (modifier_mask & ~ignored_mask))
 	    {
 	      binding->pressed(wm, binding, binding->userdata);
 	      break;
@@ -310,6 +322,7 @@ mb_wm_keys_press (MBWindowManager *wm,
 	  ++ignored_mask;
 	}
 
+next_item:
       iter = mb_wm_util_list_next(iter);
     }
 }
