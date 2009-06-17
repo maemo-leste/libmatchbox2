@@ -841,7 +841,7 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
   XGetWindowAttributes(wm->xdpy, xev->window, &attrs);
   if ((err = mb_wm_util_untrap_x_errors()))
     {
-      g_warning ("%s: XGetWindowAttributes for %lx failed with code %d",
+      g_debug ("%s: XGetWindowAttributes for %lx failed with code %d",
                  __FUNCTION__, xev->window, err);
       return True;
     }
