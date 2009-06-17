@@ -856,7 +856,7 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
       mb_wm_util_trap_x_errors ();
       mb_wm_comp_mgr_clutter_client_repair_real (c->cm_client, damage);
       if ((err = mb_wm_util_untrap_x_errors ()))
-        g_warning ("%s: X error %d", __func__, err);
+        g_debug ("%s: X error %d", __func__, err);
     }
   else
     {
