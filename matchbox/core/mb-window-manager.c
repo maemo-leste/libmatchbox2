@@ -982,7 +982,7 @@ stack_sync_to_display (MBWindowManager *wm)
   XRestackWindows(wm->xdpy, win_list, count);
   XSync(wm->xdpy, False);
   if ((error = mb_wm_util_untrap_x_errors()) != 0)
-    g_warning("XRestackWindows(): %d", error);
+    g_debug ("XRestackWindows(): %d", error);
 }
 
 void
