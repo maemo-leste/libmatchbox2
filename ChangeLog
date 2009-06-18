@@ -1,3 +1,13 @@
+2009-06-18  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_display_sync):
+	  When doing a fullscreen sync don't attempt to re-reparent an
+	  undecorated client to the root window.  Undecorated clients
+	  don't have frames and are reparented when they are realized.
+	  The point is not to bump skip_unmaps because that never comes
+	  (sinece X won't re-reparent to the same window) and then we
+	  will lose an unmap in the cmgr.
+
 2009-06-17  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
 	NB#119560 Hiding a window affects the visibility of

@@ -553,8 +553,8 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 		  
 		}
 	    }
-	  else
-	    {
+	  else if (!client->window->undecorated)
+	    { /* Undecorated windows are always parented at the root. */
 	      client->skip_unmaps++;
               MB_WM_DBG_SKIP_UNMAPS (client);
 	      XReparentWindow(wm->xdpy, MB_WM_CLIENT_XWIN(client),
@@ -562,6 +562,8 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 			      client->window->geometry.x,
 			      client->window->geometry.y);
 	    }
+          /* What if the window has changed its undecoratedness hint?
+           * We have never supported it, it seems. */
 	}
 
       mb_wm_client_request_geometry (
