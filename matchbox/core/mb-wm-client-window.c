@@ -447,7 +447,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  || result_atom == NULL
 	  )
 	{
-	  g_debug ("%s: ### Warning net type prop failed ###", __FUNCTION__);
+	  g_debug ("%s: ### Warning net type prop failed for %x ###",
+		   __FUNCTION__, xwin);
 	  if (x_error_code == BadWindow)
 	    goto badwindow_error;
 

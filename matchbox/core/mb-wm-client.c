@@ -597,6 +597,23 @@ mb_wm_client_remove_transient (MBWindowManagerClient *client,
   client->transients = mb_wm_util_list_remove(client->transients, transient);
 }
 
+void
+mb_wm_client_remove_all_transients (MBWindowManagerClient *client)
+{
+  MBWMList *cursor = client->transients;
+
+  while (cursor)
+    {
+      MBWindowManagerClient *transient = cursor->data;
+      transient->transient_for = NULL;
+      transient->window->xwin_transient_for = None;
+      cursor = cursor->next;
+    }
+
+  mb_wm_util_list_free (client->transients);
+  client->transients = NULL;
+}
+
 /**
  * Returns the client next above the given client in the
  * stacking order.  Returns NULL if the client does not
@@ -697,6 +714,34 @@ mb_wm_client_get_transient_for (MBWindowManagerClient *client)
   return client->transient_for;
 }
 
+
+/*
+ * Returns TRUE iff the named client is a system-modal dialogue.
+ *
+ * Note: We now say that a system-modal dialogue is any dialogue which
+ * is intransient, or is transient to itself or to the root; a system-
+ * modal dialogue is not required to be modal.  In other words, testing
+ * "!mb_wm_client_get_transient_for(w)" is equivalent to testing whether
+ * w is system-modal.
+ */
+gboolean
+mb_wm_client_is_system_modal (MBWindowManagerClient *client)
+{
+  if (!client)
+    return FALSE;
+
+  if (MB_WM_CLIENT_CLIENT_TYPE (client)!=MBWMClientTypeDialog)
+    return FALSE;
+
+  return
+    /* It can be transient to nothing... */
+    client->window->xwin_transient_for == None ||
+    /* ...or to itself... */
+    client->window->xwin_transient_for == client->window->xwindow ||
+    /* ...or to the root. */
+    client->window->xwin_transient_for ==
+    client->wmref->root_win->xwindow;
+}
 
 const char*
 mb_wm_client_get_name (MBWindowManagerClient *client)

@@ -1,3 +1,20 @@
+2009-06-17  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	NB#119560 Hiding a window affects the visibility of
+	other transient windows
+	
+	* matchbox/client-types/mb-wm-client-dialog.c: Added
+	function mb_wm_client_dialog_stacking_layer() to figure
+	out the layer dynamically.
+	* matchbox/core/mb-window-manager.c: Remove all transients
+	before unmanaging a window.  Function is_system_modal()
+	moved out to mb-wm-client.c.
+	* matchbox/core/mb-wm-client-window.c: improved
+	debugging message.
+	* matchbox/core/mb-wm-client.[ch]: moved function
+	mb_wm_client_is_system_modal() in from mb-window-manager.c
+	and added function mb_wm_client_remove_all_transients().
+
 2009-06-16  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Apply patch from Laszlo Pere for NB#121265.

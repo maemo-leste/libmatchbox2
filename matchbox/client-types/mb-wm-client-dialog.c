@@ -10,6 +10,9 @@ mb_wm_client_dialog_request_geometry (MBWindowManagerClient *client,
 static void
 mb_wm_client_dialog_theme_change (MBWindowManagerClient *client);
 
+static MBWMStackLayerType
+mb_wm_client_dialog_stacking_layer (MBWindowManagerClient *client);
+
 static void
 mb_wm_client_dialog_show (MBWindowManagerClient *client)
 {
@@ -72,6 +75,7 @@ mb_wm_client_dialog_class_init (MBWMObjectClass *klass)
   client->geometry     = mb_wm_client_dialog_request_geometry;
   client->show         = mb_wm_client_dialog_show;
   client->theme_change = mb_wm_client_dialog_theme_change;
+  client->stacking_layer = mb_wm_client_dialog_stacking_layer;
 
 #if MBWM_WANT_DEBUG
   klass->klass_name = "MBWMClientDialog";
@@ -115,9 +119,7 @@ mb_wm_client_dialog_init (MBWMObject *this, va_list vap)
       mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeEast);
     }
 
-  if (win->xwin_transient_for
-      && win->xwin_transient_for != win->xwindow
-      && win->xwin_transient_for != wm->root_win->xwindow)
+  if (!mb_wm_client_is_system_modal (client))
     {
       MBWM_DBG ("Adding to '%lx' transient list",
 		win->xwin_transient_for);
@@ -125,16 +127,6 @@ mb_wm_client_dialog_init (MBWMObject *this, va_list vap)
 	(mb_wm_managed_client_from_xwindow (wm,
 					    win->xwin_transient_for),
 	 client);
-      client->stacking_layer = 0;  /* We stack with whatever transient too */
-    }
-  else
-    {
-      if (win->hildon_stacking_layer == 0)
-        /* Stack with 'always on top' */
-        client->stacking_layer = MBWMStackLayerTopMid;
-      else
-        client->stacking_layer = client->window->hildon_stacking_layer
-                                 + MBWMStackLayerHildon1 - 1;
     }
 
   /* center if window sets 0,0
@@ -372,3 +364,22 @@ mb_wm_client_dialog_new (MBWindowManager *wm, MBWMClientWindow *win)
   return client;
 }
 
+static MBWMStackLayerType
+mb_wm_client_dialog_stacking_layer (MBWindowManagerClient *client)
+{
+  if (mb_wm_client_is_system_modal (client))
+    {
+      if (client->window->hildon_stacking_layer == 0)
+        /* Stack with 'always on top' */
+        return MBWMStackLayerTopMid;
+      else {
+        return client->window->hildon_stacking_layer
+	  + MBWMStackLayerHildon1 - 1;
+      }
+    }
+  else
+    {
+      /* Stack it with its parent */
+      return MBWMStackLayerUnknown;
+    }
+}

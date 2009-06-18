@@ -498,6 +498,8 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 	  else if (!mb_wm_client_window_is_state_set (client->window,
 					    MBWMClientWindowEWMHStateHidden))
 	    {
+	      mb_wm_client_remove_all_transients (client);
+
 #if ENABLE_COMPOSITE
 	      if (mb_wm_compositing_enabled (wm))
 		mb_wm_comp_mgr_unmap_notify (wm->comp_mgr, client);
@@ -1990,24 +1992,6 @@ mb_wm_set_layout (MBWindowManager *wm, MBWMLayout *layout)
   wm->sync_type |= (MBWMSyncGeometry | MBWMSyncVisibility);
 }
 
-/*
- * Returns TRUE iff the named client is a system-modal dialogue.
- *
- * Note: We now say that a system-modal dialogue is any dialogue which
- * is intransient, or is transient to itself or to the root; a system-
- * modal dialogue is not required to be modal.  In other words, testing
- * "!mb_wm_client_get_transient_for(w)" is equivalent to testing whether
- * w is system-modal.
- */
-static inline gboolean
-is_system_modal (MBWindowManagerClient *c)
-{
-  return
-    c &&
-    MB_WM_CLIENT_CLIENT_TYPE (c)==MBWMClientTypeDialog &&
-    !mb_wm_client_get_transient_for (c);
-}
-
 static void
 mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 {
@@ -2043,8 +2027,8 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
          (you're allowed to switch to the non-system-modal transients
           of a system-modal window) */
       (wm->modality_type == MBWMModalitySystem &&
-       is_system_modal (wm->focused_client) &&
-       !is_system_modal (client) &&
+       mb_wm_client_is_system_modal (wm->focused_client) &&
+       !mb_wm_client_is_system_modal (client) &&
        wm->focused_client != mb_wm_client_get_transient_for (client))
       )
     return;
