@@ -411,6 +411,26 @@ mb_wm_object_signal_emit (MBWMObject    *obj,
       }
 }
 
+gboolean
+mb_wm_object_is_descendant (MBWMObject *obj, int type)
+{
+  const MBWMObjectClass *considering = MB_WM_OBJECT_GET_CLASS (obj);
+
+  while (1)
+    {
+      if (considering->type == type) {
+	return TRUE;
+      }
+
+      if (considering->parent) {
+	considering = considering->parent;
+      } else {
+	/* ran out of options */
+	return FALSE;
+      }
+  }
+}
+
 #if 0
 
 /* ----- Test code -------- */

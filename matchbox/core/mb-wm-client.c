@@ -21,6 +21,7 @@
 #include "mb-wm.h"
 #include "mb-wm-theme.h"
 #include "mb-wm-comp-mgr.h"
+#include "mb-wm-client-dialog.h"
 
 #include <unistd.h>
 #include <signal.h>
@@ -730,7 +731,8 @@ mb_wm_client_is_system_modal (MBWindowManagerClient *client)
   if (!client)
     return FALSE;
 
-  if (MB_WM_CLIENT_CLIENT_TYPE (client)!=MBWMClientTypeDialog)
+  if (!mb_wm_object_is_descendant ((MBWMObject*)client,
+				   MB_WM_TYPE_CLIENT_DIALOG))
     return FALSE;
 
   return

@@ -135,6 +135,9 @@ mb_wm_object_signal_disconnect (MBWMObject    *obj,
 void
 mb_wm_object_signal_emit (MBWMObject *obj, unsigned long signal);
 
+gboolean
+mb_wm_object_is_descendant (MBWMObject *obj, int type);
+
 #if MBWM_WANT_DEBUG
 void
 mb_wm_object_dump ();
