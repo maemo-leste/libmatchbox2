@@ -1,3 +1,10 @@
+2009-06-21  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/core/mb-wm-client.c: anything descended
+	from a dialogue can be system-modal.
+	* matchbox/core/mb-wm-object.[ch]: new method
+	mb_wm_object_is_descendant().
+
 2009-06-18  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_display_sync):
