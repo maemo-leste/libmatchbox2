@@ -1,4 +1,7 @@
-matchbox-window-manager-2 (0.2.43-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.43-1) unstable; urgency=low
+
+  Thomas:
+  * Fixes: NB#118850 - The New contact dialog freezes in mentioned senario
 
   Laszlo:
   * Fixes: NB#121265 - fix press handler for keyboard shortcuts.
@@ -7,7 +10,7 @@ matchbox-window-manager-2 (0.2.43-1~unreleased) unstable; urgency=low
   * Fixes: NB#121678 - Need WM support for _HILDON_WM_WINDOW_TYPE_LEGACY_MENU
   * Fixes: NB#120113 - Cntl+back space does not go to task switcher screen
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  8 Jun 2009 09:53:28 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 22 Jun 2009 10:25:00 +0300
 
 matchbox-window-manager-2 (0.2.42-1) unstable; urgency=low
 
