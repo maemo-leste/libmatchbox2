@@ -864,6 +864,13 @@ mb_wm_client_shutdown (MBWindowManagerClient *client)
     {
       if (!strcmp (buf, machine))
 	{
+	  if (pid==getpid())
+	    {
+	      /* attempting to nuke ourselves; see NB#122710. */
+	      g_warning ("Window manager may not kill itself\n");
+	      return;
+	    }
+
           g_debug ("%s: kill(%u)", __FUNCTION__, pid);
 	  if (kill (pid, sig) >= 0)
 	    return;

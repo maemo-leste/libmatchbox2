@@ -1,3 +1,10 @@
+2009-06-22  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	NB#122710 Weird screen appearing after closing the camera application
+	
+	* matchbox/core/mb-wm-client.c: When a window belongs to us, we
+	should never kill its owner!
+
 2009-06-22  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.43
