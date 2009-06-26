@@ -488,6 +488,7 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 	   * If the client is not iconizing and is not alreadly in a hidden
 	   * state, we unmange it and destroy all the associated resources.
 	   */
+          mb_wm_client_set_map_confirmed (client, False);
 	  if (mb_wm_client_is_iconizing (client))
 	    {
 	      MBWM_DBG ("iconizing client %p\n", client);
@@ -834,6 +835,8 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
 
           if (wm->non_redirection)
             mb_wm_unredirect_client (wm, client);
+      
+	  mb_wm_client_set_map_confirmed (client, True);
 	}
 
       return True;
@@ -883,6 +886,7 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
   if (wm->non_redirection)
     mb_wm_unredirect_client (wm, client);
 
+  mb_wm_client_set_map_confirmed (client, True);
   return True;
 }
 #endif

@@ -282,6 +282,13 @@ mb_wm_client_needs_sync (MBWindowManagerClient *client);
 Bool
 mb_wm_client_is_mapped (MBWindowManagerClient *client);
 
+Bool
+mb_wm_client_is_map_confirmed (MBWindowManagerClient *client);
+
+void
+mb_wm_client_set_map_confirmed (MBWindowManagerClient *client,
+		Bool confirmed);
+
 void
 mb_wm_client_get_coverage (MBWindowManagerClient *client,
                            MBGeometry            *coverage);

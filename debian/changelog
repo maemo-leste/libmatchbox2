@@ -1,6 +1,8 @@
 matchbox-window-manager-2 (0.2.45-1~unreleased) unstable; urgency=low
 
-  * foo
+  Laszlo:
+  * Add new API: mb_wm_client_is_map_confirmed,
+    mb_wm_client_set_map_confirmed.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 23 Jun 2009 09:57:06 +0300
 
