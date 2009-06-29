@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.45-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.45-1) unstable; urgency=low
 
   Laszlo:
   * Add new API: mb_wm_client_is_map_confirmed,
