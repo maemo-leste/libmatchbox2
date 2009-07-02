@@ -1,3 +1,9 @@
+2009-07-02  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+	* matchbox/core/mb-wm-client-base.c: Add check that a window is
+	not an animation actor immediately before we focus it; extends
+	fix for NB#120885.  Possibly fixes NB#123909.
+
 2009-06-29  Aapo Kojo <aapo.kojo@nokia.com>
 
 	Release 0.2.45

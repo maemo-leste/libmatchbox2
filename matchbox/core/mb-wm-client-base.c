@@ -826,6 +826,13 @@ mb_wm_client_base_focus (MBWindowManagerClient *client)
   if (xwin == last_focused)
     return False;
 
+  if (client->window->net_type==
+      wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR])
+    {
+      g_debug ("Not focusing an animation actor.\n");
+      return False;
+    }
+
   if (client->window->protos & MBWMClientWindowProtosFocus)
     {
       MBWM_NOTE (CLIENT, "sending XEvent WM_TAKE_FOCUS to %x", xwin);
