@@ -107,6 +107,8 @@ mb_wm_atoms_init(MBWindowManager *wm)
     "_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR",
     "_HILDON_WM_WINDOW_TYPE",
     "_HILDON_WM_WINDOW_TYPE_LEGACY_MENU",
+
+    "_MAEMO_SUPPRESS_ROOT_RECONFIGURATION",
   };
 
   /* FIXME: Error Traps */

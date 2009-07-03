@@ -66,6 +66,10 @@ mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c);
 static void
 mb_wm_update_root_win_rectangles (MBWindowManager *wm);
 
+static  Bool
+mb_wm_handle_root_config_notify (XConfigureEvent *xev,
+			    void            *userdata);
+
 static Bool
 mb_wm_is_my_window (MBWindowManager *wm, Window xwin,
 		    MBWindowManagerClient **client);
@@ -545,6 +549,36 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
 
 	  XFree (theme_path);
 	}
+      else if (xev->atom == wm->atoms[MBWM_ATOM_MAEMO_SUPPRESS_ROOT_RECONFIGURATION])
+        {
+          static Bool toggled;
+          static unsigned orig_width, orig_height;
+
+          /*
+           * hildon-desktop sets this property before and after calling RandR.
+           * We may or may not get ConfigureNotify about the root window.
+           * If not, we need to emulate it (so we resize the affected windows,
+           * ie. the ones supporting portrait-mode), but if we do, make sure
+           * we don't interfere.  Let us assume the toggle is initially off.
+           * If it's not hildon-desktop is borked anyway.
+           */
+          if (!toggled)
+            { /* We're before rotation. */
+              orig_width  = wm->xdpy_width;
+              orig_height = wm->xdpy_height;
+            }
+          else if (wm->xdpy_width != orig_height && wm->xdpy_height != orig_width)
+            {
+              XConfigureEvent fake;
+
+              /* We're after rotation, and the root window hasn't been
+               * reconfigured it seems. */
+              fake.width = orig_height;
+              fake.height = orig_width;
+              mb_wm_handle_root_config_notify (&fake, wm);
+            }
+          toggled = !toggled;
+        }
 
       return True;
     }

@@ -305,6 +305,15 @@ typedef enum MBWMAtom
   MBWM_ATOM_HILDON_WM_WINDOW_TYPE,
   MBWM_ATOM_HILDON_WM_WINDOW_TYPE_LEGACY_MENU,
 
+  /*
+   * This doesn't exactly suppress root reconfigs, but almost.
+   * More importantly it enables/disables Expose event generation
+   * by the X server.  Used during rotation and serves as a kind
+   * of lock.  It work as a toggle: the property value does not
+   * actually matter, but the number of times it is changed.
+   */
+  MBWM_ATOM_MAEMO_SUPPRESS_ROOT_RECONFIGURATION,
+
   MBWM_ATOM_COUNT
 
 } MBWMAtom;
