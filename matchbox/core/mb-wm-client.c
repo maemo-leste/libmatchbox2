@@ -582,6 +582,13 @@ mb_wm_client_add_transient (MBWindowManagerClient *client,
   if (transient == NULL || client == NULL)
     return;
 
+  /*
+   * If this transient already has a registered transient parent we need to
+   * remove the link from the parent.
+   */
+  if (transient->transient_for) 
+    mb_wm_client_remove_transient (transient->transient_for, transient);
+
   transient->transient_for = client;
 
   /*

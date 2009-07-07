@@ -1,3 +1,12 @@
+2009-07-07  Aapo Kojo <aapo.kojo@nokia.com>
+
+	Patch from Laszlo Pere.
+
+	* matchbox/core/mb-wm-client.c:
+	 If this transient already has a registered transient parent we 
+	 need to remove the link from the parent.
+	 Fixes: NB#125222 - Hildon-desktop crashed when image opened from File Manager.
+
 2009-07-03  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-types.h
