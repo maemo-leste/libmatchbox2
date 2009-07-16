@@ -673,6 +673,8 @@ mb_wm_comp_mgr_clutter_turn_on_real (MBWMCompMgr *mgr)
        * actual size.  Necessary if the screen is rotated. */
       priv->overlay_window =
 	XCompositeGetOverlayWindow (wm->xdpy, wm->root_win->xwindow);
+      MB_WM_DBG_MOVE_RESIZE ("overlay", priv->overlay_window,
+                (&(MBGeometry){0, 0, wm->xdpy_width, wm->xdpy_height}));
       XResizeWindow (wm->xdpy, priv->overlay_window,
                      wm->xdpy_width, wm->xdpy_height);
 
@@ -718,6 +720,8 @@ mb_wm_comp_mgr_clutter_screen_size_changed (MBWMCompMgr *mgr,
 {
   MBWMCompMgrClutterPrivate *priv = MB_WM_COMP_MGR_CLUTTER (mgr)->priv;
 
+  MB_WM_DBG_MOVE_RESIZE ("overlay", priv->overlay_window,
+                         (&(MBGeometry){0, 0, w, h}));
   clutter_actor_set_size (clutter_stage_get_default (), w, h);
   XResizeWindow (mgr->wm->xdpy, priv->overlay_window, w, h);
 }

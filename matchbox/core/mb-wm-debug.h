@@ -25,6 +25,22 @@
  * printf("%dx%d%+d%+d"). */
 #define MBWM_GEOMETRY(geo) (geo)->width, (geo)->height, (geo)->x, (geo)->y
 
+#if 0
+# define MB_WM_DBG_SKIP_UNMAPS(c) \
+  g_debug("%s:%u SKIP_UNMAPS c=%p, skip_unmaps=%d, skip_maps=%d", \
+          __FUNCTION__, __LINE__, (c), (c)->skip_unmaps, (c)->skip_maps)
+#else
+# define MB_WM_DBG_SKIP_UNMAPS(c) /* NOP */
+#endif
+
+#if 0
+# define MB_WM_DBG_MOVE_RESIZE(what, win, geo) \
+  g_debug("%s:%u MOVE %s 0x%lx -> %dx%d%+d%+d", __FUNCTION__, __LINE__, \
+          what, win, MBWM_GEOMETRY(geo))
+#else
+# define MB_WM_DBG_MOVE_RESIZE(what, win, geo) /* NOP */
+#endif
+
 #if MBWM_WANT_DEBUG
 
 typedef enum {

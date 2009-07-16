@@ -696,6 +696,7 @@ mb_wm_handle_config_request (XConfigureRequestEvent *xev,
       xwc.sibling    = xev->above;
       xwc.stack_mode = xev->detail;
 
+      MB_WM_DBG_MOVE_RESIZE ("noclient", xev->window, &xwc);
       XConfigureWindow (wm->xdpy, xev->window, xev->value_mask, &xwc);
 
       return True;
@@ -724,7 +725,7 @@ mb_wm_handle_config_request (XConfigureRequestEvent *xev,
        * needed.
        */
       mb_wm_client_configure_request_ack_queue (client);
-
+      MB_WM_DBG_MOVE_RESIZE ("request", client->window->xwindow, &req_geom);
       mb_wm_client_request_geometry (client,
 				     &req_geom,
 				     MBWMClientReqGeomIsViaConfigureReq);

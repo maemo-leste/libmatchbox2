@@ -473,6 +473,8 @@ move_resize_client_xwin (MBWindowManagerClient *client, int x, int y, int w, int
     }
   else
     {
+      MB_WM_DBG_MOVE_RESIZE ("client", MB_WM_CLIENT_XWIN(client),
+                             (&(MBGeometry){x, y, w, h}));
       XMoveResizeWindow(wm->xdpy, MB_WM_CLIENT_XWIN(client),
 			x, y, w, h);
       client->window->x_geometry.x = x;
@@ -610,6 +612,8 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 	}
       else
 	{
+          MB_WM_DBG_MOVE_RESIZE ("frame", client->xwin_frame,
+                                 &client->frame_geometry);
 	  XMoveResizeWindow(wm->xdpy,
 			    client->xwin_frame,
 			    client->frame_geometry.x,

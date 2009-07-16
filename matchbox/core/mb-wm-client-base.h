@@ -25,14 +25,6 @@
 #define MB_WM_CLIENT_BASE_CLASS(c) ((MBWMClientBaseClass*)(c))
 #define MB_WM_TYPE_CLIENT_BASE (mb_wm_client_base_class_type ())
 
-#if 0
-# define MB_WM_DBG_SKIP_UNMAPS(c) \
-  g_debug("%s:%u SKIP_UNMAPS c=%p, skip_unmaps=%d, skip_maps=%d", \
-          __FUNCTION__, __LINE__, (c), (c)->skip_unmaps, (c)->skip_maps)
-#else
-# define MB_WM_DBG_SKIP_UNMAPS(c) /* NOP */
-#endif
-
 /**
  * A MBWindowManagerClient which exists to be the superclass of all classes
  * representing particular types of client.

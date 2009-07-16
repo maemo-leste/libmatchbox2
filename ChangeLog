@@ -1,3 +1,15 @@
+2009-07-16  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Debug macro and hooks to trace window moves and resizes.
+
+	* matchbox/core/mb-wm-debug.h:
+	  Added MB_WM_DBG_MOVE_RESIZE().
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	* matchbox/core/mb-wm-client-base.h
+	* matchbox/core/mb-wm-client-base.c
+	* matchbox/core/mb-window-manager.c:
+	  Use it.
+
 2009-07-08  Aapo Kojo <aapo.kojo@nokia.com>
 
 	Release 0.2.46
