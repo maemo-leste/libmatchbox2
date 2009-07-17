@@ -205,7 +205,6 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
 				CWOverrideRedirect|CWEventMask|/*CWBackPixel|*/
 				CWBorderPixel|CWColormap,
 				&attr);
-              XSync(wm->xdpy, False);
 	      mb_wm_rename_window (wm, client->xwin_frame, "alphaframe");
 	    }
 	  else
