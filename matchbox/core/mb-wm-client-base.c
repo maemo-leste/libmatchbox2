@@ -167,7 +167,7 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
   /* create the frame window */
 
   attr.override_redirect = True;
-/*  attr.background_pixel  = BlackPixel(wm->xdpy, wm->xscreen);*/
+  attr.background_pixel = attr.border_pixel = BlackPixel(wm->xdpy, wm->xscreen);
 /*  attr.background_pixmap = None;*/
   attr.event_mask = MBWMChildMask|MBWMButtonMask|ExposureMask;
 
@@ -191,6 +191,7 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
 	    {
 	      attr.colormap = client->window->colormap;
 
+              /* for some reason X wants us to define a BorderPixel */
 	      client->xwin_frame
 		= XCreateWindow(wm->xdpy, wm->root_win->xwindow,
 				client->frame_geometry.x,
@@ -201,9 +202,10 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
 				32,
 				InputOutput,
 				client->window->visual,
-				CWOverrideRedirect|CWEventMask/*|CWBackPixel|
-				CWBorderPixel*/|CWColormap,
+				CWOverrideRedirect|CWEventMask|/*CWBackPixel|*/
+				CWBorderPixel|CWColormap,
 				&attr);
+              XSync(wm->xdpy, False);
 	      mb_wm_rename_window (wm, client->xwin_frame, "alphaframe");
 	    }
 	  else
