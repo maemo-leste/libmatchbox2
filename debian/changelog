@@ -22,7 +22,8 @@ matchbox-window-manager-2 (0.2.47-1) unstable; urgency=low
 matchbox-window-manager-2 (0.2.46-1) unstable; urgency=low
 
   Laszlo:
-  * Fixes: NB#125222 - Hildon-desktop crashed when image opened from File Manager.
+  * Fixes: NB#125222 - Hildon-desktop crashed when image opened from File
+    Manager.
 
  -- Aapo Kojo <aapo.kojo@nokia.com>  Wed, 08 Jul 2009 13:56:36 +0300
 
