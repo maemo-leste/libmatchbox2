@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.48-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.48-1) unstable; urgency=low
 
   Adam:
   * Fixes: NB#128595 - [RGBA GTK+/sapwood] modalblocker popping up without
