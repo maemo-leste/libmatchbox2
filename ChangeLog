@@ -1,3 +1,11 @@
+2009-07-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Patch from Artem for NB#126898.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_restack_real): Don't restack if
+	MBWMCompMgrClutterClientDontShow is set.
+
 2009-07-17  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	NB#128595 [RGBA GTK+/sapwood] modalblocker popping up without
@@ -14,10 +22,10 @@
 
 2009-07-17  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
-	* matchbox/core/mb-wm-stack.c: If an application has non-application-modal
-	windows stacked above application-modal windows, force the application-modal
-	windows to the top; otherwise the application will appear to have locked up.
-	Fixes NB#115408.
+	* matchbox/core/mb-wm-stack.c: If an application has
+	non-application-modal windows stacked above application-modal windows,
+	force the application-modal windows to the top; otherwise the
+	application will appear to have locked up. Fixes NB#115408.
 
 2009-07-16  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
@@ -42,7 +50,8 @@
 	* matchbox/core/mb-wm-client.c:
 	 If this transient already has a registered transient parent we 
 	 need to remove the link from the parent.
-	 Fixes: NB#125222 - Hildon-desktop crashed when image opened from File Manager.
+	 Fixes: NB#125222 - Hildon-desktop crashed when image opened from
+	 File Manager.
 
 2009-07-03  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 

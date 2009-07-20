@@ -904,7 +904,9 @@ mb_wm_comp_mgr_clutter_restack_real (MBWMCompMgr *mgr)
 
 	      a = cc->priv->actor;
 
-	      if (!a || clutter_actor_get_parent (a) != desktop)
+	      if (!a ||
+		  clutter_actor_get_parent (a) != desktop ||
+		  cc->priv->flags & MBWMCompMgrClutterClientDontShow)
 		continue;
 
 	      clutter_actor_raise (a, prev);

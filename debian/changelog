@@ -1,8 +1,15 @@
 matchbox-window-manager-2 (0.2.48-1~unreleased) unstable; urgency=low
 
-  * new
+  Adam:
+  * Fixes: NB#128595 - [RGBA GTK+/sapwood] modalblocker popping up without
+    a dialog locks the UI
+  * Fixes: NB#128661 - [RGBA GTK+/sapwood] Application windows not mapped,
+    only titlebar visible.
 
- -- Aapo Kojo <aapo.kojo@nokia.com>  Fri, 17 Jul 2009 12:48:13 +0300
+  Kimmo:
+  * Patch from Artem for NB#126898.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 20 Jul 2009 09:31:45 +0300
 
 matchbox-window-manager-2 (0.2.47-1) unstable; urgency=low
 
