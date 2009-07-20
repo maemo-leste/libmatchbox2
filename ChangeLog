@@ -1,5 +1,8 @@
 2009-07-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Revert Thomas' patch for NB#115408, we cannot have process-based
+	stacking rules, it would never work...
+
 	Patch from Artem for NB#126898.
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c

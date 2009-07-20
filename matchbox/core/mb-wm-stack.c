@@ -141,58 +141,6 @@ mb_wm_stack_ensure (MBWindowManager *wm)
 	}
     }
 
-  /* One more pass.  Check that no application has a non-modal window
-   * stacked above an application-modal window.  Fixes #115408.
-   */
-  client = wm->stack_bottom;
-  seen   = NULL;
-
-  while (client != seen && client != NULL)
-    {
-      gboolean should_move = FALSE;
-
-      next = client->stacked_above;
-
-      /* Is it application-modal? */
-
-      if (mb_wm_client_get_transient_for (client) &&
-	  mb_wm_client_is_modal (client))
-	{
-	  /* Yes.  Go looking for windows above it which
-	   * are owned by the same process but are not modal.
-	   */
-	  MBWMClientWindow  *modal_win     = client->window;
-	  const char        *modal_machine = modal_win->machine;
-	  pid_t              modal_pid     = modal_win->pid;
-	  MBWindowManagerClient *candidate = next;
-
-	  while (candidate && !should_move)
-	    {
-	      MBWMClientWindow  *candidate_win     = candidate->window;
-	      const char        *candidate_machine = candidate_win->machine;
-	      pid_t              candidate_pid     = candidate_win->pid;
-
-	      if (candidate_pid == modal_pid &&
-		  strcmp (candidate_machine, modal_machine) == 0 &&
-		  (!mb_wm_client_get_transient_for (candidate) || !mb_wm_client_is_modal (candidate) ))
-		{
-		  should_move = TRUE;
-		}
-	      else
-		candidate = candidate->stacked_above;
-	    }
-
-	  if (should_move)
-	    {
-	      if (seen == NULL)
-		seen = client;
-
-	      mb_wm_client_stack (client, 0);
-	    }
-	}
-      client = next;
-    }
-
 //  ENABLE ME WHEN YOU NEED ME
 // mb_wm_stack_dump (wm, "FINISH");
 }
