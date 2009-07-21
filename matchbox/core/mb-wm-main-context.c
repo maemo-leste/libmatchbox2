@@ -608,6 +608,7 @@ mb_wm_main_context_x_event_handler_remove (MBWMMainContext *ctx,
 	  if (next)
 	    next->prev = prev;
 
+          memset (info, 0, sizeof(*info));
 	  free (info);
 	  free (l);
 
