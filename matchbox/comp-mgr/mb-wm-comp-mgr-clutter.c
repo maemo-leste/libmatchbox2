@@ -1051,7 +1051,7 @@ mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
       cclient->priv->window_damage = 0;
 
       if (cclient->priv->texture)
-        /* release the window in Clutter */ 
+        /* release the window in Clutter */
         clutter_x11_texture_pixmap_set_window (
                 CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
                 0, FALSE);
@@ -1133,6 +1133,10 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   texture = clutter_x11_texture_pixmap_new ();
 #endif
 
+  /* If the window isn't ARGB32, make sure we don't allow alpha */
+  if (!c->is_argb32)
+    clutter_x11_texture_pixmap_set_allow_alpha(
+        CLUTTER_X11_TEXTURE_PIXMAP(texture), FALSE);
 
   sprintf(actor_name, "texture_0x%lx",
           c->xwin_frame ? c->xwin_frame : c->window->xwindow);

@@ -176,7 +176,10 @@ mb_wm_client_init (MBWMObject *obj, va_list vap)
     if (format && format->type == PictTypeDirect &&
 	format->direct.alphaMask)
       {
-	client->is_argb32 = True;
+        MBWMClientType ctype = MB_WM_CLIENT_CLIENT_TYPE (client);
+        if (ctype != MBWMClientTypeApp &&
+            ctype != MBWMClientTypeDialog)
+          client->is_argb32 = True;
       }
   }
 #endif
@@ -586,7 +589,7 @@ mb_wm_client_add_transient (MBWindowManagerClient *client,
    * If this transient already has a registered transient parent we need to
    * remove the link from the parent.
    */
-  if (transient->transient_for) 
+  if (transient->transient_for)
     mb_wm_client_remove_transient (transient->transient_for, transient);
 
   transient->transient_for = client;
@@ -972,7 +975,7 @@ mb_wm_client_set_state (MBWindowManagerClient *client,
       break;
     }
 
-  if (new_state == old_state) 
+  if (new_state == old_state)
     return;
 
   if (new_state)
@@ -1211,7 +1214,7 @@ mb_wm_client_is_visible (MBWindowManagerClient * client)
   MBWindowManager *wm = client->wmref;
 
   mb_wm_client_get_coverage (client, &geometry);
-  
+
   return
     mb_wm_client_is_mapped (client) &&
     !mb_wm_client_is_hiding_from_desktop (client) &&
@@ -1241,7 +1244,7 @@ mb_wm_client_covers_screen (MBWindowManagerClient * client)
 
   return
     geometry.x <= 0 &&
-    geometry.y <= 0 &&    
+    geometry.y <= 0 &&
     right >= right_of_screen &&
     bottom >= bottom_of_screen;
 }

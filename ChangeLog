@@ -1,3 +1,15 @@
+2009-07-22  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	Changes to help with RGBA sapwood - disable alpha (transparency) 
+	channel for apps and dialogs.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Use set_allow_alpha
+	  to disable alpha if libmatchbox doesn't believe the window has
+	  alpha. 
+	* matchbox/core/mb-wm-client.c: Intentionally don't allow transparency
+	  for apps or dialogs.
+	* debian/control: make dependent on the new clutter
+
 2009-07-22  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.49
