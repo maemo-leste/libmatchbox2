@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.49-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.49-1) unstable; urgency=low
 
   Laszlo:
   * Changes and new API related to NB#123486.
@@ -7,7 +7,7 @@ matchbox-window-manager-2 (0.2.49-1~unreleased) unstable; urgency=low
   * Zero removed event handler to allow call_handlers_for_event see it as
     invalid. Could fix some non-reproducable crashes.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 20 Jul 2009 12:46:40 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 22 Jul 2009 13:02:21 +0300
 
 matchbox-window-manager-2 (0.2.48-1) unstable; urgency=low
 
