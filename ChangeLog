@@ -1,3 +1,13 @@
+2009-07-22  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Applied patch from Laszlo Pere for NB#123486.
+
+	* matchbox/theme-engines/mb-wm-theme.[ch]: New functions
+	mb_wm_theme_protect, mb_wm_theme_unprotect, mb_wm_theme_check_broken,
+	mb_wm_theme_is_broken.
+	* matchbox/core/mb-window-manager.c: Fallback to the default theme if
+	we detected brokenness in the current theme.
+
 2009-07-21  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/core/mb-wm-main-context.c

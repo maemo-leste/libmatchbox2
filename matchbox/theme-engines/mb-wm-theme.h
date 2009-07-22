@@ -122,6 +122,11 @@ struct MBWMTheme
 int
 mb_wm_theme_class_type ();
 
+void mb_wm_theme_protect   (void);
+void mb_wm_theme_unprotect (void);
+Bool mb_wm_theme_check_broken (void);
+Bool mb_wm_theme_is_broken (void);
+
 MBWMTheme *
 mb_wm_theme_new (MBWindowManager * wm,  const char * theme_path);
 

@@ -28,9 +28,11 @@
 #include <expat.h>
 #include <X11/Xft/Xft.h>
 #include <glib-object.h>
+#include <fcntl.h>
 
 #define SIMPLE_FRAME_TITLEBAR_HEIGHT 40
 #define SIMPLE_FRAME_EDGE_SIZE 0
+#define THEME_PROTECT_FILE_NAME "/tmp/mb_wm_theme_loading"
 
 /* FIXME! Global variable named like this? What about putting it to struct? */
 unsigned int left_padding = 0;
@@ -407,6 +409,63 @@ struct expat_data
   Bool          compositing;
   Bool          shaped;
 };
+
+static Bool broken_theme;
+
+static Bool
+mb_wm_theme_is_protected (void)
+{
+  return access (THEME_PROTECT_FILE_NAME, F_OK) == 0;
+}
+
+/*
+ * Checks if the /tmp/mb_wm_theme_loading file exists and it is there it sets
+ * the broken flag for the theme. If the /tmp/mb_wm_theme_loading file exists
+ * when the window manager starts the current theme should be considered broken
+ * and should be not used.
+ */
+Bool
+mb_wm_theme_check_broken (void)
+{
+    broken_theme = mb_wm_theme_is_protected ();
+    return broken_theme;
+}
+
+/*
+ * Returns True if the current theme is considered to be broken.
+ */
+Bool
+mb_wm_theme_is_broken (void)
+{
+    return broken_theme;
+}
+
+/*
+ * Creates the /tmp/mb_wm_theme_loading file to sense if the window manager is
+ * crashed because of a broken theme.
+ */
+void
+mb_wm_theme_protect (void)
+{
+  if (mb_wm_theme_is_protected())
+    return;
+
+  creat (THEME_PROTECT_FILE_NAME, S_IRUSR | S_IWUSR);
+}
+
+/*
+ * Removes the /tmp/mb_wm_theme_loading file and unsets the broken theme flaf to
+ * indicate, that the theme is successfully loaded.
+ */
+void
+mb_wm_theme_unprotect (void)
+{
+  broken_theme = False;
+  if (!mb_wm_theme_is_protected())
+    return;
+
+  unlink (THEME_PROTECT_FILE_NAME);
+}
 
 /**
  * Loads a theme into memory from disk, and returns it.

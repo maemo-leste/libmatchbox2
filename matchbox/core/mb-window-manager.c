@@ -54,6 +54,8 @@
 #include <X11/extensions/Xfixes.h> /* Used to hide the cursor */
 #endif
 
+#define FALLBACK_THEME_PATH "/usr/share/themes/default"
+
 static void
 mb_wm_process_cmdline (MBWindowManager *wm);
 
@@ -535,6 +537,7 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
 	  unsigned long items;
 	  unsigned long left;
 	  unsigned char *theme_path;
+	  Bool           same_path;
 
 	  XGetWindowProperty (wm->xdpy, wm->root_win->xwindow,
 			      xev->atom, 0, 8192, False,
@@ -545,7 +548,20 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
 	  if (!type || !items)
 	    return True;
 
+	  /*
+	   * With protecting/unprotecting of the theme we can sense if the WM
+	   * segfaults because of a broken theme. However if the theme path is
+	   * the same we don't want to unprotect the theme if it is considered
+	   * to be broken. We only unprotect when the user sets a new theme to
+	   * be used.
+	   */
+	  same_path = theme_path && wm->theme_path && 
+		  strcmp ((char *)theme_path, wm->theme_path) == 0;
+	  if (!same_path)
+	    mb_wm_theme_protect ();
 	  mb_wm_set_theme_from_path (wm, (char*)theme_path);
+	  if (!same_path)
+            mb_wm_theme_unprotect ();
 
 	  XFree (theme_path);
 	}
@@ -1627,6 +1643,15 @@ mb_wm_init (MBWindowManager * wm)
   MBWindowManagerClass *wm_class;
 
   wm_class = (MBWindowManagerClass *) MB_WM_OBJECT_GET_CLASS (wm);
+  
+  /*
+   * We just started. If the theme protect file exists we had a crash the 
+   * previous time we loaded the theme. Then this theme is broken, we need to
+   * use the fallback theme.
+   */
+  if (mb_wm_theme_check_broken ()) {
+    wm->theme_path = FALLBACK_THEME_PATH;
+  }
 
   mb_wm_set_theme_from_path (wm, wm->theme_path);
 
