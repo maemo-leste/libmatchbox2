@@ -314,6 +314,13 @@ typedef enum MBWMAtom
    */
   MBWM_ATOM_MAEMO_SUPPRESS_ROOT_RECONFIGURATION,
 
+  /* This flag is set on a window (currently by GTK) if the window
+   * itself contains an alpha channel, but we are supposed to ignore it.
+   * This is useful for RGBA sapwood, and gives us a performance boost by
+   * allowing our visibility detection (and SGX's) to know that the window
+   * is totally opaque. */
+  WBWM_ATOM_MAEMO_IGNORE_ALPHA,
+
   MBWM_ATOM_COUNT
 
 } MBWMAtom;
