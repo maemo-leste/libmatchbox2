@@ -1,5 +1,12 @@
 2009-07-23  Gordon Williams <gordon.williams@collabora.co.uk>
 
+	Resolves half of NB#127320 - desktop panning
+	* matchbox/core/mb-wm-client-window.c: Remove the 'Monster Hack'. The
+	original reason for this (browser visibility) appears to have gone 
+	away, and this caused the desktop to be 799x479 (instead of 800x480)
+	which meant that dragging right from the right-hand side of the
+	screen failed to produce a mouse_pressed event on the desktop.
+
 	* matchbox/core/mb-wm-types.h
         * matchbox/core/mb-wm-atoms.c
 	* matchbox/core/mb-wm-client.c: For RGBA sapwood - look for 
