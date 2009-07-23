@@ -1,5 +1,11 @@
 2009-07-23  Gordon Williams <gordon.williams@collabora.co.uk>
 
+	* matchbox/core/mb-wm-main-context.h
+	* matchbox/core/mb-wm-main-context.c:
+	  Allow for KeyRelease event handlers.
+
+2009-07-23  Gordon Williams <gordon.williams@collabora.co.uk>
+
 	Resolves half of NB#127320 - desktop panning
 	* matchbox/core/mb-wm-client-window.c: Remove the 'Monster Hack'. The
 	original reason for this (browser visibility) appears to have gone 

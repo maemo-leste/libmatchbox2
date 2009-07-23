@@ -335,6 +335,11 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 			       &xev->xkey,
 			       xev->xproperty.window);
       break;
+    case KeyRelease:
+      call_handlers_for_event (ctx->event_funcs.key_release,
+			       &xev->xkey,
+			       xev->xproperty.window);
+      break;
     case PropertyNotify:
       call_handlers_for_event (ctx->event_funcs.property_notify,
 			       &xev->xproperty,
@@ -497,6 +502,10 @@ mb_wm_main_context_x_event_handler_add (MBWMMainContext *ctx,
       ctx->event_funcs.key_press =
 	mb_wm_util_list_append (ctx->event_funcs.key_press, func_info);
       break;
+    case KeyRelease:
+      ctx->event_funcs.key_release =
+	mb_wm_util_list_append (ctx->event_funcs.key_release, func_info);
+      break;
     case PropertyNotify:
       ctx->event_funcs.property_notify =
 	mb_wm_util_list_append (ctx->event_funcs.property_notify, func_info);
@@ -567,6 +576,9 @@ mb_wm_main_context_x_event_handler_remove (MBWMMainContext *ctx,
       break;
     case KeyPress:
       l_start = &ctx->event_funcs.key_press;
+      break;
+    case KeyRelease:
+      l_start = &ctx->event_funcs.key_release;
       break;
     case PropertyNotify:
       l_start = &ctx->event_funcs.property_notify;

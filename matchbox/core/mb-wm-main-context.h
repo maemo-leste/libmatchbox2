@@ -45,6 +45,7 @@ typedef struct MBWMEventFuncs
   MBWMList *configure_request;
   MBWMList *configure_notify;
   MBWMList *key_press;
+  MBWMList *key_release;
   MBWMList *property_notify;
   MBWMList *button_press;
   MBWMList *button_release;
