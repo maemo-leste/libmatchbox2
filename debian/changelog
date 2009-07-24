@@ -1,6 +1,7 @@
 matchbox-window-manager-2 (0.2.50-1~unreleased) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Fixes: NB#129833 - Observed a Hildon-desktop crash.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 22 Jul 2009 13:05:16 +0300
 

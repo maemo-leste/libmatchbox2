@@ -1,3 +1,11 @@
+2009-07-24  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-client-window.c (icon_from_net_wm_icon): Put a
+	200kB limit for icons. Use zero return value to tell about OOM or
+	too big icon.
+	(mb_wm_client_window_sync_properties): Bail out from the loop if
+	icon_from_net_wm_icon returns zero. Hopefully fixes NB#129833
+
 2009-07-23  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-main-context.h

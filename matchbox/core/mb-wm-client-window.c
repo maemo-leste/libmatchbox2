@@ -177,20 +177,20 @@ icon_from_net_wm_icon (unsigned long * data, void ** mb_icon)
   *((MBWMRgbaIcon**)mb_icon) = icon;
 
   if (!icon)
-    return data;
+    return 0;
 
   icon->width  = *data++;
   icon->height = *data++;
 
   byte_len = sizeof (unsigned long) * icon->width * icon->height;
 
-  icon->pixels = malloc (byte_len);
-
-  if (!icon->pixels)
+  /* don't support insanely big icons, limit 200kB */
+  if (byte_len > 200 * 1024 || (icon->pixels = malloc (byte_len)) == NULL)
     {
+      g_warning ("%s: won't/couldn't allocate %u bytes", __func__, byte_len);
       mb_wm_rgba_icon_free (icon);
       *mb_icon = NULL;
-      return (data - 2);
+      return 0;
     }
 
   memcpy (icon->pixels, data, byte_len);
@@ -993,7 +993,9 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  while (p < p_end)
 	    {
 	      l = mb_wm_util_malloc0 (sizeof (MBWMList));
-	      p = icon_from_net_wm_icon (p, &l->data);
+	      if ((p = icon_from_net_wm_icon (p, &l->data)) == 0)
+                /* zero return in case of OOM or too big icon */
+                break;
 
 	      if (list_end)
 		{
