@@ -89,6 +89,8 @@ mb_wm_client_window_destroy (MBWMObject *this)
       mb_wm_rgba_icon_free ((MBWMRgbaIcon *)l->data);
       l = l->next;
     }
+
+  memset (win, 0, sizeof (*win));
 }
 
 static int

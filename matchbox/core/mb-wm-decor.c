@@ -686,24 +686,15 @@ mb_wm_decor_destroy (MBWMObject* obj)
     }
 
   if (decor->buttons)
-    {
-      mb_wm_util_list_free (decor->buttons);
-      decor->buttons = NULL;
-    }
+    mb_wm_util_list_free (decor->buttons);
 
   if (decor->press_cb_id)
-  {
     mb_wm_main_context_x_event_handler_remove (ctx, ButtonPress,
 					       decor->press_cb_id);
-    decor->press_cb_id = 0;
-  }
   
   if (decor->release_cb_id)
-  {
     mb_wm_main_context_x_event_handler_remove (ctx, ButtonRelease,
 					     decor->release_cb_id);
-    decor->release_cb_id = 0;
-  }
 
   if (decor->xwin != None)
     {
@@ -711,6 +702,8 @@ mb_wm_decor_destroy (MBWMObject* obj)
       XDestroyWindow (decor->parent_client->wmref->xdpy, decor->xwin);
       mb_wm_util_untrap_x_errors();
     }
+
+  memset (decor, 0, sizeof (*decor));
 }
 
 void
@@ -1178,22 +1171,14 @@ mb_wm_decor_button_destroy (MBWMObject* obj)
    */
   mb_wm_main_context_x_event_handler_remove (ctx, ButtonPress,
 					     button->press_cb_id);
-  button->press_cb_id = 0;
 
   if (button->userdata && button->destroy_userdata)
-    {
-      button->destroy_userdata (button, button->userdata);
-      button->userdata = NULL;
-      button->destroy_userdata = NULL;
-    }
+    button->destroy_userdata (button, button->userdata);
 
   if (button->themedata && button->destroy_themedata)
-    {
-      button->destroy_themedata (button, button->themedata);
-      button->themedata = NULL;
-      button->destroy_themedata = NULL;
-    }
+    button->destroy_themedata (button, button->themedata);
 
+  memset (button, 0, sizeof (*button));
 }
 
 static void

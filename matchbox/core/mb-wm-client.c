@@ -53,13 +53,10 @@ mb_wm_client_destroy (MBWMObject *obj)
   if (client->sig_theme_change_id)
     mb_wm_object_signal_disconnect (MB_WM_OBJECT (wm),
 				    client->sig_theme_change_id);
-  client->sig_theme_change_id = 0;
 
   if (client->sig_prop_change_id)
     mb_wm_object_signal_disconnect (MB_WM_OBJECT (client->window),
 				    client->sig_prop_change_id);
-
-  client->sig_prop_change_id = 0;
 
   if (client->ping_cb_id)
     mb_wm_main_context_timeout_handler_remove (wm->main_ctx,
@@ -78,19 +75,15 @@ mb_wm_client_destroy (MBWMObject *obj)
     mb_wm_object_unref (l->data);
 
   if (client->decor)
-    {
-      mb_wm_util_list_free (client->decor);
-      client->decor = NULL;
-    }
+    mb_wm_util_list_free (client->decor);
 
   if (client->transient_for)
     mb_wm_client_remove_transient (client->transient_for, client);
 
   if (client->priv)
-    {
-      free (client->priv);
-      client->priv = NULL;
-    }
+    free (client->priv);
+
+  memset (client, 0, sizeof (*client));
 }
 
 static Bool

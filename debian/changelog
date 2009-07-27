@@ -1,9 +1,20 @@
-matchbox-window-manager-2 (0.2.50-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.50-1) unstable; urgency=low
 
   Kimmo:
   * Fixes: NB#129833 - Observed a Hildon-desktop crash.
+  * Fixes: NB#129979 - Hildon-Desktop crash while connecting USB in Mass
+    Storage Mode
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 22 Jul 2009 13:05:16 +0300
+  Adam:
+  * Allow for KeyRelease event handlers.
+
+  Gordon:
+  * Resolve half of NB#127320 - desktop panning.
+  * Finally remove the 'Monster Hack'.
+  * For RGBA sapwood - look for MAEMO_IGNORE_ALPHA window property, and only
+    ignore alpha if so.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 27 Jul 2009 15:07:41 +0300
 
 matchbox-window-manager-2 (0.2.49-1) unstable; urgency=low
 

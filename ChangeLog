@@ -1,3 +1,19 @@
+2009-07-27  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.50
+
+	memset several different MBWMObjects to zero to invalidate them
+	properly when they are destroyed, this to avoid using the freed memory
+	area. Hopefully fixes NB#129979.
+
+	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_destroy):
+	memset the object to zero before freeing it.
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_destroy,
+	mb_wm_decor_button_destroy): memset the object to zero before freeing
+	it.
+	* matchbox/core/mb-wm-client.c (mb_wm_client_destroy): memset the
+	object to zero before freeing it.
+
 2009-07-24  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/core/mb-wm-client-window.c (icon_from_net_wm_icon): Put a
