@@ -1,3 +1,11 @@
+2009-07-27  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Robustness improvement: warn if we can't read theme.xml and create
+	a compositing theme as a fallback, so we don't crash and burn when
+	starting to manage existing clients in mb_wm_init().
+
+	* matchbox/theme-engines/mb-wm-theme.c (mb_wm_theme_new)
+
 2009-07-27  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.50

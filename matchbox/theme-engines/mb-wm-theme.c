@@ -484,7 +484,7 @@ mb_wm_theme_new (MBWindowManager * wm, const char * theme_path)
   MBWMColor      clr_lowlight;
   MBWMColor      clr_shadow;
   MBWMCompMgrShadowType shadow_type = 0;
-  Bool           compositing = False;
+  Bool           compositing = True;
   Bool           shaped = False;
   struct stat    st;
 
@@ -544,6 +544,9 @@ mb_wm_theme_new (MBWindowManager * wm, const char * theme_path)
       if (!(file = fopen (path, "r")) ||
 	  !(par = XML_ParserCreate(NULL)))
 	{
+          g_critical ("couldn't read theme.xml, make sure "
+                      "/usr/share/themes/default/matchbox2/theme.xml "
+                      "is alright and digestable");
 	  goto default_theme;
 	}
 
@@ -614,6 +617,9 @@ mb_wm_theme_new (MBWindowManager * wm, const char * theme_path)
 
       xml_stack_free (udata.stack);
     }
+  else
+    g_critical ("couldn't find theme.xml, make sure "
+                "/usr/share/themes/default exists and points somwehere");
 
   if (custom_theme_alloc_func)
     {
