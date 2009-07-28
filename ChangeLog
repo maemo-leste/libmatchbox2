@@ -1,3 +1,10 @@
+2009-07-27  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_property_notify):
+	  Detect changes to MBWM_ATOM_MAEMO_SUPPRESS_ROOT_RECONFIGURATION
+	  via property state rather than a toggle.  Requires newer
+	  hildon-desktop.
+
 2009-07-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.51

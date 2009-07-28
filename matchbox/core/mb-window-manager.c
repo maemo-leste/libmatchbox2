@@ -567,7 +567,6 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
 	}
       else if (xev->atom == wm->atoms[MBWM_ATOM_MAEMO_SUPPRESS_ROOT_RECONFIGURATION])
         {
-          static Bool toggled;
           static unsigned orig_width, orig_height;
 
           /*
@@ -578,7 +577,7 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
            * we don't interfere.  Let us assume the toggle is initially off.
            * If it's not hildon-desktop is borked anyway.
            */
-          if (!toggled)
+          if (xev->state == PropertyNewValue)
             { /* We're before rotation. */
               orig_width  = wm->xdpy_width;
               orig_height = wm->xdpy_height;
@@ -593,7 +592,6 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
               fake.height = orig_width;
               mb_wm_handle_root_config_notify (&fake, wm);
             }
-          toggled = !toggled;
         }
 
       return True;
