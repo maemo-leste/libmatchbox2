@@ -1,8 +1,12 @@
-matchbox-window-manager-2 (0.2.52-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.52-1) unstable; urgency=low
 
-  * foo
+  Adam:
+  * matchbox/core/mb-window-manager.c (mb_wm_handle_property_notify):
+    Detect changes to MBWM_ATOM_MAEMO_SUPPRESS_ROOT_RECONFIGURATION
+    via property state rather than a toggle.  Requires newer
+    hildon-desktop.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 28 Jul 2009 10:23:25 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 28 Jul 2009 15:53:40 +0300
 
 matchbox-window-manager-2 (0.2.51-1) unstable; urgency=low
 
