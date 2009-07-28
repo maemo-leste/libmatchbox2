@@ -12,7 +12,9 @@ error_handler(Display     *xdpy,
 	      XErrorEvent *error)
 {
   TrappedErrorCode = error->error_code;
-  g_debug("X error %d", TrappedErrorCode);
+  g_debug("X error %d, window: 0x%lx, req: %d, minor: %d",
+          error->error_code, error->resourceid,
+          error->request_code, error->minor_code);
   return 0;
 }
 

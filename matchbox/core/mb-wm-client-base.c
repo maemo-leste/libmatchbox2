@@ -186,6 +186,10 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
     {
       if (client->xwin_frame == None)
 	{
+          if (!client->frame_geometry.width || !client->frame_geometry.height)
+            g_critical ("i'm [not] gonna create 0x0 frame window and play "
+                        "hide and catch with you, have a good time");
+
 #if ENABLE_COMPOSITE
 	  if (mb_wm_client_is_argb32 (client))
 	    {
@@ -210,9 +214,7 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
 	  else
 #endif
 	    {
-	      /* Decorated, with no frame, and
-	       * non-ARGB32 or no compositor
-	       */
+	      /* Decorated, with no frame, and non-ARGB32 or no compositor */
 	      client->xwin_frame
 		= XCreateWindow(wm->xdpy, wm->root_win->xwindow,
 				client->frame_geometry.x,
@@ -228,7 +230,10 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
 	      mb_wm_rename_window (wm, client->xwin_frame, "nonalphaframe");
 	    }
         }
-        
+
+      g_debug("frame for window 0x%lx is 0x%lx",
+              client->window->xwindow, client->xwin_frame);
+
       /*
        * Assume geometry sync will fix this up correctly
        * together with any decoration creation. Layout
