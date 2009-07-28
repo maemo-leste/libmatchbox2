@@ -1,8 +1,15 @@
-matchbox-window-manager-2 (0.2.51-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.51-1) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Put the monster hack back to fix a number of regressions with invisible
+    800x480 windows.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 27 Jul 2009 15:15:48 +0300
+  Adam:
+  * Robustness improvement: warn if we can't read theme.xml and create
+    a compositing theme as a fallback, so we don't crash and burn when
+    starting to manage existing clients in mb_wm_init().
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 28 Jul 2009 10:21:29 +0300
 
 matchbox-window-manager-2 (0.2.50-1) unstable; urgency=low
 
