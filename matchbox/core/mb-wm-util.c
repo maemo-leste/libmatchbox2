@@ -1,6 +1,8 @@
 #include "mb-wm.h"
 #include <stdarg.h>
 
+#include "mb-wm-debug-symbols.h"
+
 #undef  G_LOG_DOMAIN
 #define G_LOG_DOMAIN "libmatchbox"
 
@@ -11,10 +13,25 @@ static int
 error_handler(Display     *xdpy,
 	      XErrorEvent *error)
 {
+#ifndef G_DEBUG_DISABLE
+  char err[64], req[64];
+
+  sprintf(err, "%s (%d)",
+          error->error_code < G_N_ELEMENTS (mb_wm_debug_x_errors)
+              && mb_wm_debug_x_errors[error->error_code]
+            ? mb_wm_debug_x_errors[error->error_code] : "???",
+          error->error_code);
+  sprintf(req, "%s (%d)",
+          error->request_code < G_N_ELEMENTS (mb_wm_debug_x_requests)
+              && mb_wm_debug_x_requests[error->request_code]
+            ? mb_wm_debug_x_requests[error->request_code] : "???",
+          error->request_code);
+  g_debug("X error %s, window: 0x%lx, req: %s, minor: %d",
+          err, error->resourceid, req, error->minor_code);
+#endif
+
   TrappedErrorCode = error->error_code;
-  g_debug("X error %d, window: 0x%lx, req: %d, minor: %d",
-          error->error_code, error->resourceid,
-          error->request_code, error->minor_code);
+
   return 0;
 }
 
