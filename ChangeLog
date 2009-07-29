@@ -1,4 +1,4 @@
-2009-07-28  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+2009-07-29  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-util.c (error_handler):
 	  Gift to those who know the cheat code: print symbolic names
