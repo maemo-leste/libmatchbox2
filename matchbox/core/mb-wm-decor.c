@@ -787,12 +787,14 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 {
   MBWMDecorButton *button = (MBWMDecorButton *)userdata;
   MBWMDecor       *decor  = button->decor;
-  MBWindowManager *wm = decor->parent_client->wmref;
+  MBWindowManager *wm;
   MBWMList        *transients = NULL;
   Bool             retval = True;
 
-  if (!button->realized)
+  if (!button->realized || !decor || !decor->parent_client)
     return False;
+
+  wm = decor->parent_client->wmref;
   
   mb_wm_object_ref (MB_WM_OBJECT(button));
 

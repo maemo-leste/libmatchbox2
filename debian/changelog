@@ -1,6 +1,8 @@
 matchbox-window-manager-2 (0.2.53-1~unreleased) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Fixes: NB#131123 - Desktop crashes observed when tapping on 'back' button
+    quickly on various applications
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 28 Jul 2009 15:55:57 +0300
 

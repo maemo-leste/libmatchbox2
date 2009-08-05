@@ -1,3 +1,10 @@
+2009-08-05  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler):
+	Don't crash if the decor or its parent has been destroyed.
+	Fixes: NB#131123 - Desktop crashes observed when tapping on 'back'
+	button quickly on various applications
+
 2009-07-29  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-util.c (error_handler):
