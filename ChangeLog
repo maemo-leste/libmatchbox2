@@ -1,5 +1,7 @@
 2009-08-05  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.53
+
 	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler):
 	Don't crash if the decor or its parent has been destroyed.
 	Fixes: NB#131123 - Desktop crashes observed when tapping on 'back'
