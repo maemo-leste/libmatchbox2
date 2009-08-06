@@ -262,12 +262,17 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
    * If this is a system-modal client and the global setting
    * is to support system modal windows, we create a
    * fullscreen, input-only window that gets stacked
-   * immediately bellow it, catching any input events that
+   * immediately below it, catching any input events that
    * fall outside of the system-modal client.
    */
-  if (mb_wm_client_is_modal (client) &&
+  if ((mb_wm_client_is_modal (client) &&
       !mb_wm_client_get_transient_for (client) &&
-      mb_wm_get_modality_type (wm) == MBWMModalitySystem)
+      mb_wm_get_modality_type (wm) == MBWMModalitySystem) ||
+      /* we create a blocker for application windows as well,
+       * to block taps during non-fullscreen/fullscreen transition when
+       * the window is unmapped for a short period of time */
+      client->window->net_type ==
+                wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_NORMAL])
     {
       int d;
 

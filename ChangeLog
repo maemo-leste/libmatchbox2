@@ -1,3 +1,10 @@
+2009-08-06  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_realize):
+	Create a blocker for application windows as well, to block taps during
+	non-fullscreen/fullscreen transition when the window is unmapped for a
+	short period of time. Fixes: NB#130995
+
 2009-08-05  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.53
