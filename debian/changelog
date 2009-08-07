@@ -1,10 +1,10 @@
-matchbox-window-manager-2 (0.2.54-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.54-1) unstable; urgency=low
 
   Kimmo:
   * Fixes: NB#130995 - In certain scenario taps land on window below the
     application
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed,  5 Aug 2009 10:38:21 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 07 Aug 2009 11:35:53 +0300
 
 matchbox-window-manager-2 (0.2.53-1) unstable; urgency=low
 
