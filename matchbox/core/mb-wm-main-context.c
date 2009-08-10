@@ -64,6 +64,12 @@ mb_wm_main_context_check_fd_watches (MBWMMainContext * ctx);
 static Bool
 mb_wm_main_context_spin_xevent (MBWMMainContext *ctx);
 
+static void 
+mb_wm_list_remove_deleted_handlers (MBWMList **l_start);
+
+static void
+mb_wm_main_context_remove_deleted_handlers (MBWMMainContext *ctx);
+
 struct MBWMTimeOutEventInfo
 {
   int                         ms;
@@ -180,7 +186,8 @@ call_handlers_for_event (MBWMList *iter,
       MBWMXEventFuncInfo *i = iter->data;
       MBWMList        *next = iter->next;
 
-      if (i && (i->xwindow == None || i->xwindow == xwin))
+      if (i && !i->deleted && 
+		      (i->xwindow == None || i->xwindow == xwin))
 	{
 	  if (!i->func (event, i->userdata))
 	    {
@@ -362,6 +369,8 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
       break;
     }
 
+  mb_wm_main_context_remove_deleted_handlers (ctx);
+
   return False;
 }
 
@@ -460,6 +469,7 @@ mb_wm_main_context_x_event_handler_add (MBWMMainContext *ctx,
   func_info->xwindow  = xwin;
   func_info->userdata = userdata;
   func_info->id       = ids;
+  func_info->deleted  = False;
 
 #if ENABLE_COMPOSITE
   if (type == wm->damage_event_base + XDamageNotify)
@@ -535,6 +545,133 @@ mb_wm_main_context_x_event_handler_add (MBWMMainContext *ctx,
   return ids;
 }
 
+static void 
+mb_wm_list_remove_deleted_handlers (MBWMList **l_start)
+{
+  MBWMList        * l = NULL;
+
+  if (l_start)
+    l = *l_start;
+
+  while (l)
+    {
+      MBWMXEventFuncInfo * info = l->data;
+
+      if (info->deleted)
+	{
+	  MBWMList * prev = l->prev;
+	  MBWMList * next = l->next;
+
+	  g_warning ("%s: Deleting list item at %p", __func__, l);
+	  if (prev)
+	    prev->next = next;
+	  else
+	    *l_start = next;
+
+	  if (next)
+	    next->prev = prev;
+
+          memset (info, 0, sizeof(*info));
+	  free (info);
+	  free (l);
+
+	  l = next;
+	} else {
+	  l = l->next;
+	}
+    }
+}
+
+static void
+mb_wm_main_context_remove_deleted_handlers (MBWMMainContext *ctx)
+{
+  if (ctx->event_funcs.deleted_map_notify)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.map_notify);
+      ctx->event_funcs.deleted_map_notify = False;
+    }
+
+  if (ctx->event_funcs.deleted_unmap_notify)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.unmap_notify);
+      ctx->event_funcs.deleted_unmap_notify = False;
+    }
+
+  if (ctx->event_funcs.deleted_map_request)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.map_request);
+      ctx->event_funcs.deleted_map_request = False;
+    }
+
+  if (ctx->event_funcs.deleted_destroy_notify)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.destroy_notify);
+      ctx->event_funcs.deleted_destroy_notify = False;
+    }
+
+  if (ctx->event_funcs.deleted_configure_request)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.configure_request);
+      ctx->event_funcs.deleted_configure_request = False;
+    }
+
+  if (ctx->event_funcs.deleted_configure_notify)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.configure_notify);
+      ctx->event_funcs.deleted_configure_notify = False;
+    }
+
+  if (ctx->event_funcs.deleted_key_press)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.key_press);
+      ctx->event_funcs.deleted_key_press = False;
+    }
+
+  if (ctx->event_funcs.deleted_key_release)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.key_release);
+      ctx->event_funcs.deleted_key_release = False;
+    }
+
+  if (ctx->event_funcs.deleted_property_notify)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.property_notify);
+      ctx->event_funcs.deleted_property_notify = False;
+    }
+
+  if (ctx->event_funcs.deleted_button_press)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.button_press);
+      ctx->event_funcs.deleted_button_press = False;
+    }
+
+  if (ctx->event_funcs.deleted_button_release)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.button_release);
+      ctx->event_funcs.deleted_button_release = False;
+    }
+
+  if (ctx->event_funcs.deleted_motion_notify)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.motion_notify);
+      ctx->event_funcs.deleted_motion_notify = False;
+    }
+
+  if (ctx->event_funcs.deleted_client_message)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.client_message);
+      ctx->event_funcs.deleted_client_message = False;
+    }
+
+#if ENABLE_COMPOSITE
+  if (ctx->event_funcs.deleted_damage_notify)
+    {
+      mb_wm_list_remove_deleted_handlers (&ctx->event_funcs.damage_notify);
+      ctx->event_funcs.deleted_damage_notify = False;
+    }
+#endif
+}
+
 void
 mb_wm_main_context_x_event_handler_remove (MBWMMainContext *ctx,
 					   int              type,
@@ -557,42 +694,55 @@ mb_wm_main_context_x_event_handler_remove (MBWMMainContext *ctx,
     case Expose:
       break;
     case MapRequest:
+      ctx->event_funcs.deleted_map_request = True;
       l_start = &ctx->event_funcs.map_request;
       break;
     case MapNotify:
+      ctx->event_funcs.deleted_map_notify = True;
       l_start = &ctx->event_funcs.map_notify;
       break;
     case UnmapNotify:
+      ctx->event_funcs.deleted_unmap_notify = True;
       l_start = &ctx->event_funcs.unmap_notify;
       break;
     case DestroyNotify:
+      ctx->event_funcs.deleted_destroy_notify = True;
       l_start = &ctx->event_funcs.destroy_notify;
       break;
     case ConfigureNotify:
+      ctx->event_funcs.deleted_configure_notify = True;
       l_start = &ctx->event_funcs.configure_notify;
       break;
     case ConfigureRequest:
+      ctx->event_funcs.deleted_configure_request = True;
       l_start = &ctx->event_funcs.configure_request;
       break;
     case KeyPress:
+      ctx->event_funcs.deleted_key_press = True;
       l_start = &ctx->event_funcs.key_press;
       break;
     case KeyRelease:
+      ctx->event_funcs.deleted_key_release = True;
       l_start = &ctx->event_funcs.key_release;
       break;
     case PropertyNotify:
+      ctx->event_funcs.deleted_property_notify = True;
       l_start = &ctx->event_funcs.property_notify;
       break;
     case ButtonPress:
+      ctx->event_funcs.deleted_button_press = True;
       l_start = &ctx->event_funcs.button_press;
       break;
     case ButtonRelease:
+      ctx->event_funcs.deleted_button_release = True;
       l_start = &ctx->event_funcs.button_release;
       break;
     case MotionNotify:
+      ctx->event_funcs.deleted_motion_notify = True;
       l_start = &ctx->event_funcs.motion_notify;
       break;
     case ClientMessage:
+      ctx->event_funcs.deleted_client_message = True;
       l_start = &ctx->event_funcs.client_message;
       break;
 
@@ -609,21 +759,7 @@ mb_wm_main_context_x_event_handler_remove (MBWMMainContext *ctx,
 
       if (info->id == id)
 	{
-	  MBWMList * prev = l->prev;
-	  MBWMList * next = l->next;
-
-	  if (prev)
-	    prev->next = next;
-	  else
-	    *l_start = next;
-
-	  if (next)
-	    next->prev = prev;
-
-          memset (info, 0, sizeof(*info));
-	  free (info);
-	  free (l);
-
+	  info->deleted = True;
 	  return;
 	}
 

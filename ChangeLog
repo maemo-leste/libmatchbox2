@@ -1,3 +1,16 @@
+2009-08-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Patch from Laszlo Pere for NB#117853.
+
+	* matchbox/core/mb-wm-main-context.[ch]
+	(mb_wm_main_context_x_event_handler_remove): Do not modify the linked
+	list but merely mark the list element as deleted.
+	(mb_wm_main_context_handle_x_event): After calling all event handlers,
+	remove event handlers that have been marked as deleted. 
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_destroy): Move
+	removal of the XEvent handler back to mb_wm_decor_button_unrealize.
+	Now it should be safe.
+
 2009-08-07  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.54

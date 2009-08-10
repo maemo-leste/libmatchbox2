@@ -432,6 +432,7 @@ typedef struct MBWMXEventFuncInfo
   Window         xwindow;
   void          *userdata;
   unsigned long  id;
+  Bool deleted;
 }
 MBWMXEventFuncInfo;
 

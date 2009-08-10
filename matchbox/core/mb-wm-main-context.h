@@ -39,21 +39,35 @@ typedef struct MBWMEventFuncs
 {
   /* FIXME: figure our X wrap / unwrap mechanism */
   MBWMList *map_notify;
+  Bool      deleted_map_notify;
   MBWMList *unmap_notify;
+  Bool      deleted_unmap_notify;
   MBWMList *map_request;
+  Bool      deleted_map_request;
   MBWMList *destroy_notify;
+  Bool      deleted_destroy_notify;
   MBWMList *configure_request;
+  Bool      deleted_configure_request;
   MBWMList *configure_notify;
+  Bool      deleted_configure_notify;
   MBWMList *key_press;
+  Bool      deleted_key_press;
   MBWMList *key_release;
+  Bool      deleted_key_release;
   MBWMList *property_notify;
+  Bool      deleted_property_notify;
   MBWMList *button_press;
+  Bool      deleted_button_press;
   MBWMList *button_release;
+  Bool      deleted_button_release;
   MBWMList *motion_notify;
+  Bool      deleted_motion_notify;
   MBWMList *client_message;
+  Bool      deleted_client_message;
 
 #if ENABLE_COMPOSITE
   MBWMList *damage_notify;
+  Bool      deleted_damage_notify;
 #endif
 
 #if ! USE_GLIB_MAINLOOP
