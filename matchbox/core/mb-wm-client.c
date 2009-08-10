@@ -99,41 +99,6 @@ mb_wm_client_on_theme_change (MBWindowManager * wm, int signal,
   return False;
 }
 
-#if ENABLE_COMPOSITE
-static Bool
-mb_wm_client_ignore_alpha(MBWindowManagerClient *client)
-{
-  MBWindowManager *wm;
-  Atom actual_type_return;
-  int actual_format_return;
-  unsigned long nitems_return;
-  unsigned long bytes_after_return;
-  unsigned char* prop_return = NULL;
-  int result = 0;
-
-  wm = client->wmref;
-
-  mb_wm_util_trap_x_errors ();
-  XGetWindowProperty (wm->xdpy, client->window->xwindow,
-                      wm->atoms[WBWM_ATOM_MAEMO_IGNORE_ALPHA],
-                      0, G_MAXLONG,
-                      False,
-                      AnyPropertyType,
-                      &actual_type_return,
-                      &actual_format_return,
-                      &nitems_return,
-                      &bytes_after_return,
-                      &prop_return);
-  if (prop_return)
-    {
-      result = prop_return[0];
-      XFree (prop_return);
-    }
-  mb_wm_util_untrap_x_errors();
-
-  return result;
-}
-#endif
 
 static int
 mb_wm_client_init (MBWMObject *obj, va_list vap)
@@ -204,7 +169,9 @@ mb_wm_client_init (MBWMObject *obj, va_list vap)
     if (format && format->type == PictTypeDirect &&
 	format->direct.alphaMask)
       {
-        if (!mb_wm_client_ignore_alpha(client))
+        MBWMClientType ctype = MB_WM_CLIENT_CLIENT_TYPE (client);
+        if (ctype != MBWMClientTypeApp &&
+            ctype != MBWMClientTypeDialog)
           client->is_argb32 = True;
       }
   }

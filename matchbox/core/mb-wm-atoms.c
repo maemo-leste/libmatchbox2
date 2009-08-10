@@ -109,12 +109,10 @@ mb_wm_atoms_init(MBWindowManager *wm)
     "_HILDON_WM_WINDOW_TYPE_LEGACY_MENU",
 
     "_MAEMO_SUPPRESS_ROOT_RECONFIGURATION",
-
-    "_MAEMO_IGNORE_ALPHA",
   };
 
   /* FIXME: Error Traps */
-
+  
   MBWM_ASSERT (MBWM_ATOM_COUNT == sizeof (atom_names) / sizeof (char*));
 
   XInternAtoms (wm->xdpy,

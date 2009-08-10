@@ -1,3 +1,17 @@
+2009-08-10  Gordon Williams <gordon.williams@collabora.co.uk>
+	
+	Fixes NB#131580 - Solid home applets
+
+	* matchbox/core/mb-wm-types.h
+        * matchbox/core/mb-wm-atoms.c
+	* matchbox/core/mb-wm-client.c: 
+	Revert RGBA Sapwood changes that search for the MAEMO_IGNORE_ALPHA
+	property on windows. It seems GTK is unable to tell if a window is
+	supposed to be transparent or not any more and just sets the property
+	even for transparent windows. We must go back to the old method of
+	making sure apps and dialogs are solid, while allowing anything else
+	to be transparent.
+
 2009-08-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.55
