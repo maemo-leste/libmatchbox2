@@ -1,6 +1,6 @@
 2009-08-10  Gordon Williams <gordon.williams@collabora.co.uk>
 	
-	Fixes NB#131580 - Solid home applets
+	Fixes regression NB#131580 on new Gtk - Solid home applets
 
 	* matchbox/core/mb-wm-types.h
         * matchbox/core/mb-wm-atoms.c
