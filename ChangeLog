@@ -1,5 +1,7 @@
 2009-08-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.55
+
 	Patch from Laszlo Pere for NB#117853.
 
 	* matchbox/core/mb-wm-main-context.[ch]
