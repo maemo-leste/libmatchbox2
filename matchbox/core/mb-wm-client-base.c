@@ -515,6 +515,37 @@ is_window_mapped (
   return attr.map_state == IsViewable;
 }
 
+/* Set focus while taking into account the WM_TAKE_FOCUS protocol */
+static Bool
+mb_wm_client_set_focus (MBWindowManagerClient *client)
+{
+  MBWindowManager *wm = client->wmref;
+  Window xwin = client->window->xwindow;
+  gboolean success = True;
+
+  if (client->window->protos & MBWMClientWindowProtosFocus)
+    {
+      /*g_printerr ("sending XEvent WM_TAKE_FOCUS to %lu\n", xwin); */
+
+      success = mb_wm_client_deliver_message
+	(client,
+	 wm->atoms[MBWM_ATOM_WM_PROTOCOLS],
+	 wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS],
+	 /* FIXME: The spec explicitly says not to use CurrentTime in l[1].
+	  * It works, but we shouldn't do it.
+	  * (This will involve storing a per-display event timestamp, or a
+	  * round trip to get the time.)
+	  */
+	 CurrentTime, 0, 0, 0);
+    }
+  else
+    {
+      /*g_printerr ("calling XSetInputFocus directly for %lu\n", xwin);*/
+
+      XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
+    }
+  return success;
+}
 
 static void
 mb_wm_client_base_display_sync (MBWindowManagerClient *client)
@@ -591,9 +622,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 	   * we need to reset the focus to RevertToPointerRoot, since the
 	   * focus was lost during the implicit unmap.
 	   */
-	  XSetInputFocus (wm->xdpy, client->window->xwindow,
-			  RevertToPointerRoot, CurrentTime);
-
+          mb_wm_client_set_focus (client);
 	}
     }
 
@@ -833,7 +862,7 @@ mb_wm_client_base_focus (MBWindowManagerClient *client)
   static Window     last_focused = None;
   Window xwin = client->window->xwindow;
   MBWindowManager  *wm = client->wmref;
-  gboolean success = True;
+  gboolean success;
 
   if (!mb_wm_client_want_focus (client))
     return False;
@@ -848,28 +877,7 @@ mb_wm_client_base_focus (MBWindowManagerClient *client)
       return False;
     }
 
-  if (client->window->protos & MBWMClientWindowProtosFocus)
-    {
-      MBWM_NOTE (CLIENT, "sending XEvent WM_TAKE_FOCUS to %x", xwin);
-
-      success = mb_wm_client_deliver_message
-	(client,
-	 wm->atoms[MBWM_ATOM_WM_PROTOCOLS],
-	 wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS],
-	 /* FIXME: The spec explicitly says not to use CurrentTime in l[1].
-	  * It works, but we shouldn't do it.
-	  * (This will involve storing a per-display event timestamp, or a
-	  * round trip to get the time.)
-	  */
-	 CurrentTime,
-	 0, 0, 0);
-    }
-  else
-    {
-      MBWM_NOTE (CLIENT, "calling XSetInputFocus directly for %x", xwin);
-
-      XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
-    }
+  success = mb_wm_client_set_focus (client);
 
   XChangeProperty(wm->xdpy, wm->root_win->xwindow,
 		  wm->atoms[MBWM_ATOM_NET_ACTIVE_WINDOW],

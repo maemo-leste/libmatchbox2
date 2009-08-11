@@ -1,9 +1,18 @@
+2009-08-11  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.56
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_display_sync):
+	Take WM_TAKE_FOCUS protocol into account when assigning the focus.
+	Fixes: NB#131838 - focus is not correctly set when navigating back to
+	previous window stack
+
 2009-08-10  Gordon Williams <gordon.williams@collabora.co.uk>
 	
 	Fixes regression NB#131580 on new Gtk - Solid home applets
 
 	* matchbox/core/mb-wm-types.h
-        * matchbox/core/mb-wm-atoms.c
+	* matchbox/core/mb-wm-atoms.c
 	* matchbox/core/mb-wm-client.c: 
 	Revert RGBA Sapwood changes that search for the MAEMO_IGNORE_ALPHA
 	property on windows. It seems GTK is unable to tell if a window is

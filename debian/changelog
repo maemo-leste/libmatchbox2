@@ -1,8 +1,13 @@
-matchbox-window-manager-2 (0.2.56-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.56-1) unstable; urgency=low
 
-  * foo
+  Gordon:
+  * Fixes: NB#131580 - Solid home applets
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 10 Aug 2009 15:05:57 +0300
+  Kimmo:
+  * Fixes: NB#131838 - focus is not correctly set when navigating back to
+    previous window stack
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 11 Aug 2009 10:49:51 +0300
 
 matchbox-window-manager-2 (0.2.55-1) unstable; urgency=low
 
