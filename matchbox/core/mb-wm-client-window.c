@@ -651,11 +651,20 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
        *
        * Seeing all the complexity we must conclude that whoever conceived
        * the monster hack must have been a genius.
+       *
+       * ... adding to this, we have a slight problem where the desktop
+       * doesn't recieve a button-pressed event (for panning) if we press
+       * *right* on the right-hand side of the screen (because it is only 799
+       * pixels wide). Hence we'll avoid the monster hack for desktop windows.
        */
-      if (win->x_geometry.width >= wm->xdpy_width)
-	      win->x_geometry.width = wm->xdpy_width - 1;
-      if (win->x_geometry.height >= wm->xdpy_height)
-	      win->x_geometry.height = wm->xdpy_height - 1;
+      if (win->net_type !=
+          wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_DESKTOP])
+        {
+          if (win->x_geometry.width >= wm->xdpy_width)
+                  win->x_geometry.width = wm->xdpy_width - 1;
+          if (win->x_geometry.height >= wm->xdpy_height)
+                  win->x_geometry.height = wm->xdpy_height - 1;
+        }
 
       MBWM_DBG("@@@ New Window Obj @@@");
       MBWM_DBG("Win:  %lx", win->xwindow);

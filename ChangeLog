@@ -1,3 +1,11 @@
+2009-08-11  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	* matchbox/core/mb-wm-client-window.c: Removed the Monster Hack again,
+	  but only for the desktop window. This solves the regressed fix for
+	  desktop panning not working when panning from the very right hand 
+	  side of the screen (desktop was 799x479, so never got ButtonPress
+	  when X==799).
+
 2009-08-11  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.56
