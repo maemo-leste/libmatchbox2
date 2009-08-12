@@ -1,3 +1,11 @@
+2009-08-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Patch a Coverity-found issue.
+
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties): Free 'l' if
+	icon_from_net_wm_icon returns zero.
+
 2009-08-11  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	* matchbox/core/mb-wm-client-window.c: Removed the Monster Hack again,

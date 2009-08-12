@@ -1059,9 +1059,13 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  while (p < p_end)
 	    {
 	      l = mb_wm_util_malloc0 (sizeof (MBWMList));
-	      if ((p = icon_from_net_wm_icon (p, &l->data)) == 0)
-                /* zero return in case of OOM or too big icon */
-                break;
+	      if (!l || (p = icon_from_net_wm_icon (p, &l->data)) == 0)
+                {
+                  /* zero return in case of OOM or too big icon */
+                  if (l)
+                    free (l);
+                  break;
+                }
 
 	      if (list_end)
 		{
