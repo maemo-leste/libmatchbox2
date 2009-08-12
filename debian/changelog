@@ -7,7 +7,7 @@ matchbox-window-manager-2 (0.2.57-1~unreleased) unstable; urgency=low
 matchbox-window-manager-2 (0.2.56-1) unstable; urgency=low
 
   Gordon:
-  * Fixes: NB#131580 - Solid home applets
+  * Remove MAEMO_IGNORE_ALPHA support, since it's not going to be used.
 
   Kimmo:
   * Fixes: NB#131838 - focus is not correctly set when navigating back to
