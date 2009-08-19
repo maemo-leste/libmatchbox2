@@ -35,9 +35,9 @@ typedef void (*MBWMClassFunc)   (MBWMObjectClass* klass);
 #define MB_WM_OBJECT(x) ((MBWMObject*)(x))
 #define MB_WM_OBJECT_CLASS(x) ((MBWMObjectClass*)(x))
 #define MB_WM_OBJECT_TYPE(x) (((MBWMObject*)(x))->klass->type)
-#define MB_WM_OBJECT_GET_CLASS(x) (mb_wm_object_get_class (MB_WM_OBJECT(x)))
+#define MB_WM_OBJECT_GET_CLASS(x) (MB_WM_OBJECT(x)->klass)
 #define MB_WM_OBJECT_GET_PARENT_CLASS(x) \
-    ((mb_wm_object_get_class (MB_WM_OBJECT(x)))->parent)
+    ((MB_WM_OBJECT_GET_CLASS (MB_WM_OBJECT(x)))->parent)
 #define MB_WM_OBJECT_PARENT_TYPE(x) (MB_WM_OBJECT_GET_PARENT_CLASS(x)->type)
 
 typedef enum  MBWMObjectClassType
@@ -118,9 +118,6 @@ mb_wm_object_get_refcount (MBWMObject *this);
 
 MBWMObject*
 mb_wm_object_new (int type, ...);
-
-const MBWMObjectClass*
-mb_wm_object_get_class (MBWMObject *this);
 
 unsigned long
 mb_wm_object_signal_connect (MBWMObject            *obj,

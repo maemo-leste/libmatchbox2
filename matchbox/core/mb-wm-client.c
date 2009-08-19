@@ -338,7 +338,7 @@ mb_wm_client_realize (MBWindowManagerClient *client)
   if (client->priv->realized)
     return;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->realize)
     klass->realize(client);
@@ -362,7 +362,7 @@ mb_wm_client_stack (MBWindowManagerClient *client,
 {
   MBWindowManagerClientClass *klass;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->stack)
     {
@@ -385,7 +385,7 @@ mb_wm_client_show (MBWindowManagerClient *client)
 {
   MBWindowManagerClientClass *klass;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->show)
     klass->show (client);
@@ -405,7 +405,7 @@ mb_wm_client_hide (MBWindowManagerClient *client)
 {
   MBWindowManagerClientClass *klass;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->hide)
     klass->hide (client);
@@ -431,7 +431,7 @@ mb_wm_client_focus (MBWindowManagerClient *client)
   MBWindowManagerClientClass *klass;
   Bool ret = False;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->focus)
     ret = klass->focus(client);
@@ -496,7 +496,7 @@ mb_wm_client_display_sync (MBWindowManagerClient *client)
 {
   MBWindowManagerClientClass *klass;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->sync)
     klass->sync (client);
@@ -512,26 +512,12 @@ mb_wm_client_request_geometry (MBWindowManagerClient *client,
 {
   MBWindowManagerClientClass *klass;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->geometry)
     return klass->geometry(client, new_geometry, flags);
 
   return False;
-}
-
-MBWMClientLayoutHints
-mb_wm_client_get_layout_hints (MBWindowManagerClient *client)
-{
-  if ((client->window->ewmh_state & MBWMClientWindowEWMHStateFullscreen))
-    {
-      if (client->layout_hints & LayoutPrefVisible)
-	return (LayoutPrefFullscreen | LayoutPrefVisible);
-      else
-	return LayoutPrefFullscreen;
-    }
-
-  return client->layout_hints;
 }
 
 void
@@ -725,12 +711,6 @@ mb_wm_client_get_transients (MBWindowManagerClient *client)
     }
 
   return trans;
-}
-
-MBWindowManagerClient*
-mb_wm_client_get_transient_for (MBWindowManagerClient *client)
-{
-  return client->transient_for;
 }
 
 
@@ -1013,7 +993,7 @@ mb_wm_client_theme_change (MBWindowManagerClient *client)
 {
   MBWindowManagerClientClass *klass;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->theme_change)
     klass->theme_change (client);
@@ -1032,7 +1012,7 @@ mb_wm_client_detransitise (MBWindowManagerClient *client)
   if (!client->transient_for)
     return;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->detransitise)
     klass->detransitise (client);
@@ -1126,7 +1106,7 @@ mb_wm_client_get_stacking_layer (MBWindowManagerClient *client)
 {
   MBWindowManagerClientClass *klass;
 
-  klass = MB_WM_CLIENT_CLASS(mb_wm_object_get_class (MB_WM_OBJECT(client)));
+  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->stacking_layer)
     return klass->stacking_layer (client);

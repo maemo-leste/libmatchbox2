@@ -320,12 +320,6 @@ mb_wm_object_new (int type, ...)
   return obj;
 }
 
-const MBWMObjectClass*
-mb_wm_object_get_class (MBWMObject *this)
-{
-  return this->klass;
-}
-
 unsigned long
 mb_wm_object_signal_connect (MBWMObject             *obj,
 			     unsigned long           signal,

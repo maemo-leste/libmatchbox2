@@ -100,8 +100,7 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
 
   geom = client->window->geometry;
 
-  if (((MBWindowManagerClientClass*)mb_wm_object_get_class(this))->client_type
-      != MBWMClientTypeMenu)
+  if (MB_WM_CLIENT_CLIENT_TYPE (this) != MBWMClientTypeMenu)
   {
     /* new-style menu */
 

@@ -9,7 +9,7 @@ mb_wm_atoms_init(MBWindowManager *wm)
    *   Doing it like this avoids a mass of round trips on startup.
    */
 
-  char *atom_names[] = {
+  static char *atom_names[] = {
 
     "WM_NAME",
     "WM_STATE",

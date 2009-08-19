@@ -293,7 +293,7 @@ void
 mb_wm_client_get_coverage (MBWindowManagerClient *client,
                            MBGeometry            *coverage);
 
-MBWMClientLayoutHints
+static MBWMClientLayoutHints
 mb_wm_client_get_layout_hints (MBWindowManagerClient *client);
 
 void
@@ -343,7 +343,7 @@ mb_wm_client_get_last_focused_transient (MBWindowManagerClient *client);
 MBWMList*
 mb_wm_client_get_transients (MBWindowManagerClient *client);
 
-MBWindowManagerClient*
+static MBWindowManagerClient*
 mb_wm_client_get_transient_for (MBWindowManagerClient *client);
 
 gboolean
@@ -435,5 +435,19 @@ mb_wm_client_is_visible (MBWindowManagerClient * client);
 
 Bool
 mb_wm_client_covers_screen (MBWindowManagerClient * client);
+
+static inline MBWMClientLayoutHints
+mb_wm_client_get_layout_hints (MBWindowManagerClient *client)
+{
+  return (client->window->ewmh_state & MBWMClientWindowEWMHStateFullscreen)
+    ? LayoutPrefFullscreen | (client->layout_hints & LayoutPrefVisible)
+    : client->layout_hints;
+}
+
+static inline MBWindowManagerClient*
+mb_wm_client_get_transient_for (MBWindowManagerClient *client)
+{
+  return client->transient_for;
+}
 
 #endif
