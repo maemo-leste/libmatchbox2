@@ -562,7 +562,7 @@ mb_wm_list_remove_deleted_handlers (MBWMList **l_start)
 	  MBWMList * prev = l->prev;
 	  MBWMList * next = l->next;
 
-	  g_warning ("%s: Deleting list item at %p", __func__, l);
+	  g_debug ("%s: Deleting list item at %p", __func__, l);
 	  if (prev)
 	    prev->next = next;
 	  else
