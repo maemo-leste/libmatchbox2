@@ -75,6 +75,7 @@ struct MBWMCompMgrClutterClientPrivate
   unsigned int            flags;
   Bool                    fullscreen;
   Damage                  window_damage;
+  Bool                    damage_handling_off;
   Bool                    bound;
 
   /* have we been unmapped - if so we need to re-create our texture when
@@ -162,16 +163,30 @@ mb_wm_comp_mgr_clutter_client_set_size (
 
 /* Clutter sets XComposite redirection for windows corresponding to textures;
  * this function is used to toggle redirection within Clutter. */
-void  __attribute__ ((visibility("hidden")))
+void
 mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
                                                gboolean setting)
 {
   MBWMCompMgrClutterClient *cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
 
+  mb_wm_util_trap_x_errors ();
+  XGrabServer (client->wm->xdpy);
   if (cclient->priv->texture)
     clutter_x11_texture_pixmap_set_redirection (
           CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
           setting);
+
+  if (setting && client->wm_client)
+    XCompositeRedirectSubwindows (client->wm->xdpy,
+                                  client->wm_client->xwin_frame,
+                                  CompositeRedirectManual);
+  else if (client->wm_client)
+    XCompositeUnredirectSubwindows (client->wm->xdpy,
+                                    client->wm_client->xwin_frame,
+                                    CompositeRedirectManual);
+  XSync (client->wm->xdpy, False);
+  XUngrabServer (client->wm->xdpy);
+  mb_wm_util_untrap_x_errors ();
 }
 
 /**
@@ -194,11 +209,6 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
 
   if (!(cclient->priv->flags & MBWMCompMgrClutterClientMapped))
     return;
-
-  Bool fullscreen;
-
-  fullscreen = mb_wm_client_window_is_state_set (
-      wm_client->window, MBWMClientWindowEWMHStateFullscreen);
 
   xwin = wm_client->window->xwindow;
 
@@ -739,7 +749,7 @@ mb_wm_comp_mgr_clutter_client_repair_real (MBWMCompMgrClient *client,
 
   MBWM_NOTE (COMPOSITOR, "REPAIRING %lx", client->wm_client->window->xwindow);
 
-  if (!cclient->priv->actor)
+  if (!cclient->priv->actor || cclient->priv->damage_handling_off)
     return;
 
   if (!cclient->priv->bound)
@@ -812,18 +822,23 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
 {
   MBWindowManager           * wm   = mgr->wm;
   MBWindowManagerClient     * c;
-  Damage                      damage;
-
-  if (wm->non_redirection)
-    /* avoid some Clutter/EGL errors when in non-composited mode */
-    return False;
+  MBWMCompMgrClutterClient  * cclient;
 
   c = mb_wm_managed_client_from_frame (wm, de->drawable);
-
-  if (c && c->cm_client)
+  if (!c || !c->cm_client)
     {
-      MBWMCompMgrClutterClient *cclient =
-	MB_WM_COMP_MGR_CLUTTER_CLIENT (c->cm_client);
+      MBWM_NOTE (COMPOSITOR, "Failed to find client for window %lx\n",
+                 de->drawable);
+      g_debug ("Failed to find client for window %lx\n",
+               de->drawable);
+      return False;
+    }
+
+  cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT (c->cm_client);
+
+  if (!cclient->priv->damage_handling_off)
+    {
+      Damage damage;
       int err;
 
 /* We ignore the DontUpdate flag for i386, as it uses the X11 Texture Pixmap
@@ -861,13 +876,6 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
       mb_wm_comp_mgr_clutter_client_repair_real (c->cm_client, damage);
       if ((err = mb_wm_util_untrap_x_errors ()))
         g_debug ("%s: X error %d", __func__, err);
-    }
-  else
-    {
-      MBWM_NOTE (COMPOSITOR, "Failed to find client for window %lx\n",
-		 de->drawable);
-      g_debug ("Failed to find client for window %lx\n",
-		 de->drawable);
     }
 
   return False;
@@ -1007,11 +1015,14 @@ mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
   MBWindowManager *wm = MB_WM_COMP_MGR_CLIENT (cclient)->wm;
   MBWindowManagerClient *c = MB_WM_COMP_MGR_CLIENT (cclient)->wm_client;
 
-  /* printf ("%s: client win %lx\n", __func__,
+  /* g_printerr ("%s: client win %lx\n", __func__,
           c && c->window ? c->window->xwindow : 0); */
 
-  if (track_damage)
+  if (track_damage && (cclient->priv->damage_handling_off
+                       || !cclient->priv->window_damage))
     {
+      cclient->priv->damage_handling_off = False;
+
       if (!cclient->priv->window_damage)
         {
           cclient->priv->window_damage = XDamageCreate (wm->xdpy,
@@ -1036,25 +1047,33 @@ mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
                 }
             }
         }
+      else
+        {
+          mb_wm_comp_mgr_clutter_fetch_texture (
+                                MB_WM_COMP_MGR_CLIENT (cclient));
+          XDamageSubtract (wm->xdpy, cclient->priv->window_damage, None, None);
+        }
     }
-  else if (cclient->priv->window_damage)
+  else if (!track_damage)
     {
-      int err;
-
-      /* Sing after me: "untrap" without XSync() is un*re*li*ab*le! */
-      mb_wm_util_trap_x_errors();
-      XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
-      XSync (wm->xdpy, False);
-      if ((err = mb_wm_util_untrap_x_errors()) != 0)
-        g_debug ("XDamageDestroy(0x%lx) for %p: %d",
-                 cclient->priv->window_damage, c, err);
-      cclient->priv->window_damage = 0;
+      if (cclient->priv->window_damage)
+        {
+          int err;
+          mb_wm_util_trap_x_errors();
+          XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
+          XSync (wm->xdpy, False);
+          if ((err = mb_wm_util_untrap_x_errors()) != 0)
+            g_debug ("XDamageDestroy(0x%lx) for %p: %d",
+                     cclient->priv->window_damage, c, err);
+          cclient->priv->window_damage = 0;
+        }
 
       if (cclient->priv->texture)
         /* release the window in Clutter */
         clutter_x11_texture_pixmap_set_window (
                 CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
                 0, FALSE);
+      cclient->priv->damage_handling_off = True;
     }
 }
 

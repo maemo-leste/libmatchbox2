@@ -1,3 +1,14 @@
+2009-08-26  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.58
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.[ch]
+	(mb_wm_comp_mgr_clutter_set_client_redirection): Make public and
+	(un)redirect child windows as well.
+	(mb_wm_comp_mgr_clutter_handle_damage): Track damage based on new
+	'damage_handling_off' priv member.
+	Almost Fixes: NB#126626
+
 2009-08-19  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Made frequently used functions inline.  Based on measurements
