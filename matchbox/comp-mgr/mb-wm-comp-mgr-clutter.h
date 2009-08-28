@@ -127,4 +127,7 @@ void
 mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
                                                gboolean setting);
 
+Bool
+mb_wm_comp_mgr_clutter_client_is_unredirected (MBWMCompMgrClient *client);
+
 #endif

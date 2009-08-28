@@ -76,6 +76,7 @@ struct MBWMCompMgrClutterClientPrivate
   Bool                    fullscreen;
   Damage                  window_damage;
   Bool                    damage_handling_off;
+  Bool                    unredirected;
   Bool                    bound;
 
   /* have we been unmapped - if so we need to re-create our texture when
@@ -161,6 +162,13 @@ mb_wm_comp_mgr_clutter_client_set_size (
     }
 }
 
+Bool
+mb_wm_comp_mgr_clutter_client_is_unredirected (MBWMCompMgrClient *client)
+{
+  MBWMCompMgrClutterClient *cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
+  return cclient->priv->unredirected;
+}
+
 /* Clutter sets XComposite redirection for windows corresponding to textures;
  * this function is used to toggle redirection within Clutter. */
 void
@@ -177,13 +185,24 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
           setting);
 
   if (setting && client->wm_client)
-    XCompositeRedirectSubwindows (client->wm->xdpy,
+  {
+    if (client->wm_client->xwin_frame)
+      XCompositeRedirectSubwindows (client->wm->xdpy,
                                   client->wm_client->xwin_frame,
                                   CompositeRedirectManual);
+    else
+      g_warning ("%s: %p has no frame\n", __func__, client);
+  }
   else if (client->wm_client)
-    XCompositeUnredirectSubwindows (client->wm->xdpy,
+  {
+    if (client->wm_client->xwin_frame)
+      XCompositeUnredirectSubwindows (client->wm->xdpy,
                                     client->wm_client->xwin_frame,
                                     CompositeRedirectManual);
+    else
+      g_warning ("%s: %p has no frame\n", __func__, client);
+  }
+  cclient->priv->unredirected = setting ? False : True;
   XSync (client->wm->xdpy, False);
   XUngrabServer (client->wm->xdpy);
   mb_wm_util_untrap_x_errors ();

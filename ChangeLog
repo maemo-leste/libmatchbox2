@@ -1,3 +1,11 @@
+2009-08-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.59
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.[ch]: Add unredirected
+	member to track unredirection of more than one client.
+	(mb_wm_comp_mgr_clutter_client_is_unredirected): New.
+
 2009-08-26  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.58
