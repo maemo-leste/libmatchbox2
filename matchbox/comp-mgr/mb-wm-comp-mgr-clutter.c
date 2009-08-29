@@ -176,35 +176,47 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
                                                gboolean setting)
 {
   MBWMCompMgrClutterClient *cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
+  Window xwin = None;
 
   mb_wm_util_trap_x_errors ();
-  XGrabServer (client->wm->xdpy);
   if (cclient->priv->texture)
     clutter_x11_texture_pixmap_set_redirection (
           CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
           setting);
 
-  if (setting && client->wm_client)
-  {
-    if (client->wm_client->xwin_frame)
-      XCompositeRedirectSubwindows (client->wm->xdpy,
-                                  client->wm_client->xwin_frame,
-                                  CompositeRedirectManual);
-    else
-      g_warning ("%s: %p has no frame\n", __func__, client);
-  }
-  else if (client->wm_client)
-  {
-    if (client->wm_client->xwin_frame)
-      XCompositeUnredirectSubwindows (client->wm->xdpy,
-                                    client->wm_client->xwin_frame,
+  /*
+  g_printerr("%s: %s %p %s win %lx frame %lx\n", __func__,
+             setting ? "redirecting" : "unredirecting", client->wm_client,
+             mb_wm_client_get_name (client->wm_client),
+             client->wm_client->window->xwindow,
+             client->wm_client->xwin_frame);
+             */
+
+  if (client->wm_client)
+    {
+      if (client->wm_client->window->ewmh_state &
+            MBWMClientWindowEWMHStateFullscreen)
+        xwin = client->wm_client->window->xwindow;
+      else
+        xwin = client->wm_client->xwin_frame;
+    }
+
+  if (setting && xwin != None)
+    {
+      XCompositeRedirectSubwindows (client->wm->xdpy, xwin,
                                     CompositeRedirectManual);
-    else
-      g_warning ("%s: %p has no frame\n", __func__, client);
-  }
+      XCompositeRedirectWindow (client->wm->xdpy, xwin,
+                                CompositeRedirectManual);
+    }
+  else if (xwin != None)
+    {
+      XCompositeUnredirectWindow (client->wm->xdpy, xwin,
+                                  CompositeRedirectManual);
+      XCompositeUnredirectSubwindows (client->wm->xdpy, xwin,
+                                      CompositeRedirectManual);
+    }
   cclient->priv->unredirected = setting ? False : True;
   XSync (client->wm->xdpy, False);
-  XUngrabServer (client->wm->xdpy);
   mb_wm_util_untrap_x_errors ();
 }
 

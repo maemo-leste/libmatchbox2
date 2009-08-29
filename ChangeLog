@@ -1,3 +1,19 @@
+2009-08-29  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Fixes for automatic non-compositing feature and NB#135950.
+
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_map_notify):
+	Unredirect an unredirected client again if it was reparented, because
+	it has caused an implicit redirection again.
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_set_client_redirection): (Un)redirect the
+	client window or frame depending on fullscreenness. Remove the server
+	grab, it does not seem to be necessary.
+	* matchbox/core/mb-wm-client.c (mb_wm_client_set_state): Do not assign
+	a bitmask to 'old_state' because it is compared with Bool value later,
+	using '==' operator.  This saves us an extra reparenting (and
+	redrawing) when the browser window is mapped in fullscreen.
+
 2009-08-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.59

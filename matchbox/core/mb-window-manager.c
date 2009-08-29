@@ -864,6 +864,13 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
         {
           client->skip_maps--;
           MB_WM_DBG_SKIP_UNMAPS (client);
+
+          /* we have to unredirect again because the reparenting redirected
+           * the client again */
+          if (client->cm_client &&
+              mb_wm_comp_mgr_clutter_client_is_unredirected (client->cm_client))
+            mb_wm_comp_mgr_clutter_set_client_redirection (client->cm_client,
+                                                           FALSE);
         }
       else if (client)
 	{
