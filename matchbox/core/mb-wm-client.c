@@ -933,7 +933,7 @@ mb_wm_client_set_state (MBWindowManagerClient *client,
       return; /* not handled yet */
     }
 
-  old_state = (win->ewmh_state & state_flag);
+  old_state = (win->ewmh_state & state_flag) ? True : False;
 
   switch (state_op)
     {
