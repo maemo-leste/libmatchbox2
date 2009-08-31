@@ -66,6 +66,7 @@ typedef enum MBWindowManagerFlag
 typedef enum
 {
   MBWindowManagerSignalThemeChange = 1,
+  MBWindowManagerSignalPortraitForecast,
 } MBWindowManagerSignal;
 
 typedef enum

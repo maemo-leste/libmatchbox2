@@ -1,3 +1,15 @@
+2009-08-30  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-wm-client-window.c
+	* matchbox/core/mb-wm-client-window.h
+	* matchbox/core/mb-wm-types.h
+	* matchbox/core/mb-wm-atoms.c:
+	  Get _HILDON_PORTRAIT_MODE_REQUEST of windows when they're mapped.
+	* matchbox/core/mb-window-manager.h
+	* matchbox/core/mb-window-manager.c:
+	  Emit MBWindowManagerSignalPortraitForecast if the window being
+	  mapped has _HILDON_PORTRAIT_MODE_REQUEST.
+
 2009-08-29  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Fixes for automatic non-compositing feature and NB#135950.
