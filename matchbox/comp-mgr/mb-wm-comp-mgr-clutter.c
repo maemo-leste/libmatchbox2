@@ -194,8 +194,14 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
 
   if (client->wm_client)
     {
-      if (client->wm_client->window->ewmh_state &
-            MBWMClientWindowEWMHStateFullscreen)
+      MBWMClientType c_type = MB_WM_CLIENT_CLIENT_TYPE (client->wm_client);
+      if ((client->wm_client->window->ewmh_state &
+            MBWMClientWindowEWMHStateFullscreen) ||
+          client->wm_client->xwin_frame == 0 ||
+            (c_type & (MBWMClientTypeDialog|
+                       MBWMClientTypeMenu|
+                       MBWMClientTypeNote|
+                       MBWMClientTypeOverride)))
         xwin = client->wm_client->window->xwindow;
       else
         xwin = client->wm_client->xwin_frame;

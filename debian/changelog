@@ -1,8 +1,12 @@
-matchbox-window-manager-2 (0.2.60-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.60-1) unstable; urgency=low
 
+  Kimmo:
   * Fixes related to NB#135950.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 28 Aug 2009 20:18:29 +0300
+  Adam:
+  * Fixes related to NB#134557 - Rotation suffers from too early mapping.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 31 Aug 2009 14:18:28 +0300
 
 matchbox-window-manager-2 (0.2.59-1) unstable; urgency=low
 

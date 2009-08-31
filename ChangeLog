@@ -1,3 +1,11 @@
+2009-08-31  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.60
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_set_client_redirection): Add support for
+	(un)redirecting dialogs, menus etc.
+
 2009-08-31  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-client-window.c
