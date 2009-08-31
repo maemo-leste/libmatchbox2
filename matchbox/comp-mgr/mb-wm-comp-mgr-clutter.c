@@ -184,17 +184,18 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
           CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
           setting);
 
-  /*
-  g_printerr("%s: %s %p %s win %lx frame %lx\n", __func__,
+  if (client->wm_client)
+    {
+      MBWMClientType c_type = MB_WM_CLIENT_CLIENT_TYPE (client->wm_client);
+
+      /*
+      g_printerr("%s: %s %p %s win %lx frame %lx\n", __func__,
              setting ? "redirecting" : "unredirecting", client->wm_client,
              mb_wm_client_get_name (client->wm_client),
              client->wm_client->window->xwindow,
              client->wm_client->xwin_frame);
              */
 
-  if (client->wm_client)
-    {
-      MBWMClientType c_type = MB_WM_CLIENT_CLIENT_TYPE (client->wm_client);
       if ((client->wm_client->window->ewmh_state &
             MBWMClientWindowEWMHStateFullscreen) ||
           client->wm_client->xwin_frame == 0 ||
@@ -205,12 +206,15 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
         xwin = client->wm_client->window->xwindow;
       else
         xwin = client->wm_client->xwin_frame;
+      /*
+      g_printerr("%s: chosen xwin %lx\n", __func__, xwin);
+      */
     }
 
   if (setting && xwin != None)
     {
       XCompositeRedirectSubwindows (client->wm->xdpy, xwin,
-                                    CompositeRedirectManual);
+                                    CompositeRedirectAutomatic);
       XCompositeRedirectWindow (client->wm->xdpy, xwin,
                                 CompositeRedirectManual);
     }
@@ -219,7 +223,7 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
       XCompositeUnredirectWindow (client->wm->xdpy, xwin,
                                   CompositeRedirectManual);
       XCompositeUnredirectSubwindows (client->wm->xdpy, xwin,
-                                      CompositeRedirectManual);
+                                      CompositeRedirectAutomatic);
     }
   cclient->priv->unredirected = setting ? False : True;
   XSync (client->wm->xdpy, False);
