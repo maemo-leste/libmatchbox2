@@ -1063,39 +1063,6 @@ mb_wm_sync (MBWindowManager *wm)
     {
       mb_wm_stack_ensure (wm);
 
-      /*
-       * If a freshly mapped client landed on the top of the window stack
-       * it is likely to receive focus and be activated, whatever the
-       * current state of the window manager is.  If it requests the
-       * desktop to be in p-mode switch now, before it really gets mapped,
-       * so the client window won't be mapped in lscape and needn't be
-       * reconfigured nor redrawn.
-       */
-      client = mb_wm_stack_get_highest_by_type (wm,
-                                MBWMClientTypeApp|MBWMClientTypeDialog);
-      if (client && !mb_wm_client_is_map_confirmed (client)
-          && client->window->portrait_on_map)
-        {
-          /*
-           * If @client is an application it covers the full application area,
-           * so it must be safe to rotate because no other client is exposed.
-           * Otherwise if @client is a dialog check if the request is a demand,
-           * in which case we must obey in any case.
-           */
-          if ((MB_WM_CLIENT_CLIENT_TYPE (client) & MBWMClientTypeApp)
-              || client->window->portrait_on_map > 1)
-            {
-              /* Go.  Note!  We're grabbing the server, is it a problem
-               * if we're blocking here for a few hundred milisecs? */
-              mb_wm_object_signal_emit (MB_WM_OBJECT (wm),
-                                 MBWindowManagerSignalPortraitForecast);
-
-              /* Reset the flag, so we won't bother the wm about it again. */
-              client->window->portrait_on_map = 0;
-            }
-
-        }
-
 #if ENABLE_COMPOSITE
       if (wm->comp_mgr && mb_wm_comp_mgr_enabled (wm->comp_mgr))
 	mb_wm_comp_mgr_restack (wm->comp_mgr);

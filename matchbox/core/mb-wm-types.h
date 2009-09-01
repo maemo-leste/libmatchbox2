@@ -305,9 +305,6 @@ typedef enum MBWMAtom
   MBWM_ATOM_HILDON_WM_WINDOW_TYPE,
   MBWM_ATOM_HILDON_WM_WINDOW_TYPE_LEGACY_MENU,
 
-  /* See the description in hildon-desktop. */
-  MBWM_ATOM_HILDON_PORTRAIT_MODE_REQUEST,
-
   /*
    * This doesn't exactly suppress root reconfigs, but almost.
    * More importantly it enables/disables Expose event generation
