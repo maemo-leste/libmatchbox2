@@ -1,8 +1,9 @@
-matchbox-window-manager-2 (0.2.62-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.62-1) unstable; urgency=low
 
-  * foo
+  Adam:
+  * Revert changes for NB#134557 due to complications.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 31 Aug 2009 16:24:56 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 01 Sep 2009 12:39:29 +0300
 
 matchbox-window-manager-2 (0.2.61-1) unstable; urgency=low
 
