@@ -790,6 +790,7 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
   MBWindowManager *wm;
   MBWMList        *transients = NULL;
   Bool             retval = True;
+  Bool             unref_parent_client = False;
 
   if (!button->realized || !decor || !decor->parent_client)
     return False;
@@ -900,6 +901,11 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 		  mb_wm_theme_paint_button (wm->theme, button);
 		}
 
+	      /* reference the client for the loop, since it could be
+	       * unreffed while we are handling events there */
+              mb_wm_object_ref (MB_WM_OBJECT(decor->parent_client));
+	      unref_parent_client = True;
+
 	      for (;;)
 		{
 		  /*
@@ -921,8 +927,8 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
                                    wm->main_ctx, ButtonRelease,
 			           decor->release_cb_id);
                     decor->release_cb_id = 0;
-		    mb_wm_object_unref (MB_WM_OBJECT(button));
-		    return False;
+		    retval = False;
+		    goto done;
 		  }
 
                   if (!decor->release_cb_id)
@@ -933,7 +939,8 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
                          button->state = MBWMDecorButtonStateInactive;
                          mb_wm_theme_paint_button (wm->theme, button);
                        }
-		     return False;
+		     retval = False;
+		     goto done;
                     }
 
 		  if (XCheckMaskEvent(wm->xdpy,
@@ -1014,8 +1021,8 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 			    else
 			      mb_wm_decor_button_stock_button_action (button);
 
-			    mb_wm_object_unref (MB_WM_OBJECT(button));
-			    return False;
+			    retval = False;
+			    goto done;
 			  }
 			}
 		    }
@@ -1039,6 +1046,8 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
  done:
   mb_wm_util_list_free (transients);
   mb_wm_object_unref (MB_WM_OBJECT(button));
+  if (unref_parent_client)
+    mb_wm_object_unref (MB_WM_OBJECT(decor->parent_client));
   return retval;
 }
 

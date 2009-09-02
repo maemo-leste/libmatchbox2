@@ -1,3 +1,11 @@
+2009-09-02  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler):
+	While we are in the loop processing other X events, keep a reference
+	for the parent client to avoid crash when the client is unreferenced
+	while the button is pressed (e.g. long press).  Make sure that the
+	'transients' list is freed and the button is unreferenced every time.
+
 2009-09-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.62
