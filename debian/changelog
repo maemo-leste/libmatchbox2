@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.64-1~unreleased) unstable; urgency=low
+
+  * foo
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri,  4 Sep 2009 17:36:40 +0300
+
 matchbox-window-manager-2 (0.2.63-1) unstable; urgency=low
 
   * matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler):
