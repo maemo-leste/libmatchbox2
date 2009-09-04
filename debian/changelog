@@ -1,8 +1,12 @@
-matchbox-window-manager-2 (0.2.63-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.63-1) unstable; urgency=low
 
-  * foo
+  * matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler):
+    While we are in the loop processing other X events, keep a reference
+    for the parent client to avoid crash when the client is unreferenced
+    while the button is pressed (e.g. long press).  Make sure that the
+    'transients' list is freed and the button is unreferenced every time.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue,  1 Sep 2009 12:40:55 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 04 Sep 2009 17:33:38 +0300
 
 matchbox-window-manager-2 (0.2.62-1) unstable; urgency=low
 
