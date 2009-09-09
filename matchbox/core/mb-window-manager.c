@@ -445,22 +445,22 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
   MBWM_MARK();
 
   /* Ignoring syntetic events, not even decrementing the skip_unmaps counter. */
-  if (xev->send_event) 
+  if (xev->send_event)
     return True;
-  
+
   /*
    * When the XCompositeRedirectWindow() is used we get an extra unmap event
    * which is filtered out here. We will have an other event about the redirects
    * with the xany.window set to the parent window.
    */
-  if (xev->window == xev->event) 
+  if (xev->window == xev->event)
     return True;
 
   client = mb_wm_managed_client_from_xwindow(wm, xev->window);
 
   if (client)
     {
-      if (mb_wm_client_ping_in_progress (client)) 
+      if (mb_wm_client_ping_in_progress (client))
         {
           MBWindowManagerClass  *wm_klass;
 
@@ -471,7 +471,7 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 
           if (wm_klass->client_responding)
 	    wm_klass->client_responding (wm, client);
-        } 
+        }
 
       if (client->skip_unmaps)
 	{
@@ -555,7 +555,7 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
 	   * to be broken. We only unprotect when the user sets a new theme to
 	   * be used.
 	   */
-	  same_path = theme_path && wm->theme_path && 
+	  same_path = theme_path && wm->theme_path &&
 		  strcmp ((char *)theme_path, wm->theme_path) == 0;
 	  if (!same_path)
 	    mb_wm_theme_protect ();
@@ -661,6 +661,12 @@ mb_wm_handle_root_config_notify (XConfigureEvent *xev,
 {
   MBWindowManager * wm = (MBWindowManager*)userdata;
 
+  /* We get some spurious events from X here, so just make sure to ignore them
+   * or we spend ages checking window sizes on rotation. */
+  if (wm->xdpy_width == xev->width &&
+      wm->xdpy_height == xev->height)
+    return True;
+
   wm->xdpy_width = xev->width;
   wm->xdpy_height = xev->height;
 
@@ -677,6 +683,10 @@ mb_wm_handle_root_config_notify (XConfigureEvent *xev,
 #endif
 
   mb_wm_display_sync_queue (wm, MBWMSyncGeometry);
+
+  mb_wm_object_signal_emit (MB_WM_OBJECT (wm),
+                            MBWindowManagerSignalRootConfigure);
+
   return True;
 }
 
@@ -790,7 +800,7 @@ mb_wm_is_my_window (MBWindowManager *wm,
 static void
 mb_wm_unredirect_client (MBWindowManager *wm,
                          MBWindowManagerClient *client)
-{     
+{
   if (client->cm_client)
     mb_wm_comp_mgr_clutter_set_client_redirection (client->cm_client, FALSE);
 
@@ -849,7 +859,7 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
   g_debug ("%s: @@@@ Map Notify for %lx @@@@", __func__, xev->window);
 
   /* For the same reason as in mb_wm_handle_unmap_notify(). */
-  if (xev->window == xev->event) 
+  if (xev->window == xev->event)
     return True;
 
   if (!wm_class->client_new)
@@ -891,7 +901,7 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
 
           if (wm->non_redirection)
             mb_wm_unredirect_client (wm, client);
-      
+
 	  mb_wm_client_set_map_confirmed (client, True);
 	}
 
@@ -1648,9 +1658,9 @@ mb_wm_init (MBWindowManager * wm)
   MBWindowManagerClass *wm_class;
 
   wm_class = (MBWindowManagerClass *) MB_WM_OBJECT_GET_CLASS (wm);
-  
+
   /*
-   * We just started. If the theme protect file exists we had a crash the 
+   * We just started. If the theme protect file exists we had a crash the
    * previous time we loaded the theme. Then this theme is broken, we need to
    * use the fallback theme.
    */
@@ -2355,7 +2365,7 @@ mb_adjust_dialog_title_position (MBWindowManager *wm,
   if (left_padding == new_padding)
     return;
   left_padding = new_padding;
-  
+
   top = mb_wm_get_visible_main_client(wm);
   if (!top || top == wm->desktop)
     {
