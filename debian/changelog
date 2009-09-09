@@ -1,6 +1,7 @@
 matchbox-window-manager-2 (0.2.64-1~unreleased) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Fixes: NB#122341 - Image viewer draws the content 3 times when it starts
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri,  4 Sep 2009 17:36:40 +0300
 

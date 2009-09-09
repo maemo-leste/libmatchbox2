@@ -234,6 +234,10 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
       g_debug("frame for window 0x%lx is 0x%lx",
               client->window->xwindow, client->xwin_frame);
 
+#if ENABLE_COMPOSITE
+      mb_wm_comp_mgr_client_maybe_redirect (wm->comp_mgr, client);
+#endif
+
       /*
        * Assume geometry sync will fix this up correctly
        * together with any decoration creation. Layout

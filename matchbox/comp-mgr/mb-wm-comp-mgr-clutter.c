@@ -549,6 +549,10 @@ mb_wm_comp_mgr_clutter_screen_size_changed (MBWMCompMgr *mgr,
                                             unsigned w, unsigned h);
 
 static void
+mb_wm_comp_mgr_clutter_maybe_redirect (MBWMCompMgr *mgr,
+                                       MBWindowManagerClient *c);
+
+static void
 mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
 					MBWindowManagerClient *c);
 
@@ -584,6 +588,7 @@ mb_wm_comp_mgr_clutter_class_init (MBWMObjectClass *klass)
   cm_klass->register_client   = mb_wm_comp_mgr_clutter_register_client_real;
   cm_klass->turn_on           = mb_wm_comp_mgr_clutter_turn_on_real;
   cm_klass->turn_off          = mb_wm_comp_mgr_clutter_turn_off_real;
+  cm_klass->maybe_redirect    = mb_wm_comp_mgr_clutter_maybe_redirect;
   cm_klass->map_notify        = mb_wm_comp_mgr_clutter_map_notify_real;
   cm_klass->my_window         = mb_wm_comp_mgr_is_my_window_real;
   cm_klass->restack           = mb_wm_comp_mgr_clutter_restack_real;
@@ -1115,6 +1120,19 @@ mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
                 CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
                 0, FALSE);
       cclient->priv->damage_handling_off = True;
+    }
+}
+
+static void
+mb_wm_comp_mgr_clutter_maybe_redirect (MBWMCompMgr *mgr,
+                                       MBWindowManagerClient *c)
+{
+  if (c->xwin_frame)
+    {
+      /* Use CompositeRedirectManual since the frame's immediate child
+       * is using that, see mb_wm_comp_mgr_clutter_set_client_redirection */
+      XCompositeRedirectSubwindows (c->wmref->xdpy, c->xwin_frame,
+                                    CompositeRedirectManual);
     }
 }
 

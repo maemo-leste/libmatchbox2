@@ -319,6 +319,23 @@ mb_wm_comp_mgr_restack (MBWMCompMgr *mgr)
     klass->restack (mgr);
 }
 
+/* Called for each client to possibly redirect the client before reparenting.
+ * This will save one redraw of the client. See NB#122341 */
+void __attribute__ ((visibility("hidden")))
+mb_wm_comp_mgr_client_maybe_redirect (MBWMCompMgr *mgr,
+                                      MBWindowManagerClient *c)
+{
+  MBWMCompMgrClass *klass;
+
+  if (!mgr)
+    return;
+
+  klass = MB_WM_COMP_MGR_CLASS (MB_WM_OBJECT_GET_CLASS (mgr));
+
+  if (klass->maybe_redirect)
+    klass->maybe_redirect (mgr, c);
+}
+
 /*
  * Called when a window we are interested in maps.
  */
