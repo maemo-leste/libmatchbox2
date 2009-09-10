@@ -44,6 +44,7 @@ enum {
   COOKIE_WIN_MWM_HINTS,
   COOKIE_WIN_HILDON_STACKING,
   COOKIE_WIN_HILDON_TYPE,
+  COOKIE_WIN_PORTRAIT_REQUEST,
 
   N_COOKIES
 };
@@ -357,6 +358,13 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       cookies[COOKIE_WIN_HILDON_STACKING]
 	= mb_wm_property_cardinal_req (wm, xwin,
 	  	wm->atoms[MBWM_ATOM_HILDON_STACKING_LAYER]);
+    }
+
+  if (props_req & MBWM_WINDOW_PROP_PORTRAIT_REQUEST)
+    {
+      cookies[COOKIE_WIN_PORTRAIT_REQUEST]
+	= mb_wm_property_cardinal_req (wm, xwin,
+	  	wm->atoms[MBWM_ATOM_HILDON_PORTRAIT_MODE_REQUEST]);
     }
 
   {
@@ -1164,6 +1172,41 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	XFree(value);
 
       changes |= MBWM_WINDOW_PROP_HILDON_STACKING;
+    }
+
+  if (props_req & MBWM_WINDOW_PROP_PORTRAIT_REQUEST)
+    {
+      unsigned char *value = NULL;
+
+      mb_wm_property_reply (wm,
+			    cookies[COOKIE_WIN_PORTRAIT_REQUEST],
+			    &actual_type_return,
+			    &actual_format_return,
+			    &nitems_return,
+			    &bytes_after_return,
+			    &value,
+			    &x_error_code);
+
+      if (x_error_code
+	  || actual_type_return != XA_CARDINAL
+	  || actual_format_return != 32
+	  || value == NULL
+	  )
+	{
+          if (x_error_code == BadWindow)
+	    {
+              if (value)
+	        XFree(value);
+              goto badwindow_error;
+	    }
+	}
+      else
+        win->portrait_on_map = *(unsigned *)value;
+
+      if (value)
+	XFree(value);
+
+      changes |= MBWM_WINDOW_PROP_PORTRAIT_REQUEST;
     }
 
   if (changes)
