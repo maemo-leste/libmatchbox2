@@ -436,6 +436,9 @@ mb_wm_client_is_visible (MBWindowManagerClient * client);
 Bool
 mb_wm_client_covers_screen (MBWindowManagerClient * client);
 
+Bool
+mb_wm_client_wants_portrait (MBWindowManagerClient * client);
+
 static inline MBWMClientLayoutHints
 mb_wm_client_get_layout_hints (MBWindowManagerClient *client)
 {

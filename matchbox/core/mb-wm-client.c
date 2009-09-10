@@ -1221,3 +1221,26 @@ mb_wm_client_covers_screen (MBWindowManagerClient * client)
     right >= right_of_screen &&
     bottom >= bottom_of_screen;
 }
+
+/* Returns whether we're confident the newly mapped @client wants
+ * the screen to be rotated. */
+Bool
+mb_wm_client_wants_portrait (MBWindowManagerClient * client)
+{
+  if (!client->window->portrait_on_map)
+    /* Out of scope. */
+    return False;
+
+  if (!(MB_WM_CLIENT_CLIENT_TYPE (client)
+        & (MBWMClientTypeApp|MBWMClientTypeDialog)))
+    /* Only care about applications (full screen coverage) and dialogs. */
+    return False;
+
+  if ((MB_WM_CLIENT_CLIENT_TYPE (client) & MBWMClientTypeDialog)
+      && client->window->portrait_on_map < 2)
+    /* But only dialogs which demant rotation. */
+    return False;
+
+  /* If we cannot say for sure hd will decide. */
+  return True;
+}

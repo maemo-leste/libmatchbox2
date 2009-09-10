@@ -631,9 +631,9 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
     }
 
   /*
-   * Sync up any geometry 
+   * Sync up any geometry.  Don't touch hidden (and not-yet-shown) clients.
    */
-  if (mb_wm_client_needs_geometry_sync (client))
+  if (mb_wm_client_is_mapped (client) && mb_wm_client_needs_geometry_sync (client))
     {
       int x, y, w, h;
       CARD32 wgeom[4];

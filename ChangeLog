@@ -1,3 +1,30 @@
+2009-09-10  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#134557 Rotation suffers from too early mapping
+
+	nivea2g
+
+	* matchbox/core/mb-wm-types.h
+	* matchbox/core/mb-wm-atoms.c:
+	  Added _HILDON_PORTRAIT_MODE_REQUEST.
+	* matchbox/core/mb-wm-client-window.h:
+	  Added MBWMClientWindow::portrait_on_map.
+	* matchbox/core/mb-wm-client-window.c:
+	  Get the value of this property when the client is registerd
+	  (but don't keep it updated).
+	* matchbox/core/mb-wm-client.h
+	* matchbox/core/mb-wm-client.c:
+	  mb_wm_client_wants_portrait() added.
+	* matchbox/core/mb-window-manager.h:
+	  MBWindowManagerSignalPortraitForecast added.
+	* matchbox/core/mb-window-manager.c:
+	  * mb_wm_manage_client(): if mb_wm_client_wants_portrait()
+	    don't activate it but emit the signal.
+	  * mb_wm_handle_root_config_notify(): 
+	    Activate the first unmapped portrait-desiring client it finds.
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_display_sync):
+	  Don't move-resize unshown clients.
+
 2009-09-09  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	Fixes: NB#119749 - Redundant exposure causing glitches on rotation

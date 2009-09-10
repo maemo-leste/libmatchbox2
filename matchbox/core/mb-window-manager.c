@@ -660,11 +660,11 @@ mb_wm_handle_root_config_notify (XConfigureEvent *xev,
 			    void            *userdata)
 {
   MBWindowManager * wm = (MBWindowManager*)userdata;
+  MBWindowManagerClient * c;
 
-  /* We get some spurious events from X here, so just make sure to ignore them
-   * or we spend ages checking window sizes on rotation. */
-  if (wm->xdpy_width == xev->width &&
-      wm->xdpy_height == xev->height)
+  /* We get some spurious events from X here, so just make sure
+   * to ignore them or we spend ages checking window sizes on rotation. */
+  if (wm->xdpy_width == xev->width && wm->xdpy_height == xev->height)
     return True;
 
   wm->xdpy_width = xev->width;
@@ -682,11 +682,16 @@ mb_wm_handle_root_config_notify (XConfigureEvent *xev,
     }
 #endif
 
+  /* Bastard hack part 2: now that the screen is reconfigured
+   * map and activate the client which caused us to rotate. */
+  for (c = wm->stack_top; c; c = c->stacked_below)
+    if (!mb_wm_client_is_map_confirmed (c) && c->window->portrait_on_map)
+      {
+        mb_wm_activate_client (wm, c);
+        break;
+      }
+
   mb_wm_display_sync_queue (wm, MBWMSyncGeometry);
-
-  mb_wm_object_signal_emit (MB_WM_OBJECT (wm),
-                            MBWindowManagerSignalRootConfigure);
-
   return True;
 }
 
@@ -1278,10 +1283,15 @@ mb_wm_manage_client (MBWindowManager       *wm,
     mb_wm_comp_mgr_register_client (wm->comp_mgr, client);
 #endif
 
-  if (activate && MB_WM_CLIENT_CLIENT_TYPE (client) != MBWMClientTypeDesktop)
+  if (!activate || MB_WM_CLIENT_CLIENT_TYPE (client) == MBWMClientTypeDesktop)
+    mb_wm_client_show (client);
+  else if (!mb_wm_client_wants_portrait(client))
     mb_wm_activate_client (wm, client);
   else
-    mb_wm_client_show (client);
+    /* Leave it up to the desktop to do something and we'll show
+     * and activate the client when the screen size changes. */
+    mb_wm_object_signal_emit (MB_WM_OBJECT (wm),
+                              MBWindowManagerSignalPortraitForecast);
 
   mb_wm_display_sync_queue (client->wmref, sync_flags);
 }

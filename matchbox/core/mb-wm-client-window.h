@@ -48,6 +48,7 @@
 #define MBWM_WINDOW_PROP_MWM_HINTS       (1<<18)
 #define MBWM_WINDOW_PROP_HILDON_STACKING (1<<19)
 #define MBWM_WINDOW_PROP_WIN_HILDON_TYPE (1<<20)
+#define MBWM_WINDOW_PROP_PORTRAIT_REQUEST (1<<21)
 
 #define MBWM_WINDOW_PROP_ALL        (0xffffffff)
 
@@ -161,6 +162,9 @@ struct MBWMClientWindow
 
   /* value of the atom _HILDON_STACKING_LAYER (1-10) */
   unsigned int                   hildon_stacking_layer;
+
+  /* value of _HILDON_PORTRAIT_MODE_REQUEST when the window was mapped */
+  unsigned                       portrait_on_map;
 };
 
 struct MBWMClientWindowClass
