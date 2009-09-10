@@ -58,7 +58,6 @@ struct MBWMCompMgrClass
   void   (*turn_off)          (MBWMCompMgr * mgr);
   void   (*render)            (MBWMCompMgr * mgr);
   void   (*restack)           (MBWMCompMgr * mgr);
-  void   (*maybe_redirect)    (MBWMCompMgr * mgr, MBWindowManagerClient *c);
   void   (*map_notify)        (MBWMCompMgr * mgr, MBWindowManagerClient *c);
   void   (*unmap_notify)      (MBWMCompMgr * mgr, MBWindowManagerClient *c);
   Bool   (*handle_damage)     (XDamageNotifyEvent * xev, MBWMCompMgr * mgr);
@@ -172,8 +171,5 @@ mb_wm_comp_mgr_client_repair (MBWMCompMgrClient * client, Damage damage);
 void
 mb_wm_comp_mgr_client_configure (MBWMCompMgrClient * client);
 
-void __attribute__ ((visibility("hidden")))
-mb_wm_comp_mgr_client_maybe_redirect (MBWMCompMgr *mgr,
-                                      MBWindowManagerClient *c);
 
 #endif

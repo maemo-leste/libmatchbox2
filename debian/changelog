@@ -1,6 +1,7 @@
-matchbox-window-manager-2 (0.2.65-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.65-1) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Revert the fix for NB#122341, it causes a regression.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 10 Sep 2009 15:44:03 +0300
 
@@ -13,7 +14,7 @@ matchbox-window-manager-2 (0.2.64-1) unstable; urgency=low
   * Fixes: NB#119749 - Redundant exposure causing glitches on rotation
 
   Kimmo:
-  * Fixes: NB#122341 - Image viewer draws the content 3 times when it starts
+  * NB#122341 - Image viewer draws the content 3 times when it starts
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 10 Sep 2009 15:36:51 +0300
 
