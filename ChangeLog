@@ -1,5 +1,7 @@
 2009-09-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.66
+
 	Regression-free version of:
 
 	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
@@ -15,8 +17,6 @@
 	Release 0.2.65
 
 	Revert the fix for NB#122341, it causes a regression.
-
-2009-09-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.64
 

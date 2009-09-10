@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.66-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.66-1) unstable; urgency=low
 
   Kimmo:
   * Fixes: NB#122341 - Image viewer draws the content 3 times when it starts
