@@ -1,5 +1,17 @@
 2009-09-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Regression-free version of:
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_maybe_redirect): New function to possibly
+	redirect clients before they are reparented to the frame.
+	* matchbox/comp-mgr/mb-wm-comp-mgr.[ch]: Add maybe_redirect class
+	function for the above.
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_realize): Call
+	mb_wm_comp_mgr_client_maybe_redirect before reparenting the frame.
+	Fixes: NB#122341 - Image viewer draws the content 3 times when it
+	starts
+
 	Release 0.2.65
 
 	Revert the fix for NB#122341, it causes a regression.
