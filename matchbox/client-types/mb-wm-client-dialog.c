@@ -367,7 +367,8 @@ mb_wm_client_dialog_new (MBWindowManager *wm, MBWMClientWindow *win)
 static MBWMStackLayerType
 mb_wm_client_dialog_stacking_layer (MBWindowManagerClient *client)
 {
-  if (mb_wm_client_is_system_modal (client))
+  if (mb_wm_client_is_system_modal (client)||
+      client->transient_for == None)
     {
       if (client->window->hildon_stacking_layer == 0)
         /* Stack with 'always on top' */

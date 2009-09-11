@@ -1,3 +1,9 @@
+2009-09-11  Marc Ordinas i Llopis  <marc.ordinasillopis@collabora.co.uk>
+
+	Stack dialogs correctly if transient_for is None.
+
+	* matchbox/client-types/mb-wm-client-dialog.c:
+
 2009-09-11  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.67
