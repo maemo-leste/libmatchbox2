@@ -664,6 +664,15 @@ mb_wm_client_get_last_focused_transient (MBWindowManagerClient *client)
         break;
       }
 
+  if (result) 
+    {
+      MBWindowManagerClient  *rec_transient;
+
+      rec_transient = mb_wm_client_get_last_focused_transient (result);
+      if (rec_transient)
+        result = rec_transient;
+    }
+
   return result;
 }
 

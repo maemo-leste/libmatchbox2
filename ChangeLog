@@ -1,3 +1,16 @@
+2009-09-11  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.67
+
+	Apply a patch from Laszlo Pere for NB#118818 - Focus goes away from
+	the text entry in the "new tag"/"new geotag" dialogs after
+	backgrounding
+
+	* matchbox/core/mb-wm-client.c
+	(mb_wm_client_get_last_focused_transient): Call
+	mb_wm_client_get_last_focused_transient recursively to find the
+	topmost transient that should be focused.
+
 2009-09-10  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.66

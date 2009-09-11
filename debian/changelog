@@ -1,8 +1,12 @@
-matchbox-window-manager-2 (0.2.67-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.67-1) unstable; urgency=low
 
-  * foo
+  Laszlo:
+  * Fixes: NB#118818 - Focus goes away from the text entry in the "new
+    tag"/"new geotag" dialogs after backgrounding
+  * Fixes: NB#133434 - Unable to enter username and password while creating
+    the accounts from control panel
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu, 10 Sep 2009 17:32:05 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 11 Sep 2009 13:31:38 +0300
 
 matchbox-window-manager-2 (0.2.66-1) unstable; urgency=low
 
