@@ -610,8 +610,6 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
     flag = MBWM_WINDOW_PROP_NAME;
   else if (xev->atom == wm->atoms[MBWM_ATOM_WM_HINTS])
     flag = MBWM_WINDOW_PROP_WM_HINTS;
-  else if (xev->atom == wm->atoms[MBWM_ATOM_NET_WM_ICON])
-    flag = MBWM_WINDOW_PROP_NET_ICON;
   else if (xev->atom == wm->atoms[MBWM_ATOM_WM_PROTOCOLS])
     flag = MBWM_WINDOW_PROP_PROTOS;
   else if (xev->atom == wm->atoms[MBWM_ATOM_WM_TRANSIENT_FOR])

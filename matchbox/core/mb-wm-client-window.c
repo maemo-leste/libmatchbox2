@@ -167,42 +167,6 @@ mb_wm_client_window_new (MBWindowManager *wm, Window xwin)
   return win;
 }
 
-/*
- * Creates MBWMIcon from raw _NET_WM_ICON property data, returning
- * pointer to where the next icon might be in the data
- */
-static unsigned long *
-icon_from_net_wm_icon (unsigned long * data, void ** mb_icon)
-{
-  MBWMRgbaIcon * icon = mb_wm_rgba_icon_new ();
-  size_t byte_len;
-
-  *((MBWMRgbaIcon**)mb_icon) = icon;
-
-  if (!icon)
-    return 0;
-
-  icon->width  = *data++;
-  icon->height = *data++;
-
-  byte_len = sizeof (unsigned long) * icon->width * icon->height;
-
-  /* don't support insanely big icons, limit 200kB */
-  if (byte_len > 200 * 1024 || (icon->pixels = malloc (byte_len)) == NULL)
-    {
-      g_warning ("%s: won't/couldn't allocate %u bytes", __func__, byte_len);
-      mb_wm_rgba_icon_free (icon);
-      *mb_icon = NULL;
-      return 0;
-    }
-
-  memcpy (icon->pixels, data, byte_len);
-
-  MBWM_DBG("@@@ Icon %d x %d @@@", icon->width, icon->height);
-
-  return (data + icon->width * icon->height);
-}
-
 Bool
 mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 				     unsigned long     props_req)
@@ -327,14 +291,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	= mb_wm_property_cardinal_req (wm,
 				       xwin,
 				       wm->atoms[MBWM_ATOM_NET_WM_PID]);
-    }
-
-  if (props_req & MBWM_WINDOW_PROP_NET_ICON)
-    {
-      cookies[COOKIE_WIN_ICON]
-	= mb_wm_property_cardinal_req (wm,
-				       xwin,
-				       wm->atoms[MBWM_ATOM_NET_WM_ICON]);
     }
 
   if (props_req & MBWM_WINDOW_PROP_NET_USER_TIME)
@@ -1023,77 +979,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
       if (translucency)
 	XFree (translucency);
-    }
-
-  if (props_req & MBWM_WINDOW_PROP_NET_ICON)
-    {
-      unsigned char *icons = NULL;
-
-      mb_wm_property_reply (wm,
-			    cookies[COOKIE_WIN_ICON],
-			    &actual_type_return,
-			    &actual_format_return,
-			    &nitems_return,
-			    &bytes_after_return,
-			    &icons,
-			    &x_error_code);
-
-      if (x_error_code
-	  || actual_type_return != XA_CARDINAL
-	  || actual_format_return != 32
-	  || icons == NULL
-	  )
-	{
-	  MBWM_DBG("### Warning net icon prop failed ###");
-          if (x_error_code == BadWindow)
-            goto badwindow_error;
-	}
-      else
-	{
-	  MBWMList *l = win->icons;
-	  MBWMList *list_end = NULL;
-	  unsigned long *p = (unsigned long *)icons;
-	  unsigned long *p_end = (unsigned long *)icons + nitems_return;
-
-	  while (l)
-	    {
-	      MBWMRgbaIcon * ic = l->data;
-
-	      mb_wm_rgba_icon_free (ic);
-
-	      l = l->next;
-	    }
-
-	  while (p < p_end)
-	    {
-	      l = mb_wm_util_malloc0 (sizeof (MBWMList));
-	      if (!l || (p = icon_from_net_wm_icon (p, &l->data)) == 0)
-                {
-                  /* zero return in case of OOM or too big icon */
-                  if (l)
-                    free (l);
-                  break;
-                }
-
-	      if (list_end)
-		{
-		  l->prev = list_end;
-		  list_end->next = l;
-		}
-	      else
-		{
-		  win->icons = l;
-		}
-
-	      list_end = l;
-	    }
-	}
-
-      if (icons)
-	XFree(icons);
-
-      changes |= MBWM_WINDOW_PROP_NET_ICON;
-
     }
 
   if (props_req & MBWM_WINDOW_PROP_NET_USER_TIME)

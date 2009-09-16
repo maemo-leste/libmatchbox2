@@ -1,8 +1,12 @@
-matchbox-window-manager-2 (0.2.68-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.68-1) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Fixes: NB#138792 - Desktop crashed in a scenario.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 11 Sep 2009 13:35:21 +0300
+  Marc:
+  * The libmatchbox2 part of NB#131703 fix.
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 16 Sep 2009 09:40:59 +0300
 
 matchbox-window-manager-2 (0.2.67-1) unstable; urgency=low
 

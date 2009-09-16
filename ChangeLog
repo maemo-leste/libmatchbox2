@@ -1,6 +1,25 @@
+2009-09-16  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.68
+
+	Remove _NET_WM_ICON support since we don't use it and it has buggy
+	code. Fixes: NB#138792
+
+	* matchbox/core/mb-wm-client-window.c (icon_from_net_wm_icon):
+	Removed.
+	(mb_wm_client_window_sync_properties): Don't read _NET_WM_ICON.
+	* matchbox/core/mb-wm-root-window.c
+	(mb_wm_root_window_update_supported_props): Remove _NET_WM_ICON from
+	the list of supported properties.
+	* matchbox/core/mb-wm-types.h: Remove _NET_WM_ICON.
+	* matchbox/core/mb-wm-atoms.c (mb_wm_atoms_init): Remove _NET_WM_ICON.
+	* matchbox/core/mb-window-manager.c (mb_wm_handle_property_notify):
+	Remove _NET_WM_ICON specific code.
+
 2009-09-11  Marc Ordinas i Llopis  <marc.ordinasillopis@collabora.co.uk>
 
-	Stack dialogs correctly if transient_for is None.
+	Stack dialogs correctly if transient_for is None. This is the MB2 part
+	of the NB#131703 fix.
 
 	* matchbox/client-types/mb-wm-client-dialog.c:
 

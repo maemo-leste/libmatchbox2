@@ -61,7 +61,6 @@ mb_wm_atoms_init(MBWindowManager *wm)
     "_NET_CLIENT_LIST_STACKING",
     "_NET_CURRENT_DESKTOP",
     "_NET_WM_DESKTOP",
-    "_NET_WM_ICON",
     "_NET_DESKTOP_GEOMETRY",
     "_NET_WORKAREA",
     "_NET_SHOWING_DESKTOP",

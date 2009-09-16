@@ -215,7 +215,6 @@ mb_wm_root_window_update_supported_props (MBWMRootWindow *win)
     wm->atoms[MBWM_ATOM_NET_CLIENT_LIST_STACKING],
     wm->atoms[MBWM_ATOM_NET_SHOWING_DESKTOP],
     wm->atoms[MBWM_ATOM_NET_WM_NAME],
-    wm->atoms[MBWM_ATOM_NET_WM_ICON],
     wm->atoms[MBWM_ATOM_NET_WM_ALLOWED_ACTIONS],
     wm->atoms[MBWM_ATOM_NET_WM_ACTION_MOVE],
     wm->atoms[MBWM_ATOM_NET_WM_ACTION_FULLSCREEN],
