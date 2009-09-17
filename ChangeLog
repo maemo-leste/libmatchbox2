@@ -1,3 +1,13 @@
+2009-09-17  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	Changes for Screen rotate speed, related to latest h-d commits and
+	bug NB#139504.
+	
+	* matchbox/core/mb-window-manager.h: Add 
+	  MBWindowManagerFlagLayoutRotated
+	* matchbox/core/mb-wm-layout.c: When MBWindowManagerFlagLayoutRotated
+	  is set, lay things out as if the screen were rotated.
+
 2009-09-16  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.68

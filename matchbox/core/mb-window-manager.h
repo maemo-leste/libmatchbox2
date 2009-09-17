@@ -61,6 +61,7 @@ typedef enum MBWindowManagerFlag
 {
   MBWindowManagerFlagDesktop           = (1<<0),
   MBWindowManagerFlagAlwaysReloadTheme = (1<<1),
+  MBWindowManagerFlagLayoutRotated     = (1<<2),
 } MBWindowManagerFlag;
 
 typedef enum

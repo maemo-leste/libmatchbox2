@@ -598,7 +598,7 @@ mb_wm_layout_real_layout_fullscreen (MBWMLayout *layout, MBGeometry * avail_geom
 	(LayoutPrefFullscreen|LayoutPrefVisible))
       {
 	MBWMList *l, *transients;
-        
+
         transients = l = mb_wm_client_get_transients (client);
 
 	mb_wm_client_get_coverage (client, &coverage);
@@ -694,6 +694,11 @@ mb_wm_layout_real_update (MBWMLayout * layout)
   MBWM_ASSERT (klass->layout_fullscreen);
 
   mb_wm_get_display_geometry (wm, &avail_geom);
+  if (wm->flags & MBWindowManagerFlagLayoutRotated) {
+    int t = avail_geom.width;
+    avail_geom.width = avail_geom.height;
+    avail_geom.height = t;
+  }
 
   /*
     cycle through clients, laying out each in below order.
