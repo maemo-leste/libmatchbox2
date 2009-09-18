@@ -1,8 +1,9 @@
-matchbox-window-manager-2 (0.2.69-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.69-1) unstable; urgency=low
 
-  * foo
+  Gordon:
+  * New code related to NB#139504
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 16 Sep 2009 09:52:11 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 18 Sep 2009 09:57:35 +0300
 
 matchbox-window-manager-2 (0.2.68-1) unstable; urgency=low
 
