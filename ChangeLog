@@ -1,5 +1,10 @@
 2009-09-18  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties): Avoid leaking memory when
+	reading window names. Avoid leaking memory in xas.c
+	when we use goto to bail out.
+
 	Release 0.2.69
 
 2009-09-17  Gordon Williams <gordon.williams@collabora.co.uk>

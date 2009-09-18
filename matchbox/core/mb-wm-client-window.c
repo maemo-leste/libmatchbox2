@@ -182,6 +182,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
   int              x_error_code = Success;
   Window           xwin;
   int              changes = 0;
+  Bool             abort_exit = False;
 
   MBWMClientWindowAttributes *xwin_attr = NULL;
 
@@ -345,9 +346,14 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 						 1,
 						 NULL,
 						 &x_error_code);
+      cookies[COOKIE_WIN_TRANSIENCY] = 0;
 
       if (x_error_code == BadWindow)
-        goto badwindow_error;
+        {
+          if (trans_win)
+            XFree(trans_win);
+          goto badwindow_error;
+        }
 
       /* FIXME: we cannot really change transiency lists after mapping the
        * window because the compositor cannot handle that. Maybe we should
@@ -377,13 +383,18 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       xwin_attr = mb_wm_xwin_get_attributes_reply (wm,
 						   cookies[COOKIE_WIN_ATTR],
 						   &x_error_code);
+      cookies[COOKIE_WIN_ATTR] = 0;
 
       if (!xwin_attr || x_error_code)
 	{
 	  MBWM_DBG("### Warning Get Attr Failed ( %i ) ###", x_error_code);
 
           if (x_error_code == BadWindow)
-            goto badwindow_error;
+            {
+              if (xwin_attr)
+                XFree (xwin_attr);
+              goto badwindow_error;
+            }
 
 	  goto abort;
 	}
@@ -393,6 +404,9 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       win->gravity           = xwin_attr->win_gravity;
       win->override_redirect = xwin_attr->override_redirect;
       win->window_class      = xwin_attr->class;
+
+      XFree (xwin_attr);
+      xwin_attr = NULL;
     }
 
   if (props_req & MBWM_WINDOW_PROP_WIN_TYPE)
@@ -405,6 +419,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &bytes_after_return,
 			    &result_atom,
 			    &x_error_code);
+
+      cookies[COOKIE_WIN_TYPE] = 0;
 
       if (x_error_code
 	  || actual_type_return != XA_ATOM
@@ -459,6 +475,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &result_atom,
 			    &x_error_code);
 
+      cookies[COOKIE_WIN_HILDON_TYPE] = 0;
+
       if (x_error_code
 	  || actual_type_return != XA_ATOM
 	  || actual_format_return != 32
@@ -494,6 +512,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &bytes_after_return,
 			    &result_atom,
 			    &x_error_code);
+
+      cookies[COOKIE_WIN_NET_STATE] = 0;
 
       if (x_error_code
 	  || actual_type_return != XA_ATOM
@@ -563,8 +583,11 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 		   x_error_code);
 	  MBWM_DBG("###   Cookie ID was %li                ###",
 		   cookies[COOKIE_WIN_GEOM]);
+          cookies[COOKIE_WIN_GEOM] = 0;
 	  goto abort;
 	}
+
+      cookies[COOKIE_WIN_GEOM] = 0;
 
       /*
        * FIXME: Monster Hack to make Browser visible (800x480 was a problem)
@@ -658,7 +681,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			  COOKIE_WIN_NAME,
 			  0
       };
-      int *cursor = name_types;
+      int *cursor = name_types, name_t = 0;
       char *name = NULL;
 
       g_free(win->name);
@@ -666,7 +689,10 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
       while (*cursor)
 	{
-	  name = mb_wm_property_get_reply_and_validate (wm,
+          char *ret;
+          /* Note that we have to get all the replies, otherwise xas.c
+           * will leak memory */
+	  ret = mb_wm_property_get_reply_and_validate (wm,
                         cookies[*cursor],
 		        *cursor == COOKIE_WIN_NAME ?
                                 XA_STRING : wm->atoms[MBWM_ATOM_UTF8_STRING],
@@ -675,16 +701,26 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 		        NULL,
 		        &x_error_code);
 
+          cookies[*cursor] = 0;
+
 	  if (x_error_code == BadWindow)
 	    goto badwindow_error;
 
-	  if (name)
-	    break;
+	  if (!name && ret)
+            {
+	      name = ret;
+              name_t = *cursor;
+            }
+          else if (ret)
+            {
+              XFree (ret);
+              ret = NULL;
+            }
 
 	  cursor++;
 	}
 
-      switch (*cursor)
+      switch (name_t)
 	{
 	case COOKIE_WIN_NAME:
 	case COOKIE_WIN_NAME_UTF8:
@@ -727,12 +763,14 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
       /* NOTE: pre-R3 X strips group element so will faill for that */
       wmhints = mb_wm_property_get_reply_and_validate (wm,
-						       cookies[COOKIE_WIN_WM_HINTS],
-						       XA_WM_HINTS,
-						       32,
-						       NumPropWMHintsElements,
-						       NULL,
-						       &x_error_code);
+		                cookies[COOKIE_WIN_WM_HINTS],
+			        XA_WM_HINTS,
+			        32,
+			        NumPropWMHintsElements,
+			        NULL,
+			        &x_error_code);
+
+      cookies[COOKIE_WIN_WM_HINTS] = 0;
 
       if (x_error_code == BadWindow)
         goto badwindow_error;
@@ -780,6 +818,15 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	}
     }
 
+  typedef struct
+  {
+    unsigned long       flags;
+    unsigned long       functions;
+    unsigned long       decorations;
+    long                inputMode;
+    unsigned long       status;
+  } MotifWmHints;
+
   if (props_req & MBWM_WINDOW_PROP_MWM_HINTS)
     {
       /*
@@ -788,25 +835,18 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
        * We currently only differentiate between decorated and undecorated
        * windows, but do not allow finer customisation of the decor.
        */
-      typedef struct
-      {
-	unsigned long       flags;
-	unsigned long       functions;
-	unsigned long       decorations;
-	long                inputMode;
-	unsigned long       status;
-      } MotifWmHints;
 
       MotifWmHints *mwmhints = NULL;
 
-      mwmhints =
-	mb_wm_property_get_reply_and_validate (wm,
-					       cookies[COOKIE_WIN_MWM_HINTS],
-					       wm->atoms[MBWM_ATOM_MOTIF_WM_HINTS],
-					       32,
-					       PROP_MOTIF_WM_HINTS_ELEMENTS,
-					       NULL,
-					       &x_error_code);
+      mwmhints = mb_wm_property_get_reply_and_validate (wm,
+				       cookies[COOKIE_WIN_MWM_HINTS],
+				       wm->atoms[MBWM_ATOM_MOTIF_WM_HINTS],
+				       32,
+				       PROP_MOTIF_WM_HINTS_ELEMENTS,
+				       NULL,
+				       &x_error_code);
+
+      cookies[COOKIE_WIN_MWM_HINTS] = 0;
 
       if (x_error_code == BadWindow)
         goto badwindow_error;
@@ -840,6 +880,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &bytes_after_return,
 			    &result_atom,
 			    &x_error_code);
+
+      cookies[COOKIE_WIN_PROTOS] = 0;
 
       if (x_error_code
 	  || actual_type_return != XA_ATOM
@@ -899,6 +941,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 						 NULL,
 						 &x_error_code);
 
+      cookies[COOKIE_WIN_MACHINE] = 0;
+
       if (x_error_code == BadWindow)
         goto badwindow_error;
 
@@ -924,6 +968,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &bytes_after_return,
 			    &pid,
 			    &x_error_code);
+
+      cookies[COOKIE_WIN_PID] = 0;
 
       if (x_error_code
 	  || actual_type_return != XA_CARDINAL
@@ -957,6 +1003,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &bytes_after_return,
 			    &translucency,
 			    &x_error_code);
+
+      cookies[COOKIE_WIN_CM_TRANSLUCENCY] = 0;
 
       if (x_error_code
 	  || actual_type_return != XA_CARDINAL
@@ -994,6 +1042,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &user_time,
 			    &x_error_code);
 
+      cookies[COOKIE_WIN_USER_TIME] = 0;
+
       if (x_error_code
 	  || actual_type_return != XA_CARDINAL
 	  || actual_format_return != 32
@@ -1030,6 +1080,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &bytes_after_return,
 			    &value,
 			    &x_error_code);
+
+      cookies[COOKIE_WIN_HILDON_STACKING] = 0;
 
       if (x_error_code
 	  || actual_type_return != XA_CARDINAL
@@ -1072,6 +1124,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			    &value,
 			    &x_error_code);
 
+      cookies[COOKIE_WIN_PORTRAIT_REQUEST] = 0;
+
       if (x_error_code
 	  || actual_type_return != XA_CARDINAL
 	  || actual_format_return != 32
@@ -1097,23 +1151,139 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
   if (changes)
     mb_wm_object_signal_emit (MB_WM_OBJECT (win), changes);
 
- abort:
-
-  if (xwin_attr)
-    XFree(xwin_attr);
-
   return True;
+
+abort:
+
+  abort_exit = True;
 
 badwindow_error:
 
-#if 0
-  /* error disabled because it happens far too often in legitimate cases */
-  g_debug ("***** %s: BadWindow error for %lx *****", __FUNCTION__, xwin);
-#endif
-  if (xwin_attr)
-    XFree(xwin_attr);
+  /************************************************/
+  /* handle skipped replies to avoid memory leaks */
+  /************************************************/
 
-  return False;
+  if (cookies[COOKIE_WIN_ATTR])
+    {
+      xwin_attr = mb_wm_xwin_get_attributes_reply (wm,
+						   cookies[COOKIE_WIN_ATTR],
+						   &x_error_code);
+      XFree (xwin_attr);
+    }
+
+  if (cookies[COOKIE_WIN_NAME])
+    {
+      int name_types[] = {
+			  COOKIE_WIN_NAME_UTF8_XML,
+			  COOKIE_WIN_NAME_UTF8,
+			  COOKIE_WIN_NAME,
+			  0
+      };
+      int *cursor;
+
+      for (cursor = name_types; *cursor; ++cursor)
+	{
+          if (cookies[*cursor])
+            {
+              char *ret;
+              ret = mb_wm_property_get_reply_and_validate (wm,
+                        cookies[*cursor],
+		        *cursor == COOKIE_WIN_NAME ?
+                                XA_STRING : wm->atoms[MBWM_ATOM_UTF8_STRING],
+		        8,
+		        0,
+		        NULL,
+		        &x_error_code);
+              XFree (ret);
+            }
+        }
+    }
+
+  if (cookies[COOKIE_WIN_WM_HINTS])
+    {
+      XWMHints *wmhints;
+      wmhints = mb_wm_property_get_reply_and_validate (wm,
+		                cookies[COOKIE_WIN_WM_HINTS],
+			        XA_WM_HINTS,
+			        32,
+			        NumPropWMHintsElements,
+			        NULL,
+			        &x_error_code);
+      XFree (wmhints);
+    }
+
+  if (cookies[COOKIE_WIN_MWM_HINTS])
+    {
+      MotifWmHints *mwmhints;
+      mwmhints = mb_wm_property_get_reply_and_validate (wm,
+				       cookies[COOKIE_WIN_MWM_HINTS],
+				       wm->atoms[MBWM_ATOM_MOTIF_WM_HINTS],
+				       32,
+				       PROP_MOTIF_WM_HINTS_ELEMENTS,
+				       NULL,
+				       &x_error_code);
+      XFree (mwmhints);
+    }
+
+  if (cookies[COOKIE_WIN_TRANSIENCY])
+    {
+      Window *trans_win;
+      trans_win = mb_wm_property_get_reply_and_validate (wm,
+					 cookies[COOKIE_WIN_TRANSIENCY],
+					 MBWM_ATOM_WM_TRANSIENT_FOR,
+					 32,
+					 1,
+					 NULL,
+					 &x_error_code);
+      XFree (trans_win);
+    }
+
+  if (cookies[COOKIE_WIN_MACHINE])
+    {
+      char *m;
+      m = mb_wm_property_get_reply_and_validate (wm,
+						 cookies[COOKIE_WIN_MACHINE],
+						 XA_STRING,
+						 8,
+						 0,
+						 NULL,
+						 &x_error_code);
+      XFree (m);
+    }
+
+  {
+    int name_types[] = {
+		        COOKIE_WIN_PROTOS,
+                        COOKIE_WIN_PID,
+                        COOKIE_WIN_USER_TIME,
+                        COOKIE_WIN_CM_TRANSLUCENCY,
+                        COOKIE_WIN_HILDON_STACKING,
+                        COOKIE_WIN_PORTRAIT_REQUEST,
+                        0
+    };
+    int *cursor;
+    for (cursor = name_types; *cursor; ++cursor)
+      {
+        if (cookies[*cursor])
+          {
+            result_atom = NULL;
+            mb_wm_property_reply (wm,
+			    cookies[*cursor],
+			    &actual_type_return,
+			    &actual_format_return,
+			    &nitems_return,
+			    &bytes_after_return,
+			    &result_atom,
+			    &x_error_code);
+            XFree (result_atom);
+          }
+      }
+  }
+
+  if (abort_exit)
+    return True;
+  else
+    return False;
 }
 
 Bool
