@@ -13,4 +13,4 @@ endif
 DEB_DH_STRIP_ARGS := --dbg-package=libmatchbox2
 
 makebuilddir/libmatchbox2::
-	autoreconf -i -f
+	[ -f configure ] || autoreconf -i -f
