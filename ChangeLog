@@ -1,3 +1,9 @@
+2009-09-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties): Make sure we don't call XFree
+	with a NULL argument.
+
 2009-09-23  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Speed up building.

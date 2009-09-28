@@ -752,7 +752,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
       MBWM_DBG("@@@ New Window Name: '%s' @@@", win->name);
 
-      XFree (name);
+      if (name)
+        XFree (name);
 
       changes |= MBWM_WINDOW_PROP_NAME;
     }
@@ -1168,7 +1169,8 @@ badwindow_error:
       xwin_attr = mb_wm_xwin_get_attributes_reply (wm,
 						   cookies[COOKIE_WIN_ATTR],
 						   &x_error_code);
-      XFree (xwin_attr);
+      if (xwin_attr)
+        XFree (xwin_attr);
     }
 
   if (cookies[COOKIE_WIN_NAME])
@@ -1194,7 +1196,8 @@ badwindow_error:
 		        0,
 		        NULL,
 		        &x_error_code);
-              XFree (ret);
+              if (ret)
+                XFree (ret);
             }
         }
     }
@@ -1209,7 +1212,8 @@ badwindow_error:
 			        NumPropWMHintsElements,
 			        NULL,
 			        &x_error_code);
-      XFree (wmhints);
+      if (wmhints)
+        XFree (wmhints);
     }
 
   if (cookies[COOKIE_WIN_MWM_HINTS])
@@ -1222,7 +1226,8 @@ badwindow_error:
 				       PROP_MOTIF_WM_HINTS_ELEMENTS,
 				       NULL,
 				       &x_error_code);
-      XFree (mwmhints);
+      if (mwmhints)
+        XFree (mwmhints);
     }
 
   if (cookies[COOKIE_WIN_TRANSIENCY])
@@ -1235,7 +1240,8 @@ badwindow_error:
 					 1,
 					 NULL,
 					 &x_error_code);
-      XFree (trans_win);
+      if (trans_win)
+        XFree (trans_win);
     }
 
   if (cookies[COOKIE_WIN_MACHINE])
@@ -1248,7 +1254,8 @@ badwindow_error:
 						 0,
 						 NULL,
 						 &x_error_code);
-      XFree (m);
+      if (m)
+        XFree (m);
     }
 
   {
@@ -1275,7 +1282,8 @@ badwindow_error:
 			    &bytes_after_return,
 			    &result_atom,
 			    &x_error_code);
-            XFree (result_atom);
+            if (result_atom)
+              XFree (result_atom);
           }
       }
   }
