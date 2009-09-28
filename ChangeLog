@@ -1,5 +1,7 @@
 2009-09-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.70
+
 	* matchbox/core/mb-wm-client-window.c
 	(mb_wm_client_window_sync_properties): Make sure we don't call XFree
 	with a NULL argument.
