@@ -24,7 +24,7 @@
 #define NumPropWMHintsElements 9 /* number of elements in this structure */
 
 enum {
-  COOKIE_WIN_TYPE = 0,
+  COOKIE_WIN_TYPE = 1,
   COOKIE_WIN_ATTR,
   COOKIE_WIN_GEOM,
   COOKIE_WIN_NAME,
@@ -1266,6 +1266,9 @@ badwindow_error:
                         COOKIE_WIN_CM_TRANSLUCENCY,
                         COOKIE_WIN_HILDON_STACKING,
                         COOKIE_WIN_PORTRAIT_REQUEST,
+                        COOKIE_WIN_NET_STATE,
+                        COOKIE_WIN_TYPE,
+                        COOKIE_WIN_HILDON_TYPE,
                         0
     };
     int *cursor;
@@ -1287,6 +1290,17 @@ badwindow_error:
           }
       }
   }
+
+  if (cookies[COOKIE_WIN_GEOM])
+    {
+      MBGeometry geo;
+      unsigned border, depth;
+
+      mb_wm_xwin_get_geometry_reply (wm,
+                                     cookies[COOKIE_WIN_GEOM],
+                                     &geo, &border, &depth,
+                                     &x_error_code);
+    }
 
   if (abort_exit)
     return True;

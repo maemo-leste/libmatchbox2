@@ -1,3 +1,10 @@
+2009-09-29  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-wm-client-window.c
+	  (mb_wm_client_window_sync_properties):
+	  Don't leak COOKIE_WIN_NET_STATE, COOKIE_WIN_TYPE,
+	  COOKIE_WIN_HILDON_TYPE, COOKIE_WIN_GEOM either.
+
 2009-09-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.70
