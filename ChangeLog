@@ -1,3 +1,7 @@
+2009-10-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.71
+
 2009-09-30  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-client-window.c
