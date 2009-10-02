@@ -1,7 +1,18 @@
+2009-10-02  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#141614 Unnecessary rotations on image viewer if phone application
+		  open in switcher
+
+	* matchbox/core/mb-wm-client-window.c (mb_wm_activate_client_real):
+	  Do stack animation actors even if they are not focused.
+	  It is let up to the community to find out why it wasn't
+	  a problem earlier or why it wasn't noticable.
+
 2009-10-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.71
 
+>>>>>>> .r19412
 2009-09-30  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-client-window.c
