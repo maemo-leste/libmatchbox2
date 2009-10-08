@@ -64,10 +64,11 @@ typedef enum MBWindowManagerFlag
   MBWindowManagerFlagLayoutRotated     = (1<<2),
 } MBWindowManagerFlag;
 
+/* signals must be 2^n, as multiple signals can be sent from one call */
 typedef enum
 {
-  MBWindowManagerSignalThemeChange = 1,
-  MBWindowManagerSignalPortraitForecast,
+  MBWindowManagerSignalThemeChange        = (1<<0),
+  MBWindowManagerSignalPortraitForecast   = (1<<1),
 } MBWindowManagerSignal;
 
 typedef enum

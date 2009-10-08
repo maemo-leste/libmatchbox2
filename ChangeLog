@@ -1,3 +1,8 @@
+2009-10-08  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	* matchbox/core/mb-window-manager.h: Just added some extra comments to
+	  make it obvious that matchbox signals can't be sequentially numbered.
+
 2009-10-02  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	NB#141614 Unnecessary rotations on image viewer if phone application
