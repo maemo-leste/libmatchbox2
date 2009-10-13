@@ -1,3 +1,15 @@
+2009-10-13  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Don't set _NET_WORKAREA more often than necessary.
+	Don't set  _MB_APP_WINDOW_LIST_STACKING at all.
+
+	* matchbox/core/mb-window-manager.h:
+	  Added mb_wm_update_workarea().
+	* matchbox/core/mb-window-manager.c (mb_wm_update_root_win_rectangles):
+	  Use it.
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_display_sync):
+	  Likewise.
+
 2009-10-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Fixes: NB#124398 - Whole application should be closed with 'End

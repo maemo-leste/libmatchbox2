@@ -1145,7 +1145,6 @@ mb_wm_update_root_win_lists (MBWindowManager *wm)
       list_size     = mb_wm_util_list_length (wm->clients);
 
       wins      = alloca (sizeof(Window) * list_size);
-      app_wins  = alloca (sizeof(Window) * list_size);
 
       if ((wm->flags & MBWindowManagerFlagDesktop) && wm->desktop)
 	{
@@ -1158,31 +1157,10 @@ mb_wm_update_root_win_lists (MBWindowManager *wm)
 	    wins[cnt++] = c->window->xwindow;
 	}
 
-      /* The MB_APP_WINDOW_LIST_STACKING list is used to construct
-       * application switching menus -- we append anything we have
-       * in client list (some of which might be hidden).
-       * apps)
-       */
-      l = wm->clients;
-      while (l)
-	{
-	  c = l->data;
-
-	  if (MB_WM_IS_CLIENT_APP (c))
-	    app_wins[app_win_cnt++] = c->window->xwindow;
-
-	  l = l->next;
-	}
-
       XChangeProperty(wm->xdpy, root_win,
 		      wm->atoms[MBWM_ATOM_NET_CLIENT_LIST_STACKING],
 		      XA_WINDOW, 32, PropModeReplace,
 		      (unsigned char *)wins, cnt);
-
-      XChangeProperty(wm->xdpy, root_win,
-		      wm->atoms[MBWM_ATOM_MB_APP_WINDOW_LIST_STACKING],
-		      XA_WINDOW, 32, PropModeReplace,
-		      (unsigned char *)app_wins, app_win_cnt);
 
       /* Update _NET_CLIENT_LIST but with 'age' order rather than stacking */
       cnt = 0;
@@ -1205,11 +1183,6 @@ mb_wm_update_root_win_lists (MBWindowManager *wm)
       /* No managed windows */
       XChangeProperty(wm->xdpy, root_win,
 		      wm->atoms[MBWM_ATOM_NET_CLIENT_LIST_STACKING] ,
-		      XA_WINDOW, 32, PropModeReplace,
-		      NULL, 0);
-
-      XChangeProperty(wm->xdpy, root_win,
-		      wm->atoms[MBWM_ATOM_MB_APP_WINDOW_LIST_STACKING],
 		      XA_WINDOW, 32, PropModeReplace,
 		      NULL, 0);
 
@@ -1566,34 +1539,41 @@ mb_wm_get_desktop_geometry (MBWindowManager *wm, MBGeometry * geom)
      }
 }
 
+void
+mb_wm_update_workarea (MBWindowManager *wm, const MBGeometry *geo)
+{
+  static CARD32 val[4];
+
+  if (val[0] == geo->x && val[1] == geo->y
+      && val[2] == geo->width && val[3] == geo->height)
+    return;
+  val[0] = geo->x;
+  val[1] = geo->y;
+  val[2] = geo->width;
+  val[3] = geo->height;
+
+  XChangeProperty(wm->xdpy, wm->root_win->xwindow,
+                  wm->atoms[MBWM_ATOM_NET_WORKAREA],
+		  XA_CARDINAL, 32, PropModeReplace,
+		  (unsigned char *)val, 4);
+}
+
 static void
 mb_wm_update_root_win_rectangles (MBWindowManager *wm)
 {
   Display * dpy = wm->xdpy;
   Window    root = wm->root_win->xwindow;
   MBGeometry d_geom;
-  CARD32 val[4];
+  CARD32 val[2];
 
   mb_wm_get_desktop_geometry (wm, &d_geom);
+  mb_wm_update_workarea (wm, &d_geom);
 
-  val[0] = d_geom.x;
-  val[1] = d_geom.y;
-  val[2] = d_geom.width;
-  val[3] = d_geom.height;
-
-  /* FIXME -- handle decorated desktops */
-
-  XChangeProperty(dpy, root, wm->atoms[MBWM_ATOM_NET_WORKAREA],
-		  XA_CARDINAL, 32, PropModeReplace,
-		  (unsigned char *)val, 4);
-
-  val[2] = wm->xdpy_width;
-  val[3] = wm->xdpy_height;
-
+  val[0] = wm->xdpy_width;
+  val[1] = wm->xdpy_height;
   XChangeProperty(dpy, root, wm->atoms[MBWM_ATOM_NET_DESKTOP_GEOMETRY],
 		  XA_CARDINAL, 32, PropModeReplace,
-		  (unsigned char *)&val[2], 2);
-
+		  (unsigned char *)val, 2);
 }
 
 int

@@ -238,6 +238,8 @@ mb_wm_sync (MBWindowManager *wm);
 
 void __attribute__ ((visibility("hidden")))
 mb_wm_select_desktop (MBWindowManager *wm, int desktop);
+void __attribute__ ((visibility("hidden")))
+mb_wm_update_workarea (MBWindowManager *wm, const MBGeometry *geo);
 
 void
 mb_adjust_dialog_title_position (MBWindowManager *wm,
