@@ -1,6 +1,7 @@
 matchbox-window-manager-2 (0.2.72-1~unreleased) unstable; urgency=low
 
-  * foo
+  * Fixes: NB#124398 - Whole application should be closed with 'End
+    current task', not just topmost window
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Thu,  1 Oct 2009 14:51:24 +0300
 
