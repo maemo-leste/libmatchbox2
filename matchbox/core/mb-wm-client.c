@@ -860,12 +860,16 @@ void
 mb_wm_client_shutdown (MBWindowManagerClient *client)
 {
   char               buf[257];
-  int                sig     = 9;
-  MBWindowManager   *wm      = client->wmref;
-  MBWMClientWindow  *win     = client->window;
-  Window             xwin    = client->window->xwindow;
-  const char        *machine = win->machine;
-  pid_t              pid     = win->pid;
+  Window             xwin;
+  const char        *machine;
+  pid_t              pid;
+
+  if (!client || !client->window)
+    return;
+
+  xwin = client->window->xwindow;
+  machine = client->window->machine;
+  pid = client->window->pid;
 
   if (machine && pid && (gethostname (buf, sizeof(buf)-1) == 0))
     {
@@ -878,14 +882,14 @@ mb_wm_client_shutdown (MBWindowManagerClient *client)
 	      return;
 	    }
 
-          g_debug ("%s: kill(%u)", __FUNCTION__, pid);
-	  if (kill (pid, sig) >= 0)
+          g_debug ("%s: kill(%u, SIGKILL)", __FUNCTION__, pid);
+	  if (kill (pid, SIGKILL) >= 0)
 	    return;
 	}
     }
 
   g_debug ("%s: XKillClient for %lx", __FUNCTION__, xwin);
-  XKillClient(wm->xdpy, xwin);
+  XKillClient(client->wmref->xdpy, xwin);
 }
 
 void

@@ -359,20 +359,21 @@ mb_wm_root_window_handle_message (MBWMRootWindow *win, XClientMessageEvent *e)
     }
   else if (e->message_type == wm->atoms[MBWM_ATOM_NET_CLOSE_WINDOW])
     {
-      if ((c = mb_wm_managed_client_from_xwindow(wm, e->window)) != NULL) {
-	if ((e->data.l[2] & 1) && mb_wm_client_get_next_focused_client(c)!=NULL )
-	  {
-	    /* If they set the least significant bit of data.l[2],
-	     * the window should only be closed if it is topmost.
-	     */
-	    g_warning ("Not closing %07x because it is not on top\n",
-		       (int) e->window);
-	  }
-	else
-	  {
-	    mb_wm_client_deliver_delete(c);
-	  }
-      }
+      if ((c = mb_wm_managed_client_from_xwindow(wm, e->window)) != NULL)
+        {
+	  if ((e->data.l[2] & 1) && mb_wm_client_get_next_focused_client (c))
+	    {
+	      /* If they set the least significant bit of data.l[2],
+	       * the window should only be closed if it is topmost.
+	       */
+	      g_warning ("Not closing %07x because it is not on top\n",
+		         (int) e->window);
+	    }
+	  else
+	    {
+	      mb_wm_client_shutdown (c);
+	    }
+        }
 
       return 1;
     }

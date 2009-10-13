@@ -1,3 +1,14 @@
+2009-10-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Fixes: NB#124398 - Whole application should be closed with 'End
+	current task', not just topmost window
+
+	* matchbox/core/mb-wm-client.c (mb_wm_client_shutdown): Simplify and
+	check some NULLs just in case.
+	* matchbox/core/mb-wm-root-window.c
+	(mb_wm_root_window_handle_message): "No more Mr. Nice Guy": kill
+	clients on 'End current task' message.
+
 2009-10-08  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	* matchbox/core/mb-window-manager.h: Just added some extra comments to
