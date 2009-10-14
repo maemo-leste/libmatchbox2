@@ -1,3 +1,7 @@
+2009-10-14  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.72
+
 2009-10-13  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Don't set _NET_WORKAREA more often than necessary.
