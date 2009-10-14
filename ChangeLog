@@ -1,11 +1,18 @@
 2009-10-14  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Fixes: NB#140193 - Information banners are not shown in non-composite
+	mode
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	(mb_wm_comp_mgr_clutter_set_client_redirection): Use the frame for
+	MBWMClientTypeNotes for changing the redirection.
+
 	Release 0.2.72
 
 2009-10-13  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Don't set _NET_WORKAREA more often than necessary.
-	Don't set  _MB_APP_WINDOW_LIST_STACKING at all.
+	Don't set _MB_APP_WINDOW_LIST_STACKING at all.
 
 	* matchbox/core/mb-window-manager.h:
 	  Added mb_wm_update_workarea().

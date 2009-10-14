@@ -201,7 +201,6 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
           client->wm_client->xwin_frame == 0 ||
             (c_type & (MBWMClientTypeDialog|
                        MBWMClientTypeMenu|
-                       MBWMClientTypeNote|
                        MBWMClientTypeOverride)))
         xwin = client->wm_client->window->xwindow;
       else

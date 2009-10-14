@@ -1,6 +1,8 @@
 matchbox-window-manager-2 (0.2.73-1~unreleased) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Fixes: NB#140193 - Information banners are not shown in non-composite
+    mode
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 14 Oct 2009 10:03:07 +0300
 
