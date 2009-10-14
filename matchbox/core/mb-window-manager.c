@@ -1135,8 +1135,6 @@ mb_wm_update_root_win_lists (MBWindowManager *wm)
   if (!mb_wm_stack_empty(wm))
     {
       Window                *wins = NULL;
-      Window                *app_wins = NULL;
-      int                    app_win_cnt = 0;
       int                    cnt = 0;
       int                    list_size;
       MBWindowManagerClient *c;
