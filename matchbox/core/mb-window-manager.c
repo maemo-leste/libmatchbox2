@@ -1949,13 +1949,19 @@ mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c)
     c_focus = last_focused_transient;
   }
 
-  if (c->window->net_type==wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR]) {
-    g_debug ("Not focusing an animation actor.\n");
-    mb_wm_client_stack (c, 0);
-  } else {
-    mb_wm_focus_client (wm, c_focus);
-    mb_wm_client_stack (c, 0);
-  }
+  if (c->window->net_type ==
+                wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR] ||
+      c->window->net_type ==
+                wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_HOME_APPLET])
+    {
+      g_debug ("Not focusing an animation actor or home applet.\n");
+    }
+  else
+    {
+      mb_wm_focus_client (wm, c_focus);
+    }
+
+  mb_wm_client_stack (c, 0);
 
   if (is_desktop != was_desktop)
     {
@@ -2145,7 +2151,10 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
 	{
 	  if (c != client &&
 	      mb_wm_client_want_focus (c) &&
-	      mb_wm_client_is_visible (c))
+	      mb_wm_client_is_visible (c) &&
+              /* do not assign focus to Home applets automatically */
+              c->window->net_type !=
+                wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_HOME_APPLET])
 	    {
 	      next = c;
 	      break;

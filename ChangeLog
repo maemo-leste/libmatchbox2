@@ -1,3 +1,13 @@
+2009-10-16  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.73
+
+	* matchbox/core/mb-wm-types.h, matchbox/core/mb-wm-atoms.c: Add
+	_HILDON_WM_WINDOW_TYPE_HOME_APPLET atom.
+	* matchbox/core/mb-window-manager.c (mb_wm_activate_client_real,
+	mb_wm_unfocus_client): Do not automatically assign focus to home
+	applets. Related to NB#140246 - Input method support to desktop
+
 2009-10-14  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Fixes: NB#140193 - Information banners are not shown in non-composite
