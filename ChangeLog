@@ -1,3 +1,14 @@
+2009-10-19  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.74
+
+	Patch from Laszlo Pere for NB#142250 - Unable to select all images in
+	multiselection view after image viewer come back from background
+
+	* matchbox/core/mb-wm-client.c
+	(mb_wm_client_get_last_focused_transient): Don't return animation
+	actors.
+
 2009-10-16  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.73

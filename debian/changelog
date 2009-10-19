@@ -1,8 +1,10 @@
-matchbox-window-manager-2 (0.2.74-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.74-1) unstable; urgency=low
 
-  * foo
+  Laszlo:
+  * Fixes: NB#142250 - Unable to select all images in multiselection view
+    after image viewer come back from background
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 16 Oct 2009 09:02:04 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 19 Oct 2009 13:56:23 +0300
 
 matchbox-window-manager-2 (0.2.73-1) unstable; urgency=low
 
