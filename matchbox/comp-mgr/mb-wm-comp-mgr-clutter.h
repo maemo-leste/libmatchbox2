@@ -23,7 +23,6 @@
 
 #include <matchbox/mb-wm-config.h>
 #include <clutter/clutter.h>
-#include <X11/X.h>
 
 #define MB_WM_COMP_MGR_CLUTTER(c) ((MBWMCompMgrClutter*)(c))
 #define MB_WM_COMP_MGR_CLUTTER_CLASS(c) ((MBWMCompMgrClutterClass*)(c))
