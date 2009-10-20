@@ -1303,3 +1303,9 @@ mb_wm_comp_mgr_clutter_new (MBWindowManager *wm)
 
   return MB_WM_COMP_MGR (mgr);
 }
+
+Window
+mb_wm_comp_mgr_clutter_get_overlay_window (MBWMCompMgrClutter *cmgr)
+{
+  return cmgr->priv->overlay_window;
+}

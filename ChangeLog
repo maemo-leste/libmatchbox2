@@ -1,3 +1,13 @@
+2009-10-20  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	Fixes for X memory leaks in h-d caused by GetOverlayWindow without a
+	Release.
+	
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h: Added
+	  mb_wm_comp_mgr_clutter_get_overlay_window to allow the overlay to be
+	  accessed without calling X.
+
 2009-10-19  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.74

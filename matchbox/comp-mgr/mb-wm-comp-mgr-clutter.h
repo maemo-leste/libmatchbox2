@@ -23,6 +23,7 @@
 
 #include <matchbox/mb-wm-config.h>
 #include <clutter/clutter.h>
+#include <X11/X.h>
 
 #define MB_WM_COMP_MGR_CLUTTER(c) ((MBWMCompMgrClutter*)(c))
 #define MB_WM_COMP_MGR_CLUTTER_CLASS(c) ((MBWMCompMgrClutterClass*)(c))
@@ -129,5 +130,8 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
 
 Bool
 mb_wm_comp_mgr_clutter_client_is_unredirected (MBWMCompMgrClient *client);
+
+Window
+mb_wm_comp_mgr_clutter_get_overlay_window (MBWMCompMgrClutter *cmgr);
 
 #endif
