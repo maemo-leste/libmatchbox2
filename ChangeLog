@@ -1,8 +1,13 @@
+2009-10-21  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.75
+
 2009-10-21  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Quick test to see if git commit works.
 
-	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_sync_properties):
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties):
 	  Corrected the format string to avoid a compiler warning.
 
 2009-10-20  Gordon Williams <gordon.williams@collabora.co.uk>
