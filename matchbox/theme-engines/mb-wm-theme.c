@@ -450,7 +450,7 @@ mb_wm_theme_protect (void)
   if (mb_wm_theme_is_protected())
     return;
 
-  creat (THEME_PROTECT_FILE_NAME, S_IRUSR | S_IWUSR);
+  close (creat (THEME_PROTECT_FILE_NAME, S_IRUSR | S_IWUSR));
 }
 
 /*
