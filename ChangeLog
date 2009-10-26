@@ -1,5 +1,10 @@
 2009-10-26  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	* matchbox/core/mb-window-manager.c (mb_wm_unfocus_client): Don't
+	focus any client if the touch screen lock is on to save some power.
+	Related to NB#137523 - Browser causes X damage events when not visible
+	- tk unlock case
+
 	Release 0.2.76
 
 2009-10-21  Adam Endrodi  <adam.endrodi@blumsoft.eu>

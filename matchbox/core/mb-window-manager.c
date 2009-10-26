@@ -2135,6 +2135,8 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
   return;
 }
 
+extern gboolean hd_dbus_tklock_on;
+
 void
 mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
 {
@@ -2170,6 +2172,14 @@ mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
     }
 
   wm->focused_client = NULL;
+
+  if (hd_dbus_tklock_on)
+    {
+      /* don't give focus back to any already mapped window
+       * because the touch screen is still locked and we don't want
+       * the application to wake up */
+      return;
+    }
 
   if (next)
     {
