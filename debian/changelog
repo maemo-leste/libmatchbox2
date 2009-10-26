@@ -1,8 +1,10 @@
-matchbox-window-manager-2 (0.2.76-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.76-1) unstable; urgency=low
 
-  * foo
+  Adam:
+  * matchbox/theme-engines/mb-wm-theme.c (mb_wm_theme_protect):
+    Don't lose the creat() file descriptor.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 21 Oct 2009 17:25:57 +0300
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 26 Oct 2009 11:45:33 +0200
 
 matchbox-window-manager-2 (0.2.75-1) unstable; urgency=low
 
