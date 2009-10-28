@@ -79,6 +79,7 @@ mb_wm_atoms_init(MBWindowManager *wm)
     "_NET_WM_ACTION_FULLSCREEN",
     "_NET_WM_ACTION_CHANGE_DESKTOP",
     "_NET_WM_ACTION_CLOSE",
+    "_HILDON_WM_ACTION_NO_TRANSITIONS",
 
     "_NET_WM_PING",
     "_NET_WM_PID",

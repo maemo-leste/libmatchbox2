@@ -106,6 +106,9 @@ typedef enum MBWMClientWindowAllowedActions
     MBWMClientWindowActionFullscreen    = (1<<7),
     MBWMClientWindowActionChangeDesktop = (1<<8),
     MBWMClientWindowActionClose         = (1<<9),
+
+    /* non-standard extension */
+    MBWMClientWindowActionNoTransitions = (1<<16),
   }
 MBWMClientWindowAllowedActions;
 

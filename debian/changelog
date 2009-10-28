@@ -1,14 +1,16 @@
 matchbox-window-manager-2 (0.2.78-1~unreleased) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * Fixes: NB#143757 - Support disabling of transition effects for application
+    windows
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 28 Oct 2009 08:54:32 +0200
 
 matchbox-window-manager-2 (0.2.77-1) unstable; urgency=low
 
   Kimmo:
-  * Fixes: NB#137523 - Browser causes X damage events when not visible - tk
-    unlock case
+  * Partially fixes: NB#137523 - Browser causes X damage events when not
+    visible - tk unlock case
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 28 Oct 2009 08:52:19 +0200
 

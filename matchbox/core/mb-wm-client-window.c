@@ -294,6 +294,13 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 				       wm->atoms[MBWM_ATOM_NET_WM_PID]);
     }
 
+  if (props_req & MBWM_WINDOW_PROP_ALLOWED_ACTIONS)
+    {
+      cookies[COOKIE_WIN_ACTIONS]
+	= mb_wm_property_atom_req (wm, xwin,
+	        wm->atoms[MBWM_ATOM_NET_WM_ALLOWED_ACTIONS]);
+    }
+
   if (props_req & MBWM_WINDOW_PROP_NET_USER_TIME)
     {
       cookies[COOKIE_WIN_USER_TIME]
@@ -1030,6 +1037,75 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	XFree (translucency);
     }
 
+  if (props_req & MBWM_WINDOW_PROP_ALLOWED_ACTIONS)
+    {
+      mb_wm_property_reply (wm,
+			    cookies[COOKIE_WIN_ACTIONS],
+			    &actual_type_return,
+			    &actual_format_return,
+			    &nitems_return,
+			    &bytes_after_return,
+			    &result_atom,
+			    &x_error_code);
+
+      cookies[COOKIE_WIN_ACTIONS] = 0;
+
+      if (x_error_code
+	  || actual_type_return != XA_ATOM
+	  || actual_format_return != 32
+	  || result_atom == NULL
+	  )
+	{
+	  MBWM_DBG("### Warning allowed actions prop failed ###");
+          if (x_error_code == BadWindow)
+            goto badwindow_error;
+	}
+      else
+	{
+	  int i;
+          Atom *a = (Atom*)result_atom;
+
+	  for (i = 0; i < nitems_return; ++i)
+	    {
+#if 0   /* currently we don't care about these "standard" atoms */
+	      if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_ACTION_MOVE])
+		win->allowed_actions |= MBWMClientWindowActionMove;
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_ACTION_RESIZE])
+		win->allowed_actions |= MBWMClientWindowActionResize;
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_ACTION_MINIMIZE])
+		win->allowed_actions |= MBWMClientWindowActionMinimize;
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_ACTION_SHADE])
+		win->allowed_actions |= MBWMClientWindowActionShade;
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_ACTION_STICK])
+		win->allowed_actions |= MBWMClientWindowActionStick;
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_ACTION_MAXIMIZE_HORZ])
+		win->allowed_actions |= MBWMClientWindowActionMaximizeHorz;
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_ACTION_MAXIMIZE_VERT])
+		win->allowed_actions |= MBWMClientWindowActionMaximizeVert;
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_ACTION_FULLSCREEN])
+		win->allowed_actions |= MBWMClientWindowActionFullscreen;
+	      else if (a[i] ==
+                         wm->atoms[MBWM_ATOM_NET_WM_ACTION_CHANGE_DESKTOP])
+		win->allowed_actions |= MBWMClientWindowActionChangeDesktop;
+	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_ACTION_CLOSE])
+		win->allowed_actions |= MBWMClientWindowActionClose;
+#endif
+	      if (a[i] == wm->atoms[MBWM_ATOM_HILDON_WM_ACTION_NO_TRANSITIONS])
+                {
+		  win->allowed_actions |= MBWMClientWindowActionNoTransitions;
+                  break;
+                }
+	    }
+	}
+
+      if (result_atom)
+	XFree(result_atom);
+
+      changes |= MBWM_WINDOW_PROP_ALLOWED_ACTIONS;
+
+      result_atom = NULL;
+    }
+
   if (props_req & MBWM_WINDOW_PROP_NET_USER_TIME)
     {
       unsigned char *user_time = NULL;
@@ -1269,6 +1345,7 @@ badwindow_error:
                         COOKIE_WIN_NET_STATE,
                         COOKIE_WIN_TYPE,
                         COOKIE_WIN_HILDON_TYPE,
+                        COOKIE_WIN_ACTIONS,
                         0
     };
     int *cursor;

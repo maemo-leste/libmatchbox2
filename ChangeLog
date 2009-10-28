@@ -1,5 +1,16 @@
 2009-10-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Fixes: NB#143757 - Support disabling of transition effects for
+	application windows
+
+	* matchbox/core/mb-wm-types.h, matchbox/core/mb-wm-atoms.c: Add
+	MBWM_ATOM_HILDON_WM_ACTION_NO_TRANSITIONS atom.
+	* matchbox/core/mb-wm-client-window.h: Add non-standard allowed action
+	_HILDON_WM_ACTION_NO_TRANSITIONS.
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties): Read _NET_WM_ALLOWED_ACTIONS
+	property to see if _HILDON_WM_ACTION_NO_TRANSITIONS is there.
+
 	Release 0.2.77
 
 2009-10-26  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
