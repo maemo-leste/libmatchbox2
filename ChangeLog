@@ -1,3 +1,7 @@
+2009-10-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.77
+
 2009-10-26  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/core/mb-window-manager.c (mb_wm_unfocus_client): Don't

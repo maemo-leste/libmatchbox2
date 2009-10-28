@@ -1,10 +1,10 @@
-matchbox-window-manager-2 (0.2.77-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.77-1) unstable; urgency=low
 
   Kimmo:
   * Fixes: NB#137523 - Browser causes X damage events when not visible - tk
     unlock case
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 26 Oct 2009 11:47:14 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 28 Oct 2009 08:52:19 +0200
 
 matchbox-window-manager-2 (0.2.76-1) unstable; urgency=low
 
