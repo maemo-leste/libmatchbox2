@@ -132,5 +132,7 @@ mb_wm_comp_mgr_clutter_client_is_unredirected (MBWMCompMgrClient *client);
 
 Window
 mb_wm_comp_mgr_clutter_get_overlay_window (MBWMCompMgrClutter *cmgr);
+void
+mb_wm_comp_mgr_clutter_set_overlay_window (MBWMCompMgrClutter *cmgr, Window w);
 
 #endif

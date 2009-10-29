@@ -1,3 +1,15 @@
+2009-10-29  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	Fixes: NB#144294 - h-d moves/resizes windows when fullscreening and 
+	                   going to uncomposited mode.
+	                   See hildon-desktop/clutter changes too.
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.h
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Set clutter window 
+	  background to none before reparenting/moving to stop it being 
+	  cleared. Reorder matchbox redirecting, and remove clutter
+	  redirect code and instead implement by setting window to 0.
+	* debian/control: Depend on new clutter
+
 2009-10-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Fixes: NB#143757 - Support disabling of transition effects for

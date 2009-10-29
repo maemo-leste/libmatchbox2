@@ -64,6 +64,8 @@ typedef enum _HdWmClientType
 static void
 mb_wm_comp_mgr_clutter_add_actor (MBWMCompMgrClutter *,
 				  MBWMCompMgrClutterClient *);
+static void
+mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client);
 
 /**
  * Implementation of MBWMCompMgrClutterClient.
@@ -179,10 +181,6 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
   Window xwin = None;
 
   mb_wm_util_trap_x_errors ();
-  if (cclient->priv->texture)
-    clutter_x11_texture_pixmap_set_redirection (
-          CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
-          setting);
 
   if (client->wm_client)
     {
@@ -210,21 +208,29 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
       */
     }
 
+  cclient->priv->unredirected = setting ? False : True;
+
   if (setting && xwin != None)
     {
-      XCompositeRedirectSubwindows (client->wm->xdpy, xwin,
-                                    CompositeRedirectAutomatic);
       XCompositeRedirectWindow (client->wm->xdpy, xwin,
                                 CompositeRedirectManual);
+      XCompositeRedirectSubwindows (client->wm->xdpy, xwin,
+                                          CompositeRedirectAutomatic);
+      /* Fetching the texture here causes the texture to be updated
+       * with the correct window. */
+      mb_wm_comp_mgr_clutter_fetch_texture(MB_WM_COMP_MGR_CLIENT(cclient));
     }
   else if (xwin != None)
     {
-      XCompositeUnredirectWindow (client->wm->xdpy, xwin,
-                                  CompositeRedirectManual);
+      /* Fetching the texture here causes the texture's window to be
+       * set to 0, so it doesn't try to do anything with it. */
+      mb_wm_comp_mgr_clutter_fetch_texture(MB_WM_COMP_MGR_CLIENT(cclient));
       XCompositeUnredirectSubwindows (client->wm->xdpy, xwin,
                                       CompositeRedirectAutomatic);
+      XCompositeUnredirectWindow (client->wm->xdpy, xwin,
+                                        CompositeRedirectManual);
     }
-  cclient->priv->unredirected = setting ? False : True;
+
   XSync (client->wm->xdpy, False);
   mb_wm_util_untrap_x_errors ();
 }
@@ -258,21 +264,26 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
    * if you just set the same window */
   clutter_x11_texture_pixmap_set_window (
           CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
-          0, FALSE);
+          0);
 
-  /* this will also cause updating the corresponding pixmap
-   * and ensures window<->pixmap binding */
-  mb_wm_util_trap_x_errors();
-  clutter_x11_texture_pixmap_set_window (
-        CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
-        xwin, FALSE);
-
-  if (mb_wm_util_untrap_x_errors () == BadDrawable)
+  /* If we are unredirected, just don't set windows, as we won't be able
+   * to get the pixmap for them anyway. */
+  if (!cclient->priv->unredirected)
     {
-      g_debug ("%s: BadDrawable for %lx", __FUNCTION__,
-               client->wm_client->window->xwindow);
-      cclient->priv->bound = FALSE;
-      return;
+      /* this will also cause updating the corresponding pixmap
+       * and ensures window<->pixmap binding */
+      mb_wm_util_trap_x_errors();
+      clutter_x11_texture_pixmap_set_window (
+            CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
+            xwin);
+
+      if (mb_wm_util_untrap_x_errors () == BadDrawable)
+        {
+          g_debug ("%s: BadDrawable for %lx", __FUNCTION__,
+                   client->wm_client->window->xwindow);
+          cclient->priv->bound = FALSE;
+          return;
+        }
     }
 
   cclient->priv->bound = TRUE;
@@ -737,7 +748,10 @@ mb_wm_comp_mgr_clutter_turn_on_real (MBWMCompMgr *mgr)
        * Reparent the stage window to the overlay window, this makes it
        * magically work :)
        */
+      XSetWindowBackgroundPixmap (wm->xdpy, xwin, None);
       XReparentWindow (wm->xdpy, xwin, priv->overlay_window, 0, 0);
+      XSetWindowBackground (wm->xdpy, xwin,
+                            BlackPixel (wm->xdpy, DefaultScreen (wm->xdpy)));
 
       /*
        * Use xfixes shape to make events pass through the overlay window
@@ -778,7 +792,8 @@ mb_wm_comp_mgr_clutter_screen_size_changed (MBWMCompMgr *mgr,
   MB_WM_DBG_MOVE_RESIZE ("overlay", priv->overlay_window,
                          (&(MBGeometry){0, 0, w, h}));
   clutter_actor_set_size (clutter_stage_get_default (), w, h);
-  XResizeWindow (mgr->wm->xdpy, priv->overlay_window, w, h);
+  if (priv->overlay_window != None)
+    XResizeWindow (mgr->wm->xdpy, priv->overlay_window, w, h);
 }
 
 static void
@@ -1117,7 +1132,7 @@ mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
         /* release the window in Clutter */
         clutter_x11_texture_pixmap_set_window (
                 CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
-                0, FALSE);
+                0);
       cclient->priv->damage_handling_off = True;
     }
 }
@@ -1309,3 +1324,10 @@ mb_wm_comp_mgr_clutter_get_overlay_window (MBWMCompMgrClutter *cmgr)
 {
   return cmgr->priv->overlay_window;
 }
+
+void
+mb_wm_comp_mgr_clutter_set_overlay_window (MBWMCompMgrClutter *cmgr, Window w)
+{
+  cmgr->priv->overlay_window = w;
+}
+
