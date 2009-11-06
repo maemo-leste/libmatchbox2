@@ -1,5 +1,12 @@
 2009-11-06  Gordon Williams <gordon.williams@collabora.co.uk>
 
+	Fixes for my stupid compiler warnings:
+	
+	* matchbox/core/mb-wm-client-window.c 
+	* matchbox/core/mb-wm-util.c
+	* matchbox/core/mb-window-manager.c
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+
 	Fixes: NB#145154 - Too many XSyncs in window manager causes slowdowns
 	                   (Along with hildon-desktop changes)
 
