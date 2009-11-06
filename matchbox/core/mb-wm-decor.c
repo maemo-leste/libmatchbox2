@@ -354,6 +354,7 @@ mb_wm_decor_sync_window (MBWMDecor *decor)
       attr.background_pixmap = None;
       attr.event_mask = ButtonPressMask|ButtonReleaseMask|ButtonMotionMask;
 
+      XSync(wm->xdpy, False);
       mb_wm_util_trap_x_errors();
 
       decor->xwin
@@ -410,7 +411,7 @@ mb_wm_decor_sync_window (MBWMDecor *decor)
   else
     {
       /* Resize */
-      mb_wm_util_trap_x_errors();
+      mb_wm_util_async_trap_x_errors_warn(wm->xdpy, "XMoveResizeWindow");
 
       XMoveResizeWindow(wm->xdpy,
 			decor->xwin,
@@ -419,14 +420,12 @@ mb_wm_decor_sync_window (MBWMDecor *decor)
 			decor->geom.width,
 			decor->geom.height);
 
-      /* Next up sort buttons */
+      mb_wm_util_async_untrap_x_errors();
 
+      /* Next up sort buttons */
       mb_wm_util_list_foreach(decor->buttons,
 			      (MBWMListForEachCB)mb_wm_decor_button_sync_window,
 			      NULL);
-
-      if (mb_wm_util_untrap_x_errors())
-	return False;
     }
 
   return True;
@@ -446,7 +445,7 @@ mb_wm_decor_reparent (MBWMDecor *decor)
 
   /* FIXME: Check if we already have a parent here */
 
-  mb_wm_util_trap_x_errors();
+  mb_wm_util_async_trap_x_errors_warn(wm->xdpy, "XReparentWindow");
 
   XReparentWindow (wm->xdpy,
 		   decor->xwin,
@@ -454,8 +453,7 @@ mb_wm_decor_reparent (MBWMDecor *decor)
 		   decor->geom.x,
 		   decor->geom.y);
 
-  if (mb_wm_util_untrap_x_errors())
-    return False;
+  mb_wm_util_async_untrap_x_errors();
 
   return True;
 }
@@ -698,9 +696,9 @@ mb_wm_decor_destroy (MBWMObject* obj)
 
   if (decor->xwin != None)
     {
-      mb_wm_util_trap_x_errors();
+      mb_wm_util_async_trap_x_errors(decor->parent_client->wmref->xdpy);
       XDestroyWindow (decor->parent_client->wmref->xdpy, decor->xwin);
-      mb_wm_util_untrap_x_errors();
+      mb_wm_util_async_untrap_x_errors();
     }
 
   memset (decor, 0, sizeof (*decor));

@@ -92,7 +92,7 @@ mb_wm_client_base_destroy (MBWMObject *this)
 
   wm = client->wmref;
 
-  mb_wm_util_trap_x_errors();
+  mb_wm_util_async_trap_x_errors(wm->xdpy);
 
   if (client->xwin_frame)
     {
@@ -111,8 +111,7 @@ mb_wm_client_base_destroy (MBWMObject *this)
       client->xwin_modal_blocker = None;
     }
 
-  XSync(wm->xdpy, False);
-  mb_wm_util_untrap_x_errors();
+  mb_wm_util_async_untrap_x_errors();
 
   parent = mb_wm_client_get_transient_for (MB_WM_CLIENT(this));
   if (parent)
@@ -638,7 +637,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
       int x, y, w, h;
       CARD32 wgeom[4];
 
-      mb_wm_util_trap_x_errors();
+      mb_wm_util_async_trap_x_errors(wm->xdpy);
 
       if (fullscreen || !client->xwin_frame)
 	{
@@ -688,14 +687,13 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 		      XA_CARDINAL, 32, PropModeReplace,
 		      (unsigned char *)&wgeom[0], 4);
 
+      mb_wm_util_async_untrap_x_errors();
       /* FIXME: need flags to handle other stuff like configure events etc */
 
       /* Resize any decor */
       mb_wm_util_list_foreach(client->decor,
 			      (MBWMListForEachCB)mb_wm_decor_handle_resize,
 			      NULL);
-
-      mb_wm_util_untrap_x_errors();
     }
   else if (mb_wm_client_needs_configure_request_ack (client))
     send_synthetic_configure_notify (client);
@@ -705,7 +703,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 
   if (mb_wm_client_needs_visibility_sync (client))
     {
-      mb_wm_util_trap_x_errors();
+      mb_wm_util_async_trap_x_errors(wm->xdpy);
 
       if (mb_wm_client_is_mapped (client))
 	{
@@ -746,12 +744,12 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 	}
 
       mb_wm_client_base_set_state_props (client);
-      mb_wm_util_untrap_x_errors();
+      mb_wm_util_async_untrap_x_errors();
     }
 
   /* Paint any decor */
 
-  mb_wm_util_trap_x_errors();
+  mb_wm_util_async_trap_x_errors(wm->xdpy);
 
   if (mb_wm_client_needs_decor_sync (client))
     {
@@ -803,11 +801,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 			      NULL);
     }
 
-  mb_wm_util_untrap_x_errors();
-
-  mb_wm_util_trap_x_errors();
-  XSync(wm->xdpy, False);
-  mb_wm_util_untrap_x_errors();
+  mb_wm_util_async_untrap_x_errors();
 }
 
 /* Note request geometry always called by layout manager */

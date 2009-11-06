@@ -911,9 +911,12 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
       return True;
     }
 
-  mb_wm_util_trap_x_errors();
-  XGetWindowAttributes(wm->xdpy, xev->window, &attrs);
-  if ((err = mb_wm_util_untrap_x_errors()))
+  /* We don't care about X errors here, because they will be reported
+   * in the return value of XGetWindowAttributes. */
+  mb_wm_util_async_trap_x_errors (wm->xdpy);
+  err = XGetWindowAttributes(wm->xdpy, xev->window, &attrs);
+  mb_wm_util_async_untrap_x_errors();
+  if (!err)
     {
       g_debug ("%s: XGetWindowAttributes for %lx failed with code %d",
                  __FUNCTION__, xev->window, err);
@@ -1053,11 +1056,9 @@ stack_sync_to_display (MBWindowManager *wm)
 
   stack_get_window_list(wm, win_list, &count);
 
-  mb_wm_util_trap_x_errors();
+  mb_wm_util_async_trap_x_errors_warn(wm->xdpy, "XRestackWindows");
   XRestackWindows(wm->xdpy, win_list, count);
-  XSync(wm->xdpy, False);
-  if ((error = mb_wm_util_untrap_x_errors()) != 0)
-    g_debug ("XRestackWindows(): %d", error);
+  mb_wm_util_async_untrap_x_errors();
 }
 
 void
@@ -1065,7 +1066,7 @@ mb_wm_sync (MBWindowManager *wm)
 {
   /* Sync all changes to display */
   MBWindowManagerClient *client = NULL;
-
+  GTimer *timer = g_timer_new();
   MBWM_MARK();
   MBWM_TRACE ();
 
@@ -1120,11 +1121,11 @@ mb_wm_sync (MBWindowManager *wm)
   */
 
   XUngrabServer(wm->xdpy);
-  mb_wm_util_trap_x_errors();
   XFlush(wm->xdpy);
-  mb_wm_util_untrap_x_errors();
-
   wm->sync_type = 0;
+
+  g_debug("mb_wm_sync: %f", g_timer_elapsed(timer,0));
+  g_timer_destroy(timer);
 }
 
 static void
@@ -2237,9 +2238,7 @@ mb_wm_set_theme (MBWindowManager *wm, MBWMTheme * theme)
 			    MBWindowManagerSignalThemeChange);
 
   XUngrabServer(wm->xdpy);
-  mb_wm_util_trap_x_errors();
   XFlush(wm->xdpy);
-  mb_wm_util_untrap_x_errors();
 }
 
 void

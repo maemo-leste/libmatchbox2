@@ -335,11 +335,11 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
   {
     int err;
     /* FIXME: toggling 'offline' mode in power menu can cause X error here */
-    mb_wm_util_trap_x_errors ();
-    /* bundle all pending requests to server and wait for replys */
+    /* bundle all pending requests to server and wait for replys.
+     * Errors will be caught by the new error handler. Note that removing this
+     * absolutely kills hildon-desktop. It appears that the property specifying
+     * window type doesn't get read and everything gets mapped as an app.  */
     XSync(wm->xdpy, False);
-    if ((err = mb_wm_util_untrap_x_errors ()))
-      g_warning ("%s: X error %d", __func__, err);
   }
 
   if (props_req & MBWM_WINDOW_PROP_TRANSIENCY)

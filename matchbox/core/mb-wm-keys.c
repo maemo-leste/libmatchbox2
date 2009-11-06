@@ -75,6 +75,7 @@ key_binding_set_grab (MBWindowManager *wm,
 	{
 	  int result;
 
+	  XSync(wm->xdpy, False);
 	  mb_wm_util_trap_x_errors();
 
 	  MBWM_DBG ("grabbing keycode: %i, keysym %li, mask: %i\n",

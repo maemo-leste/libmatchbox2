@@ -776,6 +776,7 @@ mb_wm_client_deliver_message (MBWindowManagerClient   *client,
   MBWindowManager *wm = client->wmref;
   Window xwin = client->window->xwindow;
   XEvent ev;
+  int status;
 
   memset(&ev, 0, sizeof(ev));
 
@@ -789,10 +790,12 @@ mb_wm_client_deliver_message (MBWindowManagerClient   *client,
   ev.xclient.data.l[3] = data3;
   ev.xclient.data.l[4] = data4;
 
-  mb_wm_util_trap_x_errors();
-  XSendEvent(wm->xdpy, xwin, False, NoEventMask, &ev);
-  XSync(wm->xdpy, False);
-  return mb_wm_util_untrap_x_errors()==0;
+  /* We can do this asynchronously because whenever this function is
+   * called when a sync is required, XSync is called after it. */
+  mb_wm_util_async_trap_x_errors_warn(wm->xdpy, "XSendEvent");
+  status = XSendEvent(wm->xdpy, xwin, False, NoEventMask, &ev);
+  mb_wm_util_async_untrap_x_errors();
+  return status!=0;
 }
 
 void

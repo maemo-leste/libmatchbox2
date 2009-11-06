@@ -155,12 +155,12 @@ mb_wm_root_window_init_attributes (MBWMRootWindow * win)
                       |StructureNotifyMask
                       |PropertyChangeMask;
 
+  XSync(wm->xdpy, False);
   mb_wm_util_trap_x_errors();
 
   XChangeWindowAttributes(wm->xdpy, win->xwindow, CWEventMask, &sattr);
 
   XSync(wm->xdpy, False);
-
   error = mb_wm_util_untrap_x_errors();
 
   if (error)

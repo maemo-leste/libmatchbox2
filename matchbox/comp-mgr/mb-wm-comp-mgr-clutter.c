@@ -180,7 +180,7 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
   MBWMCompMgrClutterClient *cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
   Window xwin = None;
 
-  mb_wm_util_trap_x_errors ();
+  mb_wm_util_async_trap_x_errors (client->wm->xdpy);
 
   if (client->wm_client)
     {
@@ -231,8 +231,7 @@ mb_wm_comp_mgr_clutter_set_client_redirection (MBWMCompMgrClient *client,
                                         CompositeRedirectManual);
     }
 
-  XSync (client->wm->xdpy, False);
-  mb_wm_util_untrap_x_errors ();
+  mb_wm_util_async_untrap_x_errors ();
 }
 
 /**
@@ -271,19 +270,12 @@ mb_wm_comp_mgr_clutter_fetch_texture (MBWMCompMgrClient *client)
   if (!cclient->priv->unredirected)
     {
       /* this will also cause updating the corresponding pixmap
-       * and ensures window<->pixmap binding */
-      mb_wm_util_trap_x_errors();
+       * and ensures window<->pixmap binding. Clutter will handle
+       * any X error itself. */
+
       clutter_x11_texture_pixmap_set_window (
             CLUTTER_X11_TEXTURE_PIXMAP (cclient->priv->texture),
             xwin);
-
-      if (mb_wm_util_untrap_x_errors () == BadDrawable)
-        {
-          g_debug ("%s: BadDrawable for %lx", __FUNCTION__,
-                   client->wm_client->window->xwindow);
-          cclient->priv->bound = FALSE;
-          return;
-        }
     }
 
   cclient->priv->bound = TRUE;
@@ -733,7 +725,7 @@ mb_wm_comp_mgr_clutter_turn_on_real (MBWMCompMgr *mgr)
         return;
       }
 
-      mb_wm_util_trap_x_errors();
+      mb_wm_util_async_trap_x_errors_warn(wm->xdpy, "");
 
       /* Make sure the overlay window's size is the same as the screen's
        * actual size.  Necessary if the screen is rotated. */
@@ -770,9 +762,7 @@ mb_wm_comp_mgr_clutter_turn_on_real (MBWMCompMgr *mgr)
 
       XFixesDestroyRegion (wm->xdpy, region);
 
-      XSync (wm->xdpy, False);
-      if (mb_wm_util_untrap_x_errors())
-        g_warning ("%s: X errors", __func__);
+      mb_wm_util_async_untrap_x_errors();
 
       clutter_actor_set_size (stage, wm->xdpy_width, wm->xdpy_height);
       clutter_stage_set_color (CLUTTER_STAGE (stage), &clr);
@@ -932,10 +922,9 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
 
       /* FIXME: As Adam said, reason for this X error should be discovered
        * and avoided */
-      mb_wm_util_trap_x_errors ();
+      mb_wm_util_async_trap_x_errors_warn (wm->xdpy, "");
       mb_wm_comp_mgr_clutter_client_repair_real (c->cm_client, damage);
-      if ((err = mb_wm_util_untrap_x_errors ()))
-        g_debug ("%s: X error %d", __func__, err);
+      mb_wm_util_async_untrap_x_errors();
     }
 
   return False;
@@ -1118,13 +1107,9 @@ mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
     {
       if (cclient->priv->window_damage)
         {
-          int err;
-          mb_wm_util_trap_x_errors();
+          mb_wm_util_async_trap_x_errors_warn(wm->xdpy,"XDamageDestroy");
           XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
-          XSync (wm->xdpy, False);
-          if ((err = mb_wm_util_untrap_x_errors()) != 0)
-            g_debug ("XDamageDestroy(0x%lx) for %p: %d",
-                     cclient->priv->window_damage, c, err);
+          mb_wm_util_async_untrap_x_errors();
           cclient->priv->window_damage = 0;
         }
 

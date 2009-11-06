@@ -1,3 +1,23 @@
+2009-11-06  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	Fixes: NB#145154 - Too many XSyncs in window manager causes slowdowns
+	                   (Along with hildon-desktop changes)
+
+	* matchbox/core/mb-wm-util.c
+	* matchbox/core/mb-wm-util.h: Added mb_wm_util_async_[un]trap, which
+	  will allow us to attribute X errors to specific pieces of code
+	  without using XSync and XSetErrorHandler.
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c
+	* matchbox/core/mb-window-manager.c
+	* matchbox/core/mb-wm-client-base.c
+	* matchbox/core/mb-wm-client-window.c
+	* matchbox/core/mb-wm-client.c
+	* matchbox/core/mb-wm-decor.c
+	* matchbox/core/mb-wm-keys.c
+	* matchbox/core/mb-wm-root-window.c: Modify calls to XSync and
+	  mb_wm_util_[un]trap to use mb_wm_util_async_[un]trap instead where
+	  it is possible. 
+
 2009-11-02  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.78

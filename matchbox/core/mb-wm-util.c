@@ -6,8 +6,23 @@
 #undef  G_LOG_DOMAIN
 #define G_LOG_DOMAIN "libmatchbox"
 
+typedef struct {
+  const gchar *function_name; /* Unowned - expected to be from __FUNCTION__ */
+  gchar *message; /* Owned by this */
+
+  Display *display;
+  long serial_start; /* serial number of next request at the time
+                        mb_wm_util_async_trap_x_errors was called */
+  long serial_end;
+} CodeSection;
+
+static GList *code_section_list = 0; /* of CodeSection */
+
 static int TrappedErrorCode = 0;
 static int (*old_error_handler) (Display *, XErrorEvent *);
+
+static void x_error_raise() {
+}
 
 static int
 error_handler(Display     *xdpy,
@@ -53,6 +68,163 @@ mb_wm_util_untrap_x_errors(void)
   return TrappedErrorCode;
 }
 
+/* Called *always* when mb_wm_util_[un]trap_x_errors isn't in place
+ * (at least if we called mb_wm_util_async_x_error_init at the start
+ * of the program) */
+static int
+async_error_handler(Display     *xdpy,
+                    XErrorEvent *error)
+{
+  GList *entry;
+  gchar error_string[256];
+  CodeSection *blamed = 0;
+
+  /* Find the section of code to blame */
+  for (entry=code_section_list; entry; entry=entry->next)
+    {
+      CodeSection *section = (CodeSection *)entry->data;
+      if (section->display == error->display &&
+          section->serial_start <= error->serial &&
+          (!section->serial_end ||
+           section->serial_end > error->serial))
+        {
+          blamed = section;
+          break;
+        }
+    }
+
+  /* If no message was set, it means we don't want it reported */
+  if (blamed && !blamed->message)
+    return 0;
+
+  /* Error text */
+
+  sprintf(error_string,
+          "X error %s (%d), window: 0x%lx, req: %s (%d), minor: %d",
+      error->error_code < G_N_ELEMENTS (mb_wm_debug_x_errors)
+          && mb_wm_debug_x_errors[error->error_code]
+        ? mb_wm_debug_x_errors[error->error_code] : "???",
+      error->error_code,
+      error->resourceid,
+      error->request_code < G_N_ELEMENTS (mb_wm_debug_x_requests)
+          && mb_wm_debug_x_requests[error->request_code]
+        ? mb_wm_debug_x_requests[error->request_code] : "???",
+      error->request_code,
+      error->minor_code);
+
+  if (blamed)
+    g_warning("%s: %s: %s", blamed->function_name?blamed->function_name:"?",
+                            blamed->message,
+                            error_string);
+  else
+    g_critical("Untrapped: %s", error_string);
+  return 0;
+}
+
+/* Install the asynchronous error handler */
+void
+mb_wm_util_async_x_error_init()
+{
+  XSetErrorHandler(async_error_handler);
+}
+
+/* Remove traps in our list that are older than the most recently
+ * processed X event. */
+static void
+mb_wm_util_async_x_error_free_old()
+{
+  GList *entry = code_section_list;
+
+  Display *last_display = 0;
+  long last_message;
+
+  while (entry)
+    {
+      GList *next_entry = entry->next;
+      CodeSection *section = (CodeSection *)entry->data;
+      /* Cache based on display, saving a call to X */
+      if (last_display != section->display)
+        {
+          last_message = LastKnownRequestProcessed(section->display);
+          last_display = section->display;
+        }
+      /* If the serial number is older than the last message,
+       * free this item as it isn't required any more
+       */
+      if (section->serial_end < last_message)
+        code_section_list = g_list_remove(code_section_list, section);
+      entry = next_entry;
+    }
+}
+
+/* Add async trap for errors. This means that errors will be handled
+ * when they occur and reported to the console, regardless of whether
+ * they are in a mb_wm_util_[un]trap_x_errors block.
+ *
+ * function_name's pointer is used directly and should be static
+ * message is copied if it is non-null. If it is null, no error is
+ * produced. */
+void
+mb_wm_util_async_trap_x_errors_full(Display *display,
+                                    const gchar *function_name,
+                                    const gchar *message)
+{
+  CodeSection *section = g_malloc(sizeof(CodeSection));
+
+  /* This was purely paranoia */
+  /*static int (*old_handler) (Display *, XErrorEvent *);
+  old_handler = XSetErrorHandler(async_error_handler);
+  if (old_handler != async_error_handler)
+    g_warning("mb_wm_util_async_trap_x_errors:"
+              " async_error_handler had been overwritten");*/
+
+  section->function_name = function_name;
+  if (message)
+    section->message = g_strdup(message);
+  else
+    section->message = 0;
+  section->display = display;
+  section->serial_start = NextRequest(display);
+  section->serial_end = 0;
+
+  if (code_section_list)
+    {
+      CodeSection *oldsection = (CodeSection *)code_section_list->data;
+      if (!oldsection->serial_end)
+        {
+          oldsection->serial_end = section->serial_start;
+          if (function_name)
+            g_warning("mb_wm_util_async_trap_x_errors called "
+                      "without untrap in %s (found via %s)",
+                      oldsection->function_name, function_name);
+        }
+    }
+
+  code_section_list = g_list_prepend(code_section_list, section);
+}
+
+void
+mb_wm_util_async_untrap_x_errors_full(const gchar *function_name)
+{
+  CodeSection *section;
+  if (!code_section_list)
+    {
+      g_warning("mb_wm_util_async_untrap_x_errors called from %s,"
+                " but no code_section_list", function_name);
+      return;
+    }
+  section = (CodeSection *)code_section_list->data;
+  if (strcmp(section->function_name, function_name))
+    {
+      g_warning("mb_wm_util_async_untrap_x_errors called "
+                "from %s, but trap from %s found",
+                function_name, section->function_name);
+    }
+  section->serial_end = NextRequest(section->display);
+  /* Make sure we remove anything in our list that
+   * is older than the currently processed X request */
+  mb_wm_util_async_x_error_free_old();
+}
 
 void*
 mb_wm_util_malloc0(int size)
