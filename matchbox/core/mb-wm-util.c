@@ -98,7 +98,7 @@ async_error_handler(Display     *xdpy,
     return 0;
 
   /* Error text */
-
+#ifdef G_DEBUG_DISABLE
   sprintf(error_string,
           "X error %s (%d), window: 0x%lx, req: %s (%d), minor: %d",
       error->error_code < G_N_ELEMENTS (mb_wm_debug_x_errors)
@@ -111,6 +111,14 @@ async_error_handler(Display     *xdpy,
         ? mb_wm_debug_x_requests[error->request_code] : "???",
       error->request_code,
       error->minor_code);
+#else
+  sprintf(error_string,
+          "X error %d, window: 0x%lx, req: %d, minor: %d",
+      error->error_code,
+      error->resourceid,
+      error->request_code,
+      error->minor_code);
+#endif //G_DEBUG_DISABLE
 
   if (blamed)
     g_warning("%s: %s: %s", blamed->function_name?blamed->function_name:"?",
