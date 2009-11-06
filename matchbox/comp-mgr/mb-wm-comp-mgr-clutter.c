@@ -889,7 +889,6 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
   if (!cclient->priv->damage_handling_off)
     {
       Damage damage;
-      int err;
 
 /* We ignore the DontUpdate flag for i386, as it uses the X11 Texture Pixmap
  * class, which requires damage events to keep its internal texture in sync.

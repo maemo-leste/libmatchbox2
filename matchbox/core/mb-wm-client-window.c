@@ -333,7 +333,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
     }
 
   {
-    int err;
     /* FIXME: toggling 'offline' mode in power menu can cause X error here */
     /* bundle all pending requests to server and wait for replys.
      * Errors will be caught by the new error handler. Note that removing this

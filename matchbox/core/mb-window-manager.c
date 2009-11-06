@@ -1041,7 +1041,7 @@ static void
 stack_sync_to_display (MBWindowManager *wm)
 {
   Window *win_list = NULL;
-  int count = 0, error;
+  int count = 0;
 
   if (!wm->stack_n_clients)
     return;

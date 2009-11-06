@@ -21,9 +21,6 @@ static GList *code_section_list = 0; /* of CodeSection */
 static int TrappedErrorCode = 0;
 static int (*old_error_handler) (Display *, XErrorEvent *);
 
-static void x_error_raise() {
-}
-
 static int
 error_handler(Display     *xdpy,
 	      XErrorEvent *error)
@@ -100,6 +97,13 @@ async_error_handler(Display     *xdpy,
   /* Error text */
 #ifdef G_DEBUG_DISABLE
   sprintf(error_string,
+          "X error %d, window: 0x%lx, req: %d, minor: %d",
+      error->error_code,
+      error->resourceid,
+      error->request_code,
+      error->minor_code);
+#else
+  sprintf(error_string,
           "X error %s (%d), window: 0x%lx, req: %s (%d), minor: %d",
       error->error_code < G_N_ELEMENTS (mb_wm_debug_x_errors)
           && mb_wm_debug_x_errors[error->error_code]
@@ -109,13 +113,6 @@ async_error_handler(Display     *xdpy,
       error->request_code < G_N_ELEMENTS (mb_wm_debug_x_requests)
           && mb_wm_debug_x_requests[error->request_code]
         ? mb_wm_debug_x_requests[error->request_code] : "???",
-      error->request_code,
-      error->minor_code);
-#else
-  sprintf(error_string,
-          "X error %d, window: 0x%lx, req: %d, minor: %d",
-      error->error_code,
-      error->resourceid,
       error->request_code,
       error->minor_code);
 #endif //G_DEBUG_DISABLE
@@ -144,7 +141,7 @@ mb_wm_util_async_x_error_free_old()
   GList *entry = code_section_list;
 
   Display *last_display = 0;
-  long last_message;
+  long last_message = 0;
 
   while (entry)
     {
