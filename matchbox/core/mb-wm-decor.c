@@ -206,7 +206,7 @@ mb_wm_decor_release_handler (XButtonEvent    *xev,
 {
   MBWMDecor       *decor  = userdata;
   MBWindowManager *wm;
- 
+
   if (decor == NULL || decor->parent_client == NULL
       || decor->parent_client->wmref == NULL)
     return False;
@@ -237,6 +237,7 @@ mb_wm_decor_press_handler (XButtonEvent    *xev,
       MBGeometry geom;
       int        orig_x, orig_y;
       int        orig_p_x, orig_p_y;
+      int        status;
 
       mb_wm_client_get_coverage (decor->parent_client, &geom);
 
@@ -256,12 +257,15 @@ mb_wm_decor_press_handler (XButtonEvent    *xev,
        * ButtonPress we install a ButtonRelease callback into the main loop
        * and use that to release the grab.
        */
-      if (XGrabPointer(wm->xdpy, xev->subwindow, False,
+      mb_wm_util_async_trap_x_errors(wm->xdpy);
+      status = XGrabPointer(wm->xdpy, xev->subwindow, False,
 		       ButtonPressMask|ButtonReleaseMask|
 		       PointerMotionMask|EnterWindowMask|LeaveWindowMask,
 		       GrabModeAsync,
 		       GrabModeAsync,
-		       None, None, CurrentTime) == GrabSuccess)
+		       None, None, CurrentTime);
+      mb_wm_util_async_untrap_x_errors();
+      if (status == GrabSuccess)
 	{
 
 	  decor->release_cb_id = mb_wm_main_context_x_event_handler_add (
@@ -689,7 +693,7 @@ mb_wm_decor_destroy (MBWMObject* obj)
   if (decor->press_cb_id)
     mb_wm_main_context_x_event_handler_remove (ctx, ButtonPress,
 					       decor->press_cb_id);
-  
+
   if (decor->release_cb_id)
     mb_wm_main_context_x_event_handler_remove (ctx, ButtonRelease,
 					     decor->release_cb_id);
@@ -794,7 +798,7 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
     return False;
 
   wm = decor->parent_client->wmref;
-  
+
   mb_wm_object_ref (MB_WM_OBJECT(button));
 
   if (xev->window == decor->xwin)
@@ -871,6 +875,7 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
       else
 	{
 	  XEvent ev;
+	  int status;
 
 	  /*
 	   * First, call the custom function if any.
@@ -878,12 +883,15 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 	  if (button->press)
 	    button->press(wm, button, button->userdata);
 
-	  if (XGrabPointer(wm->xdpy, xev->subwindow, False,
+	  mb_wm_util_async_trap_x_errors(wm->xdpy);
+	  status = XGrabPointer(wm->xdpy, xev->subwindow, False,
 			   ButtonPressMask|ButtonReleaseMask|
 			   PointerMotionMask|EnterWindowMask|LeaveWindowMask,
 			   GrabModeAsync,
 			   GrabModeAsync,
-			   None, None, CurrentTime) == GrabSuccess)
+			   None, None, CurrentTime);
+	  mb_wm_util_async_untrap_x_errors();
+	  if (status == GrabSuccess)
 	    {
               /* set up release handler to catch ButtonRelease while we
                * are spinning the main loop */
@@ -1205,7 +1213,7 @@ mb_wm_decor_button_unrealize (MBWMDecorButton *button)
   ctx = button &&
 	  button->decor &&
 	  button->decor->parent_client &&
-	  button->decor->parent_client->wmref ? 
+	  button->decor->parent_client->wmref ?
 	  button->decor->parent_client->wmref->main_ctx : NULL;
 
   if (!ctx)

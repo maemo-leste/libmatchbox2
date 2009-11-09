@@ -72,6 +72,7 @@ static int
 async_error_handler(Display     *xdpy,
                     XErrorEvent *error)
 {
+#ifndef G_DEBUG_DISABLE
   GList *entry;
   gchar error_string[256];
   CodeSection *blamed = 0;
@@ -95,14 +96,6 @@ async_error_handler(Display     *xdpy,
     return 0;
 
   /* Error text */
-#ifdef G_DEBUG_DISABLE
-  sprintf(error_string,
-          "X error %d, window: 0x%lx, req: %d, minor: %d",
-      error->error_code,
-      error->resourceid,
-      error->request_code,
-      error->minor_code);
-#else
   sprintf(error_string,
           "X error %s (%d), window: 0x%lx, req: %s (%d), minor: %d",
       error->error_code < G_N_ELEMENTS (mb_wm_debug_x_errors)
@@ -115,7 +108,6 @@ async_error_handler(Display     *xdpy,
         ? mb_wm_debug_x_requests[error->request_code] : "???",
       error->request_code,
       error->minor_code);
-#endif //G_DEBUG_DISABLE
 
   if (blamed)
     g_warning("%s: %s: %s", blamed->function_name?blamed->function_name:"?",
@@ -123,6 +115,8 @@ async_error_handler(Display     *xdpy,
                             error_string);
   else
     g_critical("Untrapped: %s", error_string);
+#endif //G_DEBUG_DISABLE
+
   return 0;
 }
 
@@ -133,6 +127,7 @@ mb_wm_util_async_x_error_init()
   XSetErrorHandler(async_error_handler);
 }
 
+#ifndef G_DEBUG_DISABLE
 /* Remove traps in our list that are older than the most recently
  * processed X event. */
 static void
@@ -161,6 +156,7 @@ mb_wm_util_async_x_error_free_old()
       entry = next_entry;
     }
 }
+#endif
 
 /* Add async trap for errors. This means that errors will be handled
  * when they occur and reported to the console, regardless of whether
@@ -174,6 +170,7 @@ mb_wm_util_async_trap_x_errors_full(Display *display,
                                     const gchar *function_name,
                                     const gchar *message)
 {
+#ifndef G_DEBUG_DISABLE
   CodeSection *section = g_malloc(sizeof(CodeSection));
 
   /* This was purely paranoia */
@@ -206,11 +203,13 @@ mb_wm_util_async_trap_x_errors_full(Display *display,
     }
 
   code_section_list = g_list_prepend(code_section_list, section);
+#endif
 }
 
 void
 mb_wm_util_async_untrap_x_errors_full(const gchar *function_name)
 {
+#ifndef G_DEBUG_DISABLE
   CodeSection *section;
   if (!code_section_list)
     {
@@ -229,6 +228,7 @@ mb_wm_util_async_untrap_x_errors_full(const gchar *function_name)
   /* Make sure we remove anything in our list that
    * is older than the currently processed X request */
   mb_wm_util_async_x_error_free_old();
+#endif
 }
 
 void*

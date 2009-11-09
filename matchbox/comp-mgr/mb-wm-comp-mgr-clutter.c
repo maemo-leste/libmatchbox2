@@ -1106,7 +1106,9 @@ mb_wm_comp_mgr_clutter_client_track_damage (MBWMCompMgrClutterClient *cclient,
     {
       if (cclient->priv->window_damage)
         {
-          mb_wm_util_async_trap_x_errors_warn(wm->xdpy,"XDamageDestroy");
+          /* When the window is closing, this may fail - which we don't
+           * really care about, so don't report it */
+          mb_wm_util_async_trap_x_errors(wm->xdpy);
           XDamageDestroy (wm->xdpy, cclient->priv->window_damage);
           mb_wm_util_async_untrap_x_errors();
           cclient->priv->window_damage = 0;

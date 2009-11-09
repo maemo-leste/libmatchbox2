@@ -1,3 +1,17 @@
+2009-11-09  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	Regression fixes for NB#145154 - Fixing the odd warnings about X errors
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Don't report X errors
+	  from XDamageDestroy, as we don't really care.
+	* matchbox/core/mb-wm-client-base.c: Move position of traps so we
+	  don't end up with 2 layers of trap when the decor is refreshed
+	  (this gets rid of the g_critical).
+	* matchbox/core/mb-wm-decor.c: Do an async trap around XGrabPointer,
+	  as this can produce X errors.
+	* matchbox/core/mb-wm-util.c: Make sure that in debug mode we don't
+	  print (or even keep track of) X errors.
+
 2009-11-09  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.79

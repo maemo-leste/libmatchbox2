@@ -12,7 +12,6 @@
  *  any later version.
  *
  *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
@@ -260,7 +259,7 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
                       MB_WM_CLIENT_XWIN(client),
                       client->wmref->root_win->xwindow, 0, 0);
     }
-      
+
   /*
    * If this is a system-modal client and the global setting
    * is to support system modal windows, we create a
@@ -302,14 +301,14 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
     }
 
   XSetWindowBorderWidth(wm->xdpy, MB_WM_CLIENT_XWIN(client), 0);
-  
+
   XSelectInput(wm->xdpy,
 	       MB_WM_CLIENT_XWIN(client),
 	       PropertyChangeMask);
   mb_wm_client_window_sync_properties (
-		  client->window, 
+		  client->window,
 		  MBWM_WINDOW_PROP_TRANSIENCY);
-  
+
 
   XAddToSaveSet(wm->xdpy, MB_WM_CLIENT_XWIN(client));
 }
@@ -352,7 +351,7 @@ mb_wm_client_base_stack (MBWindowManagerClient *client,
   /*
    * And then we are going to use the parent.
    */
-  if (transient_for) 
+  if (transient_for)
 	  client = transient_for;
 
   /*
@@ -587,7 +586,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 		}
 	      else
 		{
-		  if (is_window_mapped(wm->xdpy, MB_WM_CLIENT_XWIN(client))) 
+		  if (is_window_mapped(wm->xdpy, MB_WM_CLIENT_XWIN(client)))
                     {
                       client->skip_unmaps++;
                       MB_WM_DBG_SKIP_UNMAPS (client);
@@ -597,7 +596,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 				  wm->root_win->xwindow, 0, 0);
 		  XUnmapWindow(wm->xdpy, client->xwin_frame);
 		  XMapWindow(wm->xdpy, MB_WM_CLIENT_XWIN(client));
-		  
+
 		}
 	    }
 	  else if (!client->window->undecorated)
@@ -614,8 +613,8 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 	}
 
       mb_wm_client_request_geometry (
-	  client, 
-	  &client->frame_geometry, 
+	  client,
+	  &client->frame_geometry,
 	  MBWMClientReqGeomForced);
 
       if (wm->focused_client == client)
@@ -748,13 +747,11 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
     }
 
   /* Paint any decor */
-
-  mb_wm_util_async_trap_x_errors(wm->xdpy);
-
   if (mb_wm_client_needs_decor_sync (client))
     {
       MBGeometry area;
 
+      mb_wm_util_async_trap_x_errors(wm->xdpy);
       /*
        * First, we set the base shape mask, if needed, so that individual
        * decors can add themselves to it.
@@ -796,12 +793,14 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 	    XMapWindow(wm->xdpy, client->xwin_frame);
 	}
 #endif
+      mb_wm_util_async_untrap_x_errors();
+
       mb_wm_util_list_foreach (client->decor,
 			      (MBWMListForEachCB)mb_wm_decor_handle_repaint,
 			      NULL);
     }
 
-  mb_wm_util_async_untrap_x_errors();
+
 }
 
 /* Note request geometry always called by layout manager */
