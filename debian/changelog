@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.80-1~unreleased) unstable; urgency=low
+
+  * foo
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  9 Nov 2009 09:41:07 +0200
+
 matchbox-window-manager-2 (0.2.79-1) unstable; urgency=low
 
   Gordon:
