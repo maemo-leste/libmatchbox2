@@ -6,6 +6,7 @@
 #undef  G_LOG_DOMAIN
 #define G_LOG_DOMAIN "libmatchbox"
 
+#ifndef G_DEBUG_DISABLE
 typedef struct {
   const gchar *function_name; /* Unowned - expected to be from __FUNCTION__ */
   gchar *message; /* Owned by this */
@@ -17,6 +18,7 @@ typedef struct {
 } CodeSection;
 
 static GList *code_section_list = 0; /* of CodeSection */
+#endif
 
 static int TrappedErrorCode = 0;
 static int (*old_error_handler) (Display *, XErrorEvent *);
