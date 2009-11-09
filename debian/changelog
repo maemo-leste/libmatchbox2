@@ -1,8 +1,9 @@
-matchbox-window-manager-2 (0.2.79-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.79-1) unstable; urgency=low
 
-  * foo
+  Gordon:
+  * Fixes: NB#145154 - Too many XSyncs in window manager causes slowdowns
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  2 Nov 2009 11:33:28 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 09 Nov 2009 09:38:45 +0200
 
 matchbox-window-manager-2 (0.2.78-1) unstable; urgency=low
 
