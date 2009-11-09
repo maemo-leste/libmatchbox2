@@ -1,6 +1,7 @@
-matchbox-window-manager-2 (0.2.80-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.80-1) unstable; urgency=low
 
-  * foo
+  Gordon:
+  * Reduce the amount of warnings going to the syslog.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  9 Nov 2009 09:41:07 +0200
 

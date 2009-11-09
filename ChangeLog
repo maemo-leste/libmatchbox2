@@ -1,3 +1,7 @@
+2009-11-09  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.80
+
 2009-11-09  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	Regression fixes for NB#145154 - Fixing the odd warnings about X errors
