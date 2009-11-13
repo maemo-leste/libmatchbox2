@@ -38,6 +38,7 @@ struct MBWindowManagerClientPriv
   Bool          realized;
   Bool          mapped;
   Bool          map_confirmed;
+  Bool          unmap_confirmed;
   Bool          iconizing;
   Bool          hiding_from_desktop;
   MBWMSyncType  sync_state;
@@ -485,11 +486,23 @@ mb_wm_client_is_map_confirmed (MBWindowManagerClient *client)
 
 void
 mb_wm_client_set_map_confirmed (MBWindowManagerClient *client,
-		Bool confirmed)
+                                Bool confirmed)
 {
   client->priv->map_confirmed = confirmed;
 }
 
+Bool
+mb_wm_client_is_unmap_confirmed (MBWindowManagerClient *client)
+{
+  return client->priv->unmap_confirmed;
+}
+
+void
+mb_wm_client_set_unmap_confirmed (MBWindowManagerClient *client,
+                                  Bool confirmed)
+{
+  client->priv->unmap_confirmed = confirmed;
+}
 
 void
 mb_wm_client_display_sync (MBWindowManagerClient *client)

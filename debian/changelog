@@ -1,6 +1,9 @@
 matchbox-window-manager-2 (0.2.82-1~unreleased) unstable; urgency=low
 
-  * foo
+  Kimmo:
+  * matchbox/core/mb-wm-client.[ch] (mb_wm_client_is_unmap_confirmed,
+    mb_wm_client_set_unmap_confirmed): New API for detecting clients that
+    have received UnmapNotify but are still in the window stack.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 13 Nov 2009 11:10:47 +0200
 

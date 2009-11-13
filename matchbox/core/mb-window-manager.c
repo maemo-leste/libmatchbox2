@@ -495,6 +495,8 @@ mb_wm_handle_unmap_notify (XUnmapEvent          *xev,
 	   * state, we unmange it and destroy all the associated resources.
 	   */
           mb_wm_client_set_map_confirmed (client, False);
+          mb_wm_client_set_unmap_confirmed (client, True);
+
 	  if (mb_wm_client_is_iconizing (client))
 	    {
 	      MBWM_DBG ("iconizing client %p\n", client);
