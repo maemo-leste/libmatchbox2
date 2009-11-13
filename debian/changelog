@@ -1,11 +1,11 @@
-matchbox-window-manager-2 (0.2.81-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.81-1) unstable; urgency=low
 
   Kimmo:
   * Plug leaked damage event handler when turning on the compositor without
     turning it off first.
   * Workaround for System UI window using _NET_WM_WINDOW_TYPE_DND.
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  9 Nov 2009 18:02:26 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Fri, 13 Nov 2009 11:09:22 +0200
 
 matchbox-window-manager-2 (0.2.80-1) unstable; urgency=low
 

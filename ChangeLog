@@ -1,5 +1,7 @@
 2009-11-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.81
+
 	Workaround for a funny System UI window using DND type.
 
 	* matchbox/core/mb-wm-atoms.c, matchbox/core/mb-wm-types.h: Add
