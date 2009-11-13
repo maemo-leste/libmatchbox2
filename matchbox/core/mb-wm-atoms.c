@@ -111,6 +111,7 @@ mb_wm_atoms_init(MBWindowManager *wm)
     "_HILDON_PORTRAIT_MODE_REQUEST",
 
     "_MAEMO_SUPPRESS_ROOT_RECONFIGURATION",
+    "_NET_WM_WINDOW_TYPE_DND",
   };
 
   /* FIXME: Error Traps */

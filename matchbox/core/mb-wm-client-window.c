@@ -462,7 +462,14 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  if (win->net_type != ((Atom *)result_atom)[0])
 	    changes |= MBWM_WINDOW_PROP_WIN_TYPE;
 
-	  win->net_type = ((Atom*)result_atom)[0];
+          if (((Atom*)result_atom)[0]
+                          == wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_DND])
+            {
+              g_printerr ("%s: treat DND window as normal\n", __func__);
+              win->net_type = wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_NORMAL];
+            }
+          else
+	    win->net_type = ((Atom*)result_atom)[0];
 	}
 
       if (result_atom)

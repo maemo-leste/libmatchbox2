@@ -1,3 +1,18 @@
+2009-11-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Workaround for a funny System UI window using DND type.
+
+	* matchbox/core/mb-wm-atoms.c, matchbox/core/mb-wm-types.h: Add
+	_NET_WM_WINDOW_TYPE_DND atom.
+	* matchbox/core/mb-wm-client-window.c
+	(mb_wm_client_window_sync_properties): Consider
+	_NET_WM_WINDOW_TYPE_DND clients as normal windows.
+
+	Plug a memory leak when turning on compositor repeatedly.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c (mb_wm_comp_mgr_turn_on): Do not
+	install the damage event handler if it's already installed.
+
 2009-11-09  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.80

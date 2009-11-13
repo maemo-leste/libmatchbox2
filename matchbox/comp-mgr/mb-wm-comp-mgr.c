@@ -455,8 +455,9 @@ mb_wm_comp_mgr_turn_on (MBWMCompMgr *mgr)
   MBWM_ASSERT (klass->turn_on != NULL);
   klass->turn_on (mgr);
 
-  mgr->damage_cb_id =
-    mb_wm_main_context_x_event_handler_add (wm->main_ctx,
+  if (!mgr->damage_cb_id)
+    mgr->damage_cb_id =
+      mb_wm_main_context_x_event_handler_add (wm->main_ctx,
 					None,
 					wm->damage_event_base + XDamageNotify,
 					(MBWMXEventFunc)klass->handle_damage,

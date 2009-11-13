@@ -318,6 +318,9 @@ typedef enum MBWMAtom
    */
   MBWM_ATOM_MAEMO_SUPPRESS_ROOT_RECONFIGURATION,
 
+  /* workaround for funny System UI window */
+  MBWM_ATOM_NET_WM_WINDOW_TYPE_DND,
+
   MBWM_ATOM_COUNT
 
 } MBWMAtom;
