@@ -1,4 +1,4 @@
-matchbox-window-manager-2 (0.2.82-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.82-1) unstable; urgency=low
 
   Kimmo:
   * matchbox/core/mb-wm-client.[ch] (mb_wm_client_is_unmap_confirmed,

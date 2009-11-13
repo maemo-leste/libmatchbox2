@@ -1,5 +1,7 @@
 2009-11-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Release 0.2.82
+
 	* matchbox/core/mb-wm-client.[ch] (mb_wm_client_is_unmap_confirmed,
 	mb_wm_client_set_unmap_confirmed): New API for detecting clients that
 	have received UnmapNotify but are still in the window stack.
