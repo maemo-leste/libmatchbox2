@@ -247,4 +247,7 @@ mb_adjust_dialog_title_position (MBWindowManager *wm,
 void
 mb_wm_setup_redirection (MBWindowManager *wm, int redirection);
 
+Time
+mb_wm_get_server_time (MBWindowManager *wm);
+
 #endif

@@ -2060,6 +2060,40 @@ mb_wm_handle_show_desktop (MBWindowManager * wm, Bool show)
     }
 }
 
+static Bool
+timestamp_predicate (Display *display,
+                     XEvent  *xevent,
+                     XPointer arg)
+{
+  MBWindowManager *wm = (MBWindowManager *)arg;
+  Window xwindow = wm->root_win->xwindow;
+
+  if (xevent->type == PropertyNotify &&
+      xevent->xproperty.window == xwindow &&
+      xevent->xproperty.atom == wm->atoms[MBWM_ATOM_NET_WORKAREA])
+    return True;
+
+  return False;
+}
+
+Time
+mb_wm_get_server_time (MBWindowManager *wm)
+{
+  XEvent xevent;
+  long data = 0;
+
+  /* zero-length append to get timestamp in the PropertyNotify */
+  XChangeProperty (wm->xdpy, wm->root_win->xwindow,
+                   wm->atoms[MBWM_ATOM_NET_WORKAREA],
+                   XA_CARDINAL, 32, PropModeAppend,
+                   (unsigned char*)&data, 0);
+
+  XIfEvent (wm->xdpy, &xevent, timestamp_predicate, (XPointer)wm);
+
+  return xevent.xproperty.time;
+}
+
+
 static void
 mb_wm_set_layout (MBWindowManager *wm, MBWMLayout *layout)
 {
@@ -2124,11 +2158,7 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
       mb_wm_client_display_sync (client);
     }
 
-  if (mb_wm_client_focus (client))
-    {
-      wm->focused_client = client;
-      return;
-    }
+  mb_wm_client_focus (client);
 
   /*
    * If the window is already destroyed we will get a notification about it

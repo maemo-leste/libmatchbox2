@@ -1,3 +1,17 @@
+2009-11-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Fixes: NB#147560 - Live Search from Desktop stops responding in a
+	sceanrio.
+
+	* matchbox/core/mb-window-manager.[ch] (mb_wm_get_server_time): New
+	utility to get a proper X server time stamp by means of zero-length
+	append to a root window property and catching the corresponding
+	PropertyNotify.
+	(mb_wm_focus_client): Remove useless if (both branches have the same
+	code).
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_set_focus): Use a
+	proper time stamp in the WM_TAKE_FOCUS ClientMessage.
+
 2009-11-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.82

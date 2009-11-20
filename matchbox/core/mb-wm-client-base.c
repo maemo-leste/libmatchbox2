@@ -527,18 +527,14 @@ mb_wm_client_set_focus (MBWindowManagerClient *client)
 
   if (client->window->protos & MBWMClientWindowProtosFocus)
     {
-      /*g_printerr ("sending XEvent WM_TAKE_FOCUS to %lu\n", xwin); */
+      Time t;
+      /*g_printerr ("sending XEvent WM_TAKE_FOCUS to 0x%lx\n", xwin); */
 
-      success = mb_wm_client_deliver_message
-	(client,
-	 wm->atoms[MBWM_ATOM_WM_PROTOCOLS],
-	 wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS],
-	 /* FIXME: The spec explicitly says not to use CurrentTime in l[1].
-	  * It works, but we shouldn't do it.
-	  * (This will involve storing a per-display event timestamp, or a
-	  * round trip to get the time.)
-	  */
-	 CurrentTime, 0, 0, 0);
+      t = mb_wm_get_server_time (wm);
+      success = mb_wm_client_deliver_message (client,
+                        wm->atoms[MBWM_ATOM_WM_PROTOCOLS],
+                        wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS],
+                        t, 0, 0, 0);
     }
   else
     {
