@@ -1068,7 +1068,9 @@ mb_wm_sync (MBWindowManager *wm)
 {
   /* Sync all changes to display */
   MBWindowManagerClient *client = NULL;
+#ifndef G_DEBUG_DISABLE
   GTimer *timer = g_timer_new();
+#endif
   MBWM_MARK();
   MBWM_TRACE ();
 
@@ -1126,8 +1128,10 @@ mb_wm_sync (MBWindowManager *wm)
   XFlush(wm->xdpy);
   wm->sync_type = 0;
 
+#ifndef G_DEBUG_DISABLE
   g_debug("mb_wm_sync: %f", g_timer_elapsed(timer,0));
   g_timer_destroy(timer);
+#endif
 }
 
 static void
@@ -2102,12 +2106,11 @@ mb_wm_set_layout (MBWindowManager *wm, MBWMLayout *layout)
 }
 
 static void
-mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
+mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *client)
 {
-  MBWindowManagerClient *client = c,
-    *last_focused_transient;
+  MBWindowManagerClient *last_focused_transient;
 
-  last_focused_transient = mb_wm_client_get_last_focused_transient (c);
+  last_focused_transient = mb_wm_client_get_last_focused_transient (client);
 
   /*
    * If the last focused transient for this client is modal, we try to focus
@@ -2156,6 +2159,11 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *c)
 
       mb_wm_client_realize (client);
       mb_wm_client_display_sync (client);
+
+      /* focus what ever should be focused according to the stacking order,
+       * because this window could be e.g. behind the current application */
+      mb_wm_unfocus_client (wm, NULL);
+      return;
     }
 
   mb_wm_client_focus (client);

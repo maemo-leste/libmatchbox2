@@ -1,5 +1,15 @@
 2009-11-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
+	Fixes: NB#145690 - Application manager finishing an installation in
+	background blocks keyboard input in Terminal
+
+	* matchbox/core/mb-window-manager.c (mb_wm_focus_client): If the
+	window is not realized (i.e. it has just appeared), focus according to
+	the stacking order.
+	(mb_wm_sync): Don't compile the timer code if we have G_DEBUG_DISABLE.
+
+2009-11-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
 	Fixes: NB#147560 - Live Search from Desktop stops responding in a
 	sceanrio.
 
