@@ -1,4 +1,4 @@
-2009-11-20  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+2009-11-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Fixes: NB#145690 - Application manager finishing an installation in
 	background blocks keyboard input in Terminal
