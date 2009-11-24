@@ -1,3 +1,20 @@
+2009-11-24  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Fix problems in the focus logic.
+
+	* matchbox/core/mb-window-manager.h: New member focus_after_stacking
+	to flag when we have postponed assigning the focus to happen after
+	stacking.
+	* matchbox/core/mb-window-manager.c (mb_wm_focus_client_as_stacked):
+	Refactored the 'focus as stacked' logic here out from
+	mb_wm_unfocus_client.
+	(mb_wm_manage_preexisting_wins): Set the focus_after_stacking flag to
+	assign focus to the right place after stacking.
+	(mb_wm_focus_client): If the client is unrealized, assume it's not
+	stacked yet and set focus_after_stacking to check focus later.
+	* matchbox/core/mb-wm-client.c (mb_wm_client_needs_stack_sync): Remove
+	unused function.
+
 2009-11-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Fixes: NB#145690 - Application manager finishing an installation in

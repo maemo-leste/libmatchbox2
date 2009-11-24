@@ -134,6 +134,9 @@ struct MBWindowManager
   char                       **argv;
   int                          argc;
   Bool                         non_redirection;
+
+  /* used for assigning focus after stacking a new window */
+  Bool                         focus_after_stacking;
 };
 
 /**

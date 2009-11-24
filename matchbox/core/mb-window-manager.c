@@ -1063,6 +1063,56 @@ stack_sync_to_display (MBWindowManager *wm)
   mb_wm_util_async_untrap_x_errors();
 }
 
+extern gboolean hd_dbus_tklock_on;
+
+static void
+mb_wm_focus_client_as_stacked (MBWindowManager *wm,
+                               MBWindowManagerClient *except_client)
+{
+  MBWindowManagerClient *next = NULL;
+
+  if (wm->stack_top)
+    {
+      MBWindowManagerClient *c;
+
+      mb_wm_stack_enumerate_reverse (wm, c)
+	{
+	  if (c != except_client &&
+	      mb_wm_client_want_focus (c) &&
+	      mb_wm_client_is_visible (c) &&
+              /* do not assign focus to Home applets automatically */
+              c->window->net_type !=
+                wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_HOME_APPLET])
+	    {
+	      next = c;
+	      break;
+	    }
+	  if (mb_wm_client_covers_screen (c))
+	    {
+	      /* anything below this is necessarily
+	       * invisible
+	       */
+	      break;
+	    }
+	}
+    }
+
+  wm->focused_client = NULL;
+
+  if (hd_dbus_tklock_on)
+    {
+      /* don't give focus back to any already mapped window
+       * because the touch screen is still locked and we don't want
+       * the application to wake up */
+      return;
+    }
+
+  if (next)
+    {
+      mb_wm_focus_client (wm, next);
+    }
+}
+
 void
 mb_wm_sync (MBWindowManager *wm)
 {
@@ -1127,6 +1177,12 @@ mb_wm_sync (MBWindowManager *wm)
   XUngrabServer(wm->xdpy);
   XFlush(wm->xdpy);
   wm->sync_type = 0;
+
+  if (wm->focus_after_stacking)
+    {
+      wm->focus_after_stacking = False;
+      mb_wm_focus_client_as_stacked (wm, NULL);
+    }
 
 #ifndef G_DEBUG_DISABLE
   g_debug("mb_wm_sync: %f", g_timer_elapsed(timer,0));
@@ -1503,6 +1559,8 @@ mb_wm_manage_preexisting_wins (MBWindowManager* wm)
 	     mb_wm_object_unref (MB_WM_OBJECT (win));
 	 }
      }
+
+   wm->focus_after_stacking = True;
 
    XFree(wins);
 }
@@ -2162,7 +2220,7 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *client)
 
       /* focus what ever should be focused according to the stacking order,
        * because this window could be e.g. behind the current application */
-      mb_wm_unfocus_client (wm, NULL);
+      wm->focus_after_stacking = True;
       return;
     }
 
@@ -2176,56 +2234,13 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *client)
   return;
 }
 
-extern gboolean hd_dbus_tklock_on;
-
 void
 mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client)
 {
-  MBWindowManagerClient *next = NULL;
-
   if (client != wm->focused_client)
     return;
 
-  if (wm->stack_top)
-    {
-      MBWindowManagerClient *c;
-
-      mb_wm_stack_enumerate_reverse (wm, c)
-	{
-	  if (c != client &&
-	      mb_wm_client_want_focus (c) &&
-	      mb_wm_client_is_visible (c) &&
-              /* do not assign focus to Home applets automatically */
-              c->window->net_type !=
-                wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_HOME_APPLET])
-	    {
-	      next = c;
-	      break;
-	    }
-	  if (mb_wm_client_covers_screen (c))
-	    {
-	      /* anything below this is necessarily
-	       * invisible
-	       */
-	      break;
-	    }
-	}
-    }
-
-  wm->focused_client = NULL;
-
-  if (hd_dbus_tklock_on)
-    {
-      /* don't give focus back to any already mapped window
-       * because the touch screen is still locked and we don't want
-       * the application to wake up */
-      return;
-    }
-
-  if (next)
-    {
-      mb_wm_focus_client (wm, next);
-    }
+  mb_wm_focus_client_as_stacked (wm, client);
 }
 
 void

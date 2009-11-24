@@ -375,12 +375,6 @@ mb_wm_client_stack (MBWindowManagerClient *client,
     }
 }
 
-Bool
-mb_wm_client_needs_stack_sync (MBWindowManagerClient *client)
-{
-  return (client->priv->sync_state & MBWMSyncStacking);
-}
-
 void
 mb_wm_client_show (MBWindowManagerClient *client)
 {
