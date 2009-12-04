@@ -324,6 +324,33 @@ destroy_cb(ClutterActor *actor, MBWMCompMgrClutterClient *cclient) {
 }
 #endif
 
+/* Recursively set texture filtering state on this actor and children */
+static void
+recursive_set_texture_filter(ClutterActor *actor, ClutterTextureQuality *filter)
+{
+  if (CLUTTER_IS_CONTAINER(actor))
+    clutter_container_foreach(CLUTTER_CONTAINER(actor),
+                              (ClutterCallback)recursive_set_texture_filter,
+                              filter);
+  if (CLUTTER_IS_TEXTURE(actor))
+    clutter_texture_set_filter_quality(CLUTTER_TEXTURE(actor), *filter);
+}
+
+/* Called when a clutter client's actor is reparented */
+static void
+mb_wm_comp_mgr_clutter_client_actor_reparent_cb(ClutterActor *actor)
+{
+  ClutterTextureQuality filter = CLUTTER_TEXTURE_QUALITY_LOW; // GL_NEAREST
+  ClutterActor *parent = clutter_actor_get_parent(actor);
+  if (parent)
+    {
+      if (g_object_get_data(G_OBJECT(parent),"FILTER_LINEAR"))
+        filter = CLUTTER_TEXTURE_QUALITY_MEDIUM; // GL_LINEAR
+    }
+
+  recursive_set_texture_filter(actor, &filter);
+}
+
 static int
 mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
 {
@@ -340,6 +367,11 @@ mb_wm_comp_mgr_clutter_client_init (MBWMObject *obj, va_list vap)
   clutter_actor_set_visibility_detect(cclient->priv->actor, TRUE);
   g_object_set_data (G_OBJECT (cclient->priv->actor),
                      "HD-MBWMCompMgrClutterClient", cclient);
+  g_signal_connect(
+      cclient->priv->actor, "parent-set",
+      G_CALLBACK(mb_wm_comp_mgr_clutter_client_actor_reparent_cb),
+      cclient);
+
 #if DEBUG_ACTOR
   g_signal_connect(cclient->priv->actor, "destroy", G_CALLBACK(destroy_cb), cclient);
 #endif

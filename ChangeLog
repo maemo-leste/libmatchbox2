@@ -1,3 +1,12 @@
+2009-12-04  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	NB#149340 - Task switcher window thumbnail quality
+	            Requires hildon-desktop mods too.
+	
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c: Now detect the presence 
+	of "FILTER_LINEAR" data in the parent clutter object, and adjust
+	filter preferences accordingly.
+
 2009-11-30  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.83
