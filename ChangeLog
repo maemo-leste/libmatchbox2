@@ -1,5 +1,7 @@
 2009-12-04  Gordon Williams <gordon.williams@collabora.co.uk>
 
+	Release 0.2.84
+
 	NB#149340 - Task switcher window thumbnail quality
 	            Requires hildon-desktop mods too.
 	
