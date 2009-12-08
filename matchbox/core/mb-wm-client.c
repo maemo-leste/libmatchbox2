@@ -1264,7 +1264,7 @@ mb_wm_client_wants_portrait (MBWindowManagerClient * client)
 
   if ((MB_WM_CLIENT_CLIENT_TYPE (client) & MBWMClientTypeDialog)
       && client->window->portrait_on_map < 2)
-    /* But only dialogs which demant rotation. */
+    /* But only dialogs which demand rotation. */
     return False;
 
   /* If we cannot say for sure hd will decide. */
