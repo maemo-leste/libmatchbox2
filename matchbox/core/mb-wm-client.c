@@ -691,14 +691,14 @@ mb_wm_client_get_last_focused_transient (MBWindowManagerClient *client)
 
   mb_wm_stack_enumerate_reverse (wm, c)
     if (c->transient_for == client &&
-        c->window->net_type != 
+        c->window->net_type !=
 	  wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR])
       {
         result = c;
         break;
       }
 
-  if (result) 
+  if (result)
     {
       MBWindowManagerClient  *rec_transient;
 
