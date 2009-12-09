@@ -667,14 +667,14 @@ mb_wm_client_get_last_focused_transient (MBWindowManagerClient *client)
 
   mb_wm_stack_enumerate_reverse (wm, c)
     if (c->transient_for == client &&
-        c->window->net_type != 
+        c->window->net_type !=
 	  wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR])
       {
         result = c;
         break;
       }
 
-  if (result) 
+  if (result)
     {
       MBWindowManagerClient  *rec_transient;
 
@@ -1264,7 +1264,7 @@ mb_wm_client_wants_portrait (MBWindowManagerClient * client)
 
   if ((MB_WM_CLIENT_CLIENT_TYPE (client) & MBWMClientTypeDialog)
       && client->window->portrait_on_map < 2)
-    /* But only dialogs which demant rotation. */
+    /* But only dialogs which demand rotation. */
     return False;
 
   /* If we cannot say for sure hd will decide. */

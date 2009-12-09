@@ -1,3 +1,14 @@
+2009-12-09  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	Fixes: NB#137235 - Transparent menu corners
+
+	* matchbox/client-types/mb-wm-client-menu.c: Create decor for menus, 
+	  deal with decor when working out sizes.
+	* matchbox/theme-engines/mb-wm-theme-xml.c/h: Add image_filename field
+	  into decor
+	* matchbox/theme-engines/mb-wm-theme.c: handle loading of img as an
+	  XML entity in 'Client', and sort out paths.	
+
 2009-12-04  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	Release 0.2.84
