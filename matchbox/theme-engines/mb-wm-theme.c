@@ -397,6 +397,8 @@ struct stack_data
  */
 struct expat_data
 {
+  const char   *path; /* current path - used for fixing image paths up */
+
   XML_Parser   par;
   int          theme_type;
   int          version;
@@ -553,6 +555,7 @@ mb_wm_theme_new (MBWindowManager * wm, const char * theme_path)
       memset (&udata, 0, sizeof (struct expat_data));
       udata.compositing = True;
       udata.par         = par;
+      udata.path        = path;
 
       XML_SetElementHandler (par,
 			     xml_element_start_cb,
@@ -571,32 +574,7 @@ mb_wm_theme_new (MBWindowManager * wm, const char * theme_path)
 	  xml_clients = udata.xml_clients;
 
 	  if (udata.img)
-	    {
-	      if (*udata.img == '/')
-		img = udata.img;
-	      else
-		{
-		  int len = strlen (path) + strlen (udata.img);
-		  char * s;
-		  char * p = malloc (len + 1);
-		  strncpy (p, path, len);
-
-		  s = strrchr (p, '/');
-
-		  if (s)
-		    {
-		      *(s+1) = 0;
-		      strcat (p, udata.img);
-		    }
-		  else
-		    {
-		      strncpy (p, udata.img, len);
-		    }
-
-		  img = p;
-		  free (udata.img);
-		}
-	    }
+	    img = udata.img;
 	}
 
       clr_lowlight.r   = udata.color_lowlight.r;
@@ -725,7 +703,7 @@ mb_wm_theme_set_left_padding (MBWMTheme *theme,
   MBWMClientType c_type = MB_WM_CLIENT_CLIENT_TYPE (client);
   MBWMDecor *decor = NULL;
   MBWMXmlClient *decor_tmp;
- 
+
   decor_tmp = mb_wm_xml_client_find_by_type (theme->xml_clients, c_type);
   if (decor_tmp)
     decor = (MBWMDecor *)mb_wm_xml_decor_find_by_type (decor_tmp->decors,
@@ -1106,6 +1084,8 @@ xml_element_start_cb (void *data, const char *tag, const char **expat_attr)
 		c->type = MBWMClientTypeInput;
 	      else if (!strcmp (*(p+1), "desktop"))
 		c->type = MBWMClientTypeDesktop;
+	      else if (!strcmp (*(p+1), "menu"))
+	        c->type = MBWMClientTypeMenu;
 	      else if (!strcmp (*(p+1), "notification"))
 		c->type = MBWMClientTypeNote;
 	      else if (custom_client_type_func)
@@ -1437,12 +1417,15 @@ xml_element_start_cb (void *data, const char *tag, const char **expat_attr)
     {
       const char **p = expat_attr;
       XmlCtx ctx = xml_stack_top_ctx (exd->stack);
+      MBWMXmlClient * c = 0;
+      if (ctx == XML_CTX_CLIENT)
+        c = xml_stack_top_data (exd->stack);
 
       xml_stack_push (&exd->stack, XML_CTX_IMG);
 
-      if (ctx != XML_CTX_THEME)
+      if (ctx != XML_CTX_THEME && ctx != XML_CTX_CLIENT)
 	{
-	  MBWM_DBG ("Expected context theme");
+	  MBWM_DBG ("Expected context theme or client");
 	  return;
 	}
 
@@ -1450,7 +1433,40 @@ xml_element_start_cb (void *data, const char *tag, const char **expat_attr)
 	{
 	  if (!strcmp (*p, "src"))
 	    {
-	      exd->img = strdup (*(p+1));
+	      char *img = strdup (*(p+1));
+              if (*img != '/')
+                {
+                  int len = strlen (exd->path) + strlen (img);
+                  char * s;
+                  char * p = malloc (len + 1);
+                  strncpy (p, exd->path, len);
+
+                  s = strrchr (p, '/');
+
+                  if (s)
+                    {
+                      *(s+1) = 0;
+                      strcat (p, img);
+                    }
+                  else
+                    {
+                      strncpy (p, img, len);
+                    }
+
+                  free (img);
+                  img = p;
+                }
+
+	      if (c)
+	        {
+	          if (c->image_filename) free(c->image_filename);
+                  c->image_filename = img;
+	        }
+	      else
+	        {
+	          if (exd->img) free(exd->img);
+	          exd->img = img;
+	        }
 	      return;
 	    }
 
