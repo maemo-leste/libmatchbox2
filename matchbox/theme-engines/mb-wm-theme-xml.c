@@ -86,6 +86,7 @@ mb_wm_xml_client_new ()
   c->client_y      = -1;
   c->client_width  = -1;
   c->client_height = -1;
+  c->image_filename = NULL;
 
   return c;
 }
@@ -108,6 +109,9 @@ mb_wm_xml_client_free (MBWMXmlClient * c)
 
       l = n;
     }
+
+  if (c->image_filename)
+    free(c->image_filename);
 
   free (c);
 }

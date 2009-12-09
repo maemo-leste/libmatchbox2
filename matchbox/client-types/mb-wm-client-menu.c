@@ -64,6 +64,14 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
 				 LayoutPrefPositionFree|LayoutPrefVisible|
 				 LayoutPrefFixedX|LayoutPrefFixedY);
 
+  if (!client->window->undecorated && wm->theme)
+      {
+        mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeNorth);
+        mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeSouth);
+        mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeWest);
+        mb_wm_theme_create_decor (wm->theme, client, MBWMDecorTypeEast);
+      }
+
   /*
    * Stack menus on the top of the stacking order, regardless of whether they
    * declare themselves transient or not.
