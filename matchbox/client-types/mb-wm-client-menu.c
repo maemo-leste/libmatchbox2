@@ -10,12 +10,29 @@ mb_wm_client_menu_request_geometry (MBWindowManagerClient *client,
 static void
 mb_wm_client_menu_realize (MBWindowManagerClient *client)
 {
+  MBWindowManagerClientClass  *parent_klass = NULL;
+  int our_type = MB_WM_TYPE_CLIENT_MENU;
+
+  parent_klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS(client));
+  /* Look back down class hierarchy until we find ourself, then
+   * find our parent's realize. There must be a better way??? */
+  while (MB_WM_OBJECT_CLASS(parent_klass)->type != our_type)
+    parent_klass = MB_WM_CLIENT_CLASS(MB_WM_OBJECT_CLASS(parent_klass)->parent);
+  parent_klass = MB_WM_CLIENT_CLASS(MB_WM_OBJECT_CLASS(parent_klass)->parent);
+
+  if (parent_klass->realize)
+    parent_klass->realize (client);
+
   /*
    * Must reparent the window to our root, otherwise we restacking of
    * pre-existing windows might fail.
    */
-  XReparentWindow(client->wmref->xdpy, MB_WM_CLIENT_XWIN(client),
-		  client->wmref->root_win->xwindow, 0, 0);
+  if (client->xwin_frame)
+    XReparentWindow(client->wmref->xdpy, client->xwin_frame,
+                    client->wmref->root_win->xwindow, 0, 0);
+  else
+    XReparentWindow(client->wmref->xdpy, MB_WM_CLIENT_XWIN(client),
+                    client->wmref->root_win->xwindow, 0, 0);
 }
 
 static void
