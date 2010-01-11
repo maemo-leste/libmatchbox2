@@ -559,7 +559,8 @@ mb_wm_comp_mgr_clutter_private_free (MBWMCompMgrClutter *mgr)
 
 static void
 mb_wm_comp_mgr_clutter_register_client_real (MBWMCompMgr           * mgr,
-					     MBWindowManagerClient * c)
+					     MBWindowManagerClient * c,
+                                             Bool                    activate)
 {
   MBWMCompMgrClient       *cclient;
   MBWMCompMgrClutterClass *klass
