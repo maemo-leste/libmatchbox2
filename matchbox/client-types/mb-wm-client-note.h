@@ -32,6 +32,22 @@ typedef struct MBWMClientNoteClass MBWMClientNoteClass;
 #define MB_WM_TYPE_CLIENT_NOTE (mb_wm_client_note_class_type ())
 #define MB_WM_IS_CLIENT_NOTE(c) (MB_WM_OBJECT_TYPE(c)==MB_WM_TYPE_CLIENT_NOTE)
 
+#define MB_WM_CLIENT_IS_BANNER_NOTE(c) \
+  ((MB_WM_CLIENT_CLIENT_TYPE (c) & MBWMClientTypeNote) \
+   && MB_WM_CLIENT_NOTE(c)->note_type == MBWMClientNoteTypeBanner)
+#define MB_WM_CLIENT_IS_INFO_NOTE(c) \
+  ((MB_WM_CLIENT_CLIENT_TYPE (c) & MBWMClientTypeNote) \
+   && MB_WM_CLIENT_NOTE(c)->note_type == MBWMClientNoteTypeInfo)
+#define MB_WM_CLIENT_IS_CONFIRMATION_NOTE(c) \
+  ((MB_WM_CLIENT_CLIENT_TYPE (c) & MBWMClientTypeNote) \
+   && MB_WM_CLIENT_NOTE(c)->note_type == MBWMClientNoteTypeConfirmation)
+#define MB_WM_CLIENT_IS_INCOMING_EVENT_PREVIEW_NOTE(c) \
+  ((MB_WM_CLIENT_CLIENT_TYPE (c) & MBWMClientTypeNote) \
+   && MB_WM_CLIENT_NOTE(c)->note_type == MBWMClientNoteTypeIncomingEventPreview)
+#define MB_WM_CLIENT_IS_INCOMING_EVENT_NOTE(c) \
+  ((MB_WM_CLIENT_CLIENT_TYPE (c) & MBWMClientTypeNote) \
+   && MB_WM_CLIENT_NOTE(c)->note_type == MBWMClientNoteTypeIncomingEvent)
+
 /**
  * A MBWMClientBase for a note window, also called a notification: that is,
  * those whose type is MBWM_ATOM_NET_WM_WINDOW_TYPE_NOTIFICATION.
@@ -39,6 +55,13 @@ typedef struct MBWMClientNoteClass MBWMClientNoteClass;
 struct MBWMClientNote
 {
   MBWMClientDialog  parent;
+  enum {
+    MBWMClientNoteTypeBanner,
+    MBWMClientNoteTypeInfo,
+    MBWMClientNoteTypeConfirmation,
+    MBWMClientNoteTypeIncomingEventPreview,
+    MBWMClientNoteTypeIncomingEvent,
+  } note_type;
 };
 
 /**

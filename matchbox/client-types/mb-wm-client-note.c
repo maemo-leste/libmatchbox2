@@ -51,10 +51,45 @@ mb_wm_client_note_init (MBWMObject *this, va_list vap)
   MBWMClientWindow      *win = client->window;
   MBGeometry             geom;
   Bool                   change = False;
+  unsigned char         *prop;
+  unsigned long          n;
+  Atom                   rtype;
+  int                    rfmt;
   Atom actions[] = {
     wm->atoms[MBWM_ATOM_NET_WM_ACTION_CLOSE],
     wm->atoms[MBWM_ATOM_NET_WM_ACTION_MOVE],
   };
+
+  mb_wm_util_async_trap_x_errors (wm->xdpy);
+  prop = NULL;
+  if (XGetWindowProperty (
+      wm->xdpy, win->xwindow, wm->atoms[MBWM_ATOM_HILDON_NOTIFICATION_TYPE],
+      0, -1, False,             /* offset, length, delete               */
+      XA_STRING, &rtype, &rfmt, /* req_type, actual_type, actual_format */
+      &n, &n,                   /* nitems, bytes_after                  */
+      &prop) == Success && prop && rtype == XA_STRING && rfmt == 8)
+    {
+      char const *val = (char const *)prop;
+      MBWMClientNote *note = MB_WM_CLIENT_NOTE (client);
+
+      if (!strcmp (val, "_HILDON_NOTIFICATION_TYPE_BANNER"))
+	note->note_type = MBWMClientNoteTypeBanner;
+      else if (!strcmp (val, "_HILDON_NOTIFICATION_TYPE_INFO"))
+	note->note_type = MBWMClientNoteTypeInfo;
+      else if (!strcmp (val, "_HILDON_NOTIFICATION_TYPE_CONFIRMATION"))
+	note->note_type = MBWMClientNoteTypeConfirmation;
+      else if (!strcmp (val, "_HILDON_NOTIFICATION_TYPE_PREVIEW"))
+	note->note_type = MBWMClientNoteTypeIncomingEventPreview;
+      else if (!strcmp (val, "_HILDON_NOTIFICATION_TYPE_INCOMING_EVENT"))
+	note->note_type = MBWMClientNoteTypeIncomingEvent;
+      else
+        g_critical ("0x%lx: unknown _HILDON_NOTIFICATION_TYPE", win->xwindow);
+    }
+  else
+    g_critical ("0x%lx: _HILDON_NOTIFICATION_TYPE: fail", win->xwindow);
+  if (prop)
+    XFree (prop);
+  mb_wm_util_async_untrap_x_errors ();
 
   geom = client->frame_geometry;
 

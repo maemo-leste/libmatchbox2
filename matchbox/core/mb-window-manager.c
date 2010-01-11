@@ -624,6 +624,10 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
     flag = MBWM_WINDOW_PROP_NET_PID;
   else if (xev->atom == wm->atoms[MBWM_ATOM_HILDON_STACKING_LAYER])
     flag = MBWM_WINDOW_PROP_HILDON_STACKING;
+  else if (xev->atom == wm->atoms[MBWM_ATOM_HILDON_PORTRAIT_MODE_SUPPORT])
+    flag = MBWM_WINDOW_PROP_PORTRAIT;
+  else if (xev->atom == wm->atoms[MBWM_ATOM_HILDON_PORTRAIT_MODE_REQUEST])
+    flag = MBWM_WINDOW_PROP_PORTRAIT;
 
   if (flag)
     mb_wm_client_window_sync_properties (client->window, flag);
@@ -685,7 +689,7 @@ mb_wm_handle_root_config_notify (XConfigureEvent *xev,
   /* Bastard hack part 2: now that the screen is reconfigured
    * map and activate the client which caused us to rotate. */
   for (c = wm->stack_top; c; c = c->stacked_below)
-    if (!mb_wm_client_is_map_confirmed (c) && c->window->portrait_on_map)
+    if (!mb_wm_client_is_map_confirmed (c) && c->window->portrait_requested > 0)
       {
         mb_wm_activate_client (wm, c);
         break;
@@ -1254,6 +1258,259 @@ mb_wm_update_root_win_lists (MBWindowManager *wm)
     }
 }
 
+/* Returns whether @client is an App, Dialog or Confirmation Note.
+ * Nothing else matters concerning portraitness. */
+static gboolean __attribute__((pure))
+is_interesting_client (MBWindowManagerClient *client)
+{
+  return (MB_WM_CLIENT_CLIENT_TYPE (client)
+          & (MBWMClientTypeApp|MBWMClientTypeDialog))
+    || MB_WM_CLIENT_IS_CONFIRMATION_NOTE (client);
+}
+
+/* Returns the number of children, grandchildren, etc. of @client,
+ * not including @client itself. */
+static unsigned
+cntchildren (MBWindowManagerClient *client)
+{
+  unsigned i;
+  MBWMList *li;
+
+  for (i = 0, li = client->transients; li; i++, li = li->next)
+    i += cntchildren (li->data);
+
+  return i;
+}
+
+static MBWMStackLayerType
+layer_of (MBWindowManagerClient *client,
+          gboolean needs_desktop, gboolean goto_app_state)
+{
+  /* Transients inherit the stacking layer. */
+  while (client->transient_for)
+    client = client->transient_for;
+
+  /* Don't call desktop->stacking_layer() because it has side effects. */
+  if (!(MB_WM_CLIENT_CLIENT_TYPE (client) & MBWMClientTypeDesktop))
+    return mb_wm_client_get_stacking_layer (client);
+  else if (!needs_desktop || goto_app_state)
+    /* desktop is/will be at the bottom */
+    return MBWMStackLayerBottom;
+  else /* needs desktop now && !goto app state */
+    return MBWMStackLayerMid;
+}
+
+static gboolean
+ordered (MBWindowManagerClient *lc, MBWindowManagerClient *rc,
+          gboolean needs_desktop, gboolean goto_app_state)
+{
+  MBWMStackLayerType llc, lrc;
+
+  /* The desktop window is more equal amongst the equals. */
+  llc = layer_of (lc, needs_desktop, goto_app_state);
+  lrc = layer_of (rc, needs_desktop, goto_app_state);
+  return llc != lrc
+    ? llc <= lrc
+    : !(MB_WM_CLIENT_CLIENT_TYPE (lc) & MBWMClientTypeDesktop);
+}
+
+static unsigned long
+lp_forecast (MBWindowManager *wm, MBWindowManagerClient *client)
+{
+  MBWMClientType ctype;
+  GPtrArray *stack;
+  MBWindowManagerClient *c;
+  gboolean is_tasw, is_edit_dlg, needs_desktop, goto_app_state;
+  unsigned l, r;
+  unsigned long decision;
+
+#if 0
+  if (mb_wm_client_wants_portrait(client))
+    /* Leave it up to the desktop to do something and we'll show
+     * and activate the client when the screen size changes. */
+    return MBWindowManagerSignalPortraitForecast;
+#endif
+
+  /* Don't bother with anything but application windows, dialogs
+   * and confirmation notes.  We simply don't have any other type
+   * of interesting clients. */
+  if (!is_interesting_client (client))
+    return MBWindowManagerSignalPortraitNeutral;
+
+  /* Construct the plausible new window @stack:ing.  (&stack[0] == top) */
+  stack = g_ptr_array_new ();
+  for (c = wm->stack_top; c; c = c->stacked_below)
+    g_ptr_array_add (stack, c);
+
+  /*
+   * Ensure that @client is stacked somewhere in its pile.
+   * When a @client is mapped in practice three things may happen:
+   * 1. if it's not transient it's stacked on the top
+   * 2. otherwise it may not be stacked, thus it remains on the top
+   * 3. or it may be stacked together with its application so that
+   *    the pile is brought to the top
+   * In the 2nd case there may be unrelated clients between the new
+   * @client and its pile.  Fix this.
+   */
+  if (client->transient_for && wm->stack_top == client)
+    {
+      MBWMList *li;
+      unsigned src, dst;
+      MBWindowManagerClient *want;
+
+      /* Find @client's oldest sibling, or if it's the first child
+       * it will be closely above its parent. */
+      for (want = client->transient_for, li = want->transients; ;
+           want = li->data, li = li->next)
+        {
+          g_assert (li != NULL);
+          if (li->data == client)
+            break;
+        }
+      g_assert (want != client);
+
+      /* @dst <- index of @want, where @client should be in @stack.
+       * index of stack_top == 0 && want != client ==> index of want > 0 */
+      for (dst = 1; ; dst++)
+        {
+          g_assert (dst < stack->len);
+          if (stack->pdata[dst] == want)
+            break;
+        }
+
+      /* dst <- where @client should be @stack:ed. */
+      if (want != client->transient_for)
+        {
+          g_assert (dst >= cntchildren(want));
+          dst -= cntchildren(want);
+        }
+      g_assert (dst > 0);
+      dst--;
+
+      /* @client is on the top, but if it's not destined there
+       * move it to @dst. */
+      src = 0;
+      if (dst != src)
+        {
+          g_assert (src < dst);
+          memmove (&stack->pdata[src], &stack->pdata[src+1], 
+                   sizeof (stack->pdata[0]) * (dst - src));
+          stack->pdata[dst] = client;
+        }
+    }
+
+  /* Are we @goto_app_state? */
+  g_object_get (wm->comp_mgr,
+                "state-is-tasw",        &is_tasw,
+                "state-is-edit-dlg",    &is_edit_dlg,
+                "state-needs-desktop",  &needs_desktop,
+                NULL);
+  ctype = MB_WM_CLIENT_CLIENT_TYPE (client);
+  goto_app_state = (ctype & MBWMClientTypeApp);
+  if (client->transient_for)
+    {
+      goto_app_state |= MB_WM_CLIENT_IS_CONFIRMATION_NOTE (client);
+      goto_app_state |= (ctype & MBWMClientTypeDialog) && !is_tasw;
+    }
+
+  /* Sort @stack by stacking layers and mb_wm_stack_ensure() would do
+   * (except for the desktop window which is ordered to the highest
+   *  position in its layer). */
+  for (l = 1, r = 2; l < stack->len; l = r++)
+    {
+      while (!ordered(stack->pdata[l-1], stack->pdata[l],
+                      needs_desktop, goto_app_state))
+        {
+          MBWindowManagerClient *tmp;
+
+          tmp = stack->pdata[l-1];
+          stack->pdata[l-1] = stack->pdata[l];
+          stack->pdata[l] = tmp;
+          if (!--l)
+            break;
+        }
+    }
+
+  /* Leaving EDIT_DLG state will hildon-home dialogs. */
+  if (is_edit_dlg && goto_app_state)
+    /* TODO  */;
+
+  /* Find the topmost interesting client and see its portrait preferences. */
+  decision = MBWindowManagerSignalPortraitNeutral;
+  for (l = 0; stack->pdata[l] != wm->desktop; l++)
+    {
+      g_assert (l < stack->len);
+      if (!is_interesting_client (c = stack->pdata[l]))
+        continue;
+      if (c->portrait_requested)
+        {
+          decision = MBWindowManagerSignalPortraitDemanded;
+          break;
+        }
+      else if (!c->portrait_supported)
+        {
+          decision = MBWindowManagerSignalPortraitProhibited;
+          break;
+        }
+    }
+
+#if 0
+  scr = gdk_screen_get_default();
+  scrw = gdk_screen_get_width (scr);
+  scrh = gdk_screen_get_height (scr);
+  if (scrw > scrh)
+    { /* screen: landscape */
+      guint unsure_w, unsure_h;
+
+      unsure_w = scrw;
+      unsure_h = scrh;
+      for (l = 0; l < stack->len; l++)
+        {
+          guint w, h;
+
+          c = stack->pdata[l];
+
+          /* Only care about apps, dialogs, and confirmation notes. */
+          if (!(MB_WM_CLIENT_CLIENT_TYPE (client)
+                & (MBWMClientTypeApp|MBWMClientTypeDialog))
+              && !MB_WM_CLIENT_IS_CONFIRMATION_NOTE (client))
+            continue;
+
+          /* Compensate for the monster hack. */
+          if ((w = client->window->geometry.width) % 10)
+            w++;
+          if ((h = client->window->geometry.height) % 10)
+            h++;
+
+          if (client->window.geometry.width < scrw)
+            { /* screen: landscape, client: portrait */
+              if (unsure_w + h > scrw)
+                {
+                  unsure_w = scrw > h ? scrw - h : 0;
+                }
+            }
+          else
+            { /* screen: landscape, client: landscape */
+              if (unsure_h + h > scrh)
+                {
+                  unsure_h = scrh > h ? scrh - h : 0;
+                }
+            }
+        }
+    }
+  else
+    { /* screen: portrait */
+      GArray *unsure;
+
+      unsure = g_array_new (FALSE, FALSE, sizeof(MBGeometry));
+      g_array_append_val (unsure, ((MBGeometry){ y: 0, height: scrh }));
+    }
+#endif
+
+  g_ptr_array_free (stack, TRUE);
+  return decision;
+}
+
 static void
 mb_wm_manage_client (MBWindowManager       *wm,
 		     MBWindowManagerClient *client,
@@ -1317,13 +1574,13 @@ mb_wm_manage_client (MBWindowManager       *wm,
 
   if (!activate || MB_WM_CLIENT_CLIENT_TYPE (client) == MBWMClientTypeDesktop)
     mb_wm_client_show (client);
-  else if (!mb_wm_client_wants_portrait(client))
-    mb_wm_activate_client (wm, client);
   else
-    /* Leave it up to the desktop to do something and we'll show
-     * and activate the client when the screen size changes. */
-    mb_wm_object_signal_emit (MB_WM_OBJECT (wm),
-                              MBWindowManagerSignalPortraitForecast);
+    {
+      unsigned was = gdk_screen_get_width (gdk_screen_get_default());
+      mb_wm_object_signal_emit (MB_WM_OBJECT (wm), lp_forecast (wm, client));
+      if (was == gdk_screen_get_width (gdk_screen_get_default()))
+        mb_wm_activate_client (wm, client);
+    }
 
   mb_wm_display_sync_queue (client->wmref, sync_flags);
 }

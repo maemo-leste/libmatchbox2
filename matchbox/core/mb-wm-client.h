@@ -187,6 +187,30 @@ struct MBWindowManagerClient
   int                          skip_maps;
   int                          skip_unmaps;
 
+  /*
+   * Portrait flags are the values of the according X window properties.
+   * If a property doesn't exist the flag is inherited from the client
+   * that it is transient for.  This case the flags in this structure
+   * are cached values.  The validity of the cache is delimited by the
+   * timestamp.  This is used to decide whether it is necessary to
+   * recalculate the inherited flags of a client.
+   *
+   * Possible values of @portrait_requested are:
+   * -- 0: not requested
+   * -- 1: requested, but this can be ignored if other, nonsupporting
+   *       clients are visible
+   * -- 2: demanded, switch to portrait whatever clients are visible.
+   *       In return the client promises to maximize itself so the
+   *       other clients wouldn't matter anyway.  Like everything
+   *       else this is a hack.
+   * -- other values: treated like 2
+   */
+  gboolean              portrait_supported;
+  gboolean              portrait_supported_inherited;
+  guint                 portrait_requested;
+  gboolean              portrait_requested_inherited;
+  guint                 portrait_timestamp;
+
   /* ### Private ### */
 
   MBWindowManagerClientPriv   *priv;
@@ -445,6 +469,8 @@ mb_wm_client_covers_screen (MBWindowManagerClient * client);
 
 Bool
 mb_wm_client_wants_portrait (MBWindowManagerClient * client);
+void
+mb_wm_client_update_portrait_flags (MBWindowManagerClient *cs, guint now);
 
 static inline MBWMClientLayoutHints
 mb_wm_client_get_layout_hints (MBWindowManagerClient *client)
