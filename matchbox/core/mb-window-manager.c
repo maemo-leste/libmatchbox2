@@ -624,6 +624,10 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
     flag = MBWM_WINDOW_PROP_NET_PID;
   else if (xev->atom == wm->atoms[MBWM_ATOM_HILDON_STACKING_LAYER])
     flag = MBWM_WINDOW_PROP_HILDON_STACKING;
+  else if (xev->atom == wm->atoms[MBWM_ATOM_HILDON_PORTRAIT_MODE_SUPPORT])
+    flag = MBWM_WINDOW_PROP_PORTRAIT;
+  else if (xev->atom == wm->atoms[MBWM_ATOM_HILDON_PORTRAIT_MODE_REQUEST])
+    flag = MBWM_WINDOW_PROP_PORTRAIT;
 
   if (flag)
     mb_wm_client_window_sync_properties (client->window, flag);
@@ -685,7 +689,7 @@ mb_wm_handle_root_config_notify (XConfigureEvent *xev,
   /* Bastard hack part 2: now that the screen is reconfigured
    * map and activate the client which caused us to rotate. */
   for (c = wm->stack_top; c; c = c->stacked_below)
-    if (!mb_wm_client_is_map_confirmed (c) && c->window->portrait_on_map)
+    if (!mb_wm_client_is_map_confirmed (c) && c->window->portrait_requested > 0)
       {
         mb_wm_activate_client (wm, c);
         break;
@@ -1310,20 +1314,7 @@ mb_wm_manage_client (MBWindowManager       *wm,
   if (MB_WM_CLIENT_CLIENT_TYPE (client) != MBWMClientTypeOverride)
     sync_flags |= MBWMSyncStacking;
 
-#if ENABLE_COMPOSITE
-  if (mb_wm_comp_mgr_enabled (wm->comp_mgr) && !client->cm_client)
-    mb_wm_comp_mgr_register_client (wm->comp_mgr, client);
-#endif
-
-  if (!activate || MB_WM_CLIENT_CLIENT_TYPE (client) == MBWMClientTypeDesktop)
-    mb_wm_client_show (client);
-  else if (!mb_wm_client_wants_portrait(client))
-    mb_wm_activate_client (wm, client);
-  else
-    /* Leave it up to the desktop to do something and we'll show
-     * and activate the client when the screen size changes. */
-    mb_wm_object_signal_emit (MB_WM_OBJECT (wm),
-                              MBWindowManagerSignalPortraitForecast);
+  mb_wm_comp_mgr_register_client (wm->comp_mgr, client, activate);
 
   mb_wm_display_sync_queue (client->wmref, sync_flags);
 }
@@ -1551,7 +1542,7 @@ mb_wm_manage_preexisting_wins (MBWindowManager* wm)
 	        * we can process map notification on the frame.
 	        */
 	       if (wm->comp_mgr && mb_wm_comp_mgr_enabled (wm->comp_mgr))
-		 mb_wm_comp_mgr_register_client (wm->comp_mgr, client);
+		 mb_wm_comp_mgr_register_client (wm->comp_mgr, client, False);
 #endif
 	       mb_wm_manage_client(wm, client, False);
 	     }

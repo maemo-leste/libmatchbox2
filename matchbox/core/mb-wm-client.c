@@ -315,6 +315,20 @@ mb_wm_client_on_property_change (MBWMClientWindow        *window,
     }
 #endif
 
+  if (property & MBWM_WINDOW_PROP_PORTRAIT)
+    {
+      client->portrait_supported            = window->portrait_supported > 0;
+      client->portrait_supported_inherited  = window->portrait_supported < 0;
+      client->portrait_requested            = window->portrait_requested > 0
+                                              ? window->portrait_requested : 0;
+      client->portrait_requested_inherited  = window->portrait_requested < 0;
+      g_debug ("portrait properties of %p: supported=%d requested=%d", client,
+               client->portrait_supported_inherited
+                 ? -1 : client->portrait_supported,
+               client->portrait_requested_inherited
+                 ? -1 : client->portrait_requested);
+    }
+
   return False;
 }
 
@@ -1253,7 +1267,7 @@ mb_wm_client_covers_screen (MBWindowManagerClient * client)
 Bool
 mb_wm_client_wants_portrait (MBWindowManagerClient * client)
 {
-  if (!client->window->portrait_on_map)
+  if (client->window->portrait_requested <= 0)
     /* Out of scope. */
     return False;
 
@@ -1263,10 +1277,41 @@ mb_wm_client_wants_portrait (MBWindowManagerClient * client)
     return False;
 
   if ((MB_WM_CLIENT_CLIENT_TYPE (client) & MBWMClientTypeDialog)
-      && client->window->portrait_on_map < 2)
+      && client->window->portrait_requested < 2)
     /* But only dialogs which demand rotation. */
     return False;
 
   /* If we cannot say for sure hd will decide. */
   return True;
+}
+
+/* Update the inherited portrait flags of @cs if they were calculated
+ * earlier than @now.  If @now is G_MAXUINT the flags are uncoditionally
+ * updated but are not cached. */
+void
+mb_wm_client_update_portrait_flags (MBWindowManagerClient *cs, guint now)
+{
+  MBWindowManagerClient *ct;
+
+  if ((cs->portrait_supported_inherited
+       || cs->portrait_requested_inherited)
+      && cs->portrait_timestamp != now)
+    { /* @cs has outdated flags */
+      if (  !cs->portrait_requested_inherited
+          && cs->portrait_requested
+          && cs->portrait_supported_inherited)
+        /* Add some crap to the pile: if you request but don't say
+         * you support you do. */
+        cs->portrait_supported = TRUE;
+      else if (cs->transient_for)
+        { /* Get the parent's and copy them. */
+          mb_wm_client_update_portrait_flags (ct = cs->transient_for, now);
+          if (cs->portrait_supported_inherited)
+            cs->portrait_supported = ct->portrait_supported;
+          if (cs->portrait_requested_inherited)
+            cs->portrait_requested = ct->portrait_requested;
+        }
+      if (now != G_MAXUINT)
+        cs->portrait_timestamp = now;
+    }
 }

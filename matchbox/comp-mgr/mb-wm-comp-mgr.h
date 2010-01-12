@@ -52,7 +52,8 @@ struct MBWMCompMgrClass
 {
   MBWMObjectClass        parent;
 
-  void   (*register_client)   (MBWMCompMgr * mgr, MBWindowManagerClient *c);
+  void   (*register_client)   (MBWMCompMgr * mgr, MBWindowManagerClient *c,
+                               Bool activate);
   void   (*unregister_client) (MBWMCompMgr * mgr, MBWindowManagerClient *c);
   void   (*turn_on)           (MBWMCompMgr * mgr);
   void   (*turn_off)          (MBWMCompMgr * mgr);
@@ -80,7 +81,8 @@ int
 mb_wm_comp_mgr_class_type ();
 
 void
-mb_wm_comp_mgr_register_client (MBWMCompMgr * mgr, MBWindowManagerClient *c);
+mb_wm_comp_mgr_register_client (MBWMCompMgr * mgr, MBWindowManagerClient *c,
+                                Bool activate);
 
 void
 mb_wm_comp_mgr_unregister_client (MBWMCompMgr * mgr,

@@ -247,7 +247,8 @@ mb_wm_comp_mgr_enabled (MBWMCompMgr *mgr)
  */
 void
 mb_wm_comp_mgr_register_client (MBWMCompMgr           * mgr,
-				MBWindowManagerClient * client)
+				MBWindowManagerClient * client,
+                                Bool                    activate)
 {
   MBWMCompMgrClass *klass;
 
@@ -257,7 +258,7 @@ mb_wm_comp_mgr_register_client (MBWMCompMgr           * mgr,
   klass = MB_WM_COMP_MGR_CLASS (MB_WM_OBJECT_GET_CLASS (mgr));
 
   MBWM_ASSERT (klass->register_client != NULL);
-  klass->register_client (mgr, client);
+  klass->register_client (mgr, client, activate);
 }
 
 /*
