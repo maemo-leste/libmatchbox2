@@ -1,3 +1,31 @@
+2010-01-12  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Rotate early on when a new client is mapped which doesn't like
+	the current orientation.  This is to make the transition smoother.
+
+	* matchbox/comp-mgr/mb-wm-comp-mgr.h
+	* matchbox/comp-mgr/mb-wm-comp-mgr.c:
+	  Added the "activate" parameter to MBWMCompMgr::register_client()
+	  to know whether the client should be activated or not (because
+	  we're starting to manage preexisting clients) and changed its
+	  semantics to do activate the client if it needs to be.
+	* matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
+	  Updated for that.
+	* matchbox/core/mb-window-manager.h:
+	  Removed the MBWindowManagerSignalPortraitForecast signal.
+	* matchbox/core/mb-window-manager.c (mb_wm_manage_client):
+	  Leave it up to MBWMCompMgr::register_client() to activate
+	  the client.
+	* matchbox/core/mb-wm-types.h
+	* matchbox/core/mb-wm-atoms.c:
+	  Added the _HILDON_PORTRAIT_MODE_SUPPORT atom.
+	* matchbox/core/mb-wm-client-window.h
+	* matchbox/core/mb-wm-client-window.c:
+	  Moved reading the raw portrait flags from hd.
+	* matchbox/core/mb-wm-client.h
+	* matchbox/core/mb-wm-client.c (+mb_wm_client_update_portrait_flags):
+	  Moved from hd.
+
 2009-12-04  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	Release 0.2.84
