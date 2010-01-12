@@ -297,9 +297,6 @@ typedef enum MBWMAtom
   /* special layers above others for mobile use (e.g. touchscreen lock) */
   MBWM_ATOM_HILDON_STACKING_LAYER,
 
-  /* for %MBWMClientTypeNote:s */
-  MBWM_ATOM_HILDON_NOTIFICATION_TYPE,
-
   MBWM_ATOM_HILDON_WM_NAME,
   MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR,
   MBWM_ATOM_HILDON_WM_WINDOW_TYPE_HOME_APPLET,
