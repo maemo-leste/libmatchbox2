@@ -1,3 +1,11 @@
+2010-01-12  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Patch from Laszlo Pere for NB#126488.
+
+	* matchbox/core/mb-wm-client-base.c (mb_wm_client_base_display_sync):
+	Use 'fullscreen' variable instead of 'client->xwin_frame' also in the
+	case when the window is unmapped/iconified.
+
 2009-12-04  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	Release 0.2.84

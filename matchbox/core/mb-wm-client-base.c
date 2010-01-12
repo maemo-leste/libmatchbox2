@@ -725,7 +725,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 	}
       else
 	{
-	  if (client->xwin_frame)
+	  if (!fullscreen)
 	    {
 	      XUnmapWindow (wm->xdpy, client->xwin_frame);
 	      XUnmapSubwindows (wm->xdpy, client->xwin_frame);

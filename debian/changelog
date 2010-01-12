@@ -1,6 +1,8 @@
 matchbox-window-manager-2 (0.2.85-1~unreleased) unstable; urgency=low
 
-  * foo.
+  Laszlo:
+  * Fixes: NB#126488 - Tapping on close button in pop-up window is closing
+    another window in the background.
 
  -- Gordon Williams <gordon.williams@collabora.co.uk>  Fri,  4 Dec 2009 11:17:00 +0000
 
