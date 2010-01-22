@@ -1,3 +1,18 @@
+2010-01-12  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	When a landscape fullscreen window is mapped in portrait,
+	set its geometry to 800x480 straight away, like we do to
+	non-fullscreen windows.
+
+	* matchbox/core/mb-window-manager.h (mb_wm_get_display_geometry)
+	* matchbox/core/mb-window-manager.c (mb_wm_get_display_geometry):
+	  Take an additional @use_layout_flag parameter whether to take
+	  MBWindowManagerFlagLayoutRotated into account if it's set.
+	* matchbox/core/mb-wm-layout.c (mb_wm_layout_real_update):
+	  Use it, for layout_fullscreen() as well.
+	* matchbox/client-types/mb-wm-client-dialog.c (mb_wm_client_dialog_init):
+	  Update.
+
 2010-01-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.85

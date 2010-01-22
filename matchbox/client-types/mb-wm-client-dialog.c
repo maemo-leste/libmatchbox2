@@ -138,7 +138,7 @@ mb_wm_client_dialog_init (MBWMObject *this, va_list vap)
     {
         MBGeometry  avail_geom;
 
-	mb_wm_get_display_geometry (wm, &avail_geom);
+	mb_wm_get_display_geometry (wm, &avail_geom, False);
 
 	client->window->geometry.x
 	  = (avail_geom.width - client->window->geometry.width) / 2;

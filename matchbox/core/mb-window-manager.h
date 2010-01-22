@@ -194,7 +194,8 @@ mb_wm_display_sync_queue (MBWindowManager* wm, MBWMSyncType sync);
 
 void
 mb_wm_get_display_geometry (MBWindowManager  *wm,
-			    MBGeometry       *geometry);
+			    MBGeometry       *geometry,
+                            Bool              use_layout_flag);
 
 void
 mb_wm_activate_client(MBWindowManager * wm, MBWindowManagerClient *c);

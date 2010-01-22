@@ -1474,12 +1474,21 @@ mb_wm_main_loop(MBWindowManager *wm)
 
 void
 mb_wm_get_display_geometry (MBWindowManager  *wm,
-			    MBGeometry       *geometry)
+			    MBGeometry       *geometry,
+                            Bool              use_layout_flag)
 {
   geometry->x = 0;
   geometry->y = 0;
-  geometry->width  = wm->xdpy_width;
-  geometry->height = wm->xdpy_height;
+  if (use_layout_flag && (wm->flags & MBWindowManagerFlagLayoutRotated))
+    {
+      geometry->width  = wm->xdpy_height;
+      geometry->height = wm->xdpy_width;
+    }
+  else
+    {
+      geometry->width  = wm->xdpy_width;
+      geometry->height = wm->xdpy_height;
+    }
 }
 
 void

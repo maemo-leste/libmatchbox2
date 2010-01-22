@@ -693,13 +693,6 @@ mb_wm_layout_real_update (MBWMLayout * layout)
   MBWM_ASSERT (klass->layout_free);
   MBWM_ASSERT (klass->layout_fullscreen);
 
-  mb_wm_get_display_geometry (wm, &avail_geom);
-  if (wm->flags & MBWindowManagerFlagLayoutRotated) {
-    int t = avail_geom.width;
-    avail_geom.width = avail_geom.height;
-    avail_geom.height = t;
-  }
-
   /*
     cycle through clients, laying out each in below order.
     Note they must have LayoutPrefVisible set.
@@ -735,11 +728,12 @@ mb_wm_layout_real_update (MBWMLayout * layout)
 
  */
 
+  mb_wm_get_display_geometry (wm, &avail_geom, True);
   klass->layout_panels (layout, &avail_geom);
   klass->layout_input  (layout, &avail_geom);
   klass->layout_free   (layout, &avail_geom);
 
-  mb_wm_get_display_geometry (wm, &avail_geom);
+  mb_wm_get_display_geometry (wm, &avail_geom, True);
   klass->layout_fullscreen (layout, &avail_geom);
 }
 
