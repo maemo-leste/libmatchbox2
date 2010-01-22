@@ -1,4 +1,4 @@
-2010-01-12  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+2010-01-22  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	When a landscape fullscreen window is mapped in portrait,
 	set its geometry to 800x480 straight away, like we do to
