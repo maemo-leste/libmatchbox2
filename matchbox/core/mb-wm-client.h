@@ -312,13 +312,16 @@ mb_wm_client_is_map_confirmed (MBWindowManagerClient *client);
 Bool
 mb_wm_client_is_unmap_confirmed (MBWindowManagerClient *client);
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_client_set_map_confirmed (MBWindowManagerClient *client,
 		Bool confirmed);
 
-void
+void __attribute__ ((visibility("hidden")))
 mb_wm_client_set_unmap_confirmed (MBWindowManagerClient *client,
 		Bool confirmed);
+
+Bool
+mb_wm_client_is_geometry_requested (MBWindowManagerClient *client);
 
 void
 mb_wm_client_get_coverage (MBWindowManagerClient *client,

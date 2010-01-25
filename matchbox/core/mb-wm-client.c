@@ -41,6 +41,7 @@ struct MBWindowManagerClientPriv
   Bool          unmap_confirmed;
   Bool          iconizing;
   Bool          hiding_from_desktop;
+  Bool          geometry_requested;
   MBWMSyncType  sync_state;
 };
 
@@ -505,6 +506,12 @@ mb_wm_client_is_unmap_confirmed (MBWindowManagerClient *client)
   return client->priv->unmap_confirmed;
 }
 
+Bool
+mb_wm_client_is_geometry_requested (MBWindowManagerClient *client)
+{
+  return client->priv->geometry_requested;
+}
+
 void
 mb_wm_client_set_unmap_confirmed (MBWindowManagerClient *client,
                                   Bool confirmed)
@@ -532,13 +539,16 @@ mb_wm_client_request_geometry (MBWindowManagerClient *client,
 			       MBWMClientReqGeomType  flags)
 {
   MBWindowManagerClientClass *klass;
+  Bool ret = False;
 
   klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->geometry)
-    return klass->geometry(client, new_geometry, flags);
+    ret = klass->geometry(client, new_geometry, flags);
 
-  return False;
+  client->priv->geometry_requested = TRUE;
+
+  return ret;
 }
 
 void

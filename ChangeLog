@@ -1,3 +1,13 @@
+2010-01-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Related to NB#151877 - title bar is blank for ordinary X applications
+
+	* matchbox/core/mb-wm-client.[ch]
+	(mb_wm_client_is_geometry_requested): New function to check if the
+	client has been resized already.
+	(mb_wm_client_set_unmap_confirmed, mb_wm_client_set_map_confirmed):
+	Set attribute "hidden" because these are internal to the library.
+
 2010-01-22  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	When a landscape fullscreen window is mapped in portrait,
@@ -10,8 +20,8 @@
 	  MBWindowManagerFlagLayoutRotated into account if it's set.
 	* matchbox/core/mb-wm-layout.c (mb_wm_layout_real_update):
 	  Use it, for layout_fullscreen() as well.
-	* matchbox/client-types/mb-wm-client-dialog.c (mb_wm_client_dialog_init):
-	  Update.
+	* matchbox/client-types/mb-wm-client-dialog.c
+	(mb_wm_client_dialog_init): Update.
 
 2010-01-13  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
