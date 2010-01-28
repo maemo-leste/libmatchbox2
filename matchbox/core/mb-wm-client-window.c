@@ -47,6 +47,7 @@ enum {
   COOKIE_WIN_PORTRAIT_SUPPORT,
   COOKIE_WIN_PORTRAIT_REQUEST,
   COOKIE_WIN_NO_TRANSITIONS,
+  COOKIE_WIN_LIVE_BACKGROUND,
 
   N_COOKIES
 };
@@ -288,6 +289,16 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 			      False,
 			      XA_STRING);
     }
+
+  if (props_req & MBWM_WINDOW_PROP_LIVE_BACKGROUND)
+    cookies[COOKIE_WIN_LIVE_BACKGROUND]
+	= mb_wm_property_req (wm,
+			      xwin,
+		      wm->atoms[MBWM_ATOM_HILDON_LIVE_DESKTOP_BACKGROUND],
+			      0,
+			      1L,
+			      False,
+			      XA_INTEGER);
 
   if (props_req & MBWM_WINDOW_PROP_NET_PID)
     {
@@ -976,6 +987,32 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	}
     }
 
+  if (props_req & MBWM_WINDOW_PROP_LIVE_BACKGROUND)
+    {
+      int *ret;
+      ret = mb_wm_property_get_reply_and_validate (wm,
+				cookies[COOKIE_WIN_LIVE_BACKGROUND],
+						 XA_INTEGER,
+						 32,
+						 0,
+						 NULL,
+						 &x_error_code);
+
+      cookies[COOKIE_WIN_LIVE_BACKGROUND] = 0;
+      if (ret)
+        win->live_background = *ret;
+      else
+        win->live_background = 0;
+
+      if (x_error_code == BadWindow)
+        goto badwindow_error;
+
+      if (ret)
+        XFree (ret);
+
+      g_printerr("@@@ live background %d @@@\n", win->live_background);
+    }
+
   if (props_req & MBWM_WINDOW_PROP_NET_PID)
     {
       unsigned char *pid = NULL;
@@ -1267,6 +1304,20 @@ badwindow_error:
 			        &x_error_code);
       if (wmhints)
         XFree (wmhints);
+    }
+
+  if (cookies[COOKIE_WIN_LIVE_BACKGROUND])
+    {
+      int *ret;
+      ret = mb_wm_property_get_reply_and_validate (wm,
+		                cookies[COOKIE_WIN_LIVE_BACKGROUND],
+			        XA_INTEGER,
+			        32,
+			        0,
+			        NULL,
+			        &x_error_code);
+      if (ret)
+        XFree (ret);
     }
 
   if (cookies[COOKIE_WIN_MWM_HINTS])

@@ -50,6 +50,7 @@
 #define MBWM_WINDOW_PROP_WIN_HILDON_TYPE (1<<20)
 #define MBWM_WINDOW_PROP_PORTRAIT        (1<<21)
 #define MBWM_WINDOW_PROP_NO_TRANSITIONS  (1<<22)
+#define MBWM_WINDOW_PROP_LIVE_BACKGROUND (1<<23)
 
 #define MBWM_WINDOW_PROP_ALL        (0xffffffff)
 
@@ -171,6 +172,7 @@ struct MBWMClientWindow
    * -1 if the window didn't have such property,
    * in which case it is inherited from transient_for */
   int                            portrait_supported, portrait_requested;
+  int                            live_background;
 };
 
 struct MBWMClientWindowClass

@@ -321,6 +321,9 @@ typedef enum MBWMAtom
   /* workaround for funny System UI window */
   MBWM_ATOM_NET_WM_WINDOW_TYPE_DND,
 
+  /* special Hildon property for "live background" windows */
+  MBWM_ATOM_HILDON_LIVE_DESKTOP_BACKGROUND,
+
   MBWM_ATOM_COUNT
 
 } MBWMAtom;

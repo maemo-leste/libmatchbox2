@@ -628,6 +628,8 @@ mb_wm_handle_property_notify (XPropertyEvent          *xev,
     flag = MBWM_WINDOW_PROP_PORTRAIT;
   else if (xev->atom == wm->atoms[MBWM_ATOM_HILDON_PORTRAIT_MODE_REQUEST])
     flag = MBWM_WINDOW_PROP_PORTRAIT;
+  else if (xev->atom == wm->atoms[MBWM_ATOM_HILDON_LIVE_DESKTOP_BACKGROUND])
+    flag = MBWM_WINDOW_PROP_LIVE_BACKGROUND;
 
   if (flag)
     mb_wm_client_window_sync_properties (client->window, flag);

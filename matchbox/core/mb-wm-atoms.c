@@ -113,6 +113,8 @@ mb_wm_atoms_init(MBWindowManager *wm)
 
     "_MAEMO_SUPPRESS_ROOT_RECONFIGURATION",
     "_NET_WM_WINDOW_TYPE_DND",
+
+    "_HILDON_LIVE_DESKTOP_BACKGROUND",
   };
 
   /* FIXME: Error Traps */

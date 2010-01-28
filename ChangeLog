@@ -1,3 +1,9 @@
+2010-01-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-window-manager.c,
+	matchbox/core/mb-wm-client-window.c, matchbox/core/mb-wm-atoms.c: Add
+	support for new property _HILDON_LIVE_DESKTOP_BACKGROUND.
+
 2010-01-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Related to NB#151877 - title bar is blank for ordinary X applications
