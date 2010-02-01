@@ -378,6 +378,13 @@ mb_wm_client_stack (MBWindowManagerClient *client,
 {
   MBWindowManagerClientClass *klass;
 
+  if (client->window->live_background)
+    {
+      /* stack live background to the bottom */
+      mb_wm_stack_prepend_bottom (client);
+      return;
+    }
+
   klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
   if (klass->stack)
@@ -1155,6 +1162,10 @@ MBWMStackLayerType
 mb_wm_client_get_stacking_layer (MBWindowManagerClient *client)
 {
   MBWindowManagerClientClass *klass;
+
+  if (client->window->live_background)
+    /* stack live background to the bottom */
+    return MBWMStackLayerUnknown;
 
   klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
 
