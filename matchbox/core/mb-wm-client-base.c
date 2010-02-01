@@ -307,8 +307,8 @@ mb_wm_client_base_realize (MBWindowManagerClient *client)
 	       PropertyChangeMask);
   mb_wm_client_window_sync_properties (
 		  client->window,
-		  MBWM_WINDOW_PROP_TRANSIENCY);
-
+		  MBWM_WINDOW_PROP_TRANSIENCY
+                  | MBWM_WINDOW_PROP_LIVE_BACKGROUND);
 
   XAddToSaveSet(wm->xdpy, MB_WM_CLIENT_XWIN(client));
 }

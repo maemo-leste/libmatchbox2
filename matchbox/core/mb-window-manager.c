@@ -867,7 +867,7 @@ mb_wm_handle_map_notify   (XMapEvent  *xev,
   XWindowAttributes attrs = { 0 };
   int err;
 
-  g_debug ("%s: @@@@ Map Notify for %lx @@@@", __func__, xev->window);
+  g_printerr ("%s: @@@@ Map Notify for %lx @@@@\n", __func__, xev->window);
 
   /* For the same reason as in mb_wm_handle_unmap_notify(). */
   if (xev->window == xev->event)

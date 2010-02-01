@@ -994,7 +994,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 				cookies[COOKIE_WIN_LIVE_BACKGROUND],
 						 XA_INTEGER,
 						 32,
-						 0,
+						 1,
 						 NULL,
 						 &x_error_code);
 
@@ -1313,7 +1313,7 @@ badwindow_error:
 		                cookies[COOKIE_WIN_LIVE_BACKGROUND],
 			        XA_INTEGER,
 			        32,
-			        0,
+			        1,
 			        NULL,
 			        &x_error_code);
       if (ret)
