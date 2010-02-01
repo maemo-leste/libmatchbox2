@@ -1,8 +1,9 @@
-matchbox-window-manager-2 (0.2.86-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.86-1) unstable; urgency=low
 
-  * foo
+  * New API related to NB#151877 - title bar is blank for ordinary X
+    applications
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 13 Jan 2010 16:08:32 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 01 Feb 2010 14:11:29 +0200
 
 matchbox-window-manager-2 (0.2.85-1) unstable; urgency=low
 

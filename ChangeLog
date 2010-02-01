@@ -9,6 +9,10 @@
 	* matchbox/theme-engines/mb-wm-theme.c: handle loading of img as an
 	  XML entity in 'Client', and sort out paths.	
 	  
+2010-02-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.86
+
 2010-01-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Related to NB#151877 - title bar is blank for ordinary X applications
