@@ -159,6 +159,7 @@ mb_wm_stack_insert_above_client (MBWindowManagerClient *client,
       if (wm->stack_bottom)
 	{
 	  client->stacked_above = wm->stack_bottom;
+	  client->stacked_below = NULL;
 	  wm->stack_bottom->stacked_below = client;
 	}
 

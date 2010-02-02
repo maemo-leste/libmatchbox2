@@ -381,6 +381,7 @@ mb_wm_client_stack (MBWindowManagerClient *client,
   if (client->window->live_background)
     {
       /* stack live background to the bottom */
+      mb_wm_stack_remove (client);
       mb_wm_stack_prepend_bottom (client);
       return;
     }
