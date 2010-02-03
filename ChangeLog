@@ -1,8 +1,21 @@
-2010-01-28  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+2010-02-01  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	Fixes: NB#137235 - Transparent menu corners
+
+	* matchbox/client-types/mb-wm-client-menu.c: Create decor for menus, 
+	  deal with decor when working out sizes.
+	* matchbox/theme-engines/mb-wm-theme-xml.c/h: Add image_filename field
+	  into decor
+	* matchbox/theme-engines/mb-wm-theme.c: handle loading of img as an
+	  XML entity in 'Client', and sort out paths.	
+	  
+2010-02-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	* matchbox/core/mb-window-manager.c,
 	matchbox/core/mb-wm-client-window.c, matchbox/core/mb-wm-atoms.c: Add
 	support for new property _HILDON_LIVE_DESKTOP_BACKGROUND.
+
+	Release 0.2.86
 
 2010-01-25  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 

@@ -82,6 +82,8 @@ typedef struct MBWMXmlClient
   int client_height;
 
   Bool shaped;
+  char           *image_filename; /* The image filename, or NULL if using a global image */
+
 
   MBWMList       *decors;
 
