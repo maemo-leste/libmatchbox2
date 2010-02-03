@@ -1009,8 +1009,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
       if (ret)
         XFree (ret);
-
-      g_printerr("@@@ live background %d @@@\n", win->live_background);
     }
 
   if (props_req & MBWM_WINDOW_PROP_NET_PID)
