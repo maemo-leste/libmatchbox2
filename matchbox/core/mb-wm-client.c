@@ -170,12 +170,7 @@ mb_wm_client_init (MBWMObject *obj, va_list vap)
 
     if (format && format->type == PictTypeDirect &&
 	format->direct.alphaMask)
-      {
-        MBWMClientType ctype = MB_WM_CLIENT_CLIENT_TYPE (client);
-        if (ctype != MBWMClientTypeApp &&
-            ctype != MBWMClientTypeDialog)
-          client->is_argb32 = True;
-      }
+      client->is_argb32 = True;
   }
 #endif
 
