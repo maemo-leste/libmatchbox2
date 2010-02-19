@@ -1,3 +1,9 @@
+2010-02-19  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	* matchbox/core/mb-window-manager.c,
+	matchbox/core/mb-wm-client-window.c, matchbox/core/mb-wm-atoms.c: Add
+	support for new property _HILDON_LIVE_DESKTOP_BACKGROUND.
+
 2010-02-12  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-window-manager.c (mb_wm_sync)
@@ -20,10 +26,6 @@
 	  XML entity in 'Client', and sort out paths.	
 	  
 2010-02-01  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
-
-	* matchbox/core/mb-window-manager.c,
-	matchbox/core/mb-wm-client-window.c, matchbox/core/mb-wm-atoms.c: Add
-	support for new property _HILDON_LIVE_DESKTOP_BACKGROUND.
 
 	Release 0.2.86
 
