@@ -1,3 +1,13 @@
+2010-02-12  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-window-manager.c (mb_wm_sync)
+	* matchbox/core/mb-wm-main-context.c (mb_wm_list_remove_deleted_handlers):
+	  Removed some g_debug()s.
+
+2010-02-03  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Release 0.2.87
+
 2010-02-01  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	Fixes: NB#137235 - Transparent menu corners

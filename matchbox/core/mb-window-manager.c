@@ -1124,7 +1124,7 @@ mb_wm_sync (MBWindowManager *wm)
 {
   /* Sync all changes to display */
   MBWindowManagerClient *client = NULL;
-#ifndef G_DEBUG_DISABLE
+#ifdef TIME_MB_WM_SYNC
   GTimer *timer = g_timer_new();
 #endif
   MBWM_MARK();
@@ -1190,7 +1190,7 @@ mb_wm_sync (MBWindowManager *wm)
       mb_wm_focus_client_as_stacked (wm, NULL);
     }
 
-#ifndef G_DEBUG_DISABLE
+#ifdef TIME_MB_WM_SYNC
   g_debug("mb_wm_sync: %f", g_timer_elapsed(timer,0));
   g_timer_destroy(timer);
 #endif

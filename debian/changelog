@@ -1,8 +1,15 @@
-matchbox-window-manager-2 (0.2.87-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.88-1~unreleased) unstable; urgency=low
 
   * foo
 
- -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  1 Feb 2010 14:12:39 +0200
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed,  3 Feb 2010 15:24:08 +0200
+
+matchbox-window-manager-2 (0.2.87-1) unstable; urgency=low
+
+  Gordon:
+  * MB2 part of NB#137235 - Transparent menu corners
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 03 Feb 2010 15:22:44 +0200
 
 matchbox-window-manager-2 (0.2.86-1) unstable; urgency=low
 
