@@ -232,7 +232,7 @@ mb_wm_client_menu_request_geometry (MBWindowManagerClient *client,
   if (frame_geometry.x+frame_geometry.width > wm->xdpy_width-border)
     frame_geometry.x = wm->xdpy_width-(border+frame_geometry.width);
   if (frame_geometry.y+frame_geometry.height > wm->xdpy_height-border)
-    frame_geometry.x = wm->xdpy_height-(border+frame_geometry.height);
+    frame_geometry.y = wm->xdpy_height-(border+frame_geometry.height);
   // fit to the top + left
   if (frame_geometry.x < border)
     frame_geometry.x = border;
