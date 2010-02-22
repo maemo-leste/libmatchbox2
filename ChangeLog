@@ -1,7 +1,9 @@
 2010-02-19  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	* matchbox/client-types/mb-wm-client-menu.c:
-	Make sure that menus always stay fully on the screen
+	Make sure that menus always stay fully on the screen. Only apply this
+	for MBWMClientMenu types though, so we don't mess up positioning of
+	HdAppMenu.
 
 2010-02-19  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 

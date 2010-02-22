@@ -210,7 +210,6 @@ mb_wm_client_menu_request_geometry (MBWindowManagerClient *client,
 {
   MBWindowManager *wm = client->wmref;
   int north = 0, south = 0, west = 0, east = 0;
-  int border = 1;
   MBGeometry frame_geometry;
 
   if (client->decor && !client->window->undecorated)
@@ -227,22 +226,29 @@ mb_wm_client_menu_request_geometry (MBWindowManagerClient *client,
   else
     frame_geometry = *new_geometry;
 
-  /* now clip to the screen */
-  // fit to the bottom + right
-  if (frame_geometry.x+frame_geometry.width > wm->xdpy_width-border)
-    frame_geometry.x = wm->xdpy_width-(border+frame_geometry.width);
-  if (frame_geometry.y+frame_geometry.height > wm->xdpy_height-border)
-    frame_geometry.y = wm->xdpy_height-(border+frame_geometry.height);
-  // fit to the top + left
-  if (frame_geometry.x < border)
-    frame_geometry.x = border;
-  if (frame_geometry.y < border)
-    frame_geometry.y = border;
-  // finally reduce width and height if we went over
-  if (frame_geometry.x+frame_geometry.width > wm->xdpy_width-border)
-    frame_geometry.width = wm->xdpy_width-(border+frame_geometry.x);
-  if (frame_geometry.y+frame_geometry.height > wm->xdpy_height-border)
-    frame_geometry.height = wm->xdpy_height-(border+frame_geometry.y);
+  /* We don't want to clip geometry for any menus that extend from this
+   * like HdAppMenu. In that case, we would wrongly position the menu
+   * a few pixels from the edge of the screen.
+   */
+  if (MB_WM_CLIENT_CLIENT_TYPE (client) == MBWMClientTypeMenu)
+    {
+      int border = 1;
+      // fit to the bottom + right
+      if (frame_geometry.x+frame_geometry.width > wm->xdpy_width-border)
+        frame_geometry.x = wm->xdpy_width-(border+frame_geometry.width);
+      if (frame_geometry.y+frame_geometry.height > wm->xdpy_height-border)
+        frame_geometry.y = wm->xdpy_height-(border+frame_geometry.height);
+      // fit to the top + left
+      if (frame_geometry.x < border)
+        frame_geometry.x = border;
+      if (frame_geometry.y < border)
+        frame_geometry.y = border;
+      // finally reduce width and height if we went over
+      if (frame_geometry.x+frame_geometry.width > wm->xdpy_width-border)
+        frame_geometry.width = wm->xdpy_width-(border+frame_geometry.x);
+      if (frame_geometry.y+frame_geometry.height > wm->xdpy_height-border)
+        frame_geometry.height = wm->xdpy_height-(border+frame_geometry.y);
+    }
 
   /* Calculate window size from frame */
   client->window->geometry.x      = frame_geometry.x + west;
