@@ -210,6 +210,8 @@ mb_wm_client_menu_request_geometry (MBWindowManagerClient *client,
 {
   MBWindowManager *wm = client->wmref;
   int north = 0, south = 0, west = 0, east = 0;
+  int border = 1;
+  MBGeometry frame_geometry;
 
   if (client->decor && !client->window->undecorated)
       mb_wm_theme_get_decor_dimensions (wm->theme, client,
@@ -217,30 +219,37 @@ mb_wm_client_menu_request_geometry (MBWindowManagerClient *client,
 
   if (flags & MBWMClientReqGeomIsViaConfigureReq)
     {
-      /* Calculate the frame size from the window size */
-      client->window->geometry.x      = new_geometry->x;
-      client->window->geometry.y      = new_geometry->y;
-      client->window->geometry.width  = new_geometry->width;
-      client->window->geometry.height = new_geometry->height;
-
-      client->frame_geometry.x        = new_geometry->x - west;
-      client->frame_geometry.y        = new_geometry->y - north;
-      client->frame_geometry.width    = new_geometry->width + (west + east);
-      client->frame_geometry.height   = new_geometry->height + (south + north);
+      frame_geometry.x        = new_geometry->x - west;
+      frame_geometry.y        = new_geometry->y - north;
+      frame_geometry.width    = new_geometry->width + (west + east);
+      frame_geometry.height   = new_geometry->height + (south + north);
     }
   else
-    {
-      /* Calculate window size from frame */
-      client->window->geometry.x      = new_geometry->x + west;
-      client->window->geometry.y      = new_geometry->y + north;
-      client->window->geometry.width  = new_geometry->width - (west + east);
-      client->window->geometry.height = new_geometry->height - (south + north);
+    frame_geometry = *new_geometry;
 
-      client->frame_geometry.x        = new_geometry->x;
-      client->frame_geometry.y        = new_geometry->y;
-      client->frame_geometry.width    = new_geometry->width;
-      client->frame_geometry.height   = new_geometry->height;
-    }
+  /* now clip to the screen */
+  // fit to the bottom + right
+  if (frame_geometry.x+frame_geometry.width > wm->xdpy_width-border)
+    frame_geometry.x = wm->xdpy_width-(border+frame_geometry.width);
+  if (frame_geometry.y+frame_geometry.height > wm->xdpy_height-border)
+    frame_geometry.x = wm->xdpy_height-(border+frame_geometry.height);
+  // fit to the top + left
+  if (frame_geometry.x < border)
+    frame_geometry.x = border;
+  if (frame_geometry.y < border)
+    frame_geometry.y = border;
+  // finally reduce width and height if we went over
+  if (frame_geometry.x+frame_geometry.width > wm->xdpy_width-border)
+    frame_geometry.width = wm->xdpy_width-(border+frame_geometry.x);
+  if (frame_geometry.y+frame_geometry.height > wm->xdpy_height-border)
+    frame_geometry.height = wm->xdpy_height-(border+frame_geometry.y);
+
+  /* Calculate window size from frame */
+  client->window->geometry.x      = frame_geometry.x + west;
+  client->window->geometry.y      = frame_geometry.y + north;
+  client->window->geometry.width  = frame_geometry.width - (west + east);
+  client->window->geometry.height = frame_geometry.height - (south + north);
+  client->frame_geometry          = frame_geometry;
 
   mb_wm_client_geometry_mark_dirty (client);
 
