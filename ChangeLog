@@ -1,3 +1,10 @@
+2010-02-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
+
+	Bug 157390 - Regression: application menu borders missing
+
+	* matchbox/client-types/mb-wm-client-menu.c (mb_wm_client_menu_init):
+	Tune hard-codings.
+
 2010-02-22  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.88

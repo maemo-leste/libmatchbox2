@@ -1,6 +1,6 @@
 matchbox-window-manager-2 (0.2.89-1~unreleased) unstable; urgency=low
 
-  * foo
+  * Fixes: NB#157390 - Regression: application menu borders missing
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon, 22 Feb 2010 17:17:52 +0200
 

@@ -134,14 +134,14 @@ mb_wm_client_menu_init (MBWMObject *this, va_list vap)
     if (wm->xdpy_width > wm->xdpy_height)
       {
 	/* Landscape mode: menu has a gutter either side */
-	geom.width = wm->xdpy_width - 100;
+	geom.width = wm->xdpy_width - 100 - 16 * 2;
 	geom.x = wm->xdpy_width / 2 - geom.width / 2;
       }
     else
       {
-	/* Portrait mode: menu takes up the full width */
-	geom.width = wm->xdpy_width;
-	geom.x = 0;
+	/* Portrait mode */
+	geom.width = wm->xdpy_width - 16 * 2;
+	geom.x = 16;
       }
   }
   else if (win->hildon_type ==
