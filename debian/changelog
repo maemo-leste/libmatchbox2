@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.90-1~unreleased) unstable; urgency=low
+
+  * foo
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 24 Feb 2010 12:50:57 +0200
+
 matchbox-window-manager-2 (0.2.89-1) unstable; urgency=low
 
   * Fixes: NB#158114 - When starting device with beta theme, menu borders are 
