@@ -1433,29 +1433,10 @@ xml_element_start_cb (void *data, const char *tag, const char **expat_attr)
 	{
 	  if (!strcmp (*p, "src"))
 	    {
+	      /** Image path usually starts '../images' - which is a bit stupid
+	       * really, as hildon-desktop will assume that we're in the images
+	       * theme directory anyway - so it does nothing. */
 	      char *img = strdup (*(p+1));
-              if (*img != '/')
-                {
-                  int len = strlen (exd->path) + strlen (img);
-                  char * s;
-                  char * p = malloc (len + 1);
-                  strncpy (p, exd->path, len);
-
-                  s = strrchr (p, '/');
-
-                  if (s)
-                    {
-                      *(s+1) = 0;
-                      strcat (p, img);
-                    }
-                  else
-                    {
-                      strncpy (p, img, len);
-                    }
-
-                  free (img);
-                  img = p;
-                }
 
 	      if (c)
 	        {

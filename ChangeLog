@@ -1,3 +1,12 @@
+2010-02-24  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	NB#158114 - When starting device with beta theme, menu borders are 
+	            from devel theme
+	            
+	* matchbox/theme-engines/mb-wm-theme.c: Remove prepending of theme
+	path, as sometimes it points to the wrong theme. Hildon-desktop
+	can then use the path relative to the *current* theme.
+
 2010-02-23  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Bug 157390 - Regression: application menu borders missing
