@@ -1,3 +1,12 @@
+2010-03-23  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	For NB#157265.
+
+	* matchbox/core/mb-window-manager.c (mb_wm_unmanage_client):
+	  Do restack even if an override-redirected window is being
+	  unmanaged because its fullscreenness might have influenced
+	  the composit manager.
+
 2010-02-24  Kimmo Hämäläinen  <kimmo.hamalainen@nokia.com>
 
 	Release 0.2.89

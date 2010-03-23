@@ -1334,11 +1334,10 @@ mb_wm_unmanage_client (MBWindowManager       *wm,
   MBWMClientType c_type = MB_WM_CLIENT_CLIENT_TYPE (client);
   MBWMSyncType sync_flags = 0;
 
-  /*
-   * Must not mess with stacking if the client if is of the override type
-   */
-  if (c_type != MBWMClientTypeOverride)
-    sync_flags |= MBWMSyncStacking;
+  /* Restack even if an override-redirected window is being unmanaged,
+   * so hildon-desktop will have a chance to restore fullscreenness
+   * if it had to take away the title bar. */
+  sync_flags |= MBWMSyncStacking;
 
   if (c_type & (MBWMClientTypePanel | MBWMClientTypeInput))
     sync_flags |= MBWMSyncGeometry;
