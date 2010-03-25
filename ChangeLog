@@ -1,3 +1,11 @@
+2010-03-25  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	For NB#157265.  Activate the application menu only on ButtonRelease.
+
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler):
+	  Handle ButtonRelease:s, but only if it happens outside the button
+	  but within the decor.
+
 2010-03-23  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	For NB#157265.

@@ -836,6 +836,12 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 	  xev->y > ymax)
 	{
 	  retval = True;
+          if (xev->type != ButtonRelease
+              || xev->x < decor->geom.x
+              || xev->x > decor->geom.x+decor->geom.width
+              || xev->y < decor->geom.y
+              || xev->y > decor->geom.x+decor->geom.height)
+            goto done;
 	  g_debug("%s not on button -- send GRAB_TRANSFER", __FUNCTION__);
 	  XUngrabPointer(wm->xdpy, CurrentTime);
 	  mb_wm_client_deliver_message (decor->parent_client,
@@ -847,6 +853,11 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 	  XSync (wm->xdpy, False); /* Necessary */
 	  goto done;
 	}
+      if (xev->type != ButtonPress)
+        {
+	  retval = True;
+          goto done;
+        }
       g_debug("%s on button", __FUNCTION__);
 
       if (button->state != MBWMDecorButtonStatePressed)
@@ -1197,6 +1208,12 @@ mb_wm_decor_button_realize (MBWMDecorButton *button)
 			    ButtonPress,
 			    (MBWMXEventFunc)mb_wm_decor_button_press_handler,
 			    button);
+    button->release_cb_id =
+      mb_wm_main_context_x_event_handler_add (wm->main_ctx,
+			    decor->xwin,
+			    ButtonRelease,
+			    (MBWMXEventFunc)mb_wm_decor_button_press_handler,
+			    button);
   }
 
   button->realized = True;
@@ -1224,6 +1241,8 @@ mb_wm_decor_button_unrealize (MBWMDecorButton *button)
    */
   mb_wm_main_context_x_event_handler_remove (ctx, ButtonPress,
 					     button->press_cb_id);
+  mb_wm_main_context_x_event_handler_remove (ctx, ButtonRelease,
+					     button->release_cb_id);
 }
 
 static void
