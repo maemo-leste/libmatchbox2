@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.90-2) unstable; urgency=low
+
+  * Activate the application menu only on ButtonRelease.
+
+ -- Adam Endrodi <adam.endrodi@blumsoft.eu>  Thu, 25 Mar 2010 14:58:10 +0200
+
 matchbox-window-manager-2 (0.2.90-1) unstable; urgency=low
 
   * For NB#157265.
