@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.90-3) unstable; urgency=low
+
+  * Fix the press-menu-blank => menu-opens scenario.
+
+ -- Adam Endrodi <adam.endrodi@blumsoft.eu>  Fri, 26 Mar 2010 10:05:59 +0200
+
 matchbox-window-manager-2 (0.2.90-2) unstable; urgency=low
 
   * Activate the application menu only on ButtonRelease.

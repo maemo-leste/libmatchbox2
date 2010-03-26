@@ -1,8 +1,16 @@
 2010-03-26  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
+	Release 0.2.90-3.
+
+2010-03-26  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
 	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler):
 	  Don't forget to ungrab the pointer.  Fixes the press-menu-blank
 	  => menu-opens scenario.
+
+2010-03-25  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Release 0.2.90-2.
 
 2010-03-25  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
@@ -11,6 +19,10 @@
 	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler):
 	  Handle ButtonRelease:s, but only if it happens outside the button
 	  but within the decor.
+
+2010-03-25  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	Release 0.2.90-1.
 
 2010-03-23  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
