@@ -835,6 +835,7 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 	  xev->y < ymin ||
 	  xev->y > ymax)
 	{
+	  XUngrabPointer(wm->xdpy, CurrentTime);
 	  retval = True;
           if (xev->type != ButtonRelease
               || xev->x < decor->geom.x
@@ -843,7 +844,6 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
               || xev->y > decor->geom.x+decor->geom.height)
             goto done;
 	  g_debug("%s not on button -- send GRAB_TRANSFER", __FUNCTION__);
-	  XUngrabPointer(wm->xdpy, CurrentTime);
 	  mb_wm_client_deliver_message (decor->parent_client,
 					wm->atoms[MBWM_ATOM_MB_GRAB_TRANSFER],
 					xev->time,

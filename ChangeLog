@@ -1,3 +1,9 @@
+2010-03-26  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-wm-decor.c (mb_wm_decor_button_press_handler):
+	  Don't forget to ungrab the pointer.  Fixes the press-menu-blank
+	  => menu-opens scenario.
+
 2010-03-25  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	For NB#157265.  Activate the application menu only on ButtonRelease.
