@@ -209,6 +209,17 @@ Bool
 mb_wm_main_context_handle_x_event (XEvent          *xev,
 				   MBWMMainContext *ctx)
 {
+  /* Store amount of times we have entered this function,
+   * as we only want to delete handlers when there are no
+   * functions below us or we corrupt the linked list as
+   * we iterate over it.
+   *
+   * Because we use this satic variable to count recursions,
+   * we should NEVER return from this function without decrementing
+   * nesting first. */
+  static int nesting = 0;
+  nesting++;
+
   MBWindowManager *wm = ctx->wm;
 #if (MBWM_WANT_DEBUG)
   MBWMList        *iter;
@@ -369,7 +380,13 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
       break;
     }
 
-  mb_wm_main_context_remove_deleted_handlers (ctx);
+  nesting--;
+  /* We can't delete the handlers if we've been called from
+   * ourself as we'll destroy the lists we're iterating over.
+   * Instead, only delete handlers when we know we're
+   * right at the bottom. */
+  if (nesting==0)
+    mb_wm_main_context_remove_deleted_handlers (ctx);
 
   return False;
 }

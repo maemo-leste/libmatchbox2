@@ -1,3 +1,11 @@
+2010-04-21  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	Fixes: NB#160226 - Hildon desktop crashed while playing marble game
+
+	* matchbox/core/mb-wm-main-context.c: Make sure we only delete handlers
+	  when we're *not* nested, otherwise we risk causing a linked list
+	  traversal to break.
+
 2010-03-26  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	Release 0.2.90-3.
