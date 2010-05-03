@@ -1,3 +1,8 @@
+2010-05-03  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_sync_properties):
+	  Removed a few obsolete debug messages.
+
 2010-04-21  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	Fixes: NB#160226 - Hildon desktop crashed while playing marble game
