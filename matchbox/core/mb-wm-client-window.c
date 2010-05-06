@@ -452,8 +452,9 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  || result_atom == NULL
 	  )
 	{
-	  g_debug ("%s: ### Warning net type prop failed for %lx ###",
-		   __FUNCTION__, xwin);
+          if (!win->override_redirect)
+            g_debug ("%s: ### Warning net type prop failed for %lx ###",
+                     __FUNCTION__, xwin);
 	  if (x_error_code == BadWindow)
 	    goto badwindow_error;
 
@@ -468,8 +469,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
             }
           else if (win->override_redirect)
             {
-	      g_debug ("%s: override-redirect window without a type",
-                       __FUNCTION__);
 	      win->net_type = wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_NORMAL];
             }
 	}
@@ -514,7 +513,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  || result_atom == NULL
 	  )
 	{
-	  g_debug ("%s: ### Warning hildon type prop failed ###", __func__);
 	  if (x_error_code == BadWindow)
 	    goto badwindow_error;
 	}
@@ -1180,7 +1178,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	  || value == NULL
 	  )
 	{
-	  g_debug ("%s: _HILDON_STACKING_LAYER failed", __FUNCTION__);
 	  win->hildon_stacking_layer = 0;
           if (x_error_code == BadWindow)
 	    {
@@ -1192,8 +1189,6 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       else
 	{
 	  win->hildon_stacking_layer = (unsigned int)*value;
-	  g_debug ("%s: _HILDON_STACKING_LAYER is %u", __FUNCTION__,
-		   win->hildon_stacking_layer);
 	}
 
       if (value)
