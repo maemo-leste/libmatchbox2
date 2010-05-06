@@ -1088,29 +1088,7 @@ mb_wm_client_reset_iconizing (MBWindowManagerClient *client)
 void
 mb_wm_client_iconize (MBWindowManagerClient *client)
 {
-  /*
-   * Set the iconizing flag and put the window into hidden state
-   * This triggers an umap event, at which point the client gets unmanaged
-   * by the window manager.
-   */
-#if ENABLE_COMPOSITE
-  /*
-   * We cannot iconize the client until the effect finished, otherwise it
-   * will unmap before the effect takes place, so we do this in the callback.
-   */
-  if (mb_wm_compositing_enabled (client->wmref))
-    {
-      mb_wm_comp_mgr_do_effect (client->wmref->comp_mgr, client,
-				MBWMCompMgrClientEventMinimize);
-    }
-#endif
-
-  client->priv->iconizing = True;
-
-
-  mb_wm_client_set_state (client,
-			  MBWM_ATOM_NET_WM_STATE_HIDDEN,
-			  MBWMClientWindowStateChangeAdd);
+  XUnmapWindow(client->wmref->xdpy, client->window->xwindow);
 }
 
 int
