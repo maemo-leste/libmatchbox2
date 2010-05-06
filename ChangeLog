@@ -1,3 +1,10 @@
+2010-05-06  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#157311 problem with opening pop-ups
+
+	* matchbox/core/mb-wm-client.c (mb_wm_client_iconize):
+	  Simply unmap the window rather than attempting any broken magic.
+
 2010-05-03  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	* matchbox/core/mb-wm-client-window.c (mb_wm_client_window_sync_properties):
