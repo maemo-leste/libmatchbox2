@@ -1,3 +1,13 @@
+2010-05-11  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	NB#165544 task switcher shortcut doesn't work
+		  on frozen fullscreen SDL applications
+
+	Focus reverted to None and we didn't get the shortcut.
+
+	* matchbox/core/mb-window-manager.c (mb_wm_focus_client_as_stacked):
+	  If everything fails focus the root window.
+
 2010-05-06  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
 	NB#157311 problem with opening pop-ups

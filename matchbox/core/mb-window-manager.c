@@ -1069,54 +1069,47 @@ stack_sync_to_display (MBWindowManager *wm)
   mb_wm_util_async_untrap_x_errors();
 }
 
-extern gboolean hd_dbus_tklock_on;
-
 static void
 mb_wm_focus_client_as_stacked (MBWindowManager *wm,
                                MBWindowManagerClient *except_client)
 {
-  MBWindowManagerClient *next = NULL;
+  extern gboolean hd_dbus_tklock_on;
 
-  if (wm->stack_top)
+  wm->focused_client = NULL;
+  if (!hd_dbus_tklock_on)
     {
       MBWindowManagerClient *c;
 
-      mb_wm_stack_enumerate_reverse (wm, c)
-	{
-	  if (c != except_client &&
-	      mb_wm_client_want_focus (c) &&
-	      mb_wm_client_is_visible (c) &&
-              /* do not assign focus to Home applets automatically */
+      for (c = wm->stack_top; c; c = c->stacked_below)
+        {
+          /* do not assign focus to Home applets automatically */
+          if (c != except_client &&
+              mb_wm_client_want_focus (c) &&
+              mb_wm_client_is_visible (c) &&
               c->window->net_type !=
                 wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_HOME_APPLET])
-	    {
-	      next = c;
-	      break;
-	    }
-	  if (mb_wm_client_covers_screen (c))
-	    {
-	      /* anything below this is necessarily
-	       * invisible
-	       */
-	      break;
-	    }
-	}
-    }
-
-  wm->focused_client = NULL;
-
-  if (hd_dbus_tklock_on)
-    {
+            {
+              mb_wm_focus_client (wm, c);
+              if (wm->focused_client || wm->focus_after_stacking)
+                /* focused or will focus something */
+                return;
+              else
+                /* arguably we could continue searching */
+                break;
+            }
+          if (mb_wm_client_covers_screen (c))
+            /* anything below this is necessarily invisible */
+            break;
+        }
+    } else
       /* don't give focus back to any already mapped window
        * because the touch screen is still locked and we don't want
-       * the application to wake up */
-      return;
-    }
+       * the application to wake up */;
 
-  if (next)
-    {
-      mb_wm_focus_client (wm, next);
-    }
+  /* Make sure the focus is not None, otherwise we won't get KeyPressed
+   * events and shortcurs will stop working. */
+  XSetInputFocus(wm->xdpy, wm->root_win->xwindow, RevertToPointerRoot,
+                 CurrentTime);
 }
 
 void
