@@ -1,4 +1,4 @@
-SUBDIRS = matchbox data util
+SUBDIRS = matchbox data
 
 # Extra clean files so that maintainer-clean removes *everything*
 
