@@ -58,31 +58,6 @@ AC_ARG_WITH(gtk,
   [  --with-gtk              With GTK integration support],
   [use_gtk=$withval], [use_gtk=yes])
 
-dnl due to an autoconf bug, commas in the first arg to
-dnl AC_HELP_STRING cause problems.
-dnl AC_HELP_STRING([--with-composite-managers=MANAGER1 MANAGER2 ...],
-dnl                [build the specified composite managers])
-AC_ARG_ENABLE(composite_managers,
-[  --enable-composite-managers=MANAGER1,MANAGER2,...
-                          Build the specified composite managers. Available managers are:
-                             * framework-only
-                             * xrender
-                             * clutter],
-    [composite_managers=$enableval], [composite_managers=clutter])
-
-AC_ARG_ENABLE(glib-main-loop,
-  [  --enable-glib-main-loop    Enable use of glib main loop],
-  [gmloop=$enableval], [gmloop=no])
-
-AC_ARG_ENABLE(libmatchbox,
-  [  --enable-libmatchbox       Enable building as a library],
-  [libmatchbox=$enableval], [libmatchbox=yes])
-
-AC_ARG_ENABLE(matchbox-remote,
-  [  --enable-matchbox-remote   Enable matchbox remote control utility],
-  [matchbox_remote=$enableval], [matchbox_remote=no])
-
-
 if test "x$use_pango" = "xyes"; then
   needed_pkgs="$needed_pkgs pangoxft "
 fi
@@ -100,56 +75,8 @@ if test "x$png_theme" = "xyes"; then
   needed_pkgs="$needed_pkgs libpng12 "
 fi
 
-if test "x$composite_managers" != xno -a \
-        "x$composite_managers" != "xframework-only"; then
-  needed_pkgs="$needed_pkgs xcomposite xdamage "
-fi
-
-all_composite_managers="xrender,clutter"
-
-included_composite_managers=""
-# If no composite managers specified, include all
-if test "x$composite_managers" = xyes ; then
-  included_composite_managers="$all_composite_managers"
-else
-  if test "x$composite_managers" != xno ; then
-    included_composite_managers="$composite_managers"
-  fi
-fi
-
-comp_mgr="no"
-if test "x$composite_managers" != xno ; then
-  comp_mgr="yes ($included_composite_managers)"
-fi
-
-AC_MSG_RESULT($included_composite_managers)
-
-COMPOSITE_MANAGER_DEFINE=
-
-IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=","
-for composite_manager in $included_composite_managers; do
- if echo "framework-only,$all_composite_managers" | egrep "(^|,)$composite_manager(\$|,)" > /dev/null; then
-   :
- else
-   AC_MSG_ERROR([the specified composite_manager $composite_manager does not exist])
- fi
- case $composite_manager in
-      xrender )
-        needed_pkgs="$needed_pkgs xcomposite xdamage "
-	MBWM_EXTRA_LIBS="$MBWM_EXTRA_LIBS -lm"
-        ;;
-      clutter )
-        needed_pkgs="$needed_pkgs $clutter_package xcomposite xdamage "
-        gmloop="yes"
-        ;;
- esac
-
- COMPOSITE_MANAGER_DEFINE="$COMPOSITE_MANAGER_DEFINE \
-                           -DCOMPOSITE_MANAGER_`echo $composite_manager|tr 'a-z' 'A-Z'`"
- eval COMPOSITE_MANAGER_$composite_manager=yes
-done
-IFS="$save_ifs"
-
+needed_pkgs="$needed_pkgs $clutter_package xcomposite xdamage "
+COMPOSITE_MANAGER_DEFINE="-DCOMPOSITE_MANAGER_CLUTTER"
 AC_SUBST(COMPOSITE_MANAGER_DEFINE)
 
 AC_SUBST(MBWM_DEB_VERSION, $DEB_VERSION)
@@ -162,11 +89,8 @@ if test "x$want_debug" = "xyes"; then
 fi
 AC_SUBST(MBWM_WANT_DEBUG)
 
-USE_GLIB_MAINLOOP=0
-if test "x$gmloop" = "xyes"; then
-  needed_pkgs="$needed_pkgs glib-2.0 "
-  USE_GLIB_MAINLOOP=1
-fi
+needed_pkgs="$needed_pkgs glib-2.0 "
+USE_GLIB_MAINLOOP=1
 AC_SUBST(USE_GLIB_MAINLOOP)
 
 USE_PANGO=0
@@ -202,61 +126,26 @@ PKG_CHECK_MODULES(MBWM, $needed_pkgs)
 MBWM2_PKGREQUIRES="$MBWM2_PKGREQUIRES $needed_pkgs"
 AC_SUBST(MBWM2_PKGREQUIRES)
 
-COMP_MGR_BACKEND=0
-ENABLE_COMPOSITE=0
-AM_CONDITIONAL(ENABLE_COMPOSITE, [test "x$comp_mgr" != "xno"])
-if test x"$comp_mgr" != xno; then
-   ENABLE_COMPOSITE=1
-fi
+ENABLE_COMPOSITE=1
 AC_SUBST(ENABLE_COMPOSITE)
+AM_CONDITIONAL(ENABLE_COMPOSITE, [true])
 
-ENABLE_CLUTTER_COMPOSITE_MANAGER=0
-AM_CONDITIONAL(ENABLE_CLUTTER_COMPOSITE_MANAGER, [test x"$COMPOSITE_MANAGER_clutter" = xyes])
-if test x"$COMPOSITE_MANAGER_clutter" = xyes; then
-  ENABLE_CLUTTER_COMPOSITE_MANAGER=1
-  COMP_MGR_BACKEND=1
-
-  clutter_backend=$($PKG_CONFIG $clutter_package --variable=backend)
-  if test x"$clutter_backend" = xglx; then
-    AC_DEFINE(HAVE_CLUTTER_GLX, [1], [Using clutter glx backend])
-  elif test x"$clutter_backend" = xeglx; then
-    AC_DEFINE(HAVE_CLUTTER_EGLX, [1], [Using clutter eglx backend])
-  fi
-fi
+ENABLE_CLUTTER_COMPOSITE_MANAGER=1
 AC_SUBST(ENABLE_CLUTTER_COMPOSITE_MANAGER)
 
-ENABLE_XRENDER_COMPOSITE_MANAGER=0
-AM_CONDITIONAL(ENABLE_XRENDER_COMPOSITE_MANAGER, [test x"$COMPOSITE_MANAGER_xrender" = xyes])
-if test x"$COMPOSITE_MANAGER_xrender" = xyes; then
-  ENABLE_XRENDER_COMPOSITE_MANAGER=1
-  COMP_MGR_BACKEND=1
+AM_CONDITIONAL(ENABLE_CLUTTER_COMPOSITE_MANAGER, [true])
+clutter_backend=$($PKG_CONFIG $clutter_package --variable=backend)
+if test x"$clutter_backend" = xglx; then
+  AC_DEFINE(HAVE_CLUTTER_GLX, [1], [Using clutter glx backend])
+elif test x"$clutter_backend" = xeglx; then
+  AC_DEFINE(HAVE_CLUTTER_EGLX, [1], [Using clutter eglx backend])
 fi
-AC_SUBST(ENABLE_XRENDER_COMPOSITE_MANAGER)
 
-AM_CONDITIONAL(COMP_MGR_BACKEND, [test "x$COMP_MGR_BACKEND" = "x1"])
+COMP_MGR_BACKEND=1
 AC_SUBST(COMP_MGR_BACKEND)
+AM_CONDITIONAL(COMP_MGR_BACKEND, [true])
 
-AM_CONDITIONAL(ENABLE_LIBMATCHBOX, [test "x$libmatchbox" = "xyes"])
-
-AM_CONDITIONAL(ENABLE_MATCHBOX_REMOTE, [test "x$matchbox_remote" = "xyes"])
-
-AC_ARG_ENABLE(simple-manager,
-  [  --disable-simple-manager   Do not build simple window manager],
-  [simple_manager=$enableval], [simple_manager=yes])
-
-AC_ARG_ENABLE(maemo-manager,
-  [  --enable-maemo-manager     Build maemo window manager],
-  [maemo_manager=$enableval], [maemo_manager=no])
-
-if test $simple_manager = yes; then
-   MANAGERS="$MANAGERS simple"
-fi
-
-if test $maemo_manager = yes; then
-   MANAGERS="$MANAGERS maemo"
-fi
-
-AC_SUBST(MANAGERS)
+AM_CONDITIONAL(ENABLE_LIBMATCHBOX, [true])
 
 PKG_CHECK_MODULES(XFIXES, xfixes >= 4.0, have_xfixes=yes, have_xfixes=no)
 
@@ -311,7 +200,6 @@ matchbox/mb-wm-config.h
 matchbox/core/Makefile
 matchbox/client-types/Makefile
 matchbox/comp-mgr/Makefile
-matchbox/managers/simple/Makefile
 matchbox/theme-engines/Makefile
 data/Makefile
 data/themes/Makefile
@@ -335,18 +223,8 @@ echo "
 
     Themes:
 	PNG theme             :   ${png_theme}
-	GTK integration       :   ${use_gtk}
 	Pango integration     :   ${use_pango}
 
-    Managers:
-	Simple manager        :	  ${simple_manager}
-	Maemo manager         :	  ${maemo_manager}
-
-	Compositing managers  :   ${comp_mgr}
-
     Miscel:
-        Glib main loop        :   ${gmloop}
-	Build libmatchbox     :   ${libmatchbox}
-	Build matchbox-remote :   ${matchbox_remote}
 	Debugging output      :   ${want_debug}
 "
