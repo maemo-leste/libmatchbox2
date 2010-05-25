@@ -311,7 +311,6 @@ matchbox/mb-wm-config.h
 matchbox/core/Makefile
 matchbox/client-types/Makefile
 matchbox/comp-mgr/Makefile
-matchbox/managers/Makefile
 matchbox/managers/simple/Makefile
 matchbox/theme-engines/Makefile
 data/Makefile
@@ -319,7 +318,6 @@ data/themes/Makefile
 data/themes/Default/Makefile
 data/themes/PngSample/Makefile
 data/libmatchbox2.pc
-util/Makefile
 ])
 
 echo "

@@ -32,6 +32,6 @@ libmatchbox2_@MBWM2_API_VERSION@_la_SOURCES =
 pkginclude_HEADERS = *.h
 
 else
-SUBDIRS = core client-types theme-engines $(comp) managers
+SUBDIRS = core client-types theme-engines $(comp)
 endif
 
