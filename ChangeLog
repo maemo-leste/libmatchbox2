@@ -1,5 +1,9 @@
 2010-05-25  Adam Endrodi  <adam.endrodi@blumsoft.eu>
 
+	Release 0.2.91-1.
+
+2010-05-25  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
 	NB#162675 desktop recompilation with G_DISABLE_CAST_CHECKS
 
 	* configure.ac: added to MBWM_CFLAGS
