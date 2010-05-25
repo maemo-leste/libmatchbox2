@@ -1,8 +1,15 @@
-matchbox-window-manager-2 (0.2.91-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.92-1~unreleased) unstable; urgency=low
 
   * :)
 
  -- Adam Endrodi <adam.endrodi@blumsoft.eu>  Fri, 26 Mar 2010 10:05:59 +0200
+
+matchbox-window-manager-2 (0.2.91-1) unstable; urgency=low
+
+  * Fixes: NB#162675 - desktop recompilation with G_DISABLE_CAST_CHECKS
+  * Fixes: NB#157311 - problem with opening pop-ups
+
+ -- Adam Endrodi <adam.endrodi@blumsoft.eu>  Tue, 25 May 2010 15:59:20 +0300
 
 matchbox-window-manager-2 (0.2.90-3) unstable; urgency=low
 
