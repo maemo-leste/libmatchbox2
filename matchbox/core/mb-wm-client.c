@@ -1298,6 +1298,10 @@ mb_wm_client_update_portrait_flags (MBWindowManagerClient *cs, guint now)
         /* Add some crap to the pile: if you request but don't say
          * you support you do. */
         cs->portrait_supported = TRUE;
+      else if ((MB_WM_CLIENT_CLIENT_TYPE (cs) & MBWMClientTypeDialog)
+               && cs->portrait_supported_inherited)
+          /* Window dialog should inherit flags from the parent. */
+        cs->portrait_supported = TRUE;
       else if (cs->transient_for)
         { /* Get the parent's and copy them. */
           mb_wm_client_update_portrait_flags (ct = cs->transient_for, now);

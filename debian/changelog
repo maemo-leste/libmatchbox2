@@ -1,8 +1,8 @@
-matchbox-window-manager-2 (0.2.92-1~unreleased) unstable; urgency=low
+matchbox-window-manager-2 (0.2.92-1) unstable; urgency=low
 
-  * :)
+  * Fixes: Dialog window doesn't inherit parent's portrait flag.
 
- -- Adam Endrodi <adam.endrodi@blumsoft.eu>  Fri, 26 Mar 2010 10:05:59 +0200
+ -- Tomasz Pieniążek <t.pieniazek@gazeta.pl>  Thu, 13 Dec 2012 19:51:00 +0200
 
 matchbox-window-manager-2 (0.2.91-1) unstable; urgency=low
 
