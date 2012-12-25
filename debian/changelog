@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.92-2+thumb0) unstable; urgency=low
+
+  * Thumb2 compile
+
+ -- Ivaylo Dimitrov <freemangordon@abv.bg>  Tue, 25 Dec 2012 17:13:43 +0200
+
 matchbox-window-manager-2 (0.2.92-2) unstable; urgency=low
 
   * Fixes version clash with Nokia maemo versions,
@@ -37,7 +43,7 @@ matchbox-window-manager-2 (0.2.90-1) unstable; urgency=low
 
 matchbox-window-manager-2 (0.2.89-1) unstable; urgency=low
 
-  * Fixes: NB#158114 - When starting device with beta theme, menu borders are 
+  * Fixes: NB#158114 - When starting device with beta theme, menu borders are
     from devel theme
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 24 Feb 2010 12:48:12 +0200
@@ -424,7 +430,7 @@ matchbox-window-manager-2 (0.2.48-1) unstable; urgency=low
 matchbox-window-manager-2 (0.2.47-1) unstable; urgency=low
 
   Thomas:
-  * Fixes: NB#115408 - Cannot snooze/stop an alarm playing over 
+  * Fixes: NB#115408 - Cannot snooze/stop an alarm playing over
     'Switch of device?' confirmation note
 
  -- Aapo Kojo <aapo.kojo@nokia.com>  Fri, 17 Jul 2009 12:44:09 +0300
@@ -670,7 +676,7 @@ matchbox-window-manager-2 (0.2.27-1) unstable; urgency=low
 
 matchbox-window-manager-2 (0.2.26-1) unstable; urgency=low
 
-  Gordon: 
+  Gordon:
   * Fixes: NB#108114 - Animation actors cannot be resized, part 2
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Tue, 31 Mar 2009 09:02:33 +0300
@@ -824,8 +830,8 @@ matchbox-window-manager-2 (0.2.13-1) unstable; urgency=low
 
         * matchbox/comp-mgr/mb-wm-comp-mgr-clutter.c:
         Put brackets in the correct place so the EGLX pixmap is only renewed
-        when the fullscreen state has changed. Also added code to check the 
-        actor size and position against the X size and position and make sure 
+        when the fullscreen state has changed. Also added code to check the
+        actor size and position against the X size and position and make sure
         it is the same. Fixes: NB#95594
 
         Kimmo:
@@ -876,7 +882,7 @@ matchbox-window-manager-2 (0.2.7-1) unstable; urgency=low
   * Laszlo: add new function mb_wm_stack_get_highest_full_screen() for
     NB#89269
   * Laszlo: Use set_window instead of set_pixmap when fetching the texture
-    contents. Fixes: NB#93845 
+    contents. Fixes: NB#93845
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 03 Dec 2008 16:43:09 +0200
 
@@ -895,7 +901,7 @@ matchbox-window-manager-2 (0.2.5-1) unstable; urgency=low
   * Laszlo: focus transferring in case of overlayed dialogs. Fixes: NB#92785
   * Laszlo: show window that has been set fullscreen before mapping.
     Fixes: NB#92885
-  * Adam: move the focused window on top in a stack of transients. 
+  * Adam: move the focused window on top in a stack of transients.
 
  -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 26 Nov 2008 14:36:09 +0200
 
