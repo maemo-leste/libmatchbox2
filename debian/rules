@@ -11,7 +11,7 @@ CFLAGS += -O0
 endif
 
 ifneq (,$(findstring thumb,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -mthumb
+	CFLAGS += -mthumb -Wno-error=unused-but-set-variable -Wno-error=unused-function
 endif
 
 DEB_DH_STRIP_ARGS := --dbg-package=libmatchbox2

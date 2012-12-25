@@ -124,7 +124,7 @@ mb_wm_comp_mgr_clutter_client_set_size (
   ClutterActor *actor = cclient->priv->actor;
   ClutterActor *texture = cclient->priv->texture;
 
-  int position = !(cclient->priv->flags & MBWMCompMgrClutterClientDontPosition) | force;
+  int position = (!(cclient->priv->flags & MBWMCompMgrClutterClientDontPosition)) | force;
 
   /* We have 2 types - either we have a frame,
    * or we don't. The texture sits inside our parent actor */
