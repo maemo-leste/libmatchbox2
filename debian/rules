@@ -10,6 +10,10 @@ else
 CFLAGS += -O0
 endif
 
+ifneq (,$(findstring thumb,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -mthumb
+endif
+
 DEB_DH_STRIP_ARGS := --dbg-package=libmatchbox2
 
 makebuilddir/libmatchbox2::
