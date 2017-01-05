@@ -26,7 +26,7 @@ AC_SUBST(MBWM2_INCDIR)
 MBWM2_PKGINCDIR=matchbox-wm-2/$MBWM2_API_VERSION/
 AC_SUBST(MBWM2_PKGINCDIR)
 
-clutter_package=clutter-0.8
+clutter_package=clutter-1.0
 
 AM_MAINTAINER_MODE
 
