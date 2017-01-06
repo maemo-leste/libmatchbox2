@@ -29,6 +29,7 @@
 #include <X11/Xft/Xft.h>
 #include <glib-object.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 #define SIMPLE_FRAME_TITLEBAR_HEIGHT 40
 #define SIMPLE_FRAME_EDGE_SIZE 0
@@ -1926,7 +1927,7 @@ xft_load_font (MBWMDecor * decor, MBWMXmlDecor *d)
 static void
 mb_wm_theme_simple_paint_decor (MBWMTheme *theme, MBWMDecor *decor)
 {
-  MBWMDecorType          type;
+/*  MBWMDecorType          type; */
   const MBGeometry      *geom;
   MBWindowManagerClient *client;
   Window                 xwin;
@@ -1937,7 +1938,7 @@ mb_wm_theme_simple_paint_decor (MBWMTheme *theme, MBWMDecor *decor)
   MBWMXmlClient         *c = NULL;
   MBWMXmlDecor          *d = NULL;
   struct DecorData      *dd;
-  int x, y, w, h;
+  int /* x, y, */w, h;
   GC                     gc;
   Display               *xdpy = wm->xdpy;
   int                    xscreen = wm->xscreen;
@@ -1959,7 +1960,7 @@ mb_wm_theme_simple_paint_decor (MBWMTheme *theme, MBWMDecor *decor)
 
   dd = mb_wm_decor_get_theme_data (decor);
 
-  type   = mb_wm_decor_get_type (decor);
+/*  type   = mb_wm_decor_get_type (decor); */
   geom   = mb_wm_decor_get_geometry (decor);
   c_type = MB_WM_CLIENT_CLIENT_TYPE (client);
 
@@ -2016,7 +2017,7 @@ mb_wm_theme_simple_paint_decor (MBWMTheme *theme, MBWMDecor *decor)
   XSetBackground (xdpy, gc, pixel_from_clr (xdpy, xscreen, &clr_bg));
   XSetForeground (xdpy, gc, pixel_from_clr (xdpy, xscreen, &clr_bg));
 
-  w = geom->width; h = geom->height; x = geom->x; y = geom->y;
+  w = geom->width; h = geom->height; /* x = geom->x; y = geom->y; */
 
   XFillRectangle (xdpy, dd->xpix, gc, 0, 0, w, h);
 

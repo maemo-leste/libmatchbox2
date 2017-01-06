@@ -12,18 +12,18 @@ mb_wm_client_input_request_geometry (MBWindowManagerClient *client,
 				     MBWMClientReqGeomType  flags);
 
 static void
-mb_wm_client_input_stack (MBWindowManagerClient *client, int flags);
+mb_wm_client_input_stack (MBWindowManagerClient *client, intptr_t flags);
 
 static void
 mb_wm_client_input_class_init (MBWMObjectClass *klass)
 {
   MBWindowManagerClientClass *client;
-  MBWMClientInputClass * client_input;
+/*  MBWMClientInputClass * client_input; */
 
   MBWM_MARK();
 
   client     = (MBWindowManagerClientClass *)klass;
-  client_input = (MBWMClientInputClass *)klass;
+/*  client_input = (MBWMClientInputClass *)klass; */
 
   MBWM_DBG("client->stack is %p", client->stack);
 
@@ -140,7 +140,7 @@ mb_wm_client_input_request_geometry (MBWindowManagerClient *client,
 }
 
 static void
-mb_wm_client_input_stack (MBWindowManagerClient *client, int flags)
+mb_wm_client_input_stack (MBWindowManagerClient *client, intptr_t flags)
 {
   MBWM_MARK();
 

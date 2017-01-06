@@ -21,6 +21,7 @@
 #ifndef _HAVE_MB_CLIENT_H
 #define _HAVE_MB_CLIENT_H
 
+#include <stdint.h>
 #include <matchbox/mb-wm-config.h>
 
 #define MB_WM_CLIENT(c) ((MBWindowManagerClient*)(c))
@@ -113,7 +114,7 @@ typedef  Bool (*MBWMClientGeometryMethod) (MBWindowManagerClient *client,
 					   MBWMClientReqGeomType  flags);
 
 typedef  void (*MBWMClientStackMethod) (MBWindowManagerClient *client,
-					int                    flags);
+					intptr_t               flags);
 
 typedef  void (*MBWMClientShowMethod) (MBWindowManagerClient *client);
 

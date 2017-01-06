@@ -13,7 +13,7 @@ static MBWMStackLayerType
 mb_wm_client_panel_stacking_layer (MBWindowManagerClient *client);
 
 static void
-mb_wm_client_panel_stack (MBWindowManagerClient *client, int flags);
+mb_wm_client_panel_stack (MBWindowManagerClient *client, intptr_t flags);
 
 static void
 mb_wm_client_panel_class_init (MBWMObjectClass *klass)
@@ -183,7 +183,7 @@ mb_wm_client_panel_request_geometry (MBWindowManagerClient *client,
 }
 
 static void
-mb_wm_client_panel_stack (MBWindowManagerClient *client, int flags)
+mb_wm_client_panel_stack (MBWindowManagerClient *client, intptr_t flags)
 {
   /*
    * If this is 'normal' panel, we stack with the default value.

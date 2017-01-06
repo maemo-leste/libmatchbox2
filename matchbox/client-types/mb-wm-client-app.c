@@ -18,12 +18,12 @@ static void
 mb_wm_client_app_class_init (MBWMObjectClass *klass)
 {
   MBWindowManagerClientClass *client;
-  MBWMClientAppClass * client_app;
+/*  MBWMClientAppClass * client_app; */
 
   MBWM_MARK();
 
   client     = (MBWindowManagerClientClass *)klass;
-  client_app = (MBWMClientAppClass *)klass;
+/*  client_app = (MBWMClientAppClass *)klass; */
 
   MBWM_DBG("client->stack is %p", client->stack);
 

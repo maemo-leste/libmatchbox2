@@ -30,11 +30,11 @@
 static void
 mb_wm_root_window_class_init (MBWMObjectClass *klass)
 {
-  MBWMRootWindowClass *rw_class;
+/*  MBWMRootWindowClass *rw_class; */
 
   MBWM_MARK();
 
-  rw_class = (MBWMRootWindowClass *)klass;
+/*  rw_class = (MBWMRootWindowClass *)klass; */
 
 #if MBWM_WANT_DEBUG
   klass->klass_name = "MBWMRootWindow";

@@ -4,6 +4,8 @@ include /usr/share/cdbs/1/class/autotools.mk
 
 DEB_CONFIGURE_EXTRA_FLAGS := --enable-png-theme --with-pango DEB_VERSION=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 
+CFLAGS += -Wno-deprecated-declarations
+
 ifeq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 CFLAGS += -DG_DEBUG_DISABLE
 else

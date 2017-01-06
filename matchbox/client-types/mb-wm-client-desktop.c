@@ -16,12 +16,12 @@ static void
 mb_wm_client_desktop_class_init (MBWMObjectClass *klass)
 {
   MBWindowManagerClientClass *client;
-  MBWMClientDesktopClass * client_desktop;
+/*  MBWMClientDesktopClass * client_desktop; */
 
   MBWM_MARK();
 
   client     = (MBWindowManagerClientClass *)klass;
-  client_desktop = (MBWMClientDesktopClass *)klass;
+/*  client_desktop = (MBWMClientDesktopClass *)klass; */
 
   client->client_type    = MBWMClientTypeDesktop;
   client->geometry       = mb_wm_client_desktop_request_geometry;

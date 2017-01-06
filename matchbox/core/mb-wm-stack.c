@@ -21,7 +21,7 @@
 #include <stdarg.h>
 #include "mb-wm.h"
 
-
+#if 0
 static void
 mb_wm_stack_ensure_trans_foreach (MBWindowManagerClient *client, void *data)
 {
@@ -34,6 +34,7 @@ mb_wm_stack_ensure_trans_foreach (MBWindowManagerClient *client, void *data)
 
   mb_wm_util_list_free (t);
 }
+#endif
 
 void
 mb_wm_stack_dump (MBWindowManager *wm, const char * why, ...)

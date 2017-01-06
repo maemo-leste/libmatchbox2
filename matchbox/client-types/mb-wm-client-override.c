@@ -24,7 +24,7 @@
 
 static void
 mb_wm_client_override_stack (MBWindowManagerClient *client,
-			     int                    flags)
+			     intptr_t               flags)
 {
   MBWMList * t = mb_wm_client_get_transients (client);
 

@@ -817,7 +817,7 @@ mb_wm_theme_png_paint_decor (MBWMTheme *theme, MBWMDecor *decor)
       int y, ascent, descent;
       int len = strlen (title);
       int is_secondary_dialog;
-      int centering_padding = 0;
+/*      int centering_padding = 0; */
 
       is_secondary_dialog = mb_window_is_secondary(theme->wm, client->window->xwindow);
 
@@ -876,7 +876,7 @@ mb_wm_theme_png_paint_decor (MBWMTheme *theme, MBWMDecor *decor)
 					  NULL,
 				  &font_extents);
 
-	      centering_padding = (rec.width - font_extents.width) / 2;
+/*	      centering_padding = (rec.width - font_extents.width) / 2; */
 	    }
 
 	  pango_xft_render (data->xftdraw,

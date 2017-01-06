@@ -65,11 +65,11 @@ enum {
 static void
 mb_wm_client_window_class_init (MBWMObjectClass *klass)
 {
-  MBWMClientWindowClass *rw_class;
+/*  MBWMClientWindowClass *rw_class; */
 
   MBWM_MARK();
 
-  rw_class = (MBWMClientWindowClass *)klass;
+/*  rw_class = (MBWMClientWindowClass *)klass; */
 
 #if MBWM_WANT_DEBUG
   klass->klass_name = "MBWMClientWindow";
