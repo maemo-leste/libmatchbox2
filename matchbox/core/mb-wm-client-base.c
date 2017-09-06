@@ -36,7 +36,7 @@ mb_wm_client_base_realize (MBWindowManagerClient *client);
 
 static void
 mb_wm_client_base_stack (MBWindowManagerClient *client,
-			 intptr_t               flags);
+			 int                    flags);
 static void
 mb_wm_client_base_show (MBWindowManagerClient *client);
 
@@ -338,7 +338,7 @@ mb_wm_client_move_to_top_recursive (
 
 static void
 mb_wm_client_base_stack (MBWindowManagerClient *client,
-			 intptr_t               flags)
+                         int                    flags)
 {
   MBWindowManagerClient *transient_for = client->transient_for;
 

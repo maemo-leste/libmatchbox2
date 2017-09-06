@@ -114,7 +114,7 @@ typedef  Bool (*MBWMClientGeometryMethod) (MBWindowManagerClient *client,
 					   MBWMClientReqGeomType  flags);
 
 typedef  void (*MBWMClientStackMethod) (MBWindowManagerClient *client,
-					intptr_t               flags);
+					int                    flags);
 
 typedef  void (*MBWMClientShowMethod) (MBWindowManagerClient *client);
 
