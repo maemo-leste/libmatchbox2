@@ -72,7 +72,7 @@ if test "x$use_gtk" != "xno"; then
 fi
 
 if test "x$png_theme" = "xyes"; then
-  needed_pkgs="$needed_pkgs libpng12 "
+  needed_pkgs="$needed_pkgs libpng "
 fi
 
 needed_pkgs="$needed_pkgs $clutter_package xcomposite xdamage "

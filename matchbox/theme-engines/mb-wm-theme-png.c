@@ -1205,7 +1205,7 @@ mb_wm_theme_png_load_file (const char *file,
       return NULL;
     }
 
-  if (setjmp (png_ptr->jmpbuf))
+  if (setjmp (png_jmpbuf(png_ptr)))
     {
       png_destroy_read_struct( &png_ptr, &info_ptr, NULL);
       fclose(fd);
