@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.93) unstable; urgency=medium
+
+  * Patch to allow compilation on Ascii's libpng
+
+ -- Ivan J. <parazyd@dyne.org>  Wed, 03 Jan 2018 21:23:00 +0100
+
 matchbox-window-manager-2 (0.2.92-2+thumb0) unstable; urgency=medium
 
   * Enable git builds
