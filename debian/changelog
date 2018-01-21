@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.94) unstable; urgency=medium
+
+  * Make sure MBWMObjectClass::type is big enough to hold GType
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Sun, 21 Jan 2018 13:16:44 +0200
+
 matchbox-window-manager-2 (0.2.93) unstable; urgency=medium
 
   * Patch to allow compilation on Ascii's libpng
