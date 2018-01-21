@@ -66,7 +66,7 @@ MBWMObjectClassInfo;
  */
 struct MBWMObjectClass
 {
-  int              type;
+  unsigned long    type;
   MBWMObjectClass *parent;
   MBWMObjVargFunc  init;
   MBWMObjFunc      destroy;
