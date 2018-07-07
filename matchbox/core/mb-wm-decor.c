@@ -835,7 +835,10 @@ mb_wm_decor_button_press_handler (XButtonEvent    *xev,
 	  xev->y < ymin ||
 	  xev->y > ymax)
 	{
-	  XUngrabPointer(wm->xdpy, CurrentTime);
+	  if ((xev->type) == ButtonRelease)
+		{
+		  XUngrabPointer(wm->xdpy, CurrentTime);
+		}
 	  retval = True;
           if (xev->type != ButtonRelease
               || xev->x < decor->geom.x
