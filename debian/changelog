@@ -1,3 +1,10 @@
+matchbox-window-manager-2 (0.2.95) unstable; urgency=medium
+
+  * Make sure that decor button release events are passed on when input
+    devices are touch sreens
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Sun, 8 Jul 2018 10:44:00 +0100
+
 matchbox-window-manager-2 (0.2.94) unstable; urgency=medium
 
   * Make sure MBWMObjectClass::type is big enough to hold GType
