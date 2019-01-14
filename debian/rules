@@ -7,9 +7,10 @@ DEB_CONFIGURE_EXTRA_FLAGS := --enable-png-theme --with-pango DEB_VERSION=$(shell
 CFLAGS += -Wno-deprecated-declarations
 
 ifeq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
-CFLAGS += -DG_DEBUG_DISABLE
+	CFLAGS += -DG_DEBUG_DISABLE
 else
-CFLAGS += -O0
+	CFLAGS += -O0
+	DEB_CONFIGURE_EXTRA_FLAGS += --enable-debug
 endif
 
 ifneq (,$(findstring thumb,$(DEB_BUILD_OPTIONS)))
