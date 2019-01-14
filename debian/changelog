@@ -1,3 +1,10 @@
+matchbox-window-manager-2 (0.2.96) unstable; urgency=medium
+
+  * Fix compilation with --enable-debug=yes
+  * Add --enable-debug for DEB_BUILD_OPTIONS=debug
+
+ -- Arthur Demchenkov <spinal.by@gmail.com>  Mon, 14 Jan 2019 22:39:52 +0300
+
 matchbox-window-manager-2 (0.2.95) unstable; urgency=medium
 
   * Make sure that decor button release events are passed on when input
