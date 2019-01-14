@@ -432,7 +432,7 @@ mb_wm_root_window_handle_message (MBWMRootWindow *win, XClientMessageEvent *e)
 	  return 1;
 
 	default:
-	  MBWM_DBG ("Unhandled value %d for WM_CHANGE_STATE ClientMessage",
+	  MBWM_DBG ("Unhandled value %ld for WM_CHANGE_STATE ClientMessage",
 		    e->data.l[0]);
 	}
     }

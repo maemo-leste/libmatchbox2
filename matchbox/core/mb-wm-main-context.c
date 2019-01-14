@@ -245,7 +245,7 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 	case UnmapNotify:
 	  {
 	    XUnmapEvent * uev = & xev->xunmap;
-	    printf ("    window %x, event %x, %d\n",
+	    printf ("    window %lx, event %lx, %d\n",
 		    uev->window,
 		    uev->event,
 		    uev->from_configure);
@@ -254,7 +254,7 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 	case ConfigureNotify:
 	  {
 	    XConfigureEvent * cev = & xev->xconfigure;
-	    printf ("    window %x, event %x, [%d,%d;%dx%d]\n",
+	    printf ("    window %lx, event %lx, [%d,%d;%dx%d]\n",
 		    cev->window,
 		    cev->event,
 		    cev->x,
@@ -266,7 +266,7 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 	case ConfigureRequest:
 	  {
 	    XConfigureRequestEvent * cev = & xev->xconfigurerequest;
-	    printf ("    window %x, parent %x, [%d,%d;%dx%d]\n",
+	    printf ("    window %lx, parent %lx, [%d,%d;%dx%d]\n",
 		    cev->window,
 		    cev->parent,
 		    cev->x,
@@ -279,7 +279,7 @@ mb_wm_main_context_handle_x_event (XEvent          *xev,
 	  {
 	    XPropertyEvent * pev = & xev->xproperty;
 	    char * prop = XGetAtomName (wm->xdpy, pev->atom);
-	    printf ("    window %x, prop %s, state %d\n",
+	    printf ("    window %lx, prop %s, state %d\n",
 		    pev->window,
 		    prop,
 		    pev->state);

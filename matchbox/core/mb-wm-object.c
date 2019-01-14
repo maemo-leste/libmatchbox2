@@ -212,7 +212,7 @@ mb_wm_object_unref (MBWMObject *this)
 
   if (this->refcnt == 0)
     {
-      MBWM_NOTE (OBJ_UNREF, "=== DESTROYING OBJECT type %d ===",
+      MBWM_NOTE (OBJ_UNREF, "=== DESTROYING OBJECT type %lu ===",
 		 this->klass->type);
 
       mb_wm_object_destroy_recursive (MB_WM_OBJECT_GET_CLASS (this),
@@ -378,7 +378,7 @@ mb_wm_object_signal_disconnect (MBWMObject    *obj,
       item = item->next;
     }
 
-  MBWM_DBG ("### Warning: did not find signal handler %d ###", id);
+  MBWM_DBG ("### Warning: did not find signal handler %lu ###", id);
 }
 
 void

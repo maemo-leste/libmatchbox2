@@ -944,7 +944,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	      else if (a[i] == wm->atoms[MBWM_ATOM_NET_WM_SYNC_REQUEST])
 		win->protos |= MBWMClientWindowProtosSyncRequest;
 	      else
-		MBWM_DBG("Unhandled WM Protocol %d", ((Atom*)result_atom)[i]);
+		MBWM_DBG("Unhandled WM Protocol %lu", ((Atom*)result_atom)[i]);
 	    }
 	}
 
@@ -1150,7 +1150,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       else
 	{
 	  win->user_time = (unsigned long)*user_time;
-	  MBWM_DBG("@@@ user time %d @@@", win->user_time);
+	  MBWM_DBG("@@@ user time %lu @@@", win->user_time);
 	}
 
       if (user_time)
