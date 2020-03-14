@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.97) unstable; urgency=medium
+
+  * Revert to building with clutter 0.8
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Sat, 14 Mar 2020 08:19:21 +0200
+
 matchbox-window-manager-2 (0.2.96) unstable; urgency=medium
 
   * Fix compilation with --enable-debug=yes
