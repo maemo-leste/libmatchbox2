@@ -284,14 +284,18 @@ mb_wm_util_warn (const char *format, ...)
 {
   va_list ap;
   char    *msg = NULL;
+  int res;
 
   va_start(ap, format);
-  vasprintf(&msg, format, ap);
+  res = vasprintf(&msg, format, ap);
   va_end(ap);
 
-  fprintf(stderr, "*MBWM Warning*  %s\n", msg);
+  if (res != -1)
+    {
+      fprintf(stderr, "*MBWM Warning*  %s\n", msg);
 
-  if (msg) free(msg);
+      if (msg) free(msg);
+    }
 }
 
 MBWMList*
