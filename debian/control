@@ -8,7 +8,7 @@ Standards-Version: 3.8.0
 Package: libmatchbox2-dev
 Section: libdevel
 Architecture: any
-Depends: libmatchbox2 (= ${source:Version}), libglib2.0-dev, libpango1.0-dev, libpng-dev, libx11-dev, libxext-dev, libclutter-1.0-dev
+Depends: libmatchbox2 (= ${source:Version}), libglib2.0-dev, libpango1.0-dev, libpng-dev, libx11-dev, libxext-dev, libclutter-0.8-dev
 Replaces: matchbox (<< 1:0.8.2)
 Description: shared library for Matchbox Project applications [development]
  Matchbox is a base environment for the X Window System running on non-desktop
@@ -23,7 +23,7 @@ Description: shared library for Matchbox Project applications [development]
 Package: libmatchbox2
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libclutter-1.0-0
+Depends: ${shlibs:Depends}, ${misc:Depends}, libclutter-0.8-0
 Replaces: matchbox (<< 1:0.8.2)
 Description: shared library for Matchbox Project applications [runtime]
  Matchbox is a base environment for the X Window System running on non-desktop
