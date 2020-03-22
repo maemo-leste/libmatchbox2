@@ -1860,6 +1860,9 @@ mb_window_manager_init (MBWMObject *this, va_list vap)
   mb_wm_keys_init(wm);
 
   /* set the cursor invisible */
+#if HAVE_XFIXES
+  XFixesHideCursor (wm->xdpy, wm->root_win->xwindow);
+#else
   {
     Pixmap pix = XCreatePixmap (wm->xdpy, wm->root_win->xwindow, 1, 1, 1);
     XColor col;
@@ -1870,7 +1873,7 @@ mb_window_manager_init (MBWMObject *this, va_list vap)
     XFreePixmap (wm->xdpy, pix);
     XDefineCursor(wm->xdpy, wm->root_win->xwindow, blank_curs);
   }
-
+#endif
   return 1;
 }
 
