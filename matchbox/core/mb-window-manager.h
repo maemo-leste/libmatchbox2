@@ -62,6 +62,7 @@ typedef enum MBWindowManagerFlag
   MBWindowManagerFlagDesktop           = (1<<0),
   MBWindowManagerFlagAlwaysReloadTheme = (1<<1),
   MBWindowManagerFlagLayoutRotated     = (1<<2),
+  MBWindowManagerFlagCursorVisible     = (1<<3),
 } MBWindowManagerFlag;
 
 /* signals must be 2^n, as multiple signals can be sent from one call */
@@ -252,5 +253,8 @@ mb_wm_setup_redirection (MBWindowManager *wm, int redirection);
 
 Time
 mb_wm_get_server_time (MBWindowManager *wm);
+
+void
+wm_set_cursor_visibility(MBWindowManager *wm, Bool visible);
 
 #endif
