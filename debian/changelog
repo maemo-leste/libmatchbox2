@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.99) unstable; urgency=medium
+
+  * Add functionality to show/hide cursor
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Sun, 29 Mar 2020 11:15:23 +0300
+
 matchbox-window-manager-2 (0.2.98) unstable; urgency=medium
 
   * Use xfixes (if available) to hide the cursor
