@@ -53,6 +53,7 @@
 
 #ifdef HAVE_XFIXES
 #include <X11/extensions/Xfixes.h> /* Used to hide the cursor */
+#include <X11/cursorfont.h>
 #endif
 
 #define FALLBACK_THEME_PATH "/usr/share/themes/default"
@@ -1861,7 +1862,10 @@ mb_window_manager_init (MBWMObject *this, va_list vap)
 
   /* set the cursor invisible */
 #if HAVE_XFIXES
-  XFixesHideCursor (wm->xdpy, wm->root_win->xwindow);
+  Cursor curs = XCreateFontCursor (wm->xdpy, XC_left_ptr);
+  XDefineCursor (wm->xdpy, wm->root_win->xwindow, curs);
+  XSync(wm->xdpy, False);
+  wm->flags |= MBWindowManagerFlagCursorVisible;
 #else
   {
     Pixmap pix = XCreatePixmap (wm->xdpy, wm->root_win->xwindow, 1, 1, 1);
@@ -1874,6 +1878,8 @@ mb_window_manager_init (MBWMObject *this, va_list vap)
     XDefineCursor(wm->xdpy, wm->root_win->xwindow, blank_curs);
   }
 #endif
+  wm_set_cursor_visibility(wm, FALSE);
+
   return 1;
 }
 
@@ -2436,4 +2442,28 @@ mb_adjust_dialog_title_position (MBWindowManager *wm,
   mb_wm_object_signal_emit (MB_WM_OBJECT (wm),
                             MBWindowManagerSignalThemeChange);
 
+}
+
+void
+wm_set_cursor_visibility(MBWindowManager *wm, Bool visible)
+{
+  if (!(wm->flags & MBWindowManagerFlagCursorVisible) == !visible)
+    return;
+
+  if (visible)
+    {
+#if HAVE_XFIXES
+      XFixesShowCursor (wm->xdpy, wm->root_win->xwindow);
+      XSync(wm->xdpy, False);
+#endif
+      wm->flags |= MBWindowManagerFlagCursorVisible;
+    }
+  else
+    {
+#if HAVE_XFIXES
+      XFixesHideCursor (wm->xdpy, wm->root_win->xwindow);
+      XSync(wm->xdpy, False);
+#endif
+      wm->flags &= ~MBWindowManagerFlagCursorVisible;
+    }
 }
