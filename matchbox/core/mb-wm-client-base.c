@@ -525,23 +525,8 @@ mb_wm_client_set_focus (MBWindowManagerClient *client)
   Window xwin = client->window->xwindow;
   gboolean success = True;
 
-  if (client->window->protos & MBWMClientWindowProtosFocus)
-    {
-      Time t;
-      /*g_printerr ("sending XEvent WM_TAKE_FOCUS to 0x%lx\n", xwin); */
-
-      t = mb_wm_get_server_time (wm);
-      success = mb_wm_client_deliver_message (client,
-                        wm->atoms[MBWM_ATOM_WM_PROTOCOLS],
-                        wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS],
-                        t, 0, 0, 0);
-    }
-  else
-    {
-      /*g_printerr ("calling XSetInputFocus directly for %lu\n", xwin);*/
-
-      XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
-    }
+  //Unconditionaly call XSetInputFocus to avoid relying on clients calling it on themselves and _NET_ACTIVE_WINDOW working.
+  XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
   return success;
 }
 
