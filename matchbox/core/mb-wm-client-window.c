@@ -813,6 +813,11 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	      win->want_key_input = wmhints->input;
 	      MBWM_DBG("Want key input: %s", wmhints->input ? "yes" : "no" );
 	    }
+	  else
+	    {
+	      MBWM_DBG("No InputHint flag, assuming want key input.");
+	      win->want_key_input = True;
+	    }
 
 	  if (wmhints->flags & StateHint)
 	    {
@@ -844,6 +849,14 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
 	  /* FIXME: should track better if thus has changed or not */
 	  changes |= MBWM_WINDOW_PROP_WM_HINTS;
+	}
+      else
+        {
+          /* Initialize some sane defaults */
+          MBWM_DBG("@@@ New Window no WM Hints set, init with defaults @@@");
+
+	  win->want_key_input = True;
+	  MBWM_DBG("Want key input: yes");
 	}
     }
 
