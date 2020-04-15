@@ -517,31 +517,26 @@ is_window_mapped (
   return attr.map_state == IsViewable;
 }
 
-/* Set focus while taking into account the WM_TAKE_FOCUS protocol */
+/* Set focus */
 static Bool
 mb_wm_client_set_focus (MBWindowManagerClient *client)
 {
+  /*TODO: This function is called both internaly by the task switcher due to user input
+  and as a response to the client message _NET_ACTIVE_WINDOW. When calling from the
+  task switcher, it would be better to use WM_TAKE_FOCUS where available to allow
+  the target window to redirect the focus to another window by calling XSetInputFocus
+  on this other window or by sending _NET_ACTIVE_WINDOW with the desired window or
+  to avoid focus entirely. As a _NET_ACTIVE_WINDOW event also gets handled by this
+  function clients responding _NET_ACTIVE_WINDOW to WM_TAKE_FOCUS would cause a failure
+  to focus if this function where to simply reissued WM_TAKE_FOCUS.
+  To fix this this function needs a method of telling if it is
+  being called due to _NET_ACTIVE_WINDOW or not.*/
+  
   MBWindowManager *wm = client->wmref;
   Window xwin = client->window->xwindow;
   gboolean success = True;
-
-  if (client->window->protos & MBWMClientWindowProtosFocus)
-    {
-      Time t;
-      /*g_printerr ("sending XEvent WM_TAKE_FOCUS to 0x%lx\n", xwin); */
-
-      t = mb_wm_get_server_time (wm);
-      success = mb_wm_client_deliver_message (client,
-                        wm->atoms[MBWM_ATOM_WM_PROTOCOLS],
-                        wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS],
-                        t, 0, 0, 0);
-    }
-  else
-    {
-      /*g_printerr ("calling XSetInputFocus directly for %lu\n", xwin);*/
-
-      XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
-    }
+  
+  XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
   return success;
 }
 
