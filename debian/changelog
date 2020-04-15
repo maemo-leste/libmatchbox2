@@ -1,3 +1,11 @@
+matchbox-window-manager-2 (0.2.100) unstable; urgency=medium
+
+  * Fix window focus in cases where WM_HINTS input hints are not available
+  * Fix window focus for Qt5 and other applications that support EWMH, more
+    elaborate fix will come later, see https://github.com/maemo-leste/bugtracker/issues/363
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Wed, 15 Apr 2020 17:24:59 +0200
+
 matchbox-window-manager-2 (0.2.99) unstable; urgency=medium
 
   * Add functionality to show/hide cursor
