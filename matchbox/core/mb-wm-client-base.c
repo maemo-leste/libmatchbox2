@@ -55,6 +55,9 @@ mb_wm_client_base_request_geometry (MBWindowManagerClient *client,
 static Bool
 mb_wm_client_base_focus (MBWindowManagerClient *client);
 
+static Bool
+mb_wm_client_base_take_focus (MBWindowManagerClient *client);
+
 static void
 mb_wm_client_base_class_init (MBWMObjectClass *klass)
 {
@@ -71,6 +74,7 @@ mb_wm_client_base_class_init (MBWMObjectClass *klass)
   client->hide     = mb_wm_client_base_hide;
   client->sync     = mb_wm_client_base_display_sync;
   client->focus    = mb_wm_client_base_focus;
+  client->take_focus    = mb_wm_client_base_take_focus;
 
 #if MBWM_WANT_DEBUG
   klass->klass_name = "MBWMClientBase";
@@ -517,27 +521,12 @@ is_window_mapped (
   return attr.map_state == IsViewable;
 }
 
-/* Set focus */
-static Bool
-mb_wm_client_set_focus (MBWindowManagerClient *client)
+  
+static Bool client_requires_focus(MBWindowManagerClient *client)
 {
-  /*TODO: This function is called both internaly by the task switcher due to user input
-  and as a response to the client message _NET_ACTIVE_WINDOW. When calling from the
-  task switcher, it would be better to use WM_TAKE_FOCUS where available to allow
-  the target window to redirect the focus to another window by calling XSetInputFocus
-  on this other window or by sending _NET_ACTIVE_WINDOW with the desired window or
-  to avoid focus entirely. As a _NET_ACTIVE_WINDOW event also gets handled by this
-  function clients responding _NET_ACTIVE_WINDOW to WM_TAKE_FOCUS would cause a failure
-  to focus if this function where to simply reissued WM_TAKE_FOCUS.
-  To fix this this function needs a method of telling if it is
-  being called due to _NET_ACTIVE_WINDOW or not.*/
-  
   MBWindowManager *wm = client->wmref;
-  Window xwin = client->window->xwindow;
-  gboolean success = True;
-  
-  XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
-  return success;
+    return  !client->window->net_type==wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR] && 
+            mb_wm_client_want_focus (client);
 }
 
 static void
@@ -615,7 +604,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
 	   * we need to reset the focus to RevertToPointerRoot, since the
 	   * focus was lost during the implicit unmap.
 	   */
-          mb_wm_client_set_focus (client);
+            mb_wm_client_base_focus(client);
 	}
     }
 
@@ -841,38 +830,39 @@ mb_wm_client_base_request_geometry (MBWindowManagerClient *client,
   return True;
 }
 
+/*Focuses the client*/
 static Bool
 mb_wm_client_base_focus (MBWindowManagerClient *client)
 {
-  static Window     last_focused = None;
-  Window xwin = client->window->xwindow;
   MBWindowManager  *wm = client->wmref;
-  gboolean success;
+    Window xwin = client->window->xwindow;
 
-  if (!mb_wm_client_want_focus (client))
-    return False;
-
-  if (xwin == last_focused)
-    return False;
-
-  if (client->window->net_type==
-      wm->atoms[MBWM_ATOM_HILDON_WM_WINDOW_TYPE_ANIMATION_ACTOR])
-    {
-      g_debug ("Not focusing an animation actor.\n");
-      return False;
-    }
-
-  success = mb_wm_client_set_focus (client);
+    if(!client_requires_focus(client))return False;
 
   XChangeProperty(wm->xdpy, wm->root_win->xwindow,
 		  wm->atoms[MBWM_ATOM_NET_ACTIVE_WINDOW],
 		  XA_WINDOW, 32, PropModeReplace,
 		  (unsigned char *)&xwin, 1);
 
-  if (!success)
-    return False;
+    XSetInputFocus(wm->xdpy, xwin, RevertToPointerRoot, CurrentTime);
+    return True;
+}
 
-  last_focused = xwin;
+/*Asks the client to take focus via WM_TAKE_FOCUS*/
+static Bool
+mb_wm_client_base_take_focus (MBWindowManagerClient *client)
+{
+    if (client->window->protos & MBWMClientWindowProtosFocus)
+    {
+        MBWindowManager *wm = client->wmref;
+        Window xwin = client->window->xwindow;
 
-  return True;
+        if (!client_requires_focus(client)) return True;
+
+        return mb_wm_client_deliver_message (client,
+                    wm->atoms[MBWM_ATOM_WM_PROTOCOLS],
+                    wm->atoms[MBWM_ATOM_WM_TAKE_FOCUS],
+                    mb_wm_get_server_time (wm), 0, 0, 0);
+    }
+    else return False;
 }
