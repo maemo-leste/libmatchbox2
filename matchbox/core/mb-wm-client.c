@@ -1,3 +1,4 @@
+
 /*
  *  Matchbox Window Manager II - A lightweight window manager not for the
  *                               desktop.
