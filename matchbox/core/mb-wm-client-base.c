@@ -1,3 +1,4 @@
+
 /*
  *  Matchbox Window Manager II - A lightweight window manager not for the
  *                               desktop.
@@ -757,22 +758,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
       area.x -= client->frame_geometry.x;
       area.y -= client->frame_geometry.y;
       mb_wm_update_workarea (wm, &area);
-
-#if 0
-      /*
-       * I don't think this part is doing any good...
-       */
-      if (fullscreen)
-	{
-	  if (client->xwin_frame)
-	    XUnmapWindow(wm->xdpy, client->xwin_frame);
-	}
-      else
-	{
-	  if (client->xwin_frame)
-	    XMapWindow(wm->xdpy, client->xwin_frame);
-	}
-#endif
+      
       mb_wm_util_async_untrap_x_errors();
 
       mb_wm_util_list_foreach (client->decor,
@@ -837,8 +823,6 @@ mb_wm_client_base_focus (MBWindowManagerClient *client)
   MBWindowManager  *wm = client->wmref;
     Window xwin = client->window->xwindow;
 
-    if(!client_requires_focus(client))return False;
-
   XChangeProperty(wm->xdpy, wm->root_win->xwindow,
 		  wm->atoms[MBWM_ATOM_NET_ACTIVE_WINDOW],
 		  XA_WINDOW, 32, PropModeReplace,
@@ -856,8 +840,6 @@ mb_wm_client_base_take_focus (MBWindowManagerClient *client)
     {
         MBWindowManager *wm = client->wmref;
         Window xwin = client->window->xwindow;
-
-        if (!client_requires_focus(client)) return True;
 
         return mb_wm_client_deliver_message (client,
                     wm->atoms[MBWM_ATOM_WM_PROTOCOLS],

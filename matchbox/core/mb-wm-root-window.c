@@ -353,7 +353,7 @@ mb_wm_root_window_handle_message (MBWMRootWindow *win, XClientMessageEvent *e)
       Window xwin = e->window;
 
       if ((c = mb_wm_managed_client_from_xwindow (wm, xwin)) != NULL)
-	mb_wm_client_take_focus (c);
+        mb_wm_client_focus(c);
 
       return 1;
     }
