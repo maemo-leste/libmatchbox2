@@ -452,21 +452,6 @@ mb_wm_client_focus (MBWindowManagerClient *client)
   return ret;
 }
 
-
-Bool
-mb_wm_client_take_focus (MBWindowManagerClient *client)
-{
-  MBWindowManagerClientClass *klass;
-  Bool ret = False;
-
-  klass = MB_WM_CLIENT_CLASS (MB_WM_OBJECT_GET_CLASS (client));
-
-  if (klass->take_focus)
-    ret = klass->take_focus(client);
-
-  return ret;
-}
-
 Bool
 mb_wm_client_want_focus (MBWindowManagerClient *client)
 {

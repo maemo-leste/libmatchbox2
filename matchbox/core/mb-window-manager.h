@@ -217,9 +217,6 @@ MBWindowManagerClient*
 mb_wm_get_visible_main_client(MBWindowManager *wm);
 
 void
-mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *client);
-
-void
 mb_wm_unfocus_client (MBWindowManager *wm, MBWindowManagerClient *client);
 
 void

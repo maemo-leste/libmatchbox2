@@ -61,6 +61,9 @@
 static void
 mb_wm_process_cmdline (MBWindowManager *wm);
 
+static void
+mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *client);
+
 static Bool
 mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c);
 
@@ -2164,7 +2167,7 @@ mb_wm_set_layout (MBWindowManager *wm, MBWMLayout *layout)
   wm->sync_type |= (MBWMSyncGeometry | MBWMSyncVisibility);
 }
 
-void
+static void
 mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *client)
 {
   MBWindowManagerClient *last_focused_transient;
@@ -2185,6 +2188,8 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *client)
   /* We refuse to focus a window if: */
 
   if (
+      /* It's already focussed */
+      wm->focused_client == client ||
       /* It doesn't want focus */
       !mb_wm_client_want_focus (client) ||
       /* It's the parent of the current modal focus-holder */
@@ -2223,7 +2228,7 @@ mb_wm_focus_client (MBWindowManager *wm, MBWindowManagerClient *client)
       return;
     }
 
-  if(!mb_wm_client_take_focus(client))mb_wm_client_focus(client);
+  mb_wm_client_focus (client);
 
   /*
    * If the window is already destroyed we will get a notification about it

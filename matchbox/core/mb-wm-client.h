@@ -124,8 +124,6 @@ typedef  void (*MBWMClientSyncMethod) (MBWindowManagerClient *client);
 
 typedef  Bool (*MBWMClientFocusMethod)(MBWindowManagerClient *client);
 
-typedef  Bool (*MBWMClientTakeFocusMethod)(MBWindowManagerClient *client);
-
 typedef  void (*MBWMClientThemeChangeMethod) (MBWindowManagerClient *client);
 
 typedef  void (*MBWMClientDetransitise) (MBWindowManagerClient *client);
@@ -148,7 +146,6 @@ struct MBWindowManagerClientClass
   MBWMClientHideMethod         hide;
   MBWMClientSyncMethod         sync;     /* sync internal changes to display */
   MBWMClientFocusMethod        focus;
-  MBWMClientTakeFocusMethod    take_focus;
   MBWMClientThemeChangeMethod  theme_change;
   MBWMClientDetransitise       detransitise;
   MBWMClientStackingLayer      stacking_layer;
@@ -270,9 +267,6 @@ mb_wm_client_hide (MBWindowManagerClient *client);
 
 Bool
 mb_wm_client_focus (MBWindowManagerClient *client);
-
-Bool
-mb_wm_client_take_focus (MBWindowManagerClient *client);
 
 Bool
 mb_wm_client_want_focus (MBWindowManagerClient *client);
