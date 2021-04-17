@@ -617,69 +617,17 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
       cookies[COOKIE_WIN_GEOM] = 0;
 
-      /*
-       * FIXME: Monster Hack to make Browser visible (800x480 was a problem)
-       *
-       * This is a poetic FIXME.  Simply removing this hack has far-reaching
-       * consequences, which have even more consequences.  Let's consider the
-       * case of Marbles, our most usable application.
-       *
-       * Marbles is written with SDL and has a game startup window,
-       * stacked like this: startup window -> input window -> SDL fullscreen
-       * window.  The former two are regular application windows, the latter
-       * is an override-redirected one covering the whole screen but is NOT
-       * fullscreen (doesn't have the flag).
-       *
-       * When the input window is mapped this hack kicks in and sets the
-       * win->geometry to 799x479, removing it leaves it 800x480.  Later on
-       * when the layout manager tries to size and position the new window
-       * (mb_wm_layout_real_layout_free()) it checks whether win->geometry
-       * is the same as the desktop size (800x480), and if they match it
-       * does not request_geometry, effectively not calling MBWMClientTypeApp's
-       * method.  This is a problem because then frame_geometry is left 0x0
-       * before realizing the client.  And then when MBWMClientBase::realize
-       * tries to create the 0x0 frame window it naturally fails.
-       *
-       * Okay, try removing the hack and make sure mb_wm_layout_real_layout_free()
-       * always calls mb_wm_client_app_request_geometry() to set up frame_geometry
-       * so client realization actually succeeds.  The next problem is that
-       * we have a title bar on the top of the SDL fullscreen widow.
-       *
-       * Were the hack in effect the SDL fullscreen window would be 799x479,
-       * but without it it's 800x480.  This makes a difference for HDRM,
-       * which places non-800x480 (clutter geometry!) to app_top, which is
-       * above the title bar, so the SDL window would hide it.  But without
-       * the hack it's 800x480 and ends up elsewhere, behind the title bar.
-       * (Talking about "clutter geometry" is important because ordinary
-       *  800x424 windows's clutter geometry is still 800x480, since the
-       *  frame geometry is what matters...)
-       *
-       * We can hack hd_render_manager_set_visibilities() to hide the
-       * title bar if it encounters a 800x480 window, regardless its
-       * fullscreen flag.  Title bar is gone is Marbles, great. Now,
-       * try to close the game.  To cut it short we'll get an assertion
-       * failure from tasw because the input window without the hack
-       * is hidden (clutter-wise).  We can work it around in a seemingly
-       * acceptable way (go to tasw even if the topmost client, which is
-       * the input window in this case is not clutter-visible), only to
-       * discover that the title bar workaround broke the camera application.
-       *
-       * Seeing all the complexity we must conclude that whoever conceived
-       * the monster hack must have been a genius.
-       *
-       * ... adding to this, we have a slight problem where the desktop
-       * doesn't recieve a button-pressed event (for panning) if we press
-       * *right* on the right-hand side of the screen (because it is only 799
-       * pixels wide). Hence we'll avoid the monster hack for desktop windows.
-       */
-      if (win->net_type !=
-          wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_DESKTOP])
-        {
-          if (win->x_geometry.width >= wm->xdpy_width)
-                  win->x_geometry.width = wm->xdpy_width - 1;
-          if (win->x_geometry.height >= wm->xdpy_height)
-                  win->x_geometry.height = wm->xdpy_height - 1;
-        }
+	  /* Pretend that override redirect windows that have the same hight as
+	   * the screen are in fact fullscreen ewmh compliant windows 
+	   */
+	  if (win->override_redirect &&
+		  win->x_geometry.width >= wm->xdpy_width &&
+		  win->x_geometry.height >= wm->xdpy_height)
+	  {
+		  win->ewmh_state |= MBWMClientWindowEWMHStateFullscreen;
+		  win->ewmh_state |= MBWMClientWindowEWMHStateAbove;
+		  win->ewmh_state |= MBWMClientWindowEWMHStateModal;
+	  }
 
       MBWM_DBG("@@@ New Window Obj @@@");
       MBWM_DBG("Win:  %lx", win->xwindow);
