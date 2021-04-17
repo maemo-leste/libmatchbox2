@@ -555,11 +555,8 @@ mb_wm_layout_real_layout_free (MBWMLayout *layout, MBGeometry * avail_geom)
 	    coverage.height = avail_geom->height;
 	    coverage.x      = avail_geom->x;
 	    coverage.y      = avail_geom->y;
-
-	    mb_wm_client_request_geometry (client,
-					 &coverage,
-					 MBWMClientReqGeomIsViaLayoutManager);
 	  }
+		mb_wm_client_request_geometry (client, &coverage, MBWMClientReqGeomIsViaLayoutManager);
       }
 
   mb_wm_stack_enumerate(wm, client)
