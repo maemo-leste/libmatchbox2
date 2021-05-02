@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.103) unstable; urgency=medium
+
+  * Fix fullscreen handling for fullscreen override redirect windows
+
+ -- Ivan J. <parazyd@dyne.org>  Sun, 02 May 2021 10:06:32 +0200
+
 matchbox-window-manager-2 (0.2.102) unstable; urgency=medium
 
   * Revert 6edbe8f0481714ee2a61477ae20e6a972feca9c7
