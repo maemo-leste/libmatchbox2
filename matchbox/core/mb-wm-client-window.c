@@ -847,7 +847,8 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
 	  if (mwmhints->flags & MWM_HINTS_DECORATIONS)
 	    {
-	      if (mwmhints->decorations == 0)
+	      if (mwmhints->decorations == 0 &&
+			  win->net_type != wm->atoms[MBWM_ATOM_NET_WM_WINDOW_TYPE_NORMAL])
 		{
 		  win->undecorated = TRUE;
 		}
