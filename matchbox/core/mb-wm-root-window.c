@@ -190,7 +190,7 @@ mb_wm_root_window_update_supported_props (MBWMRootWindow *win)
 {
   MBWindowManager  *wm = win->wm;
   Window            rwin = win->xwindow;
-  CARD32            num_supported = 0;
+  long            num_supported = 0;
 
   /*
    * Supported info
@@ -272,7 +272,7 @@ mb_wm_root_window_init_properties (MBWMRootWindow * win)
   Window            rwin = win->xwindow;
   Window            hwin = win->hidden_window;
 
-  CARD32            card32;
+  long            card32;
   unsigned long     val[2];
   char             *app_name = "matchbox";
   pid_t             pid;

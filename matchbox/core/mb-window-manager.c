@@ -1601,7 +1601,7 @@ mb_wm_get_desktop_geometry (MBWindowManager *wm, MBGeometry * geom)
 void
 mb_wm_update_workarea (MBWindowManager *wm, const MBGeometry *geo)
 {
-  static CARD32 val[4];
+  static long val[4];
 
   if (val[0] == geo->x && val[1] == geo->y
       && val[2] == geo->width && val[3] == geo->height)
@@ -1623,7 +1623,7 @@ mb_wm_update_root_win_rectangles (MBWindowManager *wm)
   Display * dpy = wm->xdpy;
   Window    root = wm->root_win->xwindow;
   MBGeometry d_geom;
-  CARD32 val[2];
+  long val[2];
 
   mb_wm_get_desktop_geometry (wm, &d_geom);
   mb_wm_update_workarea (wm, &d_geom);
@@ -2034,7 +2034,7 @@ mb_wm_activate_client_real (MBWindowManager * wm, MBWindowManagerClient *c)
 
   if (is_desktop != was_desktop)
     {
-      CARD32 card = is_desktop ? 1 : 0;
+      long card = is_desktop ? 1 : 0;
 
       XChangeProperty(wm->xdpy, wm->root_win->xwindow,
 		      wm->atoms[MBWM_ATOM_NET_SHOWING_DESKTOP],
@@ -2371,7 +2371,7 @@ mb_wm_get_modality_type (MBWindowManager * wm)
 static void
 mb_wm_set_n_desktops (MBWindowManager *wm, int n_desktops)
 {
-  CARD32 card32 = n_desktops;
+  long card32 = n_desktops;
 
   wm->n_desktops = n_desktops;
 
@@ -2387,7 +2387,7 @@ mb_wm_set_n_desktops (MBWindowManager *wm, int n_desktops)
 void __attribute__ ((visibility("hidden")))
 mb_wm_select_desktop (MBWindowManager *wm, int desktop)
 {
-  CARD32                 card32 = desktop;
+  long                 card32 = desktop;
   MBWindowManagerClient *c;
   int                    old_desktop;
 

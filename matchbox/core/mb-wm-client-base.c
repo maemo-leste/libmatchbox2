@@ -382,7 +382,7 @@ mb_wm_client_base_set_state_props (MBWindowManagerClient *c)
   Window            xwin  = c->window->xwindow;
   MBWindowManager  *wm    = c->wmref;
   Display          *xdpy  = wm->xdpy;
-  CARD32            card32[2];
+  long            card32[2];
   Atom              ewmh_state [MBWMClientWindowEWHMStatesCount];
   int               ewmh_i = 0;
 
@@ -625,7 +625,7 @@ mb_wm_client_base_display_sync (MBWindowManagerClient *client)
   if (mb_wm_client_is_mapped (client) && mb_wm_client_needs_geometry_sync (client))
     {
       int x, y, w, h;
-      CARD32 wgeom[4];
+      long wgeom[4];
 
       mb_wm_util_async_trap_x_errors(wm->xdpy);
 
