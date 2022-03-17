@@ -736,10 +736,10 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
   if (props_req & MBWM_WINDOW_PROP_WM_HINTS)
     {
-      XWMHints *wmhints = NULL;
+      long *p;
 
       /* NOTE: pre-R3 X strips group element so will faill for that */
-      wmhints = mb_wm_property_get_reply_and_validate (wm,
+      p = mb_wm_property_get_reply_and_validate (wm,
 		                cookies[COOKIE_WIN_WM_HINTS],
 			        XA_WM_HINTS,
 			        32,
@@ -752,14 +752,18 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
       if (x_error_code == BadWindow)
         goto badwindow_error;
 
-      if (wmhints)
+      if (p)
 	{
+	  XWMHints wmhints = {
+	    p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]
+	  };
+
 	  MBWM_DBG("@@@ New Window WM Hints @@@");
 
-	  if (wmhints->flags & InputHint)
+	  if (wmhints.flags & InputHint)
 	    {
-	      win->want_key_input = wmhints->input;
-	      MBWM_DBG("Want key input: %s", wmhints->input ? "yes" : "no" );
+	      win->want_key_input = wmhints.input;
+	      MBWM_DBG("Want key input: %s", wmhints.input ? "yes" : "no" );
 	    }
 	  else
 	    {
@@ -767,33 +771,33 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 	      win->want_key_input = True;
 	    }
 
-	  if (wmhints->flags & StateHint)
+	  if (wmhints.flags & StateHint)
 	    {
-	      win->initial_state = wmhints->initial_state;
-	      MBWM_DBG("Initial State : %i", wmhints->initial_state );
+	      win->initial_state = wmhints.initial_state;
+	      MBWM_DBG("Initial State : %i", wmhints.initial_state );
 	    }
 
-	  if (wmhints->flags & IconPixmapHint)
+	  if (wmhints.flags & IconPixmapHint)
 	    {
-	      win->icon_pixmap = wmhints->icon_pixmap;
-	      MBWM_DBG("Icon Pixmap   : %lx", wmhints->icon_pixmap );
+	      win->icon_pixmap = wmhints.icon_pixmap;
+	      MBWM_DBG("Icon Pixmap   : %lx", wmhints.icon_pixmap );
 	    }
 
-	  if (wmhints->flags & IconMaskHint)
+	  if (wmhints.flags & IconMaskHint)
 	    {
-	      win->icon_pixmap_mask = wmhints->icon_mask;
-	      MBWM_DBG("Icon Mask     : %lx", wmhints->icon_mask );
+	      win->icon_pixmap_mask = wmhints.icon_mask;
+	      MBWM_DBG("Icon Mask     : %lx", wmhints.icon_mask );
 	    }
 
-	  if (wmhints->flags & WindowGroupHint)
+	  if (wmhints.flags & WindowGroupHint)
 	    {
-	      win->xwin_group = wmhints->window_group;
-	      MBWM_DBG("Window Group  : %lx", wmhints->window_group );
+	      win->xwin_group = wmhints.window_group;
+	      MBWM_DBG("Window Group  : %lx", wmhints.window_group );
 	    }
 
 	  /* NOTE: we ignore icon window stuff */
 
-	  XFree(wmhints);
+	  XFree(p);
 
 	  /* FIXME: should track better if thus has changed or not */
 	  changes |= MBWM_WINDOW_PROP_WM_HINTS;
@@ -949,7 +953,7 @@ mb_wm_client_window_sync_properties ( MBWMClientWindow *win,
 
   if (props_req & MBWM_WINDOW_PROP_LIVE_BACKGROUND)
     {
-      int *ret;
+      long *ret;
       ret = mb_wm_property_get_reply_and_validate (wm,
 				cookies[COOKIE_WIN_LIVE_BACKGROUND],
 						 XA_INTEGER,
@@ -1249,7 +1253,7 @@ badwindow_error:
 
   if (cookies[COOKIE_WIN_WM_HINTS])
     {
-      XWMHints *wmhints;
+      long *wmhints;
       wmhints = mb_wm_property_get_reply_and_validate (wm,
 		                cookies[COOKIE_WIN_WM_HINTS],
 			        XA_WM_HINTS,
@@ -1263,7 +1267,7 @@ badwindow_error:
 
   if (cookies[COOKIE_WIN_LIVE_BACKGROUND])
     {
-      int *ret;
+      long *ret;
       ret = mb_wm_property_get_reply_and_validate (wm,
 		                cookies[COOKIE_WIN_LIVE_BACKGROUND],
 			        XA_INTEGER,
