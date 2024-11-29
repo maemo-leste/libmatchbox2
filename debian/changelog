@@ -1,3 +1,9 @@
+matchbox-window-manager-2 (0.2.107) unstable; urgency=medium
+
+  * Stacked windows are not properly repainted when using X11 texture pixmap
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Fri, 29 Nov 2024 16:59:31 +0200
+
 matchbox-window-manager-2 (0.2.106) unstable; urgency=medium
 
   * Fix broken stacked windows on 64 bit platforms
