@@ -20,8 +20,6 @@
 
 //#define DEBUG_ACTOR 1
 
-#define SGX_CORRUPTION_WORKAROUND 0
-
 #include "mb-wm.h"
 #include "mb-wm-client.h"
 #include "mb-wm-comp-mgr.h"
@@ -47,19 +45,6 @@
 #define MAX_TILE_SZ 16 	/* make sure size/2 < MAX_TILE_SZ */
 #define WIDTH  (3*MAX_TILE_SZ)
 #define HEIGHT (3*MAX_TILE_SZ)
-
-#if SGX_CORRUPTION_WORKAROUND
-/* FIXME: This is copied from hd-wm, and should be removed
- * when we take out the nasty X11 hack */
-typedef enum _HdWmClientType
-{
-  HdWmClientTypeHomeApplet  = MBWMClientTypeLast << 1,
-  HdWmClientTypeAppMenu     = MBWMClientTypeLast << 2,
-  HdWmClientTypeStatusArea  = MBWMClientTypeLast << 3,
-  HdWmClientTypeStatusMenu  = MBWMClientTypeLast << 4,
-  HdWmClientTypeAnimationActor = MBWMClientTypeLast << 5,
-} HdWmClientType;
-#endif
 
 static void
 mb_wm_comp_mgr_clutter_add_actor (MBWMCompMgrClutter *,
@@ -923,15 +908,9 @@ mb_wm_comp_mgr_clutter_handle_damage (XDamageNotifyEvent * de,
     {
       Damage damage;
 
-/* We ignore the DontUpdate flag for i386, as it uses the X11 Texture Pixmap
- * class, which requires damage events to keep its internal texture in sync.
- */
       if (!cclient->priv->actor ||
-#ifdef __i386__
-          FALSE
-#else
-	  (cclient->priv->flags & MBWMCompMgrClutterClientDontUpdate)
-#endif
+          ((cclient->priv->flags & MBWMCompMgrClutterClientDontUpdate) &&
+           !(cclient->priv->flags & MBWMCompMgrClutterClientIgnoreDontUpdate))
 	  )
         {
           XDamageSubtract (wm->xdpy, cclient->priv->window_damage, None, None);
@@ -1176,9 +1155,6 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   MBWMCompMgrClient         * client  = c->cm_client;
   MBWMCompMgrClutterClient  * cclient = MB_WM_COMP_MGR_CLUTTER_CLIENT(client);
   ClutterActor              * texture;
-#if SGX_CORRUPTION_WORKAROUND
-  MBWMClientType              ctype = MB_WM_CLIENT_CLIENT_TYPE (c);
-#endif
   char                        actor_name[64];
 
   cclient->priv->fullscreen = mb_wm_client_window_is_state_set (
@@ -1213,31 +1189,17 @@ mb_wm_comp_mgr_clutter_map_notify_real (MBWMCompMgr *mgr,
   clutter_actor_set_name(cclient->priv->actor, actor_name);
 
 #if HAVE_CLUTTER_EGLX
+  g_debug ("%s: calling clutter_eglx_texture_pixmap_new", __FUNCTION__);
+  texture = clutter_eglx_texture_pixmap_new ();
 
-#if SGX_CORRUPTION_WORKAROUND
-  if (ctype == MBWMClientTypeMenu ||
-      ctype == MBWMClientTypeNote ||
-      ctype == MBWMClientTypeOverride ||
-      ctype == HdWmClientTypeStatusArea ||
-      ctype == HdWmClientTypeStatusMenu ||
-      ctype == HdWmClientTypeHomeApplet ||
-      ctype == HdWmClientTypeAppMenu ||
-      ctype == HdWmClientTypeAnimationActor
-      )
-#else
-  if (FALSE)
-#endif
+  /* We have to ignore the DontUpdate flag if clutter uses X11 Texture Pixmap
+   * class, which requires damage events to keep its internal texture in sync.
+   */
+  if (!clutter_eglx_texture_pixmap_using_extension (
+        CLUTTER_EGLX_TEXTURE_PIXMAP (texture)));
     {
-      /* FIXME: This is a hack to get menus and Status Area working properly
-       * until EGL is fixed for strange-sized images. When we remove this,
-       * ALSO remove definition of HdWmClientType in this file */
-      g_debug ("%s: calling clutter_x11_texture_pixmap_new", __FUNCTION__);
-      texture = clutter_x11_texture_pixmap_new ();
-    }
-  else
-    {
-      g_debug ("%s: calling clutter_eglx_texture_pixmap_new", __FUNCTION__);
-      texture = clutter_eglx_texture_pixmap_new ();
+      g_debug ("%s: using X11 Texture Pixmap, DontUpdate flag ignored", __FUNCTION__);
+      cclient->priv->flags |= MBWMCompMgrClutterClientIgnoreDontUpdate;
     }
 #else
   texture = clutter_x11_texture_pixmap_new ();
